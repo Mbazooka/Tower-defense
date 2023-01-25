@@ -1,7 +1,3 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;                                 Teken ADT                                  ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;; Doel van dit ADT is om alles gemakkelijk te teken gebruikmakend van de grafische bibliotheek (dit zal gebruikt worden door spel ADT)
 ;; ADT dient om alles op te roepen, dus het tekenen ook
 (define (maak-teken-adt horizontale-pixels verticale-pixels)
@@ -11,7 +7,7 @@
 
     ;; Volgende code is om een achtergrond te hebben waarop een pad gemaakt wordt
     (define laag-gras ((venster 'new-layer!)))
-    (define gras-tegel (make-tile 800 600 "Images/Gras-3.jpg"))
+    (define gras-tegel (make-tile 800 600 "Images/Gras-2.png"))
     ((laag-gras 'add-drawable!) gras-tegel)
 
     ;; Volgende code is om een menu te maken (moet nog verandering aan komen, gewoon prototype)

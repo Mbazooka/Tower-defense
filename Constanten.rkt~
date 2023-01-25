@@ -8,7 +8,7 @@
 (define *px-hoogte* 20)
 
 ;; Bitmap constanten die de code netter maken (indien meerdere keren gebruikt wordt)
-(define *bitmap-pad* "Images/Aarde.png")
+(define *bitmap-pad* "Images/Cobblestone.jpg")
 (define *bitmap-rood-monster* #f) ;; Verander later
 
 
