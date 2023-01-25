@@ -16,9 +16,7 @@
     ((menu-tegel 'draw-rectangle!) 0 0 200 600 "blue")
     ((menu-tegel 'set-x!) 800)
     ((laag-menu 'add-drawable!) menu-tegel)
-    
-    
-    
+      
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                       
     (define (beweeg-tegel-object! object tegel) ;; Operatie beweegt tegel van object naar gewenste positie 
       (let* ((obj-x-pos ((object 'positie) 'x)) ;; initialisatie positie om te blijven of continue beweging,
@@ -35,6 +33,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;    
     (define laag-pad ((venster 'new-layer!))) ;; Laag waarop pad getekent word
 
+    ;; Procedure die tegel op juiste pixel positie zet 
     (define (bepaal-tegel-px-positie! positie tegel) ;; Misschien later als hulpprocedure definieren (afhankelijk implementatie dynamische zaken)
       (let* ((pad/rand-x-pos (positie 'x))
              (pad/rand-y-pos (positie 'y))
@@ -43,11 +42,13 @@
         ((tegel 'set-x!) scherm-x)
         ((tegel 'set-y!) scherm-y)))
 
+    ;; Maakt tegel en zet tegel op laag op juiste plaats
     (define (initialiseer-statisch-posities-scherm! positie object-bitmap object-laag) 
       (let ((tegel-van-object (make-tile 20 20 object-bitmap)))
         (bepaal-tegel-px-positie! positie tegel-van-object)
         ((object-laag 'add-drawable!) tegel-van-object)))
-      
+    
+    ;; Pakt elke pad positie en maakt een tegel en zet die op juiste plaats  
     (define (teken-pad! pad)
       (let ((pad-posities (pad 'posities)))
         (define (hulp-teken-pad! ctr)
@@ -57,7 +58,7 @@
                 (hulp-teken-pad! (+ ctr 1)))))
         (hulp-teken-pad! 0)))
 
-    ;; Probeer te veranderen zodat argument "pad" weg is
+    ;; OPTIE: Probeer te veranderen zodat argument "pad" weg is
     (define (teken-spel! pad) ;;Uitbreiden met menu (want dat is de basis)
       (teken-pad! pad))
               
