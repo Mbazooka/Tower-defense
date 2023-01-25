@@ -2,7 +2,7 @@
 ;; Vector van posities zullen 
 (define (maak-pad-adt vector-van-posities)
   (let* ((lengte (vector-length vector-van-posities))
-         (begin (vector-ref vector-van-posities 0)) ;; De eerste 3 zijn begin pad
+         (begin (vector-ref vector-van-posities 0))
          (einde (vector-ref vector-van-posities (- lengte 1)))) ;; Lengte van vector want algemeen
     
     (define (in? positie)
@@ -17,5 +17,3 @@
         ((eq? msg 'in?) in?)
         (else "maak-pad-adt: ongeldig bericht")))
     dispatch))
-
-;; Comments verander begin,einde

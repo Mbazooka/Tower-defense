@@ -35,7 +35,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;    
     (define laag-pad ((venster 'new-layer!))) ;; Laag waarop pad getekent word
 
-    (define (bepaal-tegel-px-positie! positie tegel) ;; Misschien later als hulpprocedure definieren (afhankelijk implementatie dynamische zaken)
+    (define (bepaal-tegel-positie! positie tegel) ;; Misschien later als hulpprocedure definieren (afhankelijk implementatie dynamische zaken)
       (let* ((pad/rand-x-pos (positie 'x))
              (pad/rand-y-pos (positie 'y))
              (scherm-x (* pad/rand-x-pos *px-breedte*))
@@ -45,7 +45,7 @@
 
     (define (initialiseer-statisch-posities-scherm! positie object-bitmap object-laag) 
       (let ((tegel-van-object (make-tile 20 20 object-bitmap)))
-        (bepaal-tegel-px-positie! positie tegel-van-object)
+        (bepaal-tegel-positie! positie tegel-van-object)
         ((object-laag 'add-drawable!) tegel-van-object)))
       
     (define (teken-pad! pad)
@@ -54,11 +54,13 @@
           (if (not (= ctr (pad 'lengte)))
               (begin
                 (initialiseer-statisch-posities-scherm! (vector-ref pad-posities ctr) *bitmap-pad* laag-pad)
-                (hulp-teken-pad! (+ ctr 1)))))
+                (initialiseer-statisch-posities-scherm! (vector-ref pad-posities (+ ctr 1)) *bitmap-pad* laag-pad)
+                (initialiseer-statisch-posities-scherm! (vector-ref pad-posities (+ ctr 2)) *bitmap-pad* laag-pad)
+                (hulp-teken-pad! (+ ctr 3)))))
         (hulp-teken-pad! 0)))
 
     ;; Probeer te veranderen zodat argument "pad" weg is
-    (define (teken-spel! pad) ;;Uitbreiden met menu (want dat is de basis)
+    (define (teken-spel! pad)
       (teken-pad! pad))
               
     (define (dispatch msg)
