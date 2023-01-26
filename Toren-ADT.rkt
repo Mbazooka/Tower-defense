@@ -1,8 +1,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                 Toren ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(define (maak-toren-adt centraal-positie) ;; Positie stelt midden van de toren voor
+;; Voeg type toe voor uitbreidbaarheid
+(define (maak-toren-adt centraal-positie type) ;; Positie stelt midden van de toren voor
   (let ((toren-posities (make-vector 2)) ;; Stelt werkelijke posities toren voor (enkel 2 punten van rand, voor geheugenvriendelijkheid)
         (buurt-posities (make-vector 2))) ;; Stelt buurt voor (geheugenvriendelijk)
 
@@ -35,6 +35,7 @@
 
     (define (dispatch msg)
       (cond
+        ((eq? msg 'positie) centraal-positie)
         ((eq? msg 'in-toren?) in-toren?)
         ((eq? msg 'in-buurt?) in-buurt?)
         (else "maak-toren-adt: ongeldig bericht")))
