@@ -42,7 +42,6 @@
 ;; Maakt het spel 
 
 (define spel (maak-spel-adt))
-(spel 'start!)
 
 ;; Start het spel
 

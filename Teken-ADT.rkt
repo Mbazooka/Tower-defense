@@ -12,16 +12,26 @@
     ;; Volgende code is om een achtergrond te hebben waarop een pad gemaakt wordt
     (define laag-gras ((venster 'new-layer!)))
     (define gras-tegel (make-tile 800 600 "Images/Gras-3.jpg"))
+    (define random-tegel (make-tile 90 90))
+    ((random-tegel 'draw-rectangle!) 7 7 90 90 "blue")
     ((laag-gras 'add-drawable!) gras-tegel)
+    ((laag-gras 'add-drawable!) random-tegel)
 
-    ;; Volgende code is om een menu te maken (moet nog verandering aan komen, gewoon prototype)
+    ;; Volgende code is om een menu te maken 
     (define laag-menu ((venster 'new-layer!)))
     (define menu-tegel (make-tile 200 600))
-    ((menu-tegel 'draw-rectangle!) 0 0 200 600 "blue")
+    ((menu-tegel 'draw-rectangle!) 0 0 200 600 "lightblue")
     ((menu-tegel 'set-x!) 800)
     ((laag-menu 'add-drawable!) menu-tegel)
+
+    ;; Volgende code is om de user-interface van de menu te maken
+    (define user-interface ((venster 'new-layer!)))
+    (define toren-1-tegel (make-tile 60 60 *bitmap-toren-1*))
+    ((toren-1-tegel 'set-x!) 840)
+    ((toren-1-tegel 'set-y!) 40)
+    ((user-interface 'add-drawable!) toren-1-tegel)
       
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                       
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                       
     (define (beweeg-tegel-object! object tegel) ;; Operatie beweegt tegel van object naar gewenste positie 
       (let* ((obj-x-pos ((object 'positie) 'x)) ;; initialisatie positie om te blijven of continue beweging,
              (obj-y-pos ((object 'positie) 'y)) ;;  uit veronderstellen posities al veranderd zijn (werkt niet voor pad en toren)
@@ -34,8 +44,9 @@
       (let ((tegel-van-object (make-tile 20 20 object-bitmap)))
         (beweeg-tegel! object tegel-van-object)
         ((object-laag 'add-drawable!) tegel-van-object)))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;    
-    (define laag-pad ((venster 'new-layer!))) ;; Laag waarop pad getekent word
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;    
+    ;; Laag waarop pad getekent word
+    (define laag-pad ((venster 'new-layer!))) 
 
     ;; Procedure die tegel op juiste pixel positie zet 
     (define (bepaal-tegel-px-positie! positie tegel) ;; Misschien later als hulpprocedure definieren (afhankelijk implementatie dynamische zaken)
@@ -62,12 +73,29 @@
                 (hulp-teken-pad! (+ ctr 1)))))
         (hulp-teken-pad! 0)))
 
-    ;; OPTIE: Probeer te veranderen zodat argument "pad" weg is
-    (define (teken-spel! pad) ;;Uitbreiden met menu (want dat is de basis)
-      (teken-pad! pad))
+    ;; Tekent toren op het scherm gegeven een positie (die positie is gegeven door de muis callback functie)
+    (define laag-toren ((vesnter 'new-layer!)))
+    
+    (define (teken-toren! toren positie)
+      (let ((toren-tegel (make-tile 60 60 *bitmap-toren-1*)))
+        
+      
+      
+      
+
+      
+        ;; OPTIE: Probeer te veranderen zodat argument "pad" weg is
+        (define (teken-spel! pad) 
+          (teken-pad! pad))
+
+        ;; Volgende code is om muis klikken te implementeren
+        (define (set-muis-toets! proc)
+          ((venster 'set-mouse-click-callback!) proc))
               
-    (define (dispatch msg)
-      (cond
-        ((eq? msg 'teken-spel!) teken-spel!)
-        (else "Teken-adt: undefined message")))
-    dispatch))
+        (define (dispatch msg)
+          (cond
+            ((eq? msg 'teken-spel!) teken-spel!)
+            ((eq? msg 'teken-toren!) teken-toren!)
+            ((eq? msg 'set-muis-toets!) set-muis-toets!)
+            (else "Teken-adt: undefined message")))
+        dispatch))

@@ -10,5 +10,6 @@
 ;; Bitmap constanten die de code netter maken (indien meerdere keren gebruikt wordt)
 (define *bitmap-pad* "Images/Aarde.png")
 (define *bitmap-rood-monster* #f) ;; Verander later
+(define *bitmap-toren-1* "Images/Toren-1-Game.png") ;; Verander later
 
 
