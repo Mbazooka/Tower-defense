@@ -1,7 +1,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                  Spel ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;maak hier een spel ADT
 (define (maak-spel-adt)
   (let ((pad (maak-pad-adt vector-1)) ;; maak de fundamenten van het spel
        (teken-adt (maak-teken-adt 1000 600))

@@ -65,7 +65,7 @@
     (define (teken-toren! toren)
       (let ((x-pos ((toren 'positie) 'x))
             (y-pos ((toren 'positie) 'y)))                
-        (initialiseer-statisch-posities-scherm! 60 60 (maak-positie-adt x-pos  y-pos) *bitmap-toren-1* laag-toren))) ;; nieuwe positie om toren te centreren
+        (initialiseer-statisch-posities-scherm! 60 60 (maak-positie-adt (- x-pos 1) (- y-pos 1)) *bitmap-toren-1* laag-toren))) ;; nieuwe positie om toren te centreren
                      
     ;; OPTIE: Probeer te veranderen zodat argument "pad" weg is
     (define (teken-spel! pad) 
