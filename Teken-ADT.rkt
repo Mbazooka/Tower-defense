@@ -43,8 +43,8 @@
         ((tegel 'set-y!) scherm-y)))
 
     ;; Maakt tegel en zet tegel op laag op juiste plaats
-    (define (initialiseer-statisch-posities-scherm! positie object-bitmap object-laag) 
-      (let ((tegel-van-object (make-tile 20 20 object-bitmap)))
+    (define (initialiseer-statisch-posities-scherm! dimensie-x dimensie-y positie object-bitmap object-laag) 
+      (let ((tegel-van-object (make-tile dimensie-x dimensie-y object-bitmap)))
         (bepaal-tegel-px-positie! positie tegel-van-object)
         ((object-laag 'add-drawable!) tegel-van-object)))
     
@@ -54,7 +54,7 @@
         (define (hulp-teken-pad! ctr)
           (if (not (= ctr (pad 'lengte)))
               (begin
-                (initialiseer-statisch-posities-scherm! (vector-ref pad-posities ctr) *bitmap-pad* laag-pad)
+                (initialiseer-statisch-posities-scherm! 20 20 (vector-ref pad-posities ctr) *bitmap-pad* laag-pad)
                 (hulp-teken-pad! (+ ctr 1)))))
         (hulp-teken-pad! 0)))
 
@@ -65,7 +65,7 @@
     (define (teken-toren! toren)
       (let ((x-pos ((toren 'positie) 'x))
             (y-pos ((toren 'positie) 'y)))                
-        (initialiseer-statisch-posities-scherm! (maak-positie-adt (- x 1) (+ y 1)) *bitmap-toren-1* laag-toren))) ;; nieuwe positie om toren te centreren
+        (initialiseer-statisch-posities-scherm! 60 60 (maak-positie-adt x-pos  y-pos) *bitmap-toren-1* laag-toren))) ;; nieuwe positie om toren te centreren
                      
     ;; OPTIE: Probeer te veranderen zodat argument "pad" weg is
     (define (teken-spel! pad) 

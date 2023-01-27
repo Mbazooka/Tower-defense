@@ -16,7 +16,7 @@
     
     ;; Maakt de werkelijke 4-punt randen aan
     (positie->rand! 1 toren-posities)
-    (positie->rand! 9 verspreiding buurt-posities)
+    (positie->rand! 9 buurt-posities)
 
     ;; Gaat na als een positie werkelijk in zo'n rand zit
     (define (in-rand? positie rand)

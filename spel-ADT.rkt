@@ -19,11 +19,11 @@
       (cond
         ((and (eq? toets 'left) (eq? toestand 'pressed))
          (cond
-           ((and (>= x 840) (<= x 900) (>= y 40) (>= y 100))
+           ((and (>= x 840) (<= x 900) (>= y 40) (<= y 100))
             (set! torens (cons 'basis torens)))))
         ((and (eq? toets 'left) (eq? toestand 'released))
          (let ((toren (maak-toren-adt (maak-positie-adt (/ x *px-breedte*) (/ y *px-hoogte*)) (car torens))))
-           (set! torens (cons toren (cdr toren)))
+           (set-car! torens toren)
            ((teken-adt 'teken-toren!) toren)))))
                  
     (define (dispatch msg)
