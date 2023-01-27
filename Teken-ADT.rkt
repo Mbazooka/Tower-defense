@@ -42,7 +42,7 @@
         ((tegel 'set-x!) scherm-x)
         ((tegel 'set-y!) scherm-y)))
 
-    ;; Maakt tegel en zet tegel op laag op juiste plaats
+    ;; Maakt tegel en zet tegel op laag op juiste plaats (voor een statisch object)
     (define (initialiseer-statisch-posities-scherm! dimensie-x dimensie-y positie object-bitmap object-laag) 
       (let ((tegel-van-object (make-tile dimensie-x dimensie-y object-bitmap)))
         (bepaal-tegel-px-positie! positie tegel-van-object)

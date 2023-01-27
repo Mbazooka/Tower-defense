@@ -3,7 +3,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (maak-spel-adt)
   (let ((pad (maak-pad-adt vector-1)) ;; maak de fundamenten van het spel
-       (teken-adt (maak-teken-adt 1000 600))
+       (teken-adt (maak-teken-adt (+ (* *menu-breedte* *px-breedte*) (* *spel-breedte* *px-breedte*)) (* *spel-hoogte* *px-hoogte*)))
        (torens '())) 
 
     ;; Maakt basis compenenten van het spel
@@ -16,13 +16,11 @@
     ;; De procedure die het klikken van muis op scherm voorstelt    
     (define (muis-klik-procedure toets toestand x y) 
       (cond
-        ((and (eq? toets 'left) (eq? toestand 'pressed))
-         (cond
-           ((and (>= x 840) (<= x 900) (>= y 40) (<= y 100))
-            (set! torens (cons 'basis torens)))))
-        ((and (eq? toets 'left) (eq? toestand 'released))
+        ((and (eq? toets 'left) (eq? toestand 'pressed) (>= x 840) (<= x 900) (>= y 40) (<= y 100))
+            (set! torens (cons 'basis torens)))
+        ((and (eq? toets 'left) (eq? toestand 'pressed)) ;; Hier kan je condities toevoegen voor niet op pad
          (let ((toren (maak-toren-adt (maak-positie-adt (/ x *px-breedte*) (/ y *px-hoogte*)) (car torens))))
-           (set-car! torens toren)
+           (set! torens (cons toren torens))
            ((teken-adt 'teken-toren!) toren)))))
                  
     (define (dispatch msg)
