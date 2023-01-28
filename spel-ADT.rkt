@@ -24,7 +24,7 @@
               (<= x (- *start-x-pos-menu* (* 2 *px-breedte*)))) ;; Plaats toren buiten menu. De constante 2 is om speling te vermijden en niks op menu te hebben                          
          (let ((toren (maak-toren-adt (maak-positie-adt (/ x *px-breedte*) (/ y *px-hoogte*)) toren-type)))
            (cond
-             ((null? torens)
+             ((and (null? torens) (not ((pad 'toren-in-pad?) toren)))
               (set! torens (cons toren torens))
               ((teken-adt 'teken-toren!) toren))
              ((and (not (accumulate (lambda (x y) (or x y)) #f (map (lambda (t) ((t 'in-toren?) toren)) torens)))
