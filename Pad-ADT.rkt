@@ -10,8 +10,8 @@
    
     ;; Gaat na als positie in pad zit
     (define (in-pad? positie)
-      (let ((conscellen-van-posities (map (lambda (pos) (cons (pos 'x) (pos 'y))) (vector->list vector-van-posities))))
-        (if (member (cons x y) conscellen-van-posities)
+      (let ((conscellen-van-posities (map (lambda (p) (cons (p 'x) (p 'y))) (vector->list vector-van-posities))))
+        (if (member (cons (positie 'x) (positie 'y)) conscellen-van-posities)
             #t
             #f)))
                

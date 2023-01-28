@@ -11,11 +11,7 @@
 ;            (proc (vector-ref vector ctr))
 ;            (hulp-vector-for-each (+ ctr 1)))))
 ;    (hulp-vector-for-each 0)))
-
-(define (accumulate operator null-waarde lijst)
-  (if (null? lijst)
-      null-waarde
-      (operator (car lijst) (accumulate operator null-waarde (cdr lijst)))))
+;          
 
 
             

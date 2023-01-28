@@ -15,15 +15,25 @@
       ((teken-adt 'set-muis-toets!) muis-klik-procedure))
 
     ;; De procedure die het klikken van muis op scherm voorstelt    
-    (define (muis-klik-procedure toets toestand x y) 
+    (define (muis-klik-procedure toets toestand x y)
       (cond
         ((and (eq? toets 'left) (eq? toestand 'pressed) (>= x *toren-1-knop-breedte-start*) (<= x *toren-1-knop-breedte-einde*) (>= y *toren-1-knop-hoogte-start*) (<= y *toren-1-knop-hoogte-einde*)) ;; Initialiseert toren type
          (set! toren-type 'basis))
         ((eq? toren-type #f) "Beweging niet mogelijk")
-        ((and (eq? toets 'left) (eq? toestand 'pressed) (<= x (- *start-x-pos-menu* (* 2 *px-breedte*)))) ;; Plaats toren buiten menu,pad en andere toren. De constante 2 is om speling te vermijden en niks op menu te hebben
+        ((and (eq? toets 'left) (eq? toestand 'pressed)
+              (<= x (- *start-x-pos-menu* (* 2 *px-breedte*)))) ;; Plaats toren buiten menu. De constante 2 is om speling te vermijden en niks op menu te hebben                          
          (let ((toren (maak-toren-adt (maak-positie-adt (/ x *px-breedte*) (/ y *px-hoogte*)) toren-type)))
-           (set! torens (cons toren torens))
-           ((teken-adt 'teken-toren!) toren)))))
+           (cond
+             ((null? torens)
+              (set! torens (cons toren torens))
+              ((teken-adt 'teken-toren!) toren))
+             ((not (accumulate (lambda (x y) (or x y)) #f (map (lambda (t) ((t 'in-toren?) toren)) torens)))
+              (set! torens (cons toren torens))
+              ((teken-adt 'teken-toren!) toren))
+             (else
+              "Beweging niet mogelijk"))))
+        (else
+         "Beweging niet mogelijk")))
                  
     (define (dispatch msg)
       (cond 
