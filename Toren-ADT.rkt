@@ -25,7 +25,7 @@
              (>= y-pos ((vector-ref rand 3) 'y)))))
     
     ;; Maakt de werkelijke 4-punt randen aan
-    (positie->rand! 1 toren-rand)
+    (positie->rand! 1.2 toren-rand)
     (positie->rand! 9 buurt-rand)
 
     ;; Gaat na als een positie werkelijk in zo'n rand zit
@@ -36,7 +36,6 @@
             (in-rand? (vector-ref posities 2) toren-rand)
             (in-rand? (vector-ref posities 3) toren-rand))))
      
-
     ;    (define (in-buurt? monster) 
     ;      (in-rand? positie buurt-posities))
 
