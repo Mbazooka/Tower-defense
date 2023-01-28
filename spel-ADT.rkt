@@ -27,7 +27,8 @@
              ((null? torens)
               (set! torens (cons toren torens))
               ((teken-adt 'teken-toren!) toren))
-             ((not (accumulate (lambda (x y) (or x y)) #f (map (lambda (t) ((t 'in-toren?) toren)) torens)))
+             ((and (not (accumulate (lambda (x y) (or x y)) #f (map (lambda (t) ((t 'in-toren?) toren)) torens)))
+                   (not ((pad 'toren-in-pad?) toren)))
               (set! torens (cons toren torens))
               ((teken-adt 'teken-toren!) toren))
              (else

@@ -25,7 +25,7 @@
              (>= y-pos ((vector-ref rand 3) 'y)))))
     
     ;; Maakt de werkelijke 4-punt randen aan
-    (positie->rand! 1.2 toren-rand)
+    (positie->rand! 1 toren-rand)
     (positie->rand! 9 buurt-rand)
 
     ;; Gaat na als een positie werkelijk in zo'n rand zit
@@ -44,6 +44,6 @@
         ((eq? msg 'positie) centraal-positie)
         ((eq? msg 'toren-posities) toren-rand) ;; Nodig om toren overlap na te kijken
         ((eq? msg 'in-toren?) in-toren?)
-        ;        ((eq? msg 'in-buurt?) in-buurt?)
+       ;((eq? msg 'in-buurt?) in-buurt?)
         (else "maak-toren-adt: ongeldig bericht")))
     dispatch))
