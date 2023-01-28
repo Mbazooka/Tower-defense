@@ -10,24 +10,23 @@
 
     ;; Volgende code is om een achtergrond te hebben waarop een pad gemaakt wordt
     (define laag-gras ((venster 'new-layer!)))
-    (define gras-tegel (make-tile 800 600 "Images/Gras-3.jpg"))
-    (define random-tegel (make-tile 90 90))
-    ((random-tegel 'draw-rectangle!) 7 7 90 90 "blue")
+    (define gras-tegel (make-tile *spel-breedte-px* *spel/menu-hoogte-px*))
+    ((gras-tegel 'draw-rectangle!) 0 0 *spel-breedte-px* *spel/menu-hoogte-px* "black")
     ((laag-gras 'add-drawable!) gras-tegel)
-    ((laag-gras 'add-drawable!) random-tegel)
 
     ;; Volgende code is om een menu te maken 
     (define laag-menu ((venster 'new-layer!)))
-    (define menu-tegel (make-tile 200 600))
-    ((menu-tegel 'draw-rectangle!) 0 0 200 600 "lightblue")
-    ((menu-tegel 'set-x!) 800)
+    (define menu-tegel (make-tile *menu-breedte-px* *spel/menu-hoogte-px*))
+    ((menu-tegel 'draw-rectangle!) 0 0 *menu-breedte-px* *spel/menu-hoogte-px* "black")
+    ((menu-tegel 'draw-rectangle!) 0 0 5 *spel/menu-hoogte-px* "darkorange") ;; Voegt lijntje van 5px groot toe bij menu 
+    ((menu-tegel 'set-x!) *spel-breedte-px*)
     ((laag-menu 'add-drawable!) menu-tegel)
 
     ;; Volgende code is om de user-interface van de menu te maken
     (define user-interface ((venster 'new-layer!)))
-    (define toren-1-tegel (make-tile 60 60 *bitmap-toren-1*))
-    ((toren-1-tegel 'set-x!) 840)
-    ((toren-1-tegel 'set-y!) 40)
+    (define toren-1-tegel (make-bitmap-tile "Images/Toren-1-Game.png"))
+    ((toren-1-tegel 'set-x!) (+ *spel-breedte-px* *px-breedte*)) ;; Dit is een keuze om 1 px breed van start van menu, een "button" image te zetten
+    ((toren-1-tegel 'set-y!) *toren-1-knop-hoogte-start*)
     ((user-interface 'add-drawable!) toren-1-tegel)
       
     ;; Laag waarop pad getekent word
@@ -35,16 +34,16 @@
 
     ;; Procedure die tegel op juiste pixel positie zet 
     (define (bepaal-tegel-px-positie! positie tegel) ;; Misschien later als hulpprocedure definieren (afhankelijk implementatie dynamische zaken)
-      (let* ((pad-x-pos (positie 'x))
-             (pad-y-pos (positie 'y))
-             (scherm-x (* pad-x-pos *px-breedte*))
-             (scherm-y (* pad-y-pos *px-hoogte*)))
+      (let* ((obj-x-pos (positie 'x))
+             (obj-y-pos (positie 'y))
+             (scherm-x (* obj-x-pos *px-breedte*))
+             (scherm-y (* obj-y-pos *px-hoogte*)))
         ((tegel 'set-x!) scherm-x)
         ((tegel 'set-y!) scherm-y)))
 
     ;; Maakt tegel en zet tegel op laag op juiste plaats (voor een statisch object)
-    (define (initialiseer-statisch-posities-scherm! dimensie-x dimensie-y positie object-bitmap object-laag) 
-      (let ((tegel-van-object (make-tile dimensie-x dimensie-y object-bitmap)))
+    (define (initialiseer-statisch-posities-scherm! positie object-bitmap object-laag) 
+      (let ((tegel-van-object (make-bitmap-tile object-bitmap)))
         (bepaal-tegel-px-positie! positie tegel-van-object)
         ((object-laag 'add-drawable!) tegel-van-object)))
     
@@ -54,20 +53,20 @@
         (define (hulp-teken-pad! ctr)
           (if (not (= ctr (pad 'lengte)))
               (begin
-                (initialiseer-statisch-posities-scherm! 20 20 (vector-ref pad-posities ctr) *bitmap-pad* laag-pad)
+                (initialiseer-statisch-posities-scherm! (vector-ref pad-posities ctr) "Images/lava.jpeg" laag-pad)
                 (hulp-teken-pad! (+ ctr 1)))))
         (hulp-teken-pad! 0)))
 
-    ;; Volgende code is een venster voor torens op te plaatsen
+    ;; Volgende code is een venster om torens op te plaatsen
     (define laag-toren ((venster 'new-layer!)))
 
     ;; Tekent toren op het scherm gegeven een toren
     (define (teken-toren! toren)
       (let ((x-pos ((toren 'positie) 'x))
             (y-pos ((toren 'positie) 'y)))                
-        (initialiseer-statisch-posities-scherm! 60 60 (maak-positie-adt (- x-pos 1) (- y-pos 1)) *bitmap-toren-1* laag-toren))) ;; nieuwe positie om toren te centreren
+        (initialiseer-statisch-posities-scherm! (maak-positie-adt (- x-pos 1) (- y-pos 1)) "Images/Toren-1-Game.png" laag-toren))) ;; nieuwe positie om toren te centreren
                      
-    ;; OPTIE: Probeer te veranderen zodat argument "pad" weg is
+    ;; OPTIE: Probeer te veranderen zodat argument "pad" weg is!!!!!!!!!
     (define (teken-spel! pad) 
       (teken-pad! pad))
 

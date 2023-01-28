@@ -3,8 +3,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (maak-spel-adt)
   (let ((pad (maak-pad-adt vector-1)) ;; maak de fundamenten van het spel
-       (teken-adt (maak-teken-adt (+ (* *menu-breedte* *px-breedte*) (* *spel-breedte* *px-breedte*)) (* *spel-hoogte* *px-hoogte*)))
-       (torens '())) 
+        (teken-adt (maak-teken-adt (+ *menu-breedte-px* *spel-breedte-px*) *spel/menu-hoogte-px*))
+        (toren-type #f)
+        (torens '())) 
 
     ;; Maakt basis compenenten van het spel
     ((teken-adt 'teken-spel!) pad) 
@@ -16,10 +17,11 @@
     ;; De procedure die het klikken van muis op scherm voorstelt    
     (define (muis-klik-procedure toets toestand x y) 
       (cond
-        ((and (eq? toets 'left) (eq? toestand 'pressed) (>= x 840) (<= x 900) (>= y 40) (<= y 100))
-            (set! torens (cons 'basis torens)))
-        ((and (eq? toets 'left) (eq? toestand 'pressed)) ;; Hier kan je condities toevoegen voor niet op pad
-         (let ((toren (maak-toren-adt (maak-positie-adt (/ x *px-breedte*) (/ y *px-hoogte*)) (car torens))))
+        ((and (eq? toets 'left) (eq? toestand 'pressed) (>= x *toren-1-knop-breedte-start*) (<= x *toren-1-knop-breedte-einde*) (>= y *toren-1-knop-hoogte-start*) (<= y *toren-1-knop-hoogte-einde*)) ;; Initialiseert toren type
+         (set! toren-type 'basis))
+        ((eq? toren-type #f) "Beweging niet mogelijk")
+        ((and (eq? toets 'left) (eq? toestand 'pressed) (<= x (- *start-x-pos-menu* (* 2 *px-breedte*)))) ;; Plaats toren buiten menu,pad en andere toren. De constante 2 is om speling te vermijden en niks op menu te hebben
+         (let ((toren (maak-toren-adt (maak-positie-adt (/ x *px-breedte*) (/ y *px-hoogte*)) toren-type)))
            (set! torens (cons toren torens))
            ((teken-adt 'teken-toren!) toren)))))
                  

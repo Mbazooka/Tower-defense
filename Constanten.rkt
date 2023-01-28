@@ -12,12 +12,17 @@
 
 (define *menu-breedte* 10)
 
-;; Bitmap constanten die de code netter maken (indien meerdere keren gebruikt wordt)
-(define *bitmap-pad* "Images/Aarde.png")
-(define *bitmap-rood-monster* #f) ;; Verander later
-(define *bitmap-toren-1* "Images/Toren-1-Game.png") ;; Verander later
+;; Constanten die de totale spelgrootte voorstellen (met verschillende componenten)
+(define *menu-breedte-px* (* *menu-breedte* *px-breedte*))
+(define *spel-breedte-px* (* *spel-breedte* *px-breedte*))
+(define *spel/menu-hoogte-px* (* *spel-hoogte* *px-hoogte*))
 
 ;; Menu constante (stelt de x coordinaat voor die de start van de menu voorstelt, nodig voor torens te plaatsen)
-(define *start-x-pos-menu* *menu-breedte*)
+(define *start-x-pos-menu* (* *spel-breedte* *px-breedte*))
+(define *toren-1-knop-hoogte-start* (* 2 *px-hoogte*)) ;; zijn keuzes om knopen hier te starten en daar te eindigen
+(define *toren-1-knop-breedte-start* (+ *spel-breedte* *px-breedte*))
+(define *toren-1-knop-hoogte-einde* (* 5 *px-hoogte*))
+(define *toren-1-knop-breedte-einde* (* *spel-breedte* (* 4 *px-breedte*)))
+
 
 
