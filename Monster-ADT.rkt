@@ -13,6 +13,7 @@
     
   (define (dispatch msg)
     (cond
+      ((eq? msg 'positie) positie)
       ((eq? msg 'type) type)
       ((eq? msg 'index) index-midden-pad)
       ((eq? msg 'einde?) einde?)

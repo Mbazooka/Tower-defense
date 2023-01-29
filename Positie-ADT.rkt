@@ -10,20 +10,19 @@
   (define (y! nieuw-y)
     (set! y nieuw-y))
 
-  (define (afstand positie2);misschien een round nodig voor later op het resultaat
+  (define (afstand positie2) ;; nog niet gebruikt
     (define (square x)
       (* x x))
 
     (sqrt
      (+ (square (- x (positie2 'x))) (square (- y (positie2 'y))))))
 
-  (define (gelijk? positie2)
+  (define (gelijk? positie2) ;; nog niet gebruikt
     (and (= x (positie2 'x)) (= y (positie2 'y))))
                
-  (define (beweeg! nieuw-x nieuw-y)
+  (define (beweeg! nieuw-x nieuw-y) ;; nog niet gebruikt
     (x! nieuw-x)
     (y! nieuw-y))
-
 
   (define (dispatch msg)
     (cond

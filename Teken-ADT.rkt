@@ -5,7 +5,7 @@
 ;; Doel van dit ADT is om alles gemakkelijk te teken gebruikmakend van de grafische bibliotheek (dit zal gebruikt worden door spel ADT)
 (define (maak-teken-adt horizontale-pixels verticale-pixels)
   (let ((venster (make-window horizontale-pixels verticale-pixels "Tower Defense"))
-        (monster-tiles '()))
+        (monster-tiles-dict '()))
     
     ((venster 'set-background!) "black")
 
@@ -25,7 +25,7 @@
 
     ;; Volgende code is om de user-interface van de menu te maken
     (define user-interface ((venster 'new-layer!)))
-    (define toren-1-tegel (make-bitmap-tile "Images/Toren-1-Game.png"))
+    (define toren-1-tegel (make-bitmap-tile "Images/Toren-1-Game.png" "Images/Toren-1-game-mask.png"))
     ((toren-1-tegel 'set-x!) (+ *spel-breedte-px* *px-breedte*)) ;; Dit is een keuze om 1 px breed van start van menu, een "button" image te zetten
     ((toren-1-tegel 'set-y!) *toren-1-knop-hoogte-start*)
     ((user-interface 'add-drawable!) toren-1-tegel)
@@ -33,7 +33,8 @@
     ;; Laag waarop pad getekent word
     (define laag-pad ((venster 'new-layer!))) 
 
-    ;; Procedure die tegel op juiste pixel positie zet 
+    ;; Procedure die tegel op juiste pixel positie zet
+    ;;met positie gedaan (niet object als formele parameter) want pad geeft meerdere posities, code kan enkel 1 positie/object per keer doen
     (define (bepaal-tegel-px-positie! positie tegel) ;; Misschien later als hulpprocedure definieren (afhankelijk implementatie dynamische zaken)
       (let* ((obj-x-pos (positie 'x))
              (obj-y-pos (positie 'y))
@@ -43,8 +44,8 @@
         ((tegel 'set-y!) scherm-y)))
 
     ;; Maakt tegel en zet tegel op laag op juiste plaats (voor een statisch object)
-    (define (initialiseer-statisch-posities-scherm! positie object-bitmap object-laag) 
-      (let ((tegel-van-object (make-bitmap-tile object-bitmap)))
+    (define (initialiseer-statisch-posities-scherm! positie object-bitmap object-mask object-laag) 
+      (let ((tegel-van-object (make-bitmap-tile object-bitmap object-mask)))
         (bepaal-tegel-px-positie! positie tegel-van-object)
         ((object-laag 'add-drawable!) tegel-van-object)))
     
@@ -54,7 +55,7 @@
         (define (hulp-teken-pad! ctr)
           (if (not (= ctr (pad 'lengte)))
               (begin
-                (initialiseer-statisch-posities-scherm! (vector-ref pad-posities ctr) "Images/lava.jpeg" laag-pad)
+                (initialiseer-statisch-posities-scherm! (vector-ref pad-posities ctr) "Images/lava.jpeg" "Images/Lava-mask.png" laag-pad)
                 (hulp-teken-pad! (+ ctr 1)))))
         (hulp-teken-pad! 0)))
 
@@ -63,10 +64,19 @@
 
     ;; Tekent toren op het scherm gegeven een toren
     (define (teken-toren! toren)
-      (let ((x-pos ((toren 'positie) 'x))
-            (y-pos ((toren 'positie) 'y)))                
-        (initialiseer-statisch-posities-scherm! (maak-positie-adt (- x-pos 1) (- y-pos 1)) "Images/Toren-1.jpg" laag-toren))) ;; nieuwe positie om toren te centreren
-                     
+      (let ((toren-positie (toren 'positie)))              
+        (initialiseer-statisch-posities-scherm! (maak-positie-adt (- (toren-positie 'x) 1) (- (toren-positie 'y) 1)) "Images/Toren-1.jpg" "Images/Toren-1-mask.png" laag-toren))) ;; nieuwe positie om toren te centreren
+
+    ;; Volgende code is een venster om monsters te plaatsen
+    (define laag-monster ((venster 'new-layer!)))
+
+    ;; Tekent monster op het scherm gegeven een toren
+    (define (teken-monsters! monsters) ;; 2 delen
+      (for-each
+       (lambda (ass)
+      (let ((monster-pos ((car ass) 'positie))) 
+        (initialiseer-statisch-posities-scherm! (maak-positie (monster-pos 'x) (monster 'y)) "Images/Rood-monster.jpg" "Images/Rood-monster.png" laag-monster)))
+    
     ;; OPTIE: Probeer te veranderen zodat argument "pad" weg is!!!!!!!!!
     (define (teken-spel! pad) 
       (teken-pad! pad))
@@ -88,6 +98,7 @@
         ((eq? msg 'teken-spel!) teken-spel!)
         ((eq? msg 'teken-toren!) teken-toren!)
         ((eq? msg 'teken-toren!) teken-toren!)
+        ((eq? msg 'teken-monsters!) teken-monsters!)
         ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)
         ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)
         (else "maak-teken-adt: undefined message")))
