@@ -14,6 +14,7 @@
     (define (dispatch msg)
       (cond
         ((eq? msg 'update!) update!)
+        ((eq? msg 'monsters) monsters)
         (else
          "maak-level-adt: ongeldig bericht")))
     dispatch))
