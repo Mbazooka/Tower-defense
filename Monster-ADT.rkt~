@@ -1,7 +1,3 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;                               Monster ADT                                  ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (define (maak-monster-adt positie)
 
   (define (positie! x y)
@@ -14,6 +10,4 @@
       ((eq? msg 'positie!) positie!)
       (else "maak-monster-adt: ongeldig bericht")))
   dispatch)
-
-
   

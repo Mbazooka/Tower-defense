@@ -4,7 +4,8 @@
 
 ;; Doel van dit ADT is om alles gemakkelijk te teken gebruikmakend van de grafische bibliotheek (dit zal gebruikt worden door spel ADT)
 (define (maak-teken-adt horizontale-pixels verticale-pixels)
-  (let ((venster (make-window horizontale-pixels verticale-pixels "Tower Defense")))
+  (let ((venster (make-window horizontale-pixels verticale-pixels "Tower Defense"))
+        (monster-tiles '()))
     
     ((venster 'set-background!) "black")
 
