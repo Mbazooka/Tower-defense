@@ -12,7 +12,7 @@
 
     ;; Start de dynamische werking van het spel
     (define (start!)
-      ((teken-adt 'set-muis-toets!) muis-klik-procedure))
+      ((teken-adt 'set-muis-toets!) muis-klik-procedure)) ;; Voeg hier game loop bij toe
 
     ;; De procedure die het klikken van muis op scherm voorstelt    
     (define (muis-klik-procedure toets toestand x y)
