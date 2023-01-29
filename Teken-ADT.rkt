@@ -72,19 +72,23 @@
       (teken-pad! pad))
 
     ;; Volgende code is om muis klikken te implementeren
-    (define (set-muis-toets! proc)
+    (define (set-muis-toets-procedure! proc)
       ((venster 'set-mouse-click-callback!) proc))
 
     ;; Volgende code is om een spellus te implementeren
     (define (set-spel-lus-procedure! proc)
       ((venster 'set-update-callback!) proc))
+
+    ;; Voglende code is om een knop in te voegen
+    (define (set-toets-procedure! proc)
+      ((vesnter 'set-key-callback!) proc))
               
     (define (dispatch msg)
       (cond
         ((eq? msg 'teken-spel!) teken-spel!)
         ((eq? msg 'teken-toren!) teken-toren!)
         ((eq? msg 'teken-toren!) teken-toren!)
-        ((eq? msg 'set-muis-toets!) set-muis-toets!)
-        ((eq? msg 'set-spel-lus-procedure!) set-spel-lus-procedure!)
+        ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)
+        ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)
         (else "maak-teken-adt: undefined message")))
     dispatch))

@@ -37,9 +37,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (load "teken-adt.rkt")
 (load "spel-adt.rkt")
-
-
-
+s
 ;; Maakt het spel 
 
 (define spel (maak-spel-adt))
