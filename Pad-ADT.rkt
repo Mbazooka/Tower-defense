@@ -1,19 +1,20 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                   PAD ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Maak file met vector-van-posities (zoek code die dit produceert)
-(load "Positie-ADT.rkt")
-(load "vectoren-van-posities.rkt")
-(load "Toren-ADT.rkt")
-(define (maak-pad-adt vector-van-posities)
+(define (maak-pad-adt vector-van-posities) ;; Vector gebruikt, gemakkelijk acceseren
   (let* ((lengte (vector-length vector-van-posities)) 
-         (begin (vector (vector-ref vector-van-posities 0)
-                        (vector-ref vector-van-posities 1)
-                        (vector-ref vector-van-posities 2)));; De eerste 3 posities zijn begin pad
-         (einde (vector (vector-ref vector-van-posities (- lengte 3))
-                        (vector-ref vector-van-posities (- lengte 2))
-                        (vector-ref vector-van-posities (- lengte 1)))))
-   
+         (midden (make-vector (/ lengte 3)))) ;; Want lengte pad is altijd veelvoud van 3 per constructie
+
+    ;; Maakt het midden van de pad
+    (define (maak-midden-vector! ctr-pad ctr-midden)
+      (if (not (>= ctr-pad (vector-length vector-van-posities)))
+          (begin
+            (vector-set! midden ctr-midden (vector-ref vector-van-posities ctr-pad))
+            (maak-midden-vector! (+ ctr-pad 3) (+ ctr-midden 1)))))
+
+    ;; Maakt werkelijke het midden van de pad
+    (maak-midden-vector! 0 0)
+          
     ;; Gaat na als toren in pad zit
     (define (toren-in-pad? toren)
       (let ((lijst-van-posities (vector->list vector-van-posities))
@@ -29,13 +30,12 @@
               (or (in-pad? (vector-ref toren-rand ctr))
                   (overlopen-torens (+ ctr 1)))))
         (overlopen-torens 0)))
-               
+                   
     (define (dispatch msg)
       (cond
         ((eq? msg 'posities) vector-van-posities)
         ((eq? msg 'lengte) lengte)
-        ((eq? msg 'begin) begin)
-        ((eq? msg 'einde) einde)
+        ((eq? msg 'midden) midden)
         ((eq? msg 'toren-in-pad?) toren-in-pad?)
         (else "maak-pad-adt: ongeldig bericht")))
     dispatch))
