@@ -74,6 +74,10 @@
     ;; Volgende code is om muis klikken te implementeren
     (define (set-muis-toets! proc)
       ((venster 'set-mouse-click-callback!) proc))
+
+    ;; Volgende code is om een spellus te implementeren
+    (define (set-spel-lus-procedure! proc)
+      ((venster 'set-update-callback!) proc))
               
     (define (dispatch msg)
       (cond
@@ -81,5 +85,6 @@
         ((eq? msg 'teken-toren!) teken-toren!)
         ((eq? msg 'teken-toren!) teken-toren!)
         ((eq? msg 'set-muis-toets!) set-muis-toets!)
+        ((eq? msg 'set-spel-lus-procedure!) set-spel-lus-procedure!)
         (else "maak-teken-adt: undefined message")))
     dispatch))
