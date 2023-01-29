@@ -35,6 +35,7 @@
       (cond
         ((eq? msg 'posities) vector-van-posities)
         ((eq? msg 'lengte) lengte)
+        ((eq? msg 'begin) (vector-ref midden 0))
         ((eq? msg 'midden) midden)
         ((eq? msg 'einde) (- (vector-length midden) 1)) ;; einde pad in termen van indexen
         ((eq? msg 'toren-in-pad?) toren-in-pad?)
