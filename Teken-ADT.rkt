@@ -84,6 +84,11 @@
     (define (waarde associatie)
       (cdr associatie))
 
+    (define (insert! sleut value tagged-dict)
+      (let ((toe-te-voegen (list (cons sleut value))))
+        (set-cdr! toe-te-voegen (rest-dict dict))
+        (set-cdr! tagged-dict toe-te-voegen)))   
+   
     (define (delete! sleut dict) 
       (define (delete-hulp huidige vorige)
         (cond
@@ -109,38 +114,39 @@
              (delete! te-zoeken diction)
              (haal-weg-monster-tiles-dict! (rest-dict diction)))
             (else
-             (haal-weg-monster--tiles-dict! (rest-dict diction))))))
-             
-      (haal-weg-monster-tiles-dict! (rest-dict monster-tiles-dict))    
-         (for-each ;; Gaat elke tile updaten
-          (lambda (ass) 
-            (initialiseer-statisch-posities-scherm! ((car ass) 'positie) "Images/Rood-monster.jpg" "Images/Rood-monster.png" laag-monster))
-          (cdr monster-tiles-dict))
-         (define (voeg-toe-monster-tiles-dict! monsters))))) ;; Gaat mogelijks nieuwe tiles toevoegen en tekenen      
+             (haal-weg-monster--tiles-dict! (rest-dict diction))))))             
+      (haal-weg-monster-tiles-dict! (rest-dict monster-tiles-dict))
+      
+      (for-each ;; Gaat elke tile updaten
+       (lambda (ass) 
+         (initialiseer-statisch-posities-scherm! ((car ass) 'positie) "Images/Rood-monster.jpg" "Images/Rood-monster.png" laag-monster))
+       (cdr monster-tiles-dict))
+      
+      (define (voeg-toe-monster-tiles-dict! monsters))) ;; Gaat mogelijks nieuwe tiles toevoegen en tekenen      
           
-    ;; OPTIE: Probeer te veranderen zodat argument "pad" weg is!!!!!!!!!
-    (define (teken-spel! pad) 
-      (teken-pad! pad))
+;; OPTIE: Probeer te veranderen zodat argument "pad" weg is!!!!!!!!!
+(define (teken-spel! pad) 
+  (teken-pad! pad))
 
-    ;; Volgende code is om muis klikken te implementeren
-    (define (set-muis-toets-procedure! proc)
-      ((venster 'set-mouse-click-callback!) proc))
+;; Volgende code is om muis klikken te implementeren
+(define (set-muis-toets-procedure! proc)
+  ((venster 'set-mouse-click-callback!) proc))
 
-    ;; Volgende code is om een spellus te implementeren
-    (define (set-spel-lus-procedure! proc)
-      ((venster 'set-update-callback!) proc))
+;; Volgende code is om een spellus te implementeren
+(define (set-spel-lus-procedure! proc)
+  ((venster 'set-update-callback!) proc))
 
-    ;; Voglende code is om een knop in te voegen
-    (define (set-toets-procedure! proc)
-      ((vesnter 'set-key-callback!) proc))
+;; Voglende code is om een knop in te voegen
+(define (set-toets-procedure! proc)
+  ((vesnter 'set-key-callback!) proc))
               
-    (define (dispatch msg)
-      (cond
-        ((eq? msg 'teken-spel!) teken-spel!)
-        ((eq? msg 'teken-toren!) teken-toren!)
-        ((eq? msg 'teken-toren!) teken-toren!)
-        ((eq? msg 'teken-monsters!) teken-monsters!)
-        ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)
-        ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)
-        (else "maak-teken-adt: undefined message")))
-    dispatch))
+(define (dispatch msg)
+  (cond
+    ((eq? msg 'teken-spel!) teken-spel!)
+    ((eq? msg 'teken-toren!) teken-toren!)
+    ((eq? msg 'teken-toren!) teken-toren!)
+    ((eq? msg 'teken-monsters!) teken-monsters!)
+    ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)
+    ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)
+    (else "maak-teken-adt: undefined message")))
+dispatch))
