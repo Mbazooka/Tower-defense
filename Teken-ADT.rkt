@@ -102,9 +102,7 @@
            (delete-hulp (rest-dict huidige) huidige))))
       (delete-hulp (cdr dict) dict))
     
-    ;; Tekent monster op het scherm gegeven een lijst monsters
-
-    ;;Als hij in de dictionary zit maar niet in monsters dan moetje hem weg halen uit dict
+    ;; Tekent bestaande monsters op het scherm gegeven een lijst monsters
     (define (teken-monsters! monsters) ;; 2 delen
       (define (haal-weg-monster-tiles-dict! diction)
         (let ((te-zoeken (sleutel (associatie diction))))
@@ -122,7 +120,12 @@
          (initialiseer-statisch-posities-scherm! ((car ass) 'positie) "Images/Rood-monster.jpg" "Images/Rood-monster.png" laag-monster))
        (cdr monster-tiles-dict))
       
-      (define (voeg-toe-monster-tiles-dict! monsters))) ;; Gaat mogelijks nieuwe tiles toevoegen en tekenen      
+      (define (voeg-toe-monster-tiles-dict! monsters) ;; Gaat mogelijks nieuwe tiles toevoegen en tekenen (1 per keer)
+        (
+        
+    
+
+    ;;Als hij in de monsters lijst zit maar niet in de dictionary dan moet je hem toevoegen.
           
 ;; OPTIE: Probeer te veranderen zodat argument "pad" weg is!!!!!!!!!
 (define (teken-spel! pad) 
@@ -138,7 +141,7 @@
 
 ;; Voglende code is om een knop in te voegen
 (define (set-toets-procedure! proc)
-  ((vesnter 'set-key-callback!) proc))
+  ((venster 'set-key-callback!) proc))
               
 (define (dispatch msg)
   (cond
