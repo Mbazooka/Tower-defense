@@ -5,7 +5,7 @@
 ;; Doel van dit ADT is om alles gemakkelijk te teken gebruikmakend van de grafische bibliotheek (dit zal gebruikt worden door spel ADT)
 (define (maak-teken-adt horizontale-pixels verticale-pixels)
   (let ((venster (make-window horizontale-pixels verticale-pixels "Tower Defense"))
-        (monster-tiles-dict '()))
+        (monster-tiles-dict (cons 'tiles '()))) ;; Tagged omdat 1ste conscell veranderd moet worden
     
     ((venster 'set-background!) "black")
 
@@ -47,7 +47,8 @@
     (define (initialiseer-statisch-posities-scherm! positie object-bitmap object-mask object-laag) 
       (let ((tegel-van-object (make-bitmap-tile object-bitmap object-mask)))
         (bepaal-tegel-px-positie! positie tegel-van-object)
-        ((object-laag 'add-drawable!) tegel-van-object)))
+        ((object-laag 'add-drawable!) tegel-van-object)
+        tegel-van-object)) ;; Tegel teruggeven want later nodig om dictionary van monsters-tegel te maken
     
     ;; Pakt elke pad positie en maakt een tegel en zet die op juiste plaats  
     (define (teken-pad! pad)
@@ -65,18 +66,49 @@
     ;; Tekent toren op het scherm gegeven een toren
     (define (teken-toren! toren)
       (let ((toren-positie (toren 'positie)))              
-        (initialiseer-statisch-posities-scherm! (maak-positie-adt (- (toren-positie 'x) 1) (- (toren-positie 'y) 1)) "Images/Toren-1.jpg" "Images/Toren-1-mask.png" laag-toren))) ;; nieuwe positie om toren te centreren
+        (initialiseer-statisch-posities-scherm! (maak-positie-adt (- (toren-positie 'x) 1) (- (toren-positie 'y) 1)) "Images/Toren-1-game.png" "Images/Toren-1-game-mask.png" laag-toren))) ;; nieuwe positie om toren te centreren
 
     ;; Volgende code is een venster om monsters te plaatsen
     (define laag-monster ((venster 'new-layer!)))
 
-    ;; Tekent monster op het scherm gegeven een toren
-    (define (teken-monsters! monsters) ;; 2 delen
-      (for-each
-       (lambda (ass)
-      (let ((monster-pos ((car ass) 'positie))) 
-        (initialiseer-statisch-posities-scherm! (maak-positie (monster-pos 'x) (monster 'y)) "Images/Rood-monster.jpg" "Images/Rood-monster.png" laag-monster)))
+    ;Volgende code zijn abstracties om met dictionaries te werken
+    (define (associatie dict)
+      (car dict))
+
+    (define (rest-dict dict)
+      (cdr dict))
+
+    (define (sleutel associatie)
+      (car associatie))
+
+    (define (waarde associatie)
+      (cdr associatie))
+
+    (define (delete! sleut dict) 
+      (define (delete-hulp huidige vorige)
+        (cond
+          ((null? (rest-dict huidige))
+           (if (eq? (sleutel (associatie huidige)) sleut)
+               (set-cdr! vorige '())
+               #f))
+          ((eq? (sleutel (associatie huidige)) sleut)
+           (set-cdr! vorige (rest-dict huidige)))
+          (else
+           (delete-hulp (rest-dict huidige) huidige))))
+      (delete-hulp (cdr dict) dict))
     
+    ;; Tekent monster op het scherm gegeven een lijst monsters
+    (define (teken-monsters! monsters) ;; 2 delen
+      (define (haal-weg-monster-tiles-dict!)
+        (
+        
+         (for-each ;; Gaat elke tile updaten
+          (lambda (ass) 
+            (initialiseer-statisch-posities-scherm! ((car ass) 'positie) "Images/Rood-monster.jpg" "Images/Rood-monster.png" laag-monster))
+          (cdr monster-tiles-dict))
+         (define (voeg-toe-monster-tiles-dict! monsters))))) ;; Gaat mogelijks nieuwe tiles toevoegen en tekenen
+        
+          
     ;; OPTIE: Probeer te veranderen zodat argument "pad" weg is!!!!!!!!!
     (define (teken-spel! pad) 
       (teken-pad! pad))

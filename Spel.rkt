@@ -31,6 +31,7 @@
 
 (load "pad-adt.rkt")
 (load "Toren-adt.rkt")
+(load "Level-ADT.rkt")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                               Teken en spel ADTs                           ;;

@@ -17,5 +17,29 @@
       null-waarde
       (operator (car lijst) (accumulate operator null-waarde (cdr lijst)))))
 
+(define (associatie dict)
+  (car dict))
 
-            
+(define (rest-dict dict)
+  (cdr dict))
+
+(define (sleutel associatie)
+  (car associatie))
+
+(define (waarde associatie)
+  (cdr associatie))
+
+(define (delete! sleut dict) 
+  (define (delete-hulp huidige vorige)
+    (cond
+      ((null? (rest-dict huidige))
+       (if (eq? (sleutel (associatie huidige)) sleut)
+           (set-cdr! vorige '())
+           #f))
+      ((eq? (sleutel (associatie huidige)) sleut)
+       (set-cdr! vorige (rest-dict huidige)))
+      (else
+       (delete-hulp (rest-dict huidige) huidige))))
+  (delete-hulp (cdr dict) dict))
+
+
