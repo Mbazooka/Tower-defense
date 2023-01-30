@@ -44,7 +44,8 @@
       (if (>= monster-tijd 500)
        (begin
          (set! monster-tijd 0)
-         ((level 'update!)))
+         ((level 'update!))
+         ((teken-adt 'teken-monsters!) (level 'monsters)))
        (set! monster-tijd (+ monster-tijd dt))))
     
     (define (dispatch msg)

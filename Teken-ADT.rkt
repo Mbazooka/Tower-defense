@@ -86,7 +86,7 @@
 
     (define (insert! sleut value tagged-dict)
       (let ((toe-te-voegen (list (cons sleut value))))
-        (set-cdr! toe-te-voegen (rest-dict dict))
+        (set-cdr! toe-te-voegen (rest-dict tagged-dict))
         (set-cdr! tagged-dict toe-te-voegen)))   
    
     (define (delete! sleut dict) 
@@ -115,12 +115,12 @@
                   (haal-weg-monster--tiles-dict! (rest-dict diction))))))             
       
       (define (voeg-toe-monster-tiles-dict! huidige-monster) ;; Gaat mogelijks nieuwe tiles toevoegen en tekenen (1 per keer)
-        (if (null? huidige-monsters)
+        (if (null? huidige-monster)
             #f
             (let ((monster (car huidige-monster)))
               (if (not (assq monster (rest-dict monster-tiles-dict)))
                   (begin
-                    (insert! monster (initialiseer-statisch-posities-scherm! (monster 'positie) "/Images/Rood-monster.jpg" "/Images/Rood-monster-mask.png" laag-monster))
+                    (insert! monster (initialiseer-statisch-posities-scherm! (monster 'positie) "Images/Rood-monster.jpg" "Images/Rood-monster-mask.png" laag-monster) monster-tiles-dict)
                     (voeg-toe-monster-tiles-dict! (cdr huidige-monster)))
                    (voeg-toe-monster-tiles-dict! (cdr huidige-monster))))))
             
