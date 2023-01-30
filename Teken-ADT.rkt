@@ -120,10 +120,9 @@
             (let ((monster (car huidige-monster)))
               (if (not (assq monster (rest-dict monster-tiles-dict)))
                   (begin
-                    (insert! monster (initialiseer-statisch-posities-scherm! (monster 'positie) "/Images/Rood-monster.png" "/Images/Rood-monster-mask.png" laag-monster))
+                    (insert! monster (initialiseer-statisch-posities-scherm! (monster 'positie) "/Images/Rood-monster.jpg" "/Images/Rood-monster-mask.png" laag-monster))
                     (voeg-toe-monster-tiles-dict! (cdr huidige-monster)))
-                  (else
-                   (voeg-toe-monster-tiles-dict! (cdr huidige-monster)))))))
+                   (voeg-toe-monster-tiles-dict! (cdr huidige-monster))))))
             
       (haal-weg-monster-tiles-dict! (rest-dict monster-tiles-dict))    
       (for-each ;; Gaat elke tile updaten 
@@ -158,5 +157,6 @@
         ((eq? msg 'teken-monsters!) teken-monsters!)
         ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)
         ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)
+        ((eq? msg 'set-toets-procedure!) set-toets-procedure!)
         (else "maak-teken-adt: undefined message")))
     dispatch))

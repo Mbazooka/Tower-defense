@@ -2,17 +2,21 @@
 ;;                                  Spel ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (maak-spel-adt)
-  (let ((pad (maak-pad-adt vector-1)) ;; maak de fundamenten van het spel
+  (let* ((pad (maak-pad-adt vector-1)) ;; maak de fundamenten van het spel
         (teken-adt (maak-teken-adt (+ *menu-breedte-px* *spel-breedte-px*) *spel/menu-hoogte-px*))
+        (level (maak-level-adt pad voorbeeld-lijst))
         (toren-type #f)
-        (torens '())) 
+        (torens '())
+        (monster-tijd 0)) 
 
     ;; Maakt basis compenenten van het spel
     ((teken-adt 'teken-spel!) pad) 
 
     ;; Start de dynamische werking van het spel
     (define (start!)
-      ((teken-adt 'set-muis-toets!) muis-klik-procedure)) ;; Voeg hier game loop bij toe
+      ((teken-adt 'set-muis-toets!) muis-klik-procedure)
+      ((teken-adt 'set-spel-lus!) spel-lus-procedure))
+    
 
     ;; De procedure die het klikken van muis op scherm voorstelt    
     (define (muis-klik-procedure toets toestand x y)
@@ -35,7 +39,14 @@
               "Beweging niet mogelijk"))))
         (else
          "Beweging niet mogelijk")))
-                 
+
+    (define (spel-lus-procedure dt)
+      (if (>= monster-tijd 500)
+       (begin
+         (set! monster-tijd 0)
+         ((level 'update!)))
+       (set! monster-tijd (+ monster-tijd dt))))
+    
     (define (dispatch msg)
       (cond 
         ((eq? msg 'start!) (start!))

@@ -17,4 +17,12 @@
       null-waarde
       (operator (car lijst) (accumulate operator null-waarde (cdr lijst)))))
 
+(define (filter pred? lijst)
+  (cond
+    ((null? lijst) '())
+    ((pred? (car lijst))
+     (cons (car lijst) (filter pred? (cdr lijst))))
+    (else
+     (filter pred? (cdr lijst)))))
+
 
