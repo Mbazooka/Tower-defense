@@ -98,16 +98,25 @@
       (delete-hulp (cdr dict) dict))
     
     ;; Tekent monster op het scherm gegeven een lijst monsters
+
+    ;;Als hij in de dictionary zit maar niet in monsters dan moetje hem weg halen uit dict
     (define (teken-monsters! monsters) ;; 2 delen
-      (define (haal-weg-monster-tiles-dict!)
-        (
-        
+      (define (haal-weg-monster-tiles-dict! diction)
+        (let ((te-zoeken (sleutel (associatie diction))))
+          (cond
+            ((null? dict) #f)
+            ((not (assq te-zoeken monsters))           
+             (delete! te-zoeken diction)
+             (haal-weg-monster-tiles-dict! (rest-dict diction)))
+            (else
+             (haal-weg-monster--tiles-dict! (rest-dict diction))))))
+             
+      (haal-weg-monster-tiles-dict! (rest-dict monster-tiles-dict))    
          (for-each ;; Gaat elke tile updaten
           (lambda (ass) 
             (initialiseer-statisch-posities-scherm! ((car ass) 'positie) "Images/Rood-monster.jpg" "Images/Rood-monster.png" laag-monster))
           (cdr monster-tiles-dict))
-         (define (voeg-toe-monster-tiles-dict! monsters))))) ;; Gaat mogelijks nieuwe tiles toevoegen en tekenen
-        
+         (define (voeg-toe-monster-tiles-dict! monsters))))) ;; Gaat mogelijks nieuwe tiles toevoegen en tekenen      
           
     ;; OPTIE: Probeer te veranderen zodat argument "pad" weg is!!!!!!!!!
     (define (teken-spel! pad) 
