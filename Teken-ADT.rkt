@@ -5,7 +5,7 @@
 ;; Doel van dit ADT is om alles gemakkelijk te teken gebruikmakend van de grafische bibliotheek (dit zal gebruikt worden door spel ADT)
 (define (maak-teken-adt horizontale-pixels verticale-pixels)
   (let ((venster (make-window horizontale-pixels verticale-pixels "Tower Defense"))
-        (monster-tiles-dict (cons 'tiles '()))) ;; Tagged omdat 1ste conscell veranderd moet worden
+        (monster-tiles-dict (cons 'tiles '()))) ;; Tagged omdat 1ste conscell veranderd moet worden/ Dit zijn monster-tegel associaties
     
     ((venster 'set-background!) "black")
 
@@ -43,7 +43,7 @@
         ((tegel 'set-x!) scherm-x)
         ((tegel 'set-y!) scherm-y)))
 
-    ;; Maakt tegel en zet tegel op laag op juiste plaats (voor een statisch object)
+    ;; Maakt tegel en zet tegel op laag op juiste plaats (voor een statisch object) !!!!Verander naam!!!!
     (define (initialiseer-statisch-posities-scherm! positie object-bitmap object-mask object-laag) 
       (let ((tegel-van-object (make-bitmap-tile object-bitmap object-mask)))
         (bepaal-tegel-px-positie! positie tegel-van-object)
@@ -103,53 +103,60 @@
       (delete-hulp (cdr dict) dict))
     
     ;; Tekent bestaande monsters op het scherm gegeven een lijst monsters
-    (define (teken-monsters! monsters) ;; 2 delen
+    (define (teken-monsters! monsters) 
       (define (haal-weg-monster-tiles-dict! diction)
-        (let ((te-zoeken (sleutel (associatie diction))))
-          (cond
-            ((null? dict) #f)
-            ((not (assq te-zoeken monsters))           
-             (delete! te-zoeken diction)
-             (haal-weg-monster-tiles-dict! (rest-dict diction)))
-            (else
-             (haal-weg-monster--tiles-dict! (rest-dict diction))))))             
-      (haal-weg-monster-tiles-dict! (rest-dict monster-tiles-dict))
+        (if (null? diction)
+            #f
+            (let ((te-zoeken (sleutel (associatie diction))))
+              (if (not (assq te-zoeken monsters))
+                  (begin
+                    (delete! te-zoeken diction)
+                    (haal-weg-monster-tiles-dict! (rest-dict diction)))
+                  (haal-weg-monster--tiles-dict! (rest-dict diction))))))             
       
-      (for-each ;; Gaat elke tile updaten
+      (define (voeg-toe-monster-tiles-dict! huidige-monster) ;; Gaat mogelijks nieuwe tiles toevoegen en tekenen (1 per keer)
+        (if (null? huidige-monsters)
+            #f
+            (let ((monster (car huidige-monster)))
+              (if (not (assq monster (rest-dict monster-tiles-dict)))
+                  (begin
+                    (insert! monster (initialiseer-statisch-posities-scherm! (monster 'positie) "/Images/Rood-monster.png" "/Images/Rood-monster-mask.png" laag-monster))
+                    (voeg-toe-monster-tiles-dict! (cdr huidige-monster)))
+                  (else
+                   (voeg-toe-monster-tiles-dict! (cdr huidige-monster)))))))
+            
+      (haal-weg-monster-tiles-dict! (rest-dict monster-tiles-dict))    
+      (for-each ;; Gaat elke tile updaten 
        (lambda (ass) 
-         (initialiseer-statisch-posities-scherm! ((car ass) 'positie) "Images/Rood-monster.jpg" "Images/Rood-monster.png" laag-monster))
+         (bepaal-tegel-px-positie! ((sleutel ass) 'positie) (waarde ass))) 
        (cdr monster-tiles-dict))
-      
-      (define (voeg-toe-monster-tiles-dict! monsters) ;; Gaat mogelijks nieuwe tiles toevoegen en tekenen (1 per keer)
-        (
-        
-    
-
+      (voeg-toe-monster-tiles-dict! monsters))
+           
     ;;Als hij in de monsters lijst zit maar niet in de dictionary dan moet je hem toevoegen.
           
-;; OPTIE: Probeer te veranderen zodat argument "pad" weg is!!!!!!!!!
-(define (teken-spel! pad) 
-  (teken-pad! pad))
+    ;; OPTIE: Probeer te veranderen zodat argument "pad" weg is!!!!!!!!!
+    (define (teken-spel! pad) 
+      (teken-pad! pad))
 
-;; Volgende code is om muis klikken te implementeren
-(define (set-muis-toets-procedure! proc)
-  ((venster 'set-mouse-click-callback!) proc))
+    ;; Volgende code is om muis klikken te implementeren
+    (define (set-muis-toets-procedure! proc)
+      ((venster 'set-mouse-click-callback!) proc))
 
-;; Volgende code is om een spellus te implementeren
-(define (set-spel-lus-procedure! proc)
-  ((venster 'set-update-callback!) proc))
+    ;; Volgende code is om een spellus te implementeren
+    (define (set-spel-lus-procedure! proc)
+      ((venster 'set-update-callback!) proc))
 
-;; Voglende code is om een knop in te voegen
-(define (set-toets-procedure! proc)
-  ((venster 'set-key-callback!) proc))
+    ;; Voglende code is om een knop in te voegen
+    (define (set-toets-procedure! proc)
+      ((venster 'set-key-callback!) proc))
               
-(define (dispatch msg)
-  (cond
-    ((eq? msg 'teken-spel!) teken-spel!)
-    ((eq? msg 'teken-toren!) teken-toren!)
-    ((eq? msg 'teken-toren!) teken-toren!)
-    ((eq? msg 'teken-monsters!) teken-monsters!)
-    ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)
-    ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)
-    (else "maak-teken-adt: undefined message")))
-dispatch))
+    (define (dispatch msg)
+      (cond
+        ((eq? msg 'teken-spel!) teken-spel!)
+        ((eq? msg 'teken-toren!) teken-toren!)
+        ((eq? msg 'teken-toren!) teken-toren!)
+        ((eq? msg 'teken-monsters!) teken-monsters!)
+        ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)
+        ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)
+        (else "maak-teken-adt: undefined message")))
+    dispatch))
