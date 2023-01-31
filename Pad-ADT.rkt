@@ -13,7 +13,7 @@
             (maak-midden-vector! (+ ctr-pad 3) (+ ctr-midden 1)))))
 
     ;; Maakt werkelijke het midden van de pad
-    (maak-midden-vector! 0 0)
+    (maak-midden-vector! 1 0)
           
     ;; Gaat na als toren in pad zit
     (define (toren-in-pad? toren)
