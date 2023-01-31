@@ -12,6 +12,9 @@
 
 (define *menu-breedte* 10)
 
+;; Tijd constanten
+(define *monster-beweeg-snelheid* 200)
+
 ;; Constanten die de totale spelgrootte voorstellen (met verschillende componenten)
 (define *menu-breedte-px* (* *menu-breedte* *px-breedte*))
 (define *spel-breedte-px* (* *spel-breedte* *px-breedte*))

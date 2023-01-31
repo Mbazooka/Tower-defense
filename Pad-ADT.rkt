@@ -1,6 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                   PAD ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(load "vectoren-van-posities.rkt")
 (define (maak-pad-adt vector-van-posities) ;; Vector gebruikt, gemakkelijk acceseren
   (let* ((lengte (vector-length vector-van-posities)) 
          (midden (make-vector (/ lengte 3)))) ;; Want lengte pad is altijd veelvoud van 3 per constructie
@@ -12,7 +13,7 @@
             (vector-set! midden ctr-midden (vector-ref vector-van-posities ctr-pad))
             (maak-midden-vector! (+ ctr-pad 3) (+ ctr-midden 1)))))
 
-    ;; Maakt werkelijke het midden van de pad
+    ;; Maakt werkelijke het midden van de pad (moet van 1 beginnen om iedere keer de middenste tegel te nemen)
     (maak-midden-vector! 1 0)
           
     ;; Gaat na als toren in pad zit

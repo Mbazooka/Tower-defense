@@ -42,7 +42,7 @@
 
       ;; Volgende code implementeert de spel lus van het spel
       (define (spel-lus-procedure dt)
-        (if (>= monster-tijd 200)
+        (if (>= monster-tijd *monster-beweeg-snelheid*)
             (begin
               ((level 'update!))
               ((teken-adt 'teken-monsters!) (level 'monsters))
@@ -51,7 +51,7 @@
 
       ;;Volgende code implementeert een toets om het spel de laten starten
       (define (toets-procedure toestand toets)
-        (if (and (eq? toestand 'pressed) (eq? toets #\return))
+        (if (and (eq? toestand 'pressed) (eq? toets #\space))
             ((teken-adt 'set-spel-lus!) spel-lus-procedure)))
             
       (define (dispatch msg)
