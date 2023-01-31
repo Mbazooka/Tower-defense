@@ -5,7 +5,7 @@
 (define (maak-monster-adt positie type einde index-midden-pad) ;; Index stelt hoever in midden van het pad hij als is
 
   (define (einde?)
-    (>= einde index-midden-pad))
+    (>= index-midden-pad einde))
   
   (define (volgende-positie! nieuw-positie)
     (set! positie nieuw-positie)

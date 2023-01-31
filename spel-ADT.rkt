@@ -42,7 +42,7 @@
 
     ;; Volgende code implementeert de spel lus van het spel
     (define (spel-lus-procedure dt)
-      (if (>= monster-tijd 2000)
+      (if (>= monster-tijd 200)
           (begin
             ((level 'update!))
             ((teken-adt 'teken-monsters!) (level 'monsters))

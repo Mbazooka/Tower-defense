@@ -109,21 +109,21 @@
         (if (null? diction)
             #f
             (let ((te-zoeken (sleutel (associatie diction))))
-              (if (not (memq te-zoeken monsters))
-                    (delete! te-zoeken monster-tiles-dict)
-                  (haal-weg-monster--tiles-dict! (rest-dict diction))))))             
+              (if (not (memq te-zoeken monsters)) ;; Dit klopt niet!!!
+                  (begin
+                    ((laag-monster 'remove-drawable!) (waarde (associatie diction)))
+                    (delete! te-zoeken monster-tiles-dict))
+                  (haal-weg-monster-tiles-dict! (rest-dict diction))))))             
       
       (define (voeg-toe-monster-tiles-dict! huidige-monster) ;; Gaat mogelijks nieuwe tiles toevoegen en tekenen (1 per keer)
         (if (null? huidige-monster)
             #f
             (let ((monster (car huidige-monster)))
               (if (not (assq monster (rest-dict monster-tiles-dict)))
-                  (begin
-                    (insert! monster (initialiseer-statisch-posities-scherm! (monster 'positie) "Images/Rood-monster.jpg" "Images/Rood-monster-mask.png" laag-monster) monster-tiles-dict)
-                    (voeg-toe-monster-tiles-dict! (cdr huidige-monster)))
-                   (voeg-toe-monster-tiles-dict! (cdr huidige-monster))))))
-            
-      (haal-weg-monster-tiles-dict! (rest-dict monster-tiles-dict))    
+                  (insert! monster (initialiseer-statisch-posities-scherm! (monster 'positie) "Images/Rood-monster.jpg" "Images/Rood-monster-mask.png" laag-monster) monster-tiles-dict)
+                  (voeg-toe-monster-tiles-dict! (cdr huidige-monster))))))
+
+      (haal-weg-monster-tiles-dict! (rest-dict monster-tiles-dict)) 
       (for-each ;; Gaat elke tile updaten 
        (lambda (ass) 
          (bepaal-tegel-px-positie! ((sleutel ass) 'positie) (waarde ass))) 
