@@ -40,11 +40,10 @@
 (load "teken-adt.rkt")
 (load "spel-adt.rkt")
 
-;; Maakt het spel 
+;; Maakt het spel en start het spel respectievelijk
 
 (define spel (maak-spel-adt))
 (spel 'start!)
 
-;; Start het spel
 
 
