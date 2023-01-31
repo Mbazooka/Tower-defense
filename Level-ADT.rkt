@@ -12,7 +12,7 @@
         (midden (pad 'midden))) ;; Zorgt voor minder computaties
 
     (define (update!) 
-;      (set! monsters (filter (lambda (monster) (not (monster 'einde?))) monsters)) ;; Overblijvende monsters te vermoorden
+      (set! monsters (filter (lambda (monster) (not ((monster 'einde?)))) monsters)) ;; Overblijvende monsters te vermoorden
       (for-each (lambda (monster) ((monster 'volgende-positie!) (vector-ref midden (+ (monster 'index) 1)))) monsters)
       (if (not (null? monster-rij))
           (begin
