@@ -5,11 +5,13 @@
   (let ((monsters '()) ;; Lijst omdat elk element bewerken gemakkelijk is
         (midden (pad 'midden))) ;; Zorgt voor minder computaties
 
-    (define (update!) ;; Mogelijks in 2 splitsen afhankelijk van visualisatie
+    (define (update!) 
       (set! monsters (filter (lambda (monster) (not (monster 'einde?))) monsters)) ;; Overblijvende monsters te vermoorden
       (for-each (lambda (monster) ((monster 'volgende-positie!) (vector-ref midden (+ (monster 'index) 1)))) monsters)
       (if (not (null? monster-rij))
-            (set! monsters (cons (maak-monster-adt (pad 'begin) (car monster-rij) pad 0) monsters))))
+          (begin
+            (set! monsters (cons (maak-monster-adt (pad 'begin) (car monster-rij) (pad 'einde) 0) monsters))
+            (set! monster-rij (cdr monster-rij)))))
 
     (define (dispatch msg)
       (cond

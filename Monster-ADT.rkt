@@ -2,10 +2,10 @@
 ;;                               Monster ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(define (maak-monster-adt positie type pad index-midden-pad) ;; Index stelt hoever in midden van het pad hij als is
+(define (maak-monster-adt positie type einde index-midden-pad) ;; Index stelt hoever in midden van het pad hij als is
 
   (define (einde?)
-    (= (pad 'einde) index-midden-pad))
+    (>= einde index-midden-pad))
   
   (define (volgende-positie! nieuw-positie)
     (set! positie nieuw-positie)

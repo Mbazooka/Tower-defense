@@ -130,7 +130,7 @@
        (rest-dict monster-tiles-dict))
       (voeg-toe-monster-tiles-dict! monsters))
            
-    ;;Als hij in de monsters lijst zit maar niet in de dictionary dan moet je hem toevoegen.
+    ;; Als hij in de monsters lijst zit maar niet in de dictionary dan moet je hem toevoegen. (Voeg dit toe voor meer informatie)
           
     ;; OPTIE: Probeer te veranderen zodat argument "pad" weg is!!!!!!!!!
     (define (teken-spel! pad) 
