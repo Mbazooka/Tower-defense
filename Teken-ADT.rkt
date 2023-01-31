@@ -5,7 +5,7 @@
 ;; Doel van dit ADT is om alles gemakkelijk te teken gebruikmakend van de grafische bibliotheek (dit zal gebruikt worden door spel ADT)
 (define (maak-teken-adt horizontale-pixels verticale-pixels)
   (let ((venster (make-window horizontale-pixels verticale-pixels "Tower Defense"))
-        (monster-tiles-dict (cons 'tiles '()))) ;; Tagged omdat 1ste conscell veranderd moet worden/ Dit zijn monster-tegel associaties
+        (monster-tiles-dict (cons 'tegels '()))) ;; Tagged omdat 1ste conscell veranderd moet worden/ Dit zijn monster-tegel associaties
     
     ((venster 'set-background!) "black")
 
@@ -75,8 +75,7 @@
     (define (associatie dict)
       (car dict))
 
-    (define (rest-dict dict)
-      (cdr dict))
+    (define rest-dict cdr)
 
     (define (sleutel associatie)
       (car associatie))
@@ -84,11 +83,13 @@
     (define (waarde associatie)
       (cdr associatie))
 
+    ;; Steekt een associatie in de dictionary
     (define (insert! sleut value tagged-dict)
       (let ((toe-te-voegen (list (cons sleut value))))
         (set-cdr! toe-te-voegen (rest-dict tagged-dict))
         (set-cdr! tagged-dict toe-te-voegen)))   
-   
+
+    ;; Delete een bepaalde sleutel uit de dictionary
     (define (delete! sleut dict) 
       (define (delete-hulp huidige vorige)
         (cond
@@ -108,10 +109,8 @@
         (if (null? diction)
             #f
             (let ((te-zoeken (sleutel (associatie diction))))
-              (if (not (assq te-zoeken monsters))
-                  (begin
-                    (delete! te-zoeken diction)
-                    (haal-weg-monster-tiles-dict! (rest-dict diction)))
+              (if (not (memq te-zoeken monsters))
+                    (delete! te-zoeken monster-tiles-dict)
                   (haal-weg-monster--tiles-dict! (rest-dict diction))))))             
       
       (define (voeg-toe-monster-tiles-dict! huidige-monster) ;; Gaat mogelijks nieuwe tiles toevoegen en tekenen (1 per keer)
@@ -128,7 +127,7 @@
       (for-each ;; Gaat elke tile updaten 
        (lambda (ass) 
          (bepaal-tegel-px-positie! ((sleutel ass) 'positie) (waarde ass))) 
-       (cdr monster-tiles-dict))
+       (rest-dict monster-tiles-dict))
       (voeg-toe-monster-tiles-dict! monsters))
            
     ;;Als hij in de monsters lijst zit maar niet in de dictionary dan moet je hem toevoegen.

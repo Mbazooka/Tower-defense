@@ -3,11 +3,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (maak-spel-adt)
   (let* ((pad (maak-pad-adt vector-1)) ;; maak de fundamenten van het spel
-        (teken-adt (maak-teken-adt (+ *menu-breedte-px* *spel-breedte-px*) *spel/menu-hoogte-px*))
-        (level (maak-level-adt pad voorbeeld-lijst))
-        (toren-type #f)
-        (torens '())
-        (monster-tijd 0)) 
+         (teken-adt (maak-teken-adt (+ *menu-breedte-px* *spel-breedte-px*) *spel/menu-hoogte-px*))
+         (level (maak-level-adt pad voorbeeld-lijst))
+         (toren-type #f)
+         (torens '())
+         (monster-tijd 0)) 
 
     ;; Maakt basis compenenten van het spel
     ((teken-adt 'teken-spel!) pad) 
@@ -40,13 +40,14 @@
         (else
          "Beweging niet mogelijk")))
 
+    ;; Volgende code implementeert de spel lus van het spel
     (define (spel-lus-procedure dt)
       (if (>= monster-tijd 500)
-       (begin
-         (set! monster-tijd 0)
-         ((level 'update!))
-         ((teken-adt 'teken-monsters!) (level 'monsters)))
-       (set! monster-tijd (+ monster-tijd dt))))
+          (begin
+            ((level 'update!))
+            ((teken-adt 'teken-monsters!) (level 'monsters))
+            (set! monster-tijd 0))
+          (set! monster-tijd (+ monster-tijd dt))))
     
     (define (dispatch msg)
       (cond 

@@ -4,8 +4,8 @@
 
 ;; De constant hieronder zullen de grootte van de pixels voorstellen
 ;; Voor het omzetten van spelposities naar tekenposities
-(define *px-breedte* 20)
-(define *px-hoogte* 20)
+(define *px-breedte* 30)
+(define *px-hoogte* 30)
 
 (define *spel-breedte* 40)
 (define *spel-hoogte* 30)
