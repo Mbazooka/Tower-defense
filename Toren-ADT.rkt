@@ -25,7 +25,7 @@
              (>= y-pos ((vector-ref rand 3) 'y)))))
     
     ;; Maakt de werkelijke 4-punt randen aan
-    (positie->rand! 1.6 toren-rand) ;; Hier werd speling gebruikt om te zorgen bitmap niet op pad komt (zorgt voor meer afstand)
+    (positie->rand! 1.6 toren-rand) ;; Hier werd speling gebruikt om te zorgen bitmap niet op pad komt (zorgt voor meer afstand tussen torens en pad)
     (positie->rand! 10 buurt-rand)
 
     ;; Gaat na als een positie werkelijk in zo'n rand zit
