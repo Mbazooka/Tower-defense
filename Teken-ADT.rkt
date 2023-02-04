@@ -10,10 +10,9 @@
     ((venster 'set-background!) "black")
 
     ;; Volgende code is om een achtergrond te hebben waarop een pad gemaakt wordt
-    (define laag-gras ((venster 'new-layer!)))
-    (define gras-tegel (make-tile *spel-breedte-px* *spel/menu-hoogte-px*))
-    ((gras-tegel 'draw-rectangle!) 0 0 *spel-breedte-px* *spel/menu-hoogte-px* "black")
-    ((laag-gras 'add-drawable!) gras-tegel)
+    (define laag-achtergrond ((venster 'new-layer!)))
+    (define achtergrond-tegel (make-bitmap-tile "Images/Lava-Achtergrond.png"))
+    ((laag-achtergrond 'add-drawable!) achtergrond-tegel)
 
     ;; Volgende code is om een menu te maken 
     (define laag-menu ((venster 'new-layer!)))
@@ -52,7 +51,7 @@
     
     ;; Pakt elke pad positie en maakt een tegel en zet die op juiste plaats  
     (define (teken-pad! pad)
-      (let ((pad-posities (pad 'posities)))
+      (let ((pad-posities (cdr (pad 'posities))))
         (define (hulp-teken-pad! ctr)
           (if (not (= ctr (pad 'lengte)))
               (begin

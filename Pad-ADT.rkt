@@ -1,27 +1,27 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                   PAD ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(load "vectoren-van-posities.rkt")
-(load "Positie-adt.rkt")
-(load "Toren-adt.rkt")
-(load "hulpprocedures.rkt")
+;; Veel overlappende rekenwerk, verander misschienn naar car en cdr rest 
 (define (maak-pad-adt vector-van-posities) ;; Vector gebruikt, gemakkelijk acceseren
-  (let* ((lengte (vector-length vector-van-posities)) 
-         (midden (make-vector (/ lengte 3)))) ;; Want lengte pad is altijd veelvoud van 3 per constructie
+  (let* ((lengte (vector-length (cdr vector-van-posities))) 
+         (midden (make-vector (car vector-van-posities)))) ;; Want lengte pad is altijd veelvoud van 3 per constructie
 
     ;; Maakt het midden van de pad
-    (define (maak-midden-vector! ctr-pad ctr-midden)
-      (if (not (>= ctr-pad (vector-length vector-van-posities)))
-          (begin
-            (vector-set! midden ctr-midden (vector-ref vector-van-posities ctr-pad))
-            (maak-midden-vector! (+ ctr-pad 3) (+ ctr-midden 1)))))
+    (define (maak-midden-vector!)
+      (let ((eindconditie (car vector-van-posities)))
+        (define (hulp ctr)
+          (if (< ctr eindconditie)
+              (begin
+                (vector-set! midden ctr (vector-ref (cdr vector-van-posities) ctr))
+                (hulp (+ ctr 1)))))
+        (hulp 0)))
 
     ;; Maakt werkelijke het midden van de pad (moet van 1 beginnen om iedere keer de middenste tegel te nemen)
-    (maak-midden-vector! 1 0)
+    (maak-midden-vector!)
           
     ;; Gaat na als toren in pad zit (werkt niet)
     (define (toren-in-pad? toren)
-      (let ((lijst-van-posities (vector->list vector-van-posities))
+      (let ((lijst-van-posities (vector->list (cdr vector-van-posities)))
             (toren-rand (toren 'toren-posities)))
         
         (define (in-pad? positie)

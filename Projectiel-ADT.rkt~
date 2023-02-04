@@ -1,6 +1,10 @@
-;;maak hier een projectiel ADT
+;maak hier een projectiel ADT
 (define (maak-projectiel-adt positie)
 
+  (define (positie! x y)
+    ((positie 'x!) x)
+    ((positie 'y!) y))
+          
   (define (dispatch msg)
     (cond
       ((eq? msg 'positie) positie)
