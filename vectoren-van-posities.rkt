@@ -21,13 +21,13 @@
          (maak-positie-adt 14 16) ;m         
          (maak-positie-adt 15 16) ;m
          (maak-positie-adt 16 16) ;m
-         (maak-positie-adt 17 16) ;m
+         (maak-positie-adt 16 15) ;m
          (maak-positie-adt 16 14) ;m
          (maak-positie-adt 16 13) ;m         
          (maak-positie-adt 16 12) ;m
          (maak-positie-adt 16 11) ;m
          (maak-positie-adt 16 10) ;m
-         (maak-positie-adt 16 9) ;m
+         (maak-positie-adt 17 10) ;m
          (maak-positie-adt 18 10) ;m
          (maak-positie-adt 19 10) ;m
          (maak-positie-adt 20 10) ;m         
@@ -82,9 +82,9 @@
          (maak-positie-adt 14 17)
          (maak-positie-adt 15 15)
          (maak-positie-adt 15 17)
-         (maak-positie-adt 16 15)
          (maak-positie-adt 16 17)
          (maak-positie-adt 17 15)
+         (maak-positie-adt 17 16)
          (maak-positie-adt 17 17) 
          (maak-positie-adt 15 14)
          (maak-positie-adt 17 14)
@@ -94,9 +94,9 @@
          (maak-positie-adt 17 12)
          (maak-positie-adt 15 11)
          (maak-positie-adt 17 11)
-         (maak-positie-adt 15 10)
-         (maak-positie-adt 17 10)   
-         (maak-positie-adt 15 9) 
+         (maak-positie-adt 15 10)           
+         (maak-positie-adt 15 9)
+         (maak-positie-adt 16 9) 
          (maak-positie-adt 17 9)   
          (maak-positie-adt 18 9)
          (maak-positie-adt 18 11)
