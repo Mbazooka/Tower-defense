@@ -4,142 +4,142 @@
 (define vector-1
   (cons 44
         (vector
-         (maak-positie-adt 0 16) ;m
-         (maak-positie-adt 1 16) ;m
-         (maak-positie-adt 2 16) ;m
-         (maak-positie-adt 3 16) ;m
-         (maak-positie-adt 4 16) ;m
-         (maak-positie-adt 5 16) ;m
-         (maak-positie-adt 6 16) ;m
-         (maak-positie-adt 7 16) ;m
-         (maak-positie-adt 8 16) ;m
-         (maak-positie-adt 9 16) ;m
-         (maak-positie-adt 10 16) ;m
-         (maak-positie-adt 11 16) ;m
-         (maak-positie-adt 12 16) ;m
-         (maak-positie-adt 13 16) ;m
-         (maak-positie-adt 14 16) ;m         
-         (maak-positie-adt 15 16) ;m
+         (maak-positie-adt 0 21) ;m
+         (maak-positie-adt 1 21) ;m
+         (maak-positie-adt 2 21) ;m
+         (maak-positie-adt 3 21) ;m
+         (maak-positie-adt 4 21) ;m
+         (maak-positie-adt 5 21) ;m
+         (maak-positie-adt 6 21) ;m
+         (maak-positie-adt 7 21) ;m
+         (maak-positie-adt 8 21) ;m
+         (maak-positie-adt 9 21) ;m
+         (maak-positie-adt 10 21) ;m
+         (maak-positie-adt 11 21) ;m
+         (maak-positie-adt 12 21) ;m
+         (maak-positie-adt 13 21) ;m
+         (maak-positie-adt 14 21) ;m         
+         (maak-positie-adt 15 21) ;m
+         (maak-positie-adt 16 21) ;m
+         (maak-positie-adt 16 20) ;m
+         (maak-positie-adt 16 19) ;m
+         (maak-positie-adt 16 18) ;m         
+         (maak-positie-adt 16 17) ;m
          (maak-positie-adt 16 16) ;m
          (maak-positie-adt 16 15) ;m
-         (maak-positie-adt 16 14) ;m
-         (maak-positie-adt 16 13) ;m         
-         (maak-positie-adt 16 12) ;m
-         (maak-positie-adt 16 11) ;m
-         (maak-positie-adt 16 10) ;m
-         (maak-positie-adt 17 10) ;m
-         (maak-positie-adt 18 10) ;m
-         (maak-positie-adt 19 10) ;m
-         (maak-positie-adt 20 10) ;m         
-         (maak-positie-adt 21 10) ;m
-         (maak-positie-adt 22 10) ;m
-         (maak-positie-adt 23 10) ;m
-         (maak-positie-adt 24 10) ;m
-         (maak-positie-adt 25 10) ;m
-         (maak-positie-adt 26 10) ;m
-         (maak-positie-adt 27 10) ;m
-         (maak-positie-adt 28 10) ;m
-         (maak-positie-adt 29 10) ;m
-         (maak-positie-adt 30 10) ;m
-         (maak-positie-adt 31 10) ;m
-         (maak-positie-adt 32 10) ;m
-         (maak-positie-adt 33 10) ;m
-         (maak-positie-adt 34 10) ;m
-         (maak-positie-adt 35 10) ;m
-         (maak-positie-adt 36 10) ;m
-         (maak-positie-adt 37 10) ;m
-         (maak-positie-adt 38 10) ;m
-         (maak-positie-adt 39 10) ;m         
-         (maak-positie-adt 0 15)
-         (maak-positie-adt 0 17)
-         (maak-positie-adt 1 15)
-         (maak-positie-adt 1 17)
-         (maak-positie-adt 2 15)
-         (maak-positie-adt 2 17)
-         (maak-positie-adt 3 15)
-         (maak-positie-adt 3 17)
-         (maak-positie-adt 4 15)
-         (maak-positie-adt 4 17)
-         (maak-positie-adt 5 15)
-         (maak-positie-adt 5 17)
-         (maak-positie-adt 6 15)
-         (maak-positie-adt 6 17)
-         (maak-positie-adt 7 15)
-         (maak-positie-adt 7 17)
-         (maak-positie-adt 8 15)
-         (maak-positie-adt 8 17)
-         (maak-positie-adt 9 15)
-         (maak-positie-adt 9 17)
-         (maak-positie-adt 10 15)  
-         (maak-positie-adt 10 17)
-         (maak-positie-adt 11 15)
-         (maak-positie-adt 11 17)
-         (maak-positie-adt 12 15)
-         (maak-positie-adt 12 17)
-         (maak-positie-adt 13 15)        
-         (maak-positie-adt 13 17)
-         (maak-positie-adt 14 15)
-         (maak-positie-adt 14 17)
-         (maak-positie-adt 15 15)
+         (maak-positie-adt 17 15) ;m
+         (maak-positie-adt 18 15) ;m
+         (maak-positie-adt 19 15) ;m
+         (maak-positie-adt 20 15) ;m         
+         (maak-positie-adt 21 15) ;m
+         (maak-positie-adt 22 15) ;m
+         (maak-positie-adt 23 15) ;m
+         (maak-positie-adt 24 15) ;m
+         (maak-positie-adt 25 15) ;m
+         (maak-positie-adt 26 15) ;m
+         (maak-positie-adt 27 15) ;m
+         (maak-positie-adt 28 15) ;m
+         (maak-positie-adt 29 15) ;m
+         (maak-positie-adt 30 15) ;m
+         (maak-positie-adt 31 15) ;m
+         (maak-positie-adt 32 15) ;m
+         (maak-positie-adt 33 15) ;m
+         (maak-positie-adt 34 15) ;m
+         (maak-positie-adt 35 15) ;m
+         (maak-positie-adt 36 15) ;m
+         (maak-positie-adt 37 15) ;m
+         (maak-positie-adt 38 15) ;m
+         (maak-positie-adt 39 15) ;m         
+         (maak-positie-adt 0 20)
+         (maak-positie-adt 0 22)
+         (maak-positie-adt 1 20)
+         (maak-positie-adt 1 22)
+         (maak-positie-adt 2 20)
+         (maak-positie-adt 2 22)
+         (maak-positie-adt 3 20)
+         (maak-positie-adt 3 22)
+         (maak-positie-adt 4 20)
+         (maak-positie-adt 4 22)
+         (maak-positie-adt 5 20)
+         (maak-positie-adt 5 22)
+         (maak-positie-adt 6 20)
+         (maak-positie-adt 6 22)
+         (maak-positie-adt 7 20)
+         (maak-positie-adt 7 22)
+         (maak-positie-adt 8 20)
+         (maak-positie-adt 8 22)
+         (maak-positie-adt 9 20)
+         (maak-positie-adt 9 22)
+         (maak-positie-adt 10 20)  
+         (maak-positie-adt 10 22)
+         (maak-positie-adt 11 20)
+         (maak-positie-adt 11 22)
+         (maak-positie-adt 12 20)
+         (maak-positie-adt 12 22)
+         (maak-positie-adt 13 20)        
+         (maak-positie-adt 13 22)
+         (maak-positie-adt 14 20)
+         (maak-positie-adt 14 22)
+         (maak-positie-adt 15 20)
+         (maak-positie-adt 15 22)
+         (maak-positie-adt 16 22)
+         (maak-positie-adt 17 20)
+         (maak-positie-adt 17 21)
+         (maak-positie-adt 17 22) 
+         (maak-positie-adt 15 19)
+         (maak-positie-adt 17 19)
+         (maak-positie-adt 15 18)
+         (maak-positie-adt 17 18)   
          (maak-positie-adt 15 17)
-         (maak-positie-adt 16 17)
-         (maak-positie-adt 17 15)
+         (maak-positie-adt 17 17)
+         (maak-positie-adt 15 16)
          (maak-positie-adt 17 16)
-         (maak-positie-adt 17 17) 
+         (maak-positie-adt 15 15)           
          (maak-positie-adt 15 14)
-         (maak-positie-adt 17 14)
-         (maak-positie-adt 15 13)
-         (maak-positie-adt 17 13)   
-         (maak-positie-adt 15 12)
-         (maak-positie-adt 17 12)
-         (maak-positie-adt 15 11)
-         (maak-positie-adt 17 11)
-         (maak-positie-adt 15 10)           
-         (maak-positie-adt 15 9)
-         (maak-positie-adt 16 9) 
-         (maak-positie-adt 17 9)   
-         (maak-positie-adt 18 9)
-         (maak-positie-adt 18 11)
-         (maak-positie-adt 19 9)
-         (maak-positie-adt 19 11)
-         (maak-positie-adt 20 9) 
-         (maak-positie-adt 20 11)
-         (maak-positie-adt 21 9) 
-         (maak-positie-adt 21 11)
-         (maak-positie-adt 22 9) 
-         (maak-positie-adt 22 11) 
-         (maak-positie-adt 23 9) 
-         (maak-positie-adt 23 11)
-         (maak-positie-adt 24 9)
-         (maak-positie-adt 24 11)
-         (maak-positie-adt 25 9)
-         (maak-positie-adt 25 11)
-         (maak-positie-adt 26 9)
-         (maak-positie-adt 26 11)
-         (maak-positie-adt 27 9)
-         (maak-positie-adt 27 11)
-         (maak-positie-adt 28 9)
-         (maak-positie-adt 28 11)
-         (maak-positie-adt 29 9)
-         (maak-positie-adt 29 11)
-         (maak-positie-adt 30 9)
-         (maak-positie-adt 30 11)
-         (maak-positie-adt 31 9)
-         (maak-positie-adt 31 11)
-         (maak-positie-adt 32 9)
-         (maak-positie-adt 32 11)
-         (maak-positie-adt 33 9)        
-         (maak-positie-adt 33 11)
-         (maak-positie-adt 34 9)
-         (maak-positie-adt 34 11)
-         (maak-positie-adt 35 9)
-         (maak-positie-adt 35 11)
-         (maak-positie-adt 36 9)
-         (maak-positie-adt 36 11)
-         (maak-positie-adt 37 9)
-         (maak-positie-adt 37 11)
-         (maak-positie-adt 38 9)
-         (maak-positie-adt 38 11)
-         (maak-positie-adt 39 9)
-         (maak-positie-adt 39 11))))
+         (maak-positie-adt 16 14) 
+         (maak-positie-adt 17 14)   
+         (maak-positie-adt 18 14)
+         (maak-positie-adt 18 16)
+         (maak-positie-adt 19 14)
+         (maak-positie-adt 19 16)
+         (maak-positie-adt 20 14) 
+         (maak-positie-adt 20 16)
+         (maak-positie-adt 21 14) 
+         (maak-positie-adt 21 16)
+         (maak-positie-adt 22 14) 
+         (maak-positie-adt 22 16) 
+         (maak-positie-adt 23 14) 
+         (maak-positie-adt 23 16)
+         (maak-positie-adt 24 14)
+         (maak-positie-adt 24 16)
+         (maak-positie-adt 25 14)
+         (maak-positie-adt 25 16)
+         (maak-positie-adt 26 14)
+         (maak-positie-adt 26 16)
+         (maak-positie-adt 27 14)
+         (maak-positie-adt 27 16)
+         (maak-positie-adt 28 14)
+         (maak-positie-adt 28 16)
+         (maak-positie-adt 29 14)
+         (maak-positie-adt 29 16)
+         (maak-positie-adt 30 14)
+         (maak-positie-adt 30 16)
+         (maak-positie-adt 31 14)
+         (maak-positie-adt 31 16)
+         (maak-positie-adt 32 14)
+         (maak-positie-adt 32 16)
+         (maak-positie-adt 33 14)        
+         (maak-positie-adt 33 16)
+         (maak-positie-adt 34 14)
+         (maak-positie-adt 34 16)
+         (maak-positie-adt 35 14)
+         (maak-positie-adt 35 16)
+         (maak-positie-adt 36 14)
+         (maak-positie-adt 36 16)
+         (maak-positie-adt 37 14)
+         (maak-positie-adt 37 16)
+         (maak-positie-adt 38 14)
+         (maak-positie-adt 38 16)
+         (maak-positie-adt 39 14)
+         (maak-positie-adt 39 16))))
   

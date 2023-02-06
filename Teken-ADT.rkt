@@ -18,14 +18,15 @@
     (define laag-menu ((venster 'new-layer!)))
     (define menu-tegel (make-tile *menu-breedte-px* *spel/menu-hoogte-px*))
     ((menu-tegel 'draw-rectangle!) 0 0 *menu-breedte-px* *spel/menu-hoogte-px* "black")
-    ((menu-tegel 'draw-rectangle!) 0 0 5 *spel/menu-hoogte-px* "darkorange") ;; Voegt lijntje van 5px groot toe bij menu 
+    ((menu-tegel 'draw-rectangle!) 0 0 5 *spel/menu-hoogte-px* "darkorange") ;; Voegt lijntje van 5px groot toe bij menu (maakt het stijlvoller)
+    ((menu-tegel 'draw-text!) "Torens" 12 *tekst-toren-breedte* *tekst-toren-hoogte* "darkorange")
     ((menu-tegel 'set-x!) *spel-breedte-px*)
     ((laag-menu 'add-drawable!) menu-tegel)
 
     ;; Volgende code is om de user-interface van de menu te maken
     (define user-interface ((venster 'new-layer!)))
     (define toren-1-tegel (make-bitmap-tile "Images/Toren-1-Game.png" "Images/Toren-1-game-mask.png"))
-    ((toren-1-tegel 'set-x!) (+ *spel-breedte-px* *px-breedte*)) ;; Dit is een keuze om 1 px breed van start van menu, een "button" image te zetten
+    ((toren-1-tegel 'set-x!) *toren-knop-breedte-start*) ;; Dit is een keuze om 1 px breed van start van menu, een "button" image te zetten
     ((toren-1-tegel 'set-y!) *toren-1-knop-hoogte-start*)
     ((user-interface 'add-drawable!) toren-1-tegel)
       
@@ -156,5 +157,5 @@
         ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)
         ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)
         ((eq? msg 'set-toets-procedure!) set-toets-procedure!)
-        (else "maak-teken-adt: undefined message")))
+        (else "maak-teken-adt: ongeldig bericht")))
     dispatch))

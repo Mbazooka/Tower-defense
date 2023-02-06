@@ -12,6 +12,9 @@
 
 (define *menu-breedte* 10)
 
+;; Kaart beperkingen
+
+
 ;; Tijd constanten
 (define *monster-beweeg-snelheid* 1)
 
@@ -23,9 +26,14 @@
 ;; Menu constante (stelt de x coordinaat voor die de start van de menu voorstelt, nodig voor torens te plaatsen)
 (define *start-x-pos-menu* (* *spel-breedte* *px-breedte*))
 (define *toren-1-knop-hoogte-start* (* 2 *px-hoogte*)) ;; zijn keuzes om knopen hier te starten en daar te eindigen
-(define *toren-1-knop-breedte-start* (+ *spel-breedte* *px-breedte*))
+(define *toren-knop-breedte-start* (+ *spel-breedte-px* *px-breedte*))
 (define *toren-1-knop-hoogte-einde* (* 5 *px-hoogte*))
-(define *toren-1-knop-breedte-einde* (* *spel-breedte* (* 4 *px-breedte*)))
+(define *toren-knop-breedte-einde* (* *spel-breedte* (* 4 *px-breedte*)))
+
+
+;; Tekst constanten voor op menu
+(define *tekst-toren-breedte* (+ *px-breedte* 10)) ;; + 5 want orange rand centreert de tekst niet
+(define *tekst-toren-hoogte* *px-hoogte*) 
 
 
 
