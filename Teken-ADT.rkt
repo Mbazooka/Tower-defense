@@ -68,9 +68,6 @@
       (let ((toren-positie (toren 'positie)))              
         (initialiseer-statisch-posities-scherm! (maak-positie-adt (- (toren-positie 'x) 1) (- (toren-positie 'y) 1)) "Images/Toren-1-game.png" "Images/Toren-1-game-mask.png" laag-toren))) ;; nieuwe positie om toren te centreren
 
-    ;; Volgende code is een venster om monsters te plaatsen
-    (define laag-monster ((venster 'new-layer!)))
-
     ;Volgende code zijn abstracties om met dictionaries te werken
     (define (associatie dict)
       (car dict))
@@ -102,6 +99,9 @@
           (else
            (delete-hulp (rest-dict huidige) huidige))))
       (delete-hulp (cdr dict) dict))
+    
+    ;; Volgende code is een venster om monsters te plaatsen
+    (define laag-monster ((venster 'new-layer!)))
     
     ;; Tekent bestaande monsters op het scherm gegeven een lijst monsters
     (define (teken-monsters! monsters) 

@@ -4,13 +4,12 @@
 
 (#%require "Graphics.rkt")
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                         Globale Values en Procedures                       ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (load "constanten.rkt")
-;(load "Hulpprocedures.rkt")
+(load "Hulpprocedures.rkt")
 
 ;; ADTs en vector-van-posities
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -24,12 +23,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (load "vectoren-van-posities.rkt")
+(load "Monster-lijst.rkt")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                               Spelelement ADTs                             ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (load "pad-adt.rkt")
+(load "Toren-adt.rkt")
+(load "Monster-ADT.rkt")
+(load "Level-ADT.rkt")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                               Teken en spel ADTs                           ;;
@@ -37,12 +40,10 @@
 (load "teken-adt.rkt")
 (load "spel-adt.rkt")
 
-
-
-;; Maakt het spel 
+;; Maakt het spel en start het spel respectievelijk
 
 (define spel (maak-spel-adt))
+(spel 'start!)
 
-;; Start het spel
 
 
