@@ -12,8 +12,15 @@
 
 (define *menu-breedte* 10)
 
-;; Kaart beperkingen
+;; Kaart beperkingen (contraints)
+(define *beperking-1-breedte* 305) 
+(define *beperking-1-hoogte* 255)
 
+(define *beperking-2-breedte* 655) 
+(define *beperking-2-hoogte* 170)
+
+(define *beperking-3-breedte* 800) 
+(define *beperking-3-hoogte* 220)
 
 ;; Tijd constanten
 (define *monster-beweeg-snelheid* 1)
