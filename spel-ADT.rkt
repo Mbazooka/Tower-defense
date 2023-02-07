@@ -10,7 +10,7 @@
          (monster-tijd 0)) 
 
     ;; Maakt basis compenenten van het spel
-    ((teken-adt 'teken-spel!) pad) 
+    ((teken-adt 'teken-pad!) pad) 
 
     ;; Start de dynamische werking van het spel
     (define (start!)

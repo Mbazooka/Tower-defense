@@ -129,12 +129,9 @@
          (bepaal-tegel-px-positie! ((sleutel ass) 'positie) (waarde ass))) 
        (rest-dict monster-tiles-dict))
       (voeg-toe-monster-tiles-dict! monsters))
-           
-    ;; Als hij in de monsters lijst zit maar niet in de dictionary dan moet je hem toevoegen. (Voeg dit toe voor meer informatie)
-          
-    ;; OPTIE: Probeer te veranderen zodat argument "pad" weg is!!!!!!!!!
-    (define (teken-spel! pad) 
-      (teken-pad! pad))
+
+    ;; Voglende code is om een error message op het scherm te brengen
+       
 
     ;; Volgende code is om muis klikken te implementeren
     (define (set-muis-toets-procedure! proc)
@@ -150,7 +147,7 @@
               
     (define (dispatch msg)
       (cond
-        ((eq? msg 'teken-spel!) teken-spel!)
+        ((eq? msg 'teken-pad!) teken-pad!)
         ((eq? msg 'teken-toren!) teken-toren!)
         ((eq? msg 'teken-toren!) teken-toren!)
         ((eq? msg 'teken-monsters!) teken-monsters!)
