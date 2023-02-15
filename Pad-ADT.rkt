@@ -25,7 +25,7 @@
             (toren-rand (toren 'toren-posities)))
         
         (define (in-pad? positie)
-          (let ((afgeronde-pos (maak-positie-adt (ceiling (positie 'x)) (ceiling (positie 'y))))) ;; nodig want pad posities zijn discreet
+          (let ((afgeronde-pos ((positie 'ceil)))) ;; nodig want pad posities zijn discreet
             (accumulate (lambda (x y) (or x y)) #f (map (lambda (p) ((p 'gelijk?) afgeronde-pos)) lijst-van-posities))))
 
         (define (overlopen-torens ctr)

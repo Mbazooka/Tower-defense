@@ -1,13 +1,18 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                               Monster ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Hier worden geen torens beheert vermits torens onafhankelijk zijn van het level (eenmal gezet in het spel blijven ze in het spel)
 (define (maak-level-adt pad monster-rij) ;; Neemt een rij van monster in die gereleased zullen zijn op het pad
   (let ((monsters '()) ;; Lijst omdat elk element bewerken gemakkelijk is
         (midden (pad 'midden)) ;; Zorgt voor minder computaties
         (update-type #t)) ;; Monster bijvoegen of niet?
 
     (define (update!)
-      (set! monsters (filter (lambda (monster) (or (not ((monster 'einde?))))) monsters)) ;; Overblijvende monsters te vermoorden
+      (set! monsters (filter
+                      (lambda (monster)
+                        (and (not ((monster 'einde?)))
+                            (not (monster 'gestorven?))))
+                      monsters)) ;; Overblijvende monsters te vermoorden
       (for-each (lambda (monster) ((monster 'volgende-positie!) (vector-ref midden (+ (monster 'index) 1)))) monsters)
       (if update-type
           (if (not (null? monster-rij))

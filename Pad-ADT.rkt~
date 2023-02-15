@@ -12,7 +12,7 @@
         (define (hulp ctr)
           (if (< ctr eindconditie)
               (begin
-                (vector-set! midden ctr (vector-ref vector-van-posities ctr))
+                (vector-set! midden ctr (vector-ref (cdr vector-van-posities) ctr))
                 (hulp (+ ctr 1)))))
         (hulp 0)))
 

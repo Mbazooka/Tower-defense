@@ -15,7 +15,7 @@
         (vector-set! vector 2 (maak-positie-adt (- x-pos-cent afstand) (- y-pos-cent afstand)))
         (vector-set! vector 3 (maak-positie-adt (+ x-pos-cent afstand) (- y-pos-cent afstand)))))
     
-    ;; Kijkt als positie in een bepaalde rand zit (maar 2 posities nodig om dit te doen)
+    ;; Kijkt als positie in een bepaalde rand zit 
     (define (in-rand? positie rand)
       (let ((x-pos (positie 'x))
             (y-pos (positie 'y)))
@@ -25,8 +25,8 @@
              (>= y-pos ((vector-ref rand 3) 'y)))))
     
     ;; Maakt de werkelijke 4-punt randen aan
-    (positie->rand! 1.6 toren-rand) ;; Hier werd speling gebruikt om te zorgen bitmap niet op pad komt (zorgt voor meer afstand tussen torens en pad)
-    (positie->rand! 10 buurt-rand)
+    (positie->rand! *toren-rand-afstand* toren-rand) ;; Hier werd speling gebruikt om te zorgen bitmap niet op pad komt (zorgt voor meer afstand tussen torens en pad)
+    (positie->rand! *buurt-rand-afstand* buurt-rand)
 
     ;; Gaat na als een positie werkelijk in zo'n rand zit
     (define (in-toren? toren)
@@ -35,15 +35,18 @@
             (in-rand? (vector-ref posities 1) toren-rand)
             (in-rand? (vector-ref posities 2) toren-rand)
             (in-rand? (vector-ref posities 3) toren-rand))))
-     
-    ;    (define (in-buurt? monster) 
-    ;      (in-rand? positie buurt-posities))
+
+    ;; Gaat na als een monster in een de buurt van een toren zit   
+    (define (in-buurt? monster) 
+      (in-rand? (monster 'positie) buurt-posities))
+
+    
 
     (define (dispatch msg)
       (cond
         ((eq? msg 'positie) centraal-positie)
         ((eq? msg 'toren-posities) toren-rand) ;; Nodig om toren overlap na te kijken
         ((eq? msg 'in-toren?) in-toren?)
-       ;((eq? msg 'in-buurt?) in-buurt?)
+        ((eq? msg 'in-buurt?) in-buurt?)
         (else "maak-toren-adt: ongeldig bericht")))
     dispatch))

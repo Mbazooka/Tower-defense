@@ -3,15 +3,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define (maak-monster-adt positie type einde index-midden-pad) ;; Index stelt hoever in midden van het pad hij als is
-  (let ((levens #f)) 
+  (let ((levens #f))
 
-    (define (bepaal-levens-type!)
+    ;; Voglende code gaat na hoeveel levens het monster mag hebben (op basis van type)
+    (define (bepaal-levens!)
       (cond
-        ((eq? type 'basis) (set! levens 1))
+        ((eq? type 'rood) (set! levens 1))
         (else
-         "Probleem met code")))
+         "Geen correcte type")))
 
-    (bepaal-levens-type!)
+    (bepaal-levens!)
 
     ;; Volgende code gaat na als het monstertje op het eind van het pad is
     (define (einde?)
@@ -22,13 +23,18 @@
       (set! positie nieuw-positie)
       (set! index-midden-pad (+ index-midden-pad 1)))
 
+    (define (verander-levens!)
+      (set! levens (- levens 1)))
+
     (define (dispatch msg)
       (cond
         ((eq? msg 'positie) positie)
         ((eq? msg 'type) type)
         ((eq? msg 'index) index-midden-pad)
         ((eq? msg 'volgende-positie!) volgende-positie!)
-        ((eq? msg 'einde?) einde?)      
+        ((eq? msg 'einde?) einde?)
+        ((eq? msg 'gestorven?) (<= levens 0))
+        ((eq? msg 'verander-levens!) verander-levens!)
         (else "maak-monster-adt: ongeldig bericht")))
     dispatch))
 

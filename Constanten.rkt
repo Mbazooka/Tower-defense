@@ -22,6 +22,10 @@
 (define *beperking-3-breedte* 800) 
 (define *beperking-3-hoogte* 220)
 
+;; Toren constanten
+(define *toren-rand-afstand* 1.6) ;; Hier werd speling gebruikt om te zorgen bitmap niet op pad komt (zorgt voor meer afstand tussen torens en pad)
+(define *buurt-rand-afstand* 10)
+
 ;; Tijd constanten
 (define *monster-beweeg-snelheid* 100) ;; Monster beweeg snelheid
 (define *error-bericht-tijd* 3000) ;; 3 seconden

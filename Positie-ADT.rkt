@@ -10,19 +10,12 @@
   (define (y! nieuw-y)
     (set! y nieuw-y))
 
-;  (define (afstand positie2) ;; nog niet gebruikt
-;    (define (square x)
-;      (* x x))
-;
-;    (sqrt
-;     (+ (square (- x (positie2 'x))) (square (- y (positie2 'y))))))
-
   (define (gelijk? positie2) 
     (and (= x (positie2 'x)) (= y (positie2 'y))))
-               
-;  (define (beweeg! nieuw-x nieuw-y) ;; nog niet gebruikt
-;    (x! nieuw-x)
-;    (y! nieuw-y))
+
+  ;; Volgende code is om een naar beneden afgeronde versie van de huidige positie te maken (vaak nodig)
+  (define (ceil)
+    (maak-positie-adt (ceiling x) (ceiling y)))
 
   (define (dispatch msg)
     (cond
@@ -30,8 +23,7 @@
       ((eq? msg 'y) y)
       ((eq? msg 'x!) x!)
       ((eq? msg 'y!) y!)
-;      ((eq? msg 'afstand) afstand)
       ((eq? msg 'gelijk?) gelijk?)
-;      ((eq? msg 'beweeg!) beweeg!)
+      ((eq? msg 'ceil) ceil)
       (else "maak-positie-adt: ongeldig bericht")))
   dispatch)
