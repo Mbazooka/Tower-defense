@@ -7,7 +7,7 @@
          (level (maak-level-adt pad voorbeeld-lijst))
          (toren-type #f)
          (torens '())
-         (monster-tijd 0)) 
+         (monster-tijd 0))
 
     ;; Maakt basis compenenten van het spel
     ((teken-adt 'teken-pad!) pad) 
@@ -38,19 +38,16 @@
                    (not ((pad 'toren-in-pad?) toren)))
               (set! torens (cons toren torens))
               ((teken-adt 'teken-toren!) toren))
-             (else
-              "Beweging niet mogelijk"))))
-        (else
-         "Beweging niet mogelijk")))
+             (else "Beweging niet mogelijk"))))))
     
     ;; Volgende code implementeert de spel lus van het spel
     (define (spel-lus-procedure dt)
-      (if (>= monster-tijd *monster-beweeg-snelheid*)
+      (if (>= monster-tijd *monster-beweeg-snelheid*) ;; Zal monsters op scherm updaten na 0,1 seconde
           (begin
             ((level 'update!))
             ((teken-adt 'teken-monsters!) (level 'monsters))
             (set! monster-tijd 0))
-          (set! monster-tijd (+ monster-tijd dt))))
+          (set! monster-tijd (+ monster-tijd dt))))     
 
     ;;Volgende code implementeert een toets om het spel de laten starten
     (define (toets-procedure toestand toets)

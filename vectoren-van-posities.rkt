@@ -141,5 +141,6 @@
          (maak-positie-adt 38 14)
          (maak-positie-adt 38 16)
          (maak-positie-adt 39 14)
-         (maak-positie-adt 39 16))))
+         (maak-positie-adt 39 16)
+         )))
   

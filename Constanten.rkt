@@ -23,7 +23,8 @@
 (define *beperking-3-hoogte* 220)
 
 ;; Tijd constanten
-(define *monster-beweeg-snelheid* 1)
+(define *monster-beweeg-snelheid* 100) ;; Monster beweeg snelheid
+(define *error-bericht-tijd* 3000) ;; 3 seconden
 
 ;; Constanten die de totale spelgrootte voorstellen (met verschillende componenten)
 (define *menu-breedte-px* (* *menu-breedte* *px-breedte*))

@@ -5,7 +5,7 @@
 ;; Doel van dit ADT is om alles gemakkelijk te teken gebruikmakend van de grafische bibliotheek (dit zal gebruikt worden door spel ADT)
 (define (maak-teken-adt horizontale-pixels verticale-pixels)
   (let ((venster (make-window horizontale-pixels verticale-pixels "Tower Defense"))
-        (monster-tiles-dict (cons 'tegels '()))) ;; Tagged omdat 1ste conscell veranderd moet worden/ Dit zijn monster-tegel associaties
+        (monster-tiles-dict (cons 'tegels '()))) ;; Tagged omdat 1ste conscell veranderd moet worden/ Dit zijn monster-tegel associaties   
     
     ((venster 'set-background!) "black")
 
@@ -18,7 +18,7 @@
     (define laag-menu ((venster 'new-layer!)))
     (define menu-tegel (make-tile *menu-breedte-px* *spel/menu-hoogte-px*))
     ((menu-tegel 'draw-rectangle!) 0 0 *menu-breedte-px* *spel/menu-hoogte-px* "black")
-    ((menu-tegel 'draw-rectangle!) 0 0 5 *spel/menu-hoogte-px* "darkorange") ;; Voegt lijntje van 5px groot toe bij menu (maakt het stijlvoller)
+    ((menu-tegel 'draw-rectangle!) 0 0 (/ *px-breedte* 2) *spel/menu-hoogte-px* "darkorange") ;; Voegt lijntje van 5px groot toe bij menu (maakt het stijlvoller)
     ((menu-tegel 'draw-text!) "Torens" 12 *tekst-toren-breedte* *tekst-toren-hoogte* "darkorange")
     ((menu-tegel 'set-x!) *spel-breedte-px*)
     ((laag-menu 'add-drawable!) menu-tegel)
@@ -35,11 +35,9 @@
 
     ;; Procedure die tegel op juiste pixel positie zet
     ;;met positie gedaan (niet object als formele parameter) want pad geeft meerdere posities, code kan enkel 1 positie/object per keer doen
-    (define (bepaal-tegel-px-positie! positie tegel) ;; Misschien later als hulpprocedure definieren (afhankelijk implementatie dynamische zaken)
-      (let* ((obj-x-pos (positie 'x))
-             (obj-y-pos (positie 'y))
-             (scherm-x (* obj-x-pos *px-breedte*))
-             (scherm-y (* obj-y-pos *px-hoogte*)))
+    (define (bepaal-tegel-px-positie! positie tegel)
+      (let ((scherm-x (* (positie 'x) *px-breedte*))
+             (scherm-y (* (positie 'y) *px-hoogte*)))
         ((tegel 'set-x!) scherm-x)
         ((tegel 'set-y!) scherm-y)))
 
@@ -130,8 +128,8 @@
        (rest-dict monster-tiles-dict))
       (voeg-toe-monster-tiles-dict! monsters))
 
-    ;; Voglende code is om een error message op het scherm te brengen
-       
+    ;; Volgende code is een venster om error berichten op te plaatsen
+    (define laag-error ((venster 'new-layer!)))
 
     ;; Volgende code is om muis klikken te implementeren
     (define (set-muis-toets-procedure! proc)
@@ -151,6 +149,7 @@
         ((eq? msg 'teken-toren!) teken-toren!)
         ((eq? msg 'teken-toren!) teken-toren!)
         ((eq? msg 'teken-monsters!) teken-monsters!)
+        ((eq? msg 'teken-error-bericht!) teken-error-bericht!)
         ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)
         ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)
         ((eq? msg 'set-toets-procedure!) set-toets-procedure!)
