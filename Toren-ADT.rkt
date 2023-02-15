@@ -40,7 +40,6 @@
     (define (in-buurt? monster) 
       (in-rand? (monster 'positie) buurt-posities))
 
-    
 
     (define (dispatch msg)
       (cond

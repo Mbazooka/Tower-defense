@@ -1,11 +1,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                               Monster ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Hier worden geen torens beheert vermits torens onafhankelijk zijn van het level (eenmal gezet in het spel blijven ze in het spel)
 (define (maak-level-adt pad monster-rij) ;; Neemt een rij van monster in die gereleased zullen zijn op het pad
-  (let ((monsters '()) ;; Lijst omdat elk element bewerken gemakkelijk is
+  (let ((torens '())
+        (monsters '()) ;; Lijst omdat elk element bewerken gemakkelijk is
         (midden (pad 'midden)) ;; Zorgt voor minder computaties
         (update-type #t)) ;; Monster bijvoegen of niet?
+    
 
     (define (update!)
       (set! monsters (filter
@@ -20,12 +21,17 @@
                 (set! monsters (cons (maak-monster-adt (pad 'begin) (car monster-rij) (pad 'einde) 0) monsters))
                 (set! monster-rij (cdr monster-rij))
                 (set! update-type #f)))
-          (set! update-type #t)))     
+          (set! update-type #t)))
+
+    (define (voeg-toren-toe! toren)
+      (set! torens (cons toren torens)))
 
     (define (dispatch msg)
       (cond
         ((eq? msg 'update!) update!)
         ((eq? msg 'monsters) monsters)
+        ((eq? msg 'torens) torens)
+        ((eq? msg 'voeg-toren-toe!) voeg-toren-toe!)
         (else
          "maak-level-adt: ongeldig bericht")))
     dispatch))

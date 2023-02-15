@@ -6,7 +6,6 @@
          (teken-adt (maak-teken-adt (+ *menu-breedte-px* *spel-breedte-px*) *spel/menu-hoogte-px*))
          (level (maak-level-adt pad voorbeeld-lijst))
          (toren-type #f)
-         (torens '())
          (monster-tijd 0))
 
     ;; Maakt basis compenenten van het spel
@@ -31,12 +30,12 @@
         
          (let ((toren (maak-toren-adt (maak-positie-adt (/ x *px-breedte*) (/ y *px-hoogte*)) toren-type)))
            (cond
-             ((and (null? torens) (not ((pad 'toren-in-pad?) toren)))
-              (set! torens (cons toren torens))
+             ((and (null? (level 'torens)) (not ((pad 'toren-in-pad?) toren)))
+              ((level 'voeg-toren-toe!) toren)
               ((teken-adt 'teken-toren!) toren))
-             ((and (not (accumulate (lambda (x y) (or x y)) #f (map (lambda (t) ((t 'in-toren?) toren)) torens)))
+             ((and (not (accumulate (lambda (x y) (or x y)) #f (map (lambda (t) ((t 'in-toren?) toren)) (level 'torens))))
                    (not ((pad 'toren-in-pad?) toren)))
-              (set! torens (cons toren torens))
+              ((level 'voeg-toren-toe!) toren)
               ((teken-adt 'teken-toren!) toren))
              (else "Beweging niet mogelijk"))))))
     
