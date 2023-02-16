@@ -27,20 +27,25 @@
                 (set! update-type #f)))
           (set! update-type #t)))
 
-    ;; Volgende code update de projectielen die door torens worden afgeschoren
+    ;; Volgende code update de projectielen die door torens worden afgeschoten
     (define (update-torens-projectielen! dt)
       (for-each
-       (lambda (toren)
+       (lambda (toren)         
          ((toren 'projectiel-update!) dt)
-       torens)))
+         (for-each
+          (lambda (monster)
+            (if  ((toren 'in-buurt?) monster)
+                 ((toren 'shiet!) monster))
+            monsters))         
+         torens)))
 
-    (define (dispatch msg)
-      (cond
-        ((eq? msg 'monsters) monsters)
-        ((eq? msg 'torens) torens)
-        ((eq? msg 'voeg-toren-toe!) voeg-toren-toe!)
-        ((eq? msg 'update-monsters!) update-monsters!)
-        ((eq? msg 'update-torens-projectielen!) update-torens-projectielen!)
-        (else
-         "maak-level-adt: ongeldig bericht")))
-    dispatch))
+(define (dispatch msg)
+  (cond
+    ((eq? msg 'monsters) monsters)
+    ((eq? msg 'torens) torens)
+    ((eq? msg 'voeg-toren-toe!) voeg-toren-toe!)
+    ((eq? msg 'update-monsters!) update-monsters!)
+    ((eq? msg 'update-torens-projectielen!) update-torens-projectielen!)
+    (else
+     "maak-level-adt: ongeldig bericht")))
+dispatch))

@@ -1,5 +1,5 @@
 ;;maak hier een projectiel ADT
-(define (maak-projectiel-adt positie bestemming)
+(define (maak-projectiel-adt positie bestemming te-raken-monster) 
 
   ;; Volgende code gaat na als het projectiel zijn positie bereikt heeft.
   (define (bestemming-bereikt?)
@@ -19,6 +19,7 @@
     (cond
       ((eq? msg 'positie) positie)
       ((eq? msg 'bestemming)
+       ((eq? msg 'te-raken-monster) te-raken-monster)
        ((eq? msg 'bestemming-bereikt?) bestemming-bereikt?)
        ((eq? msg 'volgende-positie!) volgende-positie!)
        (else "maak-projectiel-adt: ongeldig bericht")))

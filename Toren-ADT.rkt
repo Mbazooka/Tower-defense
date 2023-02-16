@@ -47,9 +47,15 @@
 
     ;; Volgende code laat toe om de projectielen hun posities up te daten
     (define (projectiel-update! dt)
+      (for-each
+       (lambda (projectiel)
+         (((projectiel 'te-raken-monster) 'verander-levens!)))
+       (filter
+        (lambda (project) ((project 'bestemming-bereikt?)))
+        projectielen))
       (set! projectielen (filter
                           (lambda (projectiel)
-                            (not (projectiel 'bestemming-bereikt?)))
+                            (not ((projectiel 'bestemming-bereikt?))))
                           projectielen))
       (for-each (lambda (projectiel)
                   ((projectiel 'volgende-positie) dt))
