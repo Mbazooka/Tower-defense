@@ -46,7 +46,7 @@
         (set! projectielen (cons projectiel projectielen))))
 
     ;; Volgende code laat toe om de projectielen hun posities up te daten
-    (define (projectiel-update! dt)
+    (define (projectiel-update!)
       (for-each
        (lambda (projectiel)
          (((projectiel 'te-raken-monster) 'verander-levens!)))
@@ -58,7 +58,7 @@
                             (not ((projectiel 'bestemming-bereikt?))))
                           projectielen))
       (for-each (lambda (projectiel)
-                  ((projectiel 'volgende-positie!) dt))
+                  ((projectiel 'volgende-positie!)))
                 projectielen))
                                           
     (define (dispatch msg)

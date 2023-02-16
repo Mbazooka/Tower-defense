@@ -13,7 +13,7 @@
   (define (gelijk? positie2) 
     (and (= x (positie2 'x)) (= y (positie2 'y))))
 
-  ;; Volgende code is om een naar beneden afgeronde versie van de huidige positie te maken (vaak nodig)
+  ;; Volgende code is om een naar beneden afgeronde versie van de huidige positie te maken (nodig voor smoothe beweging)
   (define (ceil)
     (maak-positie-adt (ceiling x) (ceiling y)))
 

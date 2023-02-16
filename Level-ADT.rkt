@@ -31,7 +31,7 @@
     (define (update-torens-projectielen! dt)
       (for-each
        (lambda (toren)         
-         ((toren 'projectiel-update!) dt)
+         ((toren 'projectiel-update!))
          (for-each
           (lambda (monster)
             (if  ((toren 'in-buurt?) monster)
