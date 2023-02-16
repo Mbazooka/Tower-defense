@@ -1,7 +1,9 @@
-;;maak hier een projectiel ADT
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                 Projectiel ADT                             ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (maak-projectiel-adt positie te-raken-monster)
   (let* ((bestemming (te-raken-monster 'positie))
-        (positie-update-hoeveelheid-x (- (bestemming 'x) (positie 'x)))
+        (positie-update-hoeveelheid-x (- (bestemming 'x) (positie 'x))) ;; Dit zijn positie update constanten om smoothe beweging te hebben
         (positie-update-hoeveelheid-y (- (bestemming 'y) (positie 'y))))
 
   ;; Volgende code gaat na als het projectiel zijn positie bereikt heeft.
@@ -13,8 +15,8 @@
     (if (not (bestemming-bereikt?))
         (let ((x-pos-proj (positie 'x))
               (y-pos-proj (positie 'y)))
-          ((positie 'x!) (+ positie-update-hoeveelheid-x x-pos-proj))
-          ((positie 'y!) (+ positie-update-hoeveelheid-y y-pos-proj)))))
+          ((positie 'x!) (+ (* positie-update-hoeveelheid-x *projectiel-afvuur-snelheid*) x-pos-proj))
+          ((positie 'y!) (+ (* positie-update-hoeveelheid-y *projectiel-afvuur-snelheid*) y-pos-proj)))))
 
   (define (dispatch msg)
     (cond

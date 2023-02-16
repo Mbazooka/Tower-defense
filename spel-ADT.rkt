@@ -46,7 +46,7 @@
             ((level 'update-monsters!))
             ((teken-adt 'teken-monsters!) (level 'monsters))
             (set! monster-tijd 0)
-            ((level 'update-torens-projectielen!) dt)))
+            ((level 'update-torens-projectielen!))))
       (set! monster-tijd (+ monster-tijd dt)))     
 
   ;;Volgende code implementeert een toets om het spel de laten starten

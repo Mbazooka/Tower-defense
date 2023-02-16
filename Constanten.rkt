@@ -28,7 +28,7 @@
 
 ;; Tijd constanten
 (define *monster-beweeg-snelheid* 100) ;; Monster beweeg snelheid (te veranderen)
-(define *projectiel-afvuur-snelheid* 0.001) ;; Hoe snel het projectiel afgevuurd word
+(define *projectiel-afvuur-snelheid* 0.01) ;; Hoe snel het projectiel afgevuurd word
 
 ;; Constanten die de totale spelgrootte voorstellen (met verschillende componenten)
 (define *menu-breedte-px* (* *menu-breedte* *px-breedte*))
