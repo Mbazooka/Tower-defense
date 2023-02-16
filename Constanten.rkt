@@ -27,8 +27,8 @@
 (define *buurt-rand-afstand* 10)
 
 ;; Tijd constanten
-(define *monster-beweeg-snelheid* 100) ;; Monster beweeg snelheid
-(define *error-bericht-tijd* 3000) ;; 3 seconden
+(define *monster-beweeg-snelheid* 100) ;; Monster beweeg snelheid (te veranderen)
+(define *projectiel-afvuur-snelheid* #f)
 
 ;; Constanten die de totale spelgrootte voorstellen (met verschillende componenten)
 (define *menu-breedte-px* (* *menu-breedte* *px-breedte*))

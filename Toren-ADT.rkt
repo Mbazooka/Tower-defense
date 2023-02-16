@@ -1,10 +1,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                 Toren ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Voeg type toe voor uitbreidbaarheid
-(define (maak-toren-adt centraal-positie type) ;; Positie stelt midden van de toren voor
+(define (maak-toren-adt centraal-positie type) ;; Positie stelt midden van de toren voor, type voor uitbreidbaarheid
   (let ((toren-rand (make-vector 4)) ;; Stelt werkelijke posities toren voor (enkel 4 punten van rand, voor geheugenvriendelijkheid)
-        (buurt-rand (make-vector 4))) ;; Stelt buurt voor (geheugenvriendelijk)
+        (buurt-rand (make-vector 4)) ;; Stelt buurt voor (geheugenvriendelijk)
+        (projectielen '()))
 
     ;; Geeft de rand van een bepaald abstract object a.d.h.v 4 posities (bv toren rand)
     (define (positie->rand! afstand vector)
@@ -40,12 +40,27 @@
     (define (in-buurt? monster) 
       (in-rand? (monster 'positie) buurt-posities))
 
+    ;; Volgende code laat toe om projectielen te schieten naar een bepaald monster
+    (define (schiet! monster)
+      (let ((projectiel (maak-projectiel centraal-positie (monster 'positie))))
+        (set! projectielen (cons projectiel projectielen))))
 
+    ;; Volgende code laat toe om de projectielen hun posities up te daten
+    (define (projectiel-update! dt)
+      (set! projectielen (filter
+                          (lambda (projectiel)
+                            (not (projectiel 'bestemming-bereikt?)))
+                          projectielen))
+      (for-each (lambda (projectiel)
+                  
+      
     (define (dispatch msg)
       (cond
         ((eq? msg 'positie) centraal-positie)
         ((eq? msg 'toren-posities) toren-rand) ;; Nodig om toren overlap na te kijken
         ((eq? msg 'in-toren?) in-toren?)
         ((eq? msg 'in-buurt?) in-buurt?)
+        ((eq? msg 'schiet!) schiet!)
+        ((eq? msg 'projectiel-update!) projectiel-update!)
         (else "maak-toren-adt: ongeldig bericht")))
     dispatch))

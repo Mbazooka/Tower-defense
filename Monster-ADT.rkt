@@ -23,6 +23,7 @@
       (set! positie nieuw-positie)
       (set! index-midden-pad (+ index-midden-pad 1)))
 
+    ;; Volgende code zal het leven van het monstertje verminderen met 1.
     (define (verander-levens!)
       (set! levens (- levens 1)))
 

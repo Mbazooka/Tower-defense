@@ -1,13 +1,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;                               Monster ADT                                  ;;
+;;                                 Level ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (maak-level-adt pad monster-rij) ;; Neemt een rij van monster in die gereleased zullen zijn op het pad
   (let ((torens '())
         (monsters '()) ;; Lijst omdat elk element bewerken gemakkelijk is
         (midden (pad 'midden)) ;; Zorgt voor minder computaties
         (update-type #t)) ;; Monster bijvoegen of niet?
-    
 
+    ;; voglende code update de monsters die op het pad lopen
     (define (update!)
       (set! monsters (filter
                       (lambda (monster)
@@ -23,6 +23,7 @@
                 (set! update-type #f)))
           (set! update-type #t)))
 
+    ;; Volgende code voegt een toren toe tot het spel wereld
     (define (voeg-toren-toe! toren)
       (set! torens (cons toren torens)))
 

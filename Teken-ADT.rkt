@@ -6,8 +6,6 @@
 (define (maak-teken-adt horizontale-pixels verticale-pixels)
   (let ((venster (make-window horizontale-pixels verticale-pixels "Tower Defense"))
         (monster-tiles-dict (cons 'tegels '()))) ;; Tagged omdat 1ste conscell veranderd moet worden/ Dit zijn monster-tegel associaties   
-    
-    ((venster 'set-background!) "black")
 
     ;; Volgende code is om een achtergrond te hebben waarop een pad gemaakt wordt
     (define laag-achtergrond ((venster 'new-layer!)))
@@ -66,7 +64,7 @@
       (let ((toren-positie (toren 'positie)))              
         (initialiseer-statisch-posities-scherm! (maak-positie-adt (- (toren-positie 'x) 1) (- (toren-positie 'y) 1)) "Images/Toren-1-game.png" "Images/Toren-1-game-mask.png" laag-toren))) ;; nieuwe positie om toren te centreren
 
-    ;Volgende code zijn abstracties om met dictionaries te werken
+    ;Volgende code zijn abstracties om met dictionaries te werken (hier gezet want enkel hier gebruikt)
     (define (associatie dict)
       (car dict))
 
@@ -128,8 +126,8 @@
        (rest-dict monster-tiles-dict))
       (voeg-toe-monster-tiles-dict! monsters))
 
-    ;; Volgende code is een venster om error berichten op te plaatsen
-    (define laag-error ((venster 'new-layer!)))
+    ;; Volgende code is om projectielen op het scherm te tekenen
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
     ;; Volgende code is om muis klikken te implementeren
     (define (set-muis-toets-procedure! proc)
