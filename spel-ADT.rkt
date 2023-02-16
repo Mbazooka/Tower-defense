@@ -43,7 +43,7 @@
     (define (spel-lus-procedure dt)
       (if (>= monster-tijd *monster-beweeg-snelheid*) ;; Zal monsters op scherm updaten na 0,1 seconde
           (begin
-            ((level 'update!))
+            ((level 'update-monsters!))
             ((teken-adt 'teken-monsters!) (level 'monsters))
             (set! monster-tijd 0))
           (set! monster-tijd (+ monster-tijd dt))))     

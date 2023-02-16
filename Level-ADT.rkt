@@ -5,14 +5,18 @@
   (let ((torens '())
         (monsters '()) ;; Lijst omdat elk element bewerken gemakkelijk is
         (midden (pad 'midden)) ;; Zorgt voor minder computaties
-        (update-type #t)) ;; Monster bijvoegen of niet?
-
+        (update-type #t)) ;; Monster bijvoegen of niet? (om ze niet allemaal te snel te releasen)
+    
+    ;; Volgende code voegt een toren toe tot het spel wereld
+    (define (voeg-toren-toe! toren)
+      (set! torens (cons toren torens)))
+    
     ;; voglende code update de monsters die op het pad lopen
-    (define (update!)
+    (define (update-monsters!)
       (set! monsters (filter
                       (lambda (monster)
                         (and (not ((monster 'einde?)))
-                            (not (monster 'gestorven?))))
+                             (not (monster 'gestorven?))))
                       monsters)) ;; Overblijvende monsters te vermoorden
       (for-each (lambda (monster) ((monster 'volgende-positie!) (vector-ref midden (+ (monster 'index) 1)))) monsters)
       (if update-type
@@ -23,16 +27,20 @@
                 (set! update-type #f)))
           (set! update-type #t)))
 
-    ;; Volgende code voegt een toren toe tot het spel wereld
-    (define (voeg-toren-toe! toren)
-      (set! torens (cons toren torens)))
+    ;; Volgende code update de projectielen die door torens worden afgeschoren
+    (define (update-torens-projectielen! dt)
+      (for-each
+       (lambda (toren)
+         ((toren 'projectiel-update!) dt)
+       torens)))
 
     (define (dispatch msg)
       (cond
-        ((eq? msg 'update!) update!)
         ((eq? msg 'monsters) monsters)
         ((eq? msg 'torens) torens)
         ((eq? msg 'voeg-toren-toe!) voeg-toren-toe!)
+        ((eq? msg 'update-monsters!) update-monsters!)
+        ((eq? msg 'update-torens-projectielen!) update-torens-projectielen!)
         (else
          "maak-level-adt: ongeldig bericht")))
     dispatch))

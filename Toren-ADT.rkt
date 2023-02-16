@@ -52,8 +52,9 @@
                             (not (projectiel 'bestemming-bereikt?)))
                           projectielen))
       (for-each (lambda (projectiel)
-                  
-      
+                  ((projectiel 'volgende-positie) dt))
+                projectielen))
+                                          
     (define (dispatch msg)
       (cond
         ((eq? msg 'positie) centraal-positie)
