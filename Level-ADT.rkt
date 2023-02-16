@@ -35,9 +35,9 @@
          (for-each
           (lambda (monster)
             (if  ((toren 'in-buurt?) monster)
-                 ((toren 'shiet!) monster))
+                 ((toren 'schiet!) monster)))
             monsters))         
-         torens)))
+         torens))
 
 (define (dispatch msg)
   (cond

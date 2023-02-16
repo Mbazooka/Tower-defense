@@ -30,6 +30,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (load "pad-adt.rkt")
+(load "Projectiel-ADT.rkt")
 (load "Toren-adt.rkt")
 (load "Monster-ADT.rkt")
 (load "Level-ADT.rkt")

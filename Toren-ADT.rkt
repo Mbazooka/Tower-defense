@@ -38,11 +38,11 @@
 
     ;; Gaat na als een monster in een de buurt van een toren zit   
     (define (in-buurt? monster) 
-      (in-rand? (monster 'positie) buurt-posities))
+      (in-rand? (monster 'positie) buurt-rand))
 
     ;; Volgende code laat toe om projectielen te schieten naar een bepaald monster
     (define (schiet! monster)
-      (let ((projectiel (maak-projectiel centraal-positie (monster 'positie))))
+      (let ((projectiel (maak-projectiel-adt centraal-positie monster)))
         (set! projectielen (cons projectiel projectielen))))
 
     ;; Volgende code laat toe om de projectielen hun posities up te daten
@@ -58,7 +58,7 @@
                             (not ((projectiel 'bestemming-bereikt?))))
                           projectielen))
       (for-each (lambda (projectiel)
-                  ((projectiel 'volgende-positie) dt))
+                  ((projectiel 'volgende-positie!) dt))
                 projectielen))
                                           
     (define (dispatch msg)
