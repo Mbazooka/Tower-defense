@@ -48,8 +48,12 @@
             ((teken-adt 'teken-monsters!) (level 'monsters))
             (set! monster-tijd 0)))
       (set! monster-tijd (+ monster-tijd dt))
-      (if (>=
-      ((level 'update-torens-projectielen!))
+      (if (>= projectiel-tijd *toren-afvuur-frequentie*)
+          (begin
+            ((level 'update-torens-projectielen-afschieten!))
+            (set! projectiel-tijd 0)))
+      (set! projectiel-tijd (+ projectiel-tijd dt))
+      ((level 'update-torens-projectielen-positie!))
       ((teken-adt 'teken-projectielen!) ((level 'verkrijg-projectielen))))     
 
     ;;Volgende code implementeert een toets om het spel de laten starten
