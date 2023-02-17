@@ -36,16 +36,24 @@
           (lambda (monster)
             (if  ((toren 'in-buurt?) monster)
                  ((toren 'schiet!) monster)))
-            monsters))         
-         torens))
+          monsters))         
+       torens))
 
-(define (dispatch msg)
-  (cond
-    ((eq? msg 'monsters) monsters)
-    ((eq? msg 'torens) torens)
-    ((eq? msg 'voeg-toren-toe!) voeg-toren-toe!)
-    ((eq? msg 'update-monsters!) update-monsters!)
-    ((eq? msg 'update-torens-projectielen!) update-torens-projectielen!)
-    (else
-     "maak-level-adt: ongeldig bericht")))
-dispatch))
+    ;; volgende code is om de projectielen van alle torens te verkrijgen
+    (define (verkrijg-projectielen)
+      (flatten
+       (map (lambda (toren)
+              (toren 'projectielen))
+            torens)))
+                  
+    (define (dispatch msg)
+      (cond
+        ((eq? msg 'monsters) monsters)
+        ((eq? msg 'torens) torens)
+        ((eq? msg 'voeg-toren-toe!) voeg-toren-toe!)
+        ((eq? msg 'update-monsters!) update-monsters!)
+        ((eq? msg 'update-torens-projectielen!) update-torens-projectielen!)
+        ((eq? msg 'verkrijg-projectielen) verkrijg-projectielen)
+        (else
+         "maak-level-adt: ongeldig bericht")))
+    dispatch))

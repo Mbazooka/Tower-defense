@@ -5,7 +5,8 @@
 ;; Doel van dit ADT is om alles gemakkelijk te teken gebruikmakend van de grafische bibliotheek (dit zal gebruikt worden door spel ADT)
 (define (maak-teken-adt horizontale-pixels verticale-pixels)
   (let ((venster (make-window horizontale-pixels verticale-pixels "Tower Defense"))
-        (monster-tiles-dict (cons 'tegels '()))) ;; Tagged omdat 1ste conscell veranderd moet worden/ Dit zijn monster-tegel associaties   
+        (monster-tiles-dict (cons 'tegels '())) ;; Tagged omdat 1ste conscell veranderd moet worden/ Dit zijn monster-tegel associaties
+        (projectielen-tiles-dict (cons 'tegels '()))) ;; Dit zijn projectiet-tegel associaties
 
     ;; Volgende code is om een achtergrond te hebben waarop een pad gemaakt wordt
     (define laag-achtergrond ((venster 'new-layer!)))
@@ -129,8 +130,8 @@
       (voeg-toe-monster-tiles-dict! monsters monster-tiles-dict "Images/Rood-monster.jpg" "Images/Rood-monster-mask.png"))
 
     ;; Volgende code is om projectielen op het scherm te tekenen
-    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+    (define (teken-projectielen! projectielen)
+    
     ;; Volgende code is om muis klikken te implementeren
     (define (set-muis-toets-procedure! proc)
       ((venster 'set-mouse-click-callback!) proc))
@@ -149,7 +150,7 @@
         ((eq? msg 'teken-toren!) teken-toren!)
         ((eq? msg 'teken-toren!) teken-toren!)
         ((eq? msg 'teken-monsters!) teken-monsters!)
-        ((eq? msg 'teken-error-bericht!) teken-error-bericht!)
+        ((eq? msg 'teken-projectielen!) teken-projectielen)
         ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)
         ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)
         ((eq? msg 'set-toets-procedure!) set-toets-procedure!)

@@ -25,4 +25,7 @@
     (else
      (filter pred? (cdr lijst)))))
 
+(define (flatten lijst)
+  (accumulate append '() lijst))
+
 
