@@ -10,10 +10,6 @@
     ;; Volgende code voegt een toren toe tot het spel wereld
     (define (voeg-toren-toe! toren)
       (set! torens (cons toren torens)))
-
-    ;; Volgende code voegt een projectiel toe
-    (define (voeg-projectiel-toe! projectiel)
-      (set! projectielen (cons projectiel projectielen)))
     
     ;; voglende code update de monsters die op het pad lopen
     (define (update-monsters!)
@@ -40,16 +36,16 @@
           (lambda (monster)
             (if  ((toren 'in-buurt?) monster)
                  ((toren 'schiet!) monster)))
-          monsters))         
-       torens))
+            monsters))         
+         torens))
 
-    (define (dispatch msg)
-      (cond
-        ((eq? msg 'monsters) monsters)
-        ((eq? msg 'torens) torens)
-        ((eq? msg 'voeg-toren-toe!) voeg-toren-toe!)
-        ((eq? msg 'update-monsters!) update-monsters!)
-        ((eq? msg 'update-torens-projectielen!) update-torens-projectielen!)
-        (else
-         "maak-level-adt: ongeldig bericht")))
-    dispatch))
+(define (dispatch msg)
+  (cond
+    ((eq? msg 'monsters) monsters)
+    ((eq? msg 'torens) torens)
+    ((eq? msg 'voeg-toren-toe!) voeg-toren-toe!)
+    ((eq? msg 'update-monsters!) update-monsters!)
+    ((eq? msg 'update-torens-projectielen!) update-torens-projectielen!)
+    (else
+     "maak-level-adt: ongeldig bericht")))
+dispatch))

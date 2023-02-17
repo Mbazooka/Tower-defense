@@ -35,7 +35,7 @@
     ;;met positie gedaan (niet object als formele parameter) want pad geeft meerdere posities, code kan enkel 1 positie/object per keer doen
     (define (bepaal-tegel-px-positie! positie tegel)
       (let ((scherm-x (* (positie 'x) *px-breedte*))
-             (scherm-y (* (positie 'y) *px-hoogte*)))
+            (scherm-y (* (positie 'y) *px-hoogte*)))
         ((tegel 'set-x!) scherm-x)
         ((tegel 'set-y!) scherm-y)))
 
@@ -95,36 +95,38 @@
           (else
            (delete-hulp (rest-dict huidige) huidige))))
       (delete-hulp (cdr dict) dict))
+
+    ;; Volgende code is om tiles weg te halen van het scherm die niet meer nodig zijn
+    (define (haal-weg-monster-tiles-dict! objecten diction diction-te-verwijderen) ;; Zit het in de dictionary maar niet in de lijst van monsters dan moet hij weg
+      (if (null? diction)
+          #f
+          (let ((te-zoeken (sleutel (associatie diction))))
+            (if (not (memq te-zoeken objecten))
+                (begin
+                  ((laag-monster 'remove-drawable!) (waarde (associatie diction)))
+                  (delete! te-zoeken diction-te-verwijderen))
+                (haal-weg-monster-tiles-dict! objecten (rest-dict diction) diction-te-verwijderen)))))
+
+    ;; Volgende code is om tiles op het scherm te voegen die er nog niet op stonden
+    (define (voeg-toe-monster-tiles-dict! huidige-object diction-toevoegen bitmap bitmap-mask) ;; Gaat mogelijks nieuwe tiles toevoegen en tekenen (1 per keer)
+      (if (null? huidige-object)
+          #f
+          (let ((monster (car huidige-object)))
+            (if (not (assq monster (rest-dict diction-toevoegen)))
+                (insert! monster (initialiseer-statisch-posities-scherm! (monster 'positie) bitmap bitmap-mask laag-monster) diction-toevoegen)
+                (voeg-toe-monster-tiles-dict! (cdr huidige-object) diction-toevoegen bitmap bitmap-mask)))))
     
     ;; Volgende code is een venster om monsters te plaatsen
     (define laag-monster ((venster 'new-layer!)))
     
     ;; Tekent bestaande monsters op het scherm gegeven een lijst monsters
-    (define (teken-monsters! monsters) 
-      (define (haal-weg-monster-tiles-dict! diction)
-        (if (null? diction)
-            #f
-            (let ((te-zoeken (sleutel (associatie diction))))
-              (if (not (memq te-zoeken monsters)) ;; Dit klopt niet!!!
-                  (begin
-                    ((laag-monster 'remove-drawable!) (waarde (associatie diction)))
-                    (delete! te-zoeken monster-tiles-dict))
-                  (haal-weg-monster-tiles-dict! (rest-dict diction))))))             
-      
-      (define (voeg-toe-monster-tiles-dict! huidige-monster) ;; Gaat mogelijks nieuwe tiles toevoegen en tekenen (1 per keer)
-        (if (null? huidige-monster)
-            #f
-            (let ((monster (car huidige-monster)))
-              (if (not (assq monster (rest-dict monster-tiles-dict)))
-                  (insert! monster (initialiseer-statisch-posities-scherm! (monster 'positie) "Images/Rood-monster.jpg" "Images/Rood-monster-mask.png" laag-monster) monster-tiles-dict)
-                  (voeg-toe-monster-tiles-dict! (cdr huidige-monster))))))
-
-      (haal-weg-monster-tiles-dict! (rest-dict monster-tiles-dict)) 
-      (for-each ;; Gaat elke tile updaten 
+    (define (teken-monsters! monsters)                            
+      (haal-weg-monster-tiles-dict! monsters (rest-dict monster-tiles-dict) monster-tiles-dict) 
+      (for-each ;; Gaat elke monster tile updaten 
        (lambda (ass) 
          (bepaal-tegel-px-positie! ((sleutel ass) 'positie) (waarde ass))) 
        (rest-dict monster-tiles-dict))
-      (voeg-toe-monster-tiles-dict! monsters))
+      (voeg-toe-monster-tiles-dict! monsters monster-tiles-dict "Images/Rood-monster.jpg" "Images/Rood-monster-mask.png"))
 
     ;; Volgende code is om projectielen op het scherm te tekenen
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
