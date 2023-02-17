@@ -6,7 +6,8 @@
          (teken-adt (maak-teken-adt (+ *menu-breedte-px* *spel-breedte-px*) *spel/menu-hoogte-px*))
          (level (maak-level-adt pad voorbeeld-lijst))
          (toren-type #f)
-         (monster-tijd 0))
+         (monster-tijd 0) ;; Tijd afgelopen sinds vorige monster op pad
+         (projectiel-tijd 0)) ;; Tijd afgelopen sinds vorige projectiel die geschoten werd
 
     ;; Maakt basis compenenten van het spel
     ((teken-adt 'teken-pad!) pad) 
@@ -45,19 +46,20 @@
           (begin
             ((level 'update-monsters!))
             ((teken-adt 'teken-monsters!) (level 'monsters))
-            (set! monster-tijd 0)
-            ((level 'update-torens-projectielen!))
-            ((teken-adt 'teken-projectielen!) ((level 'verkrijg-projectielen)))))
-      (set! monster-tijd (+ monster-tijd dt)))     
+            (set! monster-tijd 0)))
+      (set! monster-tijd (+ monster-tijd dt))
+      (if (>=
+      ((level 'update-torens-projectielen!))
+      ((teken-adt 'teken-projectielen!) ((level 'verkrijg-projectielen))))     
 
-  ;;Volgende code implementeert een toets om het spel de laten starten
-  (define (toets-procedure toestand toets)
-    (if (and (eq? toestand 'pressed) (eq? toets #\space))
-        ((teken-adt 'set-spel-lus!) spel-lus-procedure)))
+    ;;Volgende code implementeert een toets om het spel de laten starten
+    (define (toets-procedure toestand toets)
+      (if (and (eq? toestand 'pressed) (eq? toets #\space))
+          ((teken-adt 'set-spel-lus!) spel-lus-procedure)))
             
-  (define (dispatch msg)
-    (cond 
-      ((eq? msg 'start!) (start!))
-      (else
-       "maak-spel-adt: ongeldig bericht")))
-  dispatch))
+    (define (dispatch msg)
+      (cond 
+        ((eq? msg 'start!) (start!))
+        (else
+         "maak-spel-adt: ongeldig bericht")))
+    dispatch))

@@ -17,6 +17,9 @@
   (define (ceil)
     (maak-positie-adt (ceiling x) (ceiling y)))
 
+  (define (flo)
+    (maak-positie-adt (floor x) (floor y)))
+
   (define (dispatch msg)
     (cond
       ((eq? msg 'x) x)
@@ -25,5 +28,6 @@
       ((eq? msg 'y!) y!)
       ((eq? msg 'gelijk?) gelijk?)
       ((eq? msg 'ceil) ceil)
+      ((eq? msg 'flo) flo)
       (else "maak-positie-adt: ongeldig bericht")))
   dispatch)

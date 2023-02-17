@@ -42,7 +42,12 @@
 
     ;; Volgende code laat toe om projectielen te schieten naar een bepaald monster
     (define (schiet! monster)
-      (let ((projectiel (maak-projectiel-adt centraal-positie monster)))
+      (let* ((toren-positie-x (centraal-positie 'x))
+             (toren-positie-y (centraal-positie 'y))
+             (projectiel (maak-projectiel-adt
+                          (maak-positie-adt toren-positie-x toren-positie-y) ;; Moet 2 keer gedaan worden anders, word zelfde positie constant veranderen en doet het niet wat we willen
+                          (maak-positie-adt toren-positie-x toren-positie-y)
+                          monster)))
         (set! projectielen (cons projectiel projectielen))))
 
     ;; Volgende code laat toe om de projectielen hun posities up te daten
