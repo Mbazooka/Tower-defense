@@ -58,8 +58,13 @@
 
     ;;Volgende code implementeert een toets om het spel de laten starten
     (define (toets-procedure toestand toets)
-      (if (and (eq? toestand 'pressed) (eq? toets #\space))
-          ((teken-adt 'set-spel-lus!) spel-lus-procedure)))
+      (cond
+        ((and (eq? toestand 'pressed) (eq? toets #\space) ((level 'einde?)))
+         (set! level (maak-level-adt pad voorbeeld-lijst (level 'torens))))
+        ((and (eq? toestand 'pressed) (eq? toets #\space))
+         ((teken-adt 'set-spel-lus!) spel-lus-procedure))
+        ((and (eq? toestand 'pressed) (eq? toets 'escape))
+         ((level 'level-einde!)))))
             
     (define (dispatch msg)
       (cond 
