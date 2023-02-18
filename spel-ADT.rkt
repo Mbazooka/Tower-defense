@@ -42,7 +42,7 @@
     
     ;; Volgende code implementeert de spel lus van het spel
     (define (spel-lus-procedure dt)
-      (if (>= monster-tijd *monster-beweeg-snelheid*) ;; Zal monsters op scherm updaten na 0,1 seconde
+      (if (>= monster-tijd *monster-spawn-frequentie*) ;; Zal monsters op scherm updaten na ongeveer 2 seconden
           (begin
             ((level 'update-monsters!))
             ((teken-adt 'teken-monsters!) (level 'monsters))

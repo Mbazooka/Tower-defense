@@ -2,16 +2,6 @@
 ;;                                 Hulpprocedures                             ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Misschien weg doen indien niet gebruikt word 
-;(define (vector-for-each proc vector)
-;  (let ((lengte (vector-length vector)))
-;    (define (hulp-vector-for-each ctr)
-;      (if (not (= ctr (vector-length vector)))
-;          (begin
-;            (proc (vector-ref vector ctr))
-;            (hulp-vector-for-each (+ ctr 1)))))
-;    (hulp-vector-for-each 0)))
-
 (define (accumulate operator null-waarde lijst)
   (if (null? lijst)
       null-waarde
@@ -27,5 +17,11 @@
 
 (define (flatten lijst)
   (accumulate append '() lijst))
+
+;; Volgende code zijn abstracties om vectoren-van-posities af te handelen
+(define neem-inflectie-counter car)
+(define neem-inflectie-tekens cadr)
+(define neem-vector caddr)
+
 
 

@@ -49,7 +49,7 @@
     
     ;; Pakt elke pad positie en maakt een tegel en zet die op juiste plaats  
     (define (teken-pad! pad)
-      (let ((pad-posities (cdr (pad 'posities))))
+      (let ((pad-posities (pad 'posities)))
         (define (hulp-teken-pad! ctr)
           (if (not (= ctr (pad 'lengte)))
               (begin

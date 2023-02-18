@@ -20,6 +20,9 @@
   (define (flo)
     (maak-positie-adt (floor x) (floor y)))
 
+  (define (positie-copieer)
+    (maak-positie-adt x y))
+
   (define (dispatch msg)
     (cond
       ((eq? msg 'x) x)
@@ -29,5 +32,6 @@
       ((eq? msg 'gelijk?) gelijk?)
       ((eq? msg 'ceil) ceil)
       ((eq? msg 'flo) flo)
+      ((eq? msg 'positie-copieer) positie-copieer)
       (else "maak-positie-adt: ongeldig bericht")))
   dispatch)

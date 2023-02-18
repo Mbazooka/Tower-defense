@@ -3,7 +3,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (maak-toren-adt centraal-positie type) ;; Positie stelt midden van de toren voor, type voor uitbreidbaarheid
   (let ((toren-rand (make-vector 4)) ;; Stelt werkelijke posities toren voor (enkel 4 punten van rand, voor geheugenvriendelijkheid)
-        (buurt-rand (make-vector 4)) ;; Stelt buurt voor (geheugenvriendelijk)
+        (buurt-rand (make-vector 4)) ;; Stelt buurt voor (geheugenvriendelijker)
         (projectielen '()))
 
     ;; Geeft de rand van een bepaald abstract object a.d.h.v 4 posities (bv toren rand)
@@ -42,11 +42,9 @@
 
     ;; Volgende code laat toe om projectielen te schieten naar een bepaald monster
     (define (schiet! monster)
-      (let* ((toren-positie-x (centraal-positie 'x))
-             (toren-positie-y (centraal-positie 'y))
-             (projectiel (maak-projectiel-adt
-                          (maak-positie-adt toren-positie-x toren-positie-y) ;; Moet 2 keer gedaan worden anders, word zelfde positie constant veranderen en doet het niet wat we willen
-                          (maak-positie-adt toren-positie-x toren-positie-y)
+      (let ((projectiel (maak-projectiel-adt
+                          ((centraal-positie 'positie-copieer));; Moet 2 keer gedaan worden anders, word zelfde positie constant veranderen en doet het niet wat we willen
+                          ((centraal-positie 'positie-copieer))
                           monster)))
         (set! projectielen (cons projectiel projectielen))))
 

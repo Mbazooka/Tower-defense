@@ -3,25 +3,34 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Veel overlappende rekenwerk, verander misschienn naar car en cdr rest 
 (define (maak-pad-adt vector-van-posities) ;; Vector gebruikt, gemakkelijk acceseren
-  (let* ((lengte (vector-length (cdr vector-van-posities))) 
-         (midden (make-vector (car vector-van-posities)))) ;; Want lengte pad is altijd veelvoud van 3 per constructie
+  (let* ((lengte (vector-length (neem-vector vector-van-posities)))
+         (inflectie-counter (neem-inflectie-counter vector-van-posities))
+         (inflectie-tekens (neem-inflectie-tekens vector-van-posities))
+         (vector-posities (neem-vector vector-van-posities))
+         (inflectie-punten '())) ;; Want lengte pad is altijd veelvoud van 3 per constructie
 
     ;; Maakt het midden van de pad
-    (define (maak-midden-vector!)
-      (let ((eindconditie (car vector-van-posities)))
-        (define (hulp ctr)
-          (if (< ctr eindconditie)
-              (begin
-                (vector-set! midden ctr (vector-ref (cdr vector-van-posities) ctr))
-                (hulp (+ ctr 1)))))
-        (hulp 0)))
+    (define (maak-inflectie-lijst)
+      (define (rec ctr res)
+        (if (< ctr inflectie-counter)               
+            (rec (+ ctr 1) (cons (vector-ref vector-posities ctr) res))
+            (reverse res)))
+      (rec 0 inflectie-punten))
 
     ;; Maakt werkelijke het midden van de pad (moet van 1 beginnen om iedere keer de middenste tegel te nemen)
-    (maak-midden-vector!)
+    (set! inflectie-punten (maak-inflectie-lijst))
+
+    ;; Maakt copy van lijst, is nodig omdat monster ADT deze lijst nodig heeft maar niet exact dezelfde lijst
+    (define (inflectie-copy punten/tekens)
+      (cond
+        ((eq? punten/tekens 'punten)
+         (map (lambda (positie) ((positie 'positie-copieer))) inflectie-punten))
+        ((eq? punten/tekens 'tekens)
+         (map (lambda (tekens) tekens) inflectie-tekens))))
           
     ;; Gaat na als toren in pad zit (werkt niet)
     (define (toren-in-pad? toren)
-      (let ((lijst-van-posities (vector->list (cdr vector-van-posities)))
+      (let ((lijst-van-posities (vector->list vector-posities))
             (toren-rand (toren 'toren-posities)))
         
         (define (in-pad? positie)
@@ -37,11 +46,11 @@
                    
     (define (dispatch msg)
       (cond
-        ((eq? msg 'posities) vector-van-posities)
+        ((eq? msg 'posities) vector-posities)
         ((eq? msg 'lengte) lengte)
-        ((eq? msg 'begin) (vector-ref midden 0))
-        ((eq? msg 'midden) midden)
-        ((eq? msg 'einde) (- (vector-length midden) 1)) ;; einde pad in termen van indexen
+        ((eq? msg 'begin) (vector-ref vector-posities (+ inflectie-counter 1))) ;; + 1 begin te zetten in midden van pad
+        ((eq? msg 'einde) (vector-ref vector-posities (- lengte 2))) 
+        ((eq? msg 'inflectie-copy) inflectie-copy) 
         ((eq? msg 'toren-in-pad?) toren-in-pad?)
         (else "maak-pad-adt: ongeldig bericht")))
     dispatch))

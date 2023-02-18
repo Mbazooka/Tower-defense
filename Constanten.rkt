@@ -27,7 +27,8 @@
 (define *buurt-rand-afstand* 10)
 
 ;; Tijd constanten
-(define *monster-beweeg-snelheid* 100) ;; Monster beweeg snelheid (te veranderen)
+(define *monster-spawn-frequentie* 1000) ;; Monster beweeg snelheid (te veranderen)
+(define *monster-loop-snelheid* 0.5)
 (define *toren-afvuur-frequentie* 2000)
 (define *projectiel-afvuur-snelheid* 0.1) ;; Hoe snel het projectiel afgevuurd word
 
