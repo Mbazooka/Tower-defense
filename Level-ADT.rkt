@@ -4,8 +4,7 @@
 (define (maak-level-adt pad monster-rij . vorige-torens) ;; Neemt een rij van monster in die gereleased zullen zijn op het pad, optionele parameter torens om torens vorige level mee te nemen
   (let ((torens (if (not (null? vorige-torens)) (car vorige-torens) vorige-torens))
         (monsters '()) ;; Lijst omdat elk element bewerken gemakkelijk is
-        (inflectie-punten (pad 'inflectie)) 
-        (update-type #t)) ;; Monster bijvoegen of niet? (om ze niet allemaal te snel te releasen)
+        (inflectie-punten (pad 'inflectie)))
     
     ;; Abstracties om type en rest uit lijst te krijgen
     (define type car)
@@ -16,20 +15,17 @@
       (set! torens (cons toren torens)))
     
     ;; voglende code update de monsters die op het pad lopen
-    (define (update-monsters!)
+    (define (update-monsters! . update-teken)
       (set! monsters (filter
                       (lambda (monster)
                         (and (not ((monster 'einde?)))
                              (not (monster 'gestorven?))))
                       monsters)) ;; Overblijvende monsters te vermoorden
       (for-each (lambda (monster) ((monster 'volgende-positie!))) monsters)
-      (if update-type
-          (if (not (null? monster-rij))
+      (if (and (not (null? update-teken)) (eq? (car update-teken) 'toevoegen) (not (null? monster-rij)))
               (let ((copy (pad 'inflectie-copy)))
                 (set! monsters (cons (maak-monster-adt (((pad 'begin) 'positie-copieer)) (type monster-rij) (pad 'einde) (copy 'punten) (copy 'tekens)) monsters))
-                (set! monster-rij (rest monster-rij))
-                (set! update-type #f)))
-          (set! update-type #t)))
+                (set! monster-rij (rest monster-rij)))))
 
     ;; Volgende code update de projectielen die door torens werden afgeschoten up te daten
     (define (update-torens-projectielen-positie!)

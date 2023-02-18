@@ -57,6 +57,20 @@
                 (hulp-teken-pad! (+ ctr 1)))))
         (hulp-teken-pad! 0)))
 
+    ;; Volgende code is om de correctie bitmap te verkrijgen afhankelijk van het type van het object
+;    (define (bitmap-type object-type object)
+;      (cond
+;        ((eq? object 'toren)
+;         (cond
+;           ((eq? object-type 'basis) *basis-toren-bitmap&&mask*)))
+;
+;        ((eq? object 'monster)
+;         (cond
+;           ((eq? object-type 'rood) *rood-monster-bitmap&&mask*)))
+;        ((eq? object 'projectiel)
+;         (cond
+;           ((eq? object-type 'steen) *steen-projectiel-bitmap&&mask*)))))
+
     ;; Volgende code is een venster om torens op te plaatsen
     (define laag-toren ((venster 'new-layer!)))
 
@@ -65,7 +79,7 @@
       (let ((toren-positie (toren 'positie)))              
         (initialiseer-statisch-posities-scherm! (maak-positie-adt (- (toren-positie 'x) 1) (- (toren-positie 'y) 1)) "Images/Toren-1-game.png" "Images/Toren-1-game-mask.png" laag-toren))) ;; nieuwe positie om toren te centreren
 
-    ;Volgende code zijn abstracties om met dictionaries te werken (hier gezet want enkel hier gebruikt)
+    ;; Volgende code zijn abstracties om met dictionaries te werken (hier gezet want enkel hier gebruikt)
     (define (associatie dict)
       (car dict))
 
@@ -77,13 +91,13 @@
     (define (waarde associatie)
       (cdr associatie))
 
-    ;; Steekt een associatie in de dictionary
+    ;; Volgende code steekt een associatie in de dictionary
     (define (insert! sleut value tagged-dict)
       (let ((toe-te-voegen (list (cons sleut value))))
         (set-cdr! toe-te-voegen (rest-dict tagged-dict))
         (set-cdr! tagged-dict toe-te-voegen)))   
 
-    ;; Delete een bepaalde sleutel uit de dictionary
+    ;; Volgende code delete een bepaalde sleutel uit de dictionary
     (define (delete! sleut dict) 
       (define (delete-hulp huidige vorige)
         (cond
@@ -121,7 +135,9 @@
     (define laag-monster ((venster 'new-layer!)))
     
     ;; Tekent bestaande monsters op het scherm gegeven een lijst monsters
-    (define (teken-monsters! monsters)                            
+    (define (teken-monsters! monsters)
+      (define bitmap car)
+      (define bitmap-mask cdr)          
       (haal-weg-tiles-dict! monsters (rest-dict monster-tiles-dict) monster-tiles-dict) 
       (for-each ;; Gaat elke monster tile updaten 
        (lambda (ass) 

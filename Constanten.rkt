@@ -27,8 +27,8 @@
 (define *buurt-rand-afstand* 10)
 
 ;; Tijd constanten
-(define *monster-spawn-frequentie* 1000) ;; Monster beweeg snelheid (te veranderen)
-(define *monster-loop-snelheid* 0.5)
+(define *monster-spawn-frequentie* 10000) ;; Monster beweeg snelheid (te veranderen)
+(define *monster-loop-snelheid* 1)
 (define *toren-afvuur-frequentie* 2000)
 (define *projectiel-afvuur-snelheid* 0.1) ;; Hoe snel het projectiel afgevuurd word
 
@@ -44,10 +44,17 @@
 (define *toren-1-knop-hoogte-einde* (* 5 *px-hoogte*))
 (define *toren-knop-breedte-einde* (* *spel-breedte* (* 4 *px-breedte*)))
 
-
 ;; Tekst constanten voor op menu
 (define *tekst-toren-breedte* (+ *px-breedte* 10)) ;; + 5 want orange rand centreert de tekst niet
-(define *tekst-toren-hoogte* *px-hoogte*) 
+(define *tekst-toren-hoogte* *px-hoogte*)
 
+;; Constanten voor bitmap van torens
+(define *basis-toren-bitmap&&mask* (cons "Images/Toren-1-game.png" "Images/Toren-1-game-mask.png"))
+
+;; Constanten voor bitmap van monsters (geheugen vriendelijker)
+(define *rood-monster-bitmap&&mask* (cons "Images/Rood-monster.jpg" "Images/Rood-monster-mask.png"))
+
+;; Constanten voor bitmap van projectielen
+(define *steen-projectiel-bitmap&&mask* (cons "Images/projectiel.png" "Images/projectiel-mask.png"))
 
 

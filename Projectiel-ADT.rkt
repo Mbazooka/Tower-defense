@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                 Projectiel ADT                             ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (maak-projectiel-adt initiele-positie positie te-raken-monster) ;; Initiele positie nodig om te weten van waar hij komt
+(define (maak-projectiel-adt initiele-positie positie te-raken-monster type) ;; Initiele positie nodig om te weten van waar hij komt
   (let* ((bestemming (te-raken-monster 'positie))
          (bestemming-extra-1 (maak-positie-adt (+ (bestemming 'x) 1) (+ (bestemming 'y) 1))) ;; Dit zijn extras omdat projectiel soms besteming voor bij gaat
          (bestemming-extra-2 (maak-positie-adt (+ (bestemming 'x) 1) (- (bestemming 'y) 1)))
@@ -31,6 +31,7 @@
     (define (dispatch msg)
       (cond
         ((eq? msg 'positie) positie)
+        ((eq? msg 'type) type)
         ((eq? msg 'bestemming) bestemming)
         ((eq? msg 'te-raken-monster) te-raken-monster)
         ((eq? msg 'bestemming-bereikt?) bestemming-bereikt?)

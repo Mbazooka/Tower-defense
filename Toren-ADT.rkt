@@ -45,7 +45,8 @@
       (let ((projectiel (maak-projectiel-adt
                           ((centraal-positie 'positie-copieer));; Moet 2 keer gedaan worden anders, word zelfde positie constant veranderen en doet het niet wat we willen
                           ((centraal-positie 'positie-copieer))
-                          monster)))
+                          monster
+                          'steen)))
         (set! projectielen (cons projectiel projectielen))))
 
     ;; Volgende code laat toe om de projectielen hun posities up te daten
@@ -67,6 +68,7 @@
     (define (dispatch msg)
       (cond
         ((eq? msg 'positie) centraal-positie)
+        ((eq? msg 'type) type)
         ((eq? msg 'toren-posities) toren-rand) ;; Nodig om toren overlap na te kijken
         ((eq? msg 'in-toren?) in-toren?)
         ((eq? msg 'in-buurt?) in-buurt?)

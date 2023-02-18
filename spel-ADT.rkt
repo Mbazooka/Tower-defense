@@ -44,9 +44,10 @@
     (define (spel-lus-procedure dt)
       (if (>= monster-tijd *monster-spawn-frequentie*) ;; Zal monsters op scherm updaten na ongeveer 2 seconden
           (begin
-            ((level 'update-monsters!))
-            ((teken-adt 'teken-monsters!) (level 'monsters))
-            (set! monster-tijd 0)))
+            ((level 'update-monsters!) 'toevoegen)
+            (set! monster-tijd 0))
+          ((level 'update-monsters!)))
+      ((teken-adt 'teken-monsters!) (level 'monsters))
       (set! monster-tijd (+ monster-tijd dt))
       (if (>= projectiel-tijd *toren-afvuur-frequentie*)
           (begin
