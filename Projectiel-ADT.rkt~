@@ -1,9 +1,0 @@
-;;maak hier een projectiel ADT
-(define (maak-projectiel-adt positie)
-
-  (define (dispatch msg)
-    (cond
-      ((eq? msg 'positie) positie)
-      ((eq? msg 'positie!) positie!)
-      (else "maak-projectiel-adt: ongeldig bericht")))
-  dispatch)
