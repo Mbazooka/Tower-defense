@@ -43,10 +43,10 @@
     ;; Volgende code laat toe om projectielen te schieten naar een bepaald monster
     (define (schiet! monster)
       (let ((projectiel (maak-projectiel-adt
+                          ((centraal-positie 'positie-copieer));; Moet 2 keer gedaan worden anders, word zelfde positie constant veranderen en doet het niet wat we willen
                           ((centraal-positie 'positie-copieer))
-                          'steen
                           monster
-                          )))
+                          'steen)))
         (set! projectielen (cons projectiel projectielen))))
 
     ;; Volgende code laat toe om de projectielen hun posities up te daten

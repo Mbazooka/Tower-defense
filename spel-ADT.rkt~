@@ -4,12 +4,12 @@
 (define (maak-spel-adt)
   (let* ((pad (maak-pad-adt vector-1)) ;; maak de fundamenten van het spel
          (teken-adt (maak-teken-adt (+ *menu-breedte-px* *spel-breedte-px*) *spel/menu-hoogte-px*))
-         (level (maak-level-adt pad level-1))
-         (toren-type #f) ;; Om torens te plaatsen veranderen we dit om te weten welk type te plaatsen.
+         (level (maak-level-adt pad voorbeeld-lijst))
+         (toren-type #f)
          (monster-tijd 0) ;; Tijd afgelopen sinds vorige monster op pad
          (projectiel-tijd 0)) ;; Tijd afgelopen sinds vorige projectiel die geschoten werd
 
-    ;; Maakt pad van het spel
+    ;; Maakt basis compenenten van het spel
     ((teken-adt 'teken-pad!) pad) 
 
     ;; Start de dynamische werking van het spel
@@ -24,13 +24,16 @@
          (set! toren-type 'basis))
         ((eq? toren-type #f) "Beweging niet mogelijk") ;; Indien nog niks in de menu gekozen is
         ((and (eq? toets 'left) (eq? toestand 'pressed)
-              (<= x (- *start-x-pos-menu* (* 2 *px-breedte*))) ;; Plaats toren buiten menu. De constante 2 is om speling te vermijden en niks op menu te hebben terwijl positie van toren er toch buiten zit (stukje van toren in menu)
+              (<= x (- *start-x-pos-menu* (* 2 *px-breedte*))) ;; Plaats toren buiten menu. De constante 2 is om speling te vermijden en niks op menu te hebben terwijl positie van toren er toch buiten zit
               (not (and (<= x *beperking-1-breedte*) (<= y *beperking-1-hoogte*)))
               (not (and (>= x *beperking-1-breedte*) (<= x *beperking-2-breedte*) (<= y *beperking-2-hoogte*)))
               (not (and (>= x *beperking-3-breedte*) (<= y *beperking-3-hoogte*))))
         
          (let ((toren (maak-toren-adt (maak-positie-adt (/ x *px-breedte*) (/ y *px-hoogte*)) toren-type)))
            (cond
+             ((and (null? (level 'torens)) (not ((pad 'toren-in-pad?) toren)))
+              ((level 'voeg-toren-toe!) toren)
+              ((teken-adt 'teken-toren!) toren))
              ((and (not (accumulate (lambda (x y) (or x y)) #f (map (lambda (t) ((t 'in-toren?) toren)) (level 'torens))))
                    (not ((pad 'toren-in-pad?) toren)))
               ((level 'voeg-toren-toe!) toren)
@@ -58,7 +61,7 @@
     (define (toets-procedure toestand toets)
       (cond
         ((and (eq? toestand 'pressed) (eq? toets #\space) ((level 'einde?)))
-         (set! level (maak-level-adt pad level-1 (level 'torens))))
+         (set! level (maak-level-adt pad voorbeeld-lijst (level 'torens))))
         ((and (eq? toestand 'pressed) (eq? toets #\space))
          ((teken-adt 'set-spel-lus!) spel-lus-procedure))
         ((and (eq? toestand 'pressed) (eq? toets 'escape))

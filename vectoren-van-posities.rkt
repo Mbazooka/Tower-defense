@@ -1,6 +1,7 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                             vectoren-van-posities                          ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Hieronder vind je vectoren waarmee we paden maken
-;; ;m Staat voor midden in een pad
-(load "positie-adt.rkt")
 (define vector-1
   (list 2 ;; Aantal inflectiepunten
         '(-) ;; Dit zijn tekens om te zien hoe y moet veranderen eenmaal het inflectie punt bereikt is
@@ -75,6 +76,7 @@
          
          (maak-positie-adt 16 20)
          (maak-positie-adt 16 22)
+         
          
          (maak-positie-adt 17 20)         
          (maak-positie-adt 17 21)

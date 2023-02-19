@@ -11,14 +11,22 @@
 
     ;; Maakt het midden van de pad
     (define (maak-inflectie-lijst)
-      (define (iter ctr res)
+      (define (rec ctr res)
         (if (< ctr inflectie-counter)               
-            (iter (+ ctr 1) (cons (vector-ref vector-posities ctr) res))
+            (rec (+ ctr 1) (cons (vector-ref vector-posities ctr) res))
             (reverse res)))
-      (iter 0 inflectie-punten))
+      (rec 0 inflectie-punten))
 
     ;; Maakt werkelijke het midden van de pad (moet van 1 beginnen om iedere keer de middenste tegel te nemen)
     (set! inflectie-punten (maak-inflectie-lijst))
+
+    ;; Maakt copy van lijst, is nodig omdat monster ADT deze lijst nodig heeft maar niet exact dezelfde lijst
+    (define (inflectie-copy punten/tekens)
+      (cond
+        ((eq? punten/tekens 'punten)
+         (map (lambda (positie) ((positie 'positie-copieer))) inflectie-punten))
+        ((eq? punten/tekens 'tekens)
+         (map (lambda (tekens) tekens) inflectie-tekens))))
           
     ;; Gaat na als toren in pad zit (werkt niet)
     (define (toren-in-pad? toren)
@@ -40,10 +48,9 @@
       (cond
         ((eq? msg 'posities) vector-posities)
         ((eq? msg 'lengte) lengte)
-        ((eq? msg 'inflectie-punten) inflectie-punten)
-        ((eq? msg 'inflectie-tekens) inflectie-tekens)
         ((eq? msg 'begin) (vector-ref vector-posities (+ inflectie-counter 1))) ;; + 1 begin te zetten in midden van pad
         ((eq? msg 'einde) (vector-ref vector-posities (- lengte 2))) 
+        ((eq? msg 'inflectie-copy) inflectie-copy) 
         ((eq? msg 'toren-in-pad?) toren-in-pad?)
         (else "maak-pad-adt: ongeldig bericht")))
     dispatch))

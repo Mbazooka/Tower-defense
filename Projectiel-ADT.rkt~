@@ -1,18 +1,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                 Projectiel ADT                             ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (maak-projectiel-adt positie type te-raken-monster) ;; Initiele positie nodig om te weten van waar hij komt
-  (let* ((bestemming (((te-raken-monster 'positie) 'positie-copieer)))
-         (bestemming-x (bestemming 'x)) ;; Vaak nodig dus 1 maal berekent
-         (bestemming-y (bestemming 'y))
-         (initiele-positie ((positie 'positie-copieer)))
-         (bestemming-extra-1 (maak-positie-adt (+ bestemming-x 1) (+ bestemming-y 1))) ;; Dit zijn extras omdat projectiel soms besteming voor bij gaat
-         (bestemming-extra-2 (maak-positie-adt (+ bestemming-x 1) (- bestemming-y 1)))
-         (bestemming-extra-3 (maak-positie-adt (- bestemming-x 1) (+ bestemming-y 1)))
-         (bestemming-extra-4 (maak-positie-adt (- bestemming-x 1) (- bestemming-y 1)))
+(define (maak-projectiel-adt initiele-positie positie te-raken-monster type) ;; Initiele positie nodig om te weten van waar hij komt
+  (let* ((bestemming (te-raken-monster 'positie))
+         (bestemming-extra-1 (maak-positie-adt (+ (bestemming 'x) 1) (+ (bestemming 'y) 1))) ;; Dit zijn extras omdat projectiel soms besteming voor bij gaat
+         (bestemming-extra-2 (maak-positie-adt (+ (bestemming 'x) 1) (- (bestemming 'y) 1)))
+         (bestemming-extra-3 (maak-positie-adt (- (bestemming 'x) 1) (+ (bestemming 'y) 1)))
+         (bestemming-extra-4 (maak-positie-adt (- (bestemming 'x) 1) (- (bestemming 'y) 1)))
          (bestemming-lijst (list bestemming bestemming-extra-1 bestemming-extra-2 bestemming-extra-3 bestemming-extra-4)) 
-         (positie-update-hoeveelheid-x (- bestemming-x (initiele-positie 'x))) ;; Dit zijn positie update constanten om gewicht te introduceren en ze zo smooth naar hun eindbestemming te brengen
-         (positie-update-hoeveelheid-y (- bestemming-y (initiele-positie 'y))))
+         (positie-update-hoeveelheid-x (- (bestemming 'x) (initiele-positie 'x))) ;; Dit zijn positie update constanten om smoothe beweging te hebben
+         (positie-update-hoeveelheid-y (- (bestemming 'y) (initiele-positie 'y))))
 
     ;; Volgende code gaat na als het projectiel de bestemming of het extra bestemming positie bereikt heeft.    
     (define (bestemming-bereikt?)
@@ -35,6 +32,7 @@
       (cond
         ((eq? msg 'positie) positie)
         ((eq? msg 'type) type)
+        ((eq? msg 'bestemming) bestemming)
         ((eq? msg 'te-raken-monster) te-raken-monster)
         ((eq? msg 'bestemming-bereikt?) bestemming-bereikt?)
         ((eq? msg 'volgende-positie!) volgende-positie!)
