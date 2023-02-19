@@ -75,5 +75,6 @@
         ((eq? msg 'schiet!) schiet!)
         ((eq? msg 'projectiel-update!) projectiel-update!)
         ((eq? msg 'projectielen) projectielen)
+        ((eq? msg 'soort) 'toren)
         (else "maak-toren-adt: ongeldig bericht")))
     dispatch))

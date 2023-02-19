@@ -58,26 +58,26 @@
         (hulp-teken-pad! 0)))
 
     ;; Volgende code is om de correctie bitmap te verkrijgen afhankelijk van het type van het object
-;    (define (bitmap-type object-type object)
-;      (cond
-;        ((eq? object 'toren)
-;         (cond
-;           ((eq? object-type 'basis) *basis-toren-bitmap&&mask*)))
-;
-;        ((eq? object 'monster)
-;         (cond
-;           ((eq? object-type 'rood) *rood-monster-bitmap&&mask*)))
-;        ((eq? object 'projectiel)
-;         (cond
-;           ((eq? object-type 'steen) *steen-projectiel-bitmap&&mask*)))))
+    (define (bitmap-type object object-type)
+      (cond
+        ((eq? object 'toren)
+         (cond
+           ((eq? object-type 'basis) *basis-toren-bitmap&&mask*)))
+        ((eq? object 'monster)
+         (cond
+           ((eq? object-type 'rood) *rood-monster-bitmap&&mask*)))
+        ((eq? object 'projectiel)
+         (cond
+           ((eq? object-type 'steen) *steen-projectiel-bitmap&&mask*)))))
 
     ;; Volgende code is een venster om torens op te plaatsen
     (define laag-toren ((venster 'new-layer!)))
 
     ;; Tekent toren op het scherm gegeven een toren
     (define (teken-toren! toren)
-      (let ((toren-positie (toren 'positie)))              
-        (teken-object-scherm! (maak-positie-adt (- (toren-positie 'x) 1) (- (toren-positie 'y) 1)) "Images/Toren-1-game.png" "Images/Toren-1-game-mask.png" laag-toren))) ;; nieuwe positie om toren te centreren
+      (let ((toren-positie (toren 'positie)))
+        (let ((bitmap-adressen (bitmap-type (toren 'soort) 'basis)))
+          (teken-object-scherm! (maak-positie-adt (- (toren-positie 'x) 1) (- (toren-positie 'y) 1)) (bitmap bitmap-adressen) (mask bitmap-adressen) laag-toren)))) ;; nieuwe positie om toren te centreren
 
     ;; Volgende code zijn abstracties om met dictionaries te werken (hier gezet want enkel hier gebruikt)
     (define (associatie dict)
@@ -113,45 +113,49 @@
       (delete-hulp (cdr dict) dict))
 
     ;; Volgende code is om tiles weg te halen van het scherm die niet meer nodig zijn
-    (define (haal-weg-tiles-dict! objecten diction diction-te-verwijderen) ;; Zit het in de dictionary maar niet in de lijst van monsters dan moet hij weg
+    (define (haal-weg-tiles-dict! objecten diction diction-te-verwijderen laag) ;; Zit het in de dictionary maar niet in de lijst van monsters dan moet hij weg
       (if (null? diction)
           #f
           (let ((te-zoeken (sleutel (associatie diction))))
             (if (not (memq te-zoeken objecten))
                 (begin
-                  ((laag-monster 'remove-drawable!) (waarde (associatie diction)))
+                  ((laag 'remove-drawable!) (waarde (associatie diction)))
                   (delete! te-zoeken diction-te-verwijderen))
-                (haal-weg-tiles-dict! objecten (rest-dict diction) diction-te-verwijderen)))))
+                (haal-weg-tiles-dict! objecten (rest-dict diction) diction-te-verwijderen laag)))))
 
     ;; Volgende code is om tiles op het scherm te voegen die er nog niet op stonden
-    (define (voeg-toe-tiles-dict! huidige-object diction-toevoegen bitmap bitmap-mask) ;; Zit het in de lijst van mosnter maar niet in de dictionary dan moet je tiles bijvoegen
+    (define (voeg-toe-tiles-dict! huidige-object diction-toevoegen laag) ;; Zit het in de lijst van mosnter maar niet in de dictionary dan moet je tiles bijvoegen
       (if (null? huidige-object)
           #f
-          (let ((monster (car huidige-object)))
-            (if (not (assq monster (rest-dict diction-toevoegen)))
-                (insert! monster (teken-object-scherm! (monster 'positie) bitmap bitmap-mask laag-monster) diction-toevoegen)
-                (voeg-toe-tiles-dict! (cdr huidige-object) diction-toevoegen bitmap bitmap-mask)))))
+          (let ((object (car huidige-object)))
+            (if (not (assq object (rest-dict diction-toevoegen)))
+                (let ((bitmap-adressen (bitmap-type (object 'soort) (object 'type))))
+                  (insert! object (teken-object-scherm! (object 'positie) (bitmap bitmap-adressen) (mask bitmap-adressen) laag) diction-toevoegen))
+                (voeg-toe-tiles-dict! (cdr huidige-object) diction-toevoegen laag)))))
+    
+    ;; Volgende code is om dynamische objecten te tekenen (objecten waarvan ze moeten tevoorschijn komen, een positie bereiken en dan verdwijnen)
+    (define (teken-dynamisch-object! objecten tiles laag)
+      (haal-weg-tiles-dict! objecten (rest-dict tiles) tiles laag) 
+      (for-each ;; Gaat elke tile van objecte  updaten 
+       (lambda (ass) 
+         (bepaal-tegel-px-positie! ((sleutel ass) 'positie) (waarde ass))) 
+       (rest-dict tiles))
+      (voeg-toe-tiles-dict! objecten tiles laag))
     
     ;; Volgende code is een venster om monsters te plaatsen
     (define laag-monster ((venster 'new-layer!)))
-    
-    ;; Tekent bestaande monsters op het scherm gegeven een lijst monsters
-    (define (teken-monsters! monsters)         
-      (haal-weg-tiles-dict! monsters (rest-dict monster-tiles-dict) monster-tiles-dict) 
-      (for-each ;; Gaat elke monster tile updaten 
-       (lambda (ass) 
-         (bepaal-tegel-px-positie! ((sleutel ass) 'positie) (waarde ass))) 
-       (rest-dict monster-tiles-dict))
-      (voeg-toe-tiles-dict! monsters monster-tiles-dict "Images/Rood-monster.jpg" "Images/Rood-monster-mask.png"))
 
-    ;; Volgende code is om projectielen op het scherm te tekenen
+    ;; Volgende code is om monsters te tekenen
+    (define (teken-monsters! monsters)
+      (teken-dynamisch-object! monsters monster-tiles-dict laag-monster))
+
+    ;; Volgende code is een venster om projectielen te plaatsen
+    (define laag-projectiel ((venster 'new-layer!)))
+
+    ;; Volgende code is om projectielen te tekenen
     (define (teken-projectielen! projectielen)
-      (haal-weg-tiles-dict! projectielen (rest-dict projectielen-tiles-dict) projectielen-tiles-dict)
-      (for-each
-       (lambda (ass)
-         (bepaal-tegel-px-positie! ((sleutel ass) 'positie) (waarde ass)))
-       (rest-dict projectielen-tiles-dict))
-      (voeg-toe-tiles-dict! projectielen projectielen-tiles-dict "Images/projectiel.png" "Images/projectiel-mask.png"))
+      (teken-dynamisch-object! projectielen projectielen-tiles-dict laag-projectiel))
+       
     
     ;; Volgende code is om muis klikken te implementeren
     (define (set-muis-toets-procedure! proc)

@@ -1,8 +1,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                               Monster ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (maak-monster-adt positie type einde inflectie-punten inflectie-tekens) ;; Index stelt hoever in midden van het pad hij als is
+(define (maak-monster-adt positie type einde pad) ;; Index stelt hoever in midden van het pad hij als is
   (let ((levens #f)
+        (inflectie-punten (pad 'inflectie-punten))
+        (inflectie-tekens (pad 'inflectie-tekens))
         (beweging-richting-x #t)
         (beweging-zin +)) ;; #t beweeg x-richting, #f betekent beweeg y richting
 
@@ -48,6 +50,7 @@
           ((eq? msg 'einde?) (>= (positie 'x) (einde 'x)))
           ((eq? msg 'gestorven?) (<= levens 0))
           ((eq? msg 'verander-levens!) verander-levens!)
+          ((eq? msg 'soort) 'monster)
           (else "maak-monster-adt: ongeldig bericht")))
       dispatch))
 

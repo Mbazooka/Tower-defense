@@ -23,7 +23,7 @@
       (for-each (lambda (monster) ((monster 'volgende-positie!))) monsters) ;; Overblijvende monster verder laten wandelen
       (if (and (not (null? update-teken)) (eq? (car update-teken) 'toevoegen) (not (null? monster-rij))) ;; Het toevoegen gedeelte van de procedure
           (begin
-                (set! monsters (cons (maak-monster-adt (((pad 'begin) 'positie-copieer)) (type monster-rij) (pad 'einde) (pad 'inflectie-punten) (pad 'inflectie-tekens)) monsters))
+                (set! monsters (cons (maak-monster-adt (((pad 'begin) 'positie-copieer)) (type monster-rij) (pad 'einde) pad) monsters))
                 (set! monster-rij (rest monster-rij)))))
 
     ;; Volgende code update de projectielen die door torens werden afgeschoten up te daten

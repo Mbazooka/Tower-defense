@@ -28,7 +28,7 @@
 
 ;; Tijd constanten
 (define *monster-spawn-frequentie* 3000) ;; Monster spawn frequentie (te veranderen)
-(define *monster-loop-snelheid* 1) ;; Monster beweeg snelheid
+(define *monster-loop-snelheid* 0.05) ;; Monster beweeg snelheid
 (define *toren-afvuur-frequentie* 2000) ;; Toren schiet frequentie
 (define *projectiel-afvuur-snelheid* 0.1) ;; Hoe snel het projectiel afgevuurd word
 
@@ -47,6 +47,10 @@
 ;; Tekst constanten voor op menu
 (define *tekst-toren-breedte* (+ *px-breedte* 10)) ;; + 5 want orange rand centreert de tekst niet
 (define *tekst-toren-hoogte* *px-hoogte*)
+
+;; Abstracties om bitmap en mask te acesseren
+(define bitmap car)
+(define mask cdr)
 
 ;; Constanten voor bitmap van torens
 (define *basis-toren-bitmap&&mask* (cons "Images/Toren-1-game.png" "Images/Toren-1-game-mask.png"))
