@@ -1,15 +1,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                   PAD ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Veel overlappende rekenwerk, verander misschienn naar car en cdr rest 
-(define (maak-pad-adt vector-van-posities) ;; Vector gebruikt, gemakkelijk acceseren
-  (let* ((lengte (vector-length (neem-vector vector-van-posities)))
-         (inflectie-counter (neem-inflectie-counter vector-van-posities))
-         (inflectie-tekens (neem-inflectie-tekens vector-van-posities))
-         (vector-posities (neem-vector vector-van-posities))
-         (inflectie-punten '())) ;; Want lengte pad is altijd veelvoud van 3 per constructie
+(define (maak-pad-adt lijst) 
+  (let* ((vector-posities (neem-vector lijst))
+         (lengte (vector-length vector-posities))
+         (inflectie-counter (neem-inflectie-counter lijst))
+         (inflectie-tekens (neem-inflectie-tekens lijst))
+         (inflectie-punten '())) 
 
-    ;; Maakt het midden van de pad
+    ;; Maakt de inflectie punten lijst van de pad
     (define (maak-inflectie-lijst)
       (define (iter ctr res)
         (if (< ctr inflectie-counter)               
@@ -17,10 +16,9 @@
             (reverse res)))
       (iter 0 inflectie-punten))
 
-    ;; Maakt werkelijke het midden van de pad (moet van 1 beginnen om iedere keer de middenste tegel te nemen)
     (set! inflectie-punten (maak-inflectie-lijst))
           
-    ;; Gaat na als toren in pad zit (werkt niet)
+    ;; Gaat na als toren in pad zit 
     (define (toren-in-pad? toren)
       (let ((lijst-van-posities (vector->list vector-posities))
             (toren-rand (toren 'toren-posities)))
@@ -42,7 +40,7 @@
         ((eq? msg 'lengte) lengte)
         ((eq? msg 'inflectie-punten) inflectie-punten)
         ((eq? msg 'inflectie-tekens) inflectie-tekens)
-        ((eq? msg 'begin) (vector-ref vector-posities (+ inflectie-counter 1))) ;; + 1 begin te zetten in midden van pad
+        ((eq? msg 'begin) (vector-ref vector-posities (+ inflectie-counter 1))) ;; + 1, begin te zetten in midden van pad
         ((eq? msg 'einde) (vector-ref vector-posities (- lengte 2))) 
         ((eq? msg 'toren-in-pad?) toren-in-pad?)
         (else "maak-pad-adt: ongeldig bericht")))

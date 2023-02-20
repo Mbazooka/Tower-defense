@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                 Projectiel ADT                             ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (maak-projectiel-adt positie type te-raken-monster) ;; Initiele positie nodig om te weten van waar hij komt
+(define (maak-projectiel-adt positie type te-raken-monster) 
   (let* ((bestemming (((te-raken-monster 'positie) 'positie-copieer)))
          (bestemming-x (bestemming 'x)) ;; Vaak nodig dus 1 maal berekent
          (bestemming-y (bestemming 'y))
@@ -14,7 +14,7 @@
          (positie-update-hoeveelheid-x (- bestemming-x (initiele-positie 'x))) ;; Dit zijn positie update constanten om gewicht te introduceren en ze zo smooth naar hun eindbestemming te brengen
          (positie-update-hoeveelheid-y (- bestemming-y (initiele-positie 'y))))
 
-    ;; Volgende code gaat na als het projectiel de bestemming of het extra bestemming positie bereikt heeft.    
+    ;; Volgende code gaat na als het projectiel de bestemming of de extra bestemming posities bereikt heeft.    
     (define (bestemming-bereikt?)
       (define (positie-bereikt bestemming-positie)
         (or ((((positie 'ceil)) 'gelijk?)  ((bestemming-positie 'ceil)))

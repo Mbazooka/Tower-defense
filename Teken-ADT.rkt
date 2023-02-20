@@ -32,19 +32,19 @@
     (define laag-pad ((venster 'new-layer!))) 
 
     ;; Procedure die tegel op juiste pixel positie zet
-    ;;met positie gedaan (niet object als formele parameter) want pad geeft meerdere posities, code kan enkel 1 positie per keer doen
+    ;;met positie gedaan (niet object als formele parameter) want pad geeft meerdere posities, code kan enkel 1 positie per keer doen (zo hebben we maar 1 procedure voor alle px posities te bepalen)
     (define (bepaal-tegel-px-positie! positie tegel)
       (let ((scherm-x (* (positie 'x) *px-breedte*))
             (scherm-y (* (positie 'y) *px-hoogte*)))
         ((tegel 'set-x!) scherm-x)
         ((tegel 'set-y!) scherm-y)))
 
-    ;; Maakt tegel en zet tegel op laag op juiste plaats (voor een statisch object) !!!!Verander naam!!!!
+    ;; Maakt tegel en zet tegel op juiste plaats op laag  
     (define (teken-object-scherm! positie object-bitmap object-mask object-laag) 
       (let ((tegel-van-object (make-bitmap-tile object-bitmap object-mask)))
         (bepaal-tegel-px-positie! positie tegel-van-object)
         ((object-laag 'add-drawable!) tegel-van-object)
-        tegel-van-object)) ;; Tegel teruggeven want later nodig om dictionary van monsters-tegel of porjectielen-tegel te maken
+        tegel-van-object)) ;; Tegel teruggeven want later nodig om dictionary van monsters-tegel of projectielen-tegel te maken
     
     ;; Pakt elke pad positie en maakt een tegel en zet die op juiste plaats  
     (define (teken-pad! pad)
@@ -57,7 +57,7 @@
                 (hulp-teken-pad! (+ ctr 1)))))
         (hulp-teken-pad! 0)))
 
-    ;; Volgende code is om de correctie bitmap te verkrijgen afhankelijk van het type van het object
+    ;; Volgende code is om de correctie bitmap te verkrijgen afhankelijk van het type van het object (voor algemeenheid van sommige code)
     (define (bitmap-type object object-type)
       (cond
         ((eq? object 'toren)
@@ -113,7 +113,7 @@
       (delete-hulp (cdr dict) dict))
 
     ;; Volgende code is om tiles weg te halen van het scherm die niet meer nodig zijn
-    (define (haal-weg-tiles-dict! objecten diction diction-te-verwijderen laag) ;; Zit het in de dictionary maar niet in de lijst van monsters dan moet hij weg
+    (define (haal-weg-tiles-dict! objecten diction diction-te-verwijderen laag) ;; Zit het in de dictionary maar niet in de lijst van objecten dan moet hij weg
       (if (null? diction)
           #f
           (let ((te-zoeken (sleutel (associatie diction))))
@@ -124,7 +124,7 @@
                 (haal-weg-tiles-dict! objecten (rest-dict diction) diction-te-verwijderen laag)))))
 
     ;; Volgende code is om tiles op het scherm te voegen die er nog niet op stonden
-    (define (voeg-toe-tiles-dict! huidige-object diction-toevoegen laag) ;; Zit het in de lijst van mosnter maar niet in de dictionary dan moet je tiles bijvoegen
+    (define (voeg-toe-tiles-dict! huidige-object diction-toevoegen laag) ;; Zit het in de lijst van objecten maar niet in de dictionary dan moet je tiles bijvoegen
       (if (null? huidige-object)
           #f
           (let ((object (car huidige-object)))
@@ -155,8 +155,7 @@
     ;; Volgende code is om projectielen te tekenen
     (define (teken-projectielen! projectielen)
       (teken-dynamisch-object! projectielen projectielen-tiles-dict laag-projectiel))
-       
-    
+           
     ;; Volgende code is om muis klikken te implementeren
     (define (set-muis-toets-procedure! proc)
       ((venster 'set-mouse-click-callback!) proc))

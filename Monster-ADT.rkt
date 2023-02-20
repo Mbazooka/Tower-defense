@@ -1,8 +1,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                               Monster ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (maak-monster-adt positie type einde pad) ;; Index stelt hoever in midden van het pad hij als is
+(define (maak-monster-adt positie type pad) 
   (let ((levens #f)
+        (einde (pad 'einde))
         (inflectie-punten (pad 'inflectie-punten))
         (inflectie-tekens (pad 'inflectie-tekens))
         (beweging-richting-x #t)

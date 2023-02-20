@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                 Toren ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (maak-toren-adt centraal-positie type) ;; Positie stelt midden van de toren voor, type voor uitbreidbaarheid
+(define (maak-toren-adt centraal-positie type) ;; Positie stelt midden van de toren voor, type voor uitbreidbaarheid (later)
   (let ((toren-rand (make-vector 4)) ;; Stelt werkelijke posities toren voor (enkel 4 punten van rand, voor geheugenvriendelijkheid)
         (buurt-rand (make-vector 4)) ;; Stelt buurt voor (geheugenvriendelijker)
         (projectielen '()))
@@ -14,6 +14,10 @@
         (vector-set! vector 1 (maak-positie-adt (+ x-pos-cent afstand) (+ y-pos-cent afstand)))
         (vector-set! vector 2 (maak-positie-adt (- x-pos-cent afstand) (- y-pos-cent afstand)))
         (vector-set! vector 3 (maak-positie-adt (+ x-pos-cent afstand) (- y-pos-cent afstand)))))
+
+    ;; Maakt de werkelijke 4-punt randen aan
+    (positie->rand! *toren-rand-afstand* toren-rand) ;; Hier werd speling gebruikt om te zorgen bitmap niet op pad komt (zorgt voor meer afstand tussen torens en pad)
+    (positie->rand! *buurt-rand-afstand* buurt-rand)
     
     ;; Kijkt als positie in een bepaalde rand zit 
     (define (in-rand? positie rand)
@@ -24,11 +28,8 @@
              (<= x-pos ((vector-ref rand 3) 'x))
              (>= y-pos ((vector-ref rand 3) 'y)))))
     
-    ;; Maakt de werkelijke 4-punt randen aan
-    (positie->rand! *toren-rand-afstand* toren-rand) ;; Hier werd speling gebruikt om te zorgen bitmap niet op pad komt (zorgt voor meer afstand tussen torens en pad)
-    (positie->rand! *buurt-rand-afstand* buurt-rand)
 
-    ;; Gaat na als een positie werkelijk in zo'n rand zit
+    ;; Gaat na als de ingegeven toren op de beshouwde toren staat
     (define (in-toren? toren)
       (let ((posities (toren 'toren-posities)))
         (or (in-rand? (vector-ref posities 0) toren-rand)
@@ -69,7 +70,7 @@
       (cond
         ((eq? msg 'positie) centraal-positie)
         ((eq? msg 'type) type)
-        ((eq? msg 'toren-posities) toren-rand) ;; Nodig om toren overlap na te kijken
+        ((eq? msg 'toren-posities) toren-rand) 
         ((eq? msg 'in-toren?) in-toren?)
         ((eq? msg 'in-buurt?) in-buurt?)
         ((eq? msg 'schiet!) schiet!)

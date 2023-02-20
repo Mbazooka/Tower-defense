@@ -3,7 +3,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (maak-level-adt pad monster-rij . vorige-torens) ;; Neemt een rij van monster in die gereleased zullen zijn op het pad, optionele parameter torens om torens vorige level mee te nemen
   (let ((torens (if (not (null? vorige-torens)) (car vorige-torens) vorige-torens))
-        (monsters '())) ;; Lijst omdat elk element bewerken gemakkelijk is
+        (monsters '())) ;; Lijst omdat elk element bewerken gemakkelijk is (for-each)
     
     ;; Abstracties om type en rest uit lijst te krijgen
     (define type car)
@@ -21,12 +21,12 @@
                              (not (monster 'gestorven?))))
                       monsters)) ;; Overblijvende monsters te vermoorden
       (for-each (lambda (monster) ((monster 'volgende-positie!))) monsters) ;; Overblijvende monster verder laten wandelen
-      (if (and (not (null? update-teken)) (eq? (car update-teken) 'toevoegen) (not (null? monster-rij))) ;; Het toevoegen gedeelte van de procedure
+      (if (and (not (null? update-teken)) (eq? (car update-teken) 'toevoegen) (not (null? monster-rij))) ;; Het toevoegen van monsters gedeelte van de procedure
           (begin
-                (set! monsters (cons (maak-monster-adt (((pad 'begin) 'positie-copieer)) (type monster-rij) (pad 'einde) pad) monsters))
+                (set! monsters (cons (maak-monster-adt (((pad 'begin) 'positie-copieer)) (type monster-rij) pad) monsters))
                 (set! monster-rij (rest monster-rij)))))
 
-    ;; Volgende code update de projectielen die door torens werden afgeschoten up te daten
+    ;; Volgende code update de projectielen die door torens werden afgeschoten
     (define (update-torens-projectielen-positie!)
       (for-each
        (lambda (toren)         
@@ -43,7 +43,7 @@
       (define (laatste-monster-weglaten mons)
         (reverse (cdr (reverse mons)))) 
       
-      (define (toren-schiet-y/n toren monsters) ;; Procedure die monster zal vinden waarnaar de toren kan schieten (indien monster in buurt)
+      (define (toren-schiet-y/n toren monsters) ;; Procedure die monster zal vinden waarnaar de toren kan schieten (indien monsters in buurt)
         (let ((monster (eerste-monster monsters)))
           (if ((toren 'in-buurt?) monster)
               ((toren 'schiet!) monster)
@@ -63,11 +63,11 @@
               (toren 'projectielen))
             torens)))
 
-    ;;Volgende code is om te zien als het level aan het einde gekomen is
+    ;; Volgende code is om te zien als het level aan het einde gekomen is
     (define (einde?)
       (and (null? monster-rij) (null? monsters)))
           
-    ;;Volgende code is om de level te skippen naar het einde
+    ;; Volgende code is om de level te skippen naar het einde
     (define (level-einde!)
       (if (not (einde?))
           (begin

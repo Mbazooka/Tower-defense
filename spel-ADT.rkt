@@ -9,10 +9,10 @@
          (monster-tijd 0) ;; Tijd afgelopen sinds vorige monster op pad
          (projectiel-tijd 0)) ;; Tijd afgelopen sinds vorige projectiel die geschoten werd
 
-    ;; Maakt pad van het spel
+    ;; Tekent pad van het spel
     ((teken-adt 'teken-pad!) pad) 
 
-    ;; Start de dynamische werking van het spel
+    ;; Start het van het spel door toetsen te initialiseren
     (define (start!)
       ((teken-adt 'set-muis-toets!) muis-klik-procedure)
       ((teken-adt 'set-toets-procedure!) toets-procedure))   
