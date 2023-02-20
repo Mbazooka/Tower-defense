@@ -1,8 +1,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                               Monster ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (maak-monster-adt positie type pad) 
-  (let ((levens #f)
+(define (maak-monster-adt type pad) 
+  (let ((positie (((pad 'begin) 'positie-copieer)))
+        (levens #f)
         (einde (pad 'einde))
         (inflectie-punten (pad 'inflectie-punten))
         (inflectie-tekens (pad 'inflectie-tekens))
