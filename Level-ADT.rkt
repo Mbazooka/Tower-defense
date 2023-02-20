@@ -1,8 +1,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                 Level ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (maak-level-adt pad monster-rij . vorige-torens) ;; Neemt een rij van monster in die gereleased zullen zijn op het pad, optionele parameter torens om torens vorige level mee te nemen
-  (let ((torens (if (not (null? vorige-torens)) (car vorige-torens) vorige-torens))
+(define (maak-level-adt monster-rij . vorige-torens) ;; Neemt een rij van monster in die gereleased zullen zijn op het pad, optionele parameter torens om torens vorige level mee te nemen
+  (let ((pad (maak-pad-adt vector-1))
+        (torens (if (not (null? vorige-torens)) (car vorige-torens) vorige-torens))
         (monsters '())) ;; Lijst omdat elk element bewerken gemakkelijk is (for-each)
     
     ;; Abstracties om type en rest uit lijst te krijgen
@@ -23,8 +24,8 @@
       (for-each (lambda (monster) ((monster 'volgende-positie!))) monsters) ;; Overblijvende monster verder laten wandelen
       (if (and (not (null? update-teken)) (eq? (car update-teken) 'toevoegen) (not (null? monster-rij))) ;; Het toevoegen van monsters gedeelte van de procedure
           (begin
-                (set! monsters (cons (maak-monster-adt (type monster-rij) pad) monsters))
-                (set! monster-rij (rest monster-rij)))))
+            (set! monsters (cons (maak-monster-adt (type monster-rij) pad) monsters))
+            (set! monster-rij (rest monster-rij)))))
 
     ;; Volgende code update de projectielen die door torens werden afgeschoten
     (define (update-torens-projectielen-positie!)
@@ -76,6 +77,7 @@
                   
     (define (dispatch msg)
       (cond
+        ((eq? msg 'pad) pad)
         ((eq? msg 'monsters) monsters)
         ((eq? msg 'torens) torens)        
         ((eq? msg 'voeg-toren-toe!) voeg-toren-toe!)
