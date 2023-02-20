@@ -16,7 +16,7 @@
         (vector-set! vector 3 (maak-positie-adt (+ x-pos-cent afstand) (- y-pos-cent afstand)))))
 
     ;; Maakt de werkelijke 4-punt randen aan
-    (positie->rand! *toren-rand-afstand* toren-rand) 
+    (positie->rand! *toren-rand-afstand* toren-rand) ;; Hier werd speling gebruikt om te zorgen bitmap niet op pad komt (zorgt voor meer afstand tussen torens en pad)
     (positie->rand! *buurt-rand-afstand* buurt-rand)
     
     ;; Kijkt als positie in een bepaalde rand zit 
