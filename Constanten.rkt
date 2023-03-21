@@ -61,4 +61,8 @@
 ;; Constanten voor bitmap van projectielen
 (define *steen-projectiel-bitmap&&mask* (cons "Images/projectiel.png" "Images/projectiel-mask.png"))
 
+;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid
+(define *geld-bedrag* 1000)
+(define *levens-hoeveelheid* 5)
+
 

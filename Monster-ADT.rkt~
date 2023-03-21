@@ -1,4 +1,4 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                               Monster ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (maak-monster-adt type pad) 
@@ -13,7 +13,7 @@
     ;; Voglende code gaat na hoeveel levens het monster mag hebben (op basis van type)
     (define (bepaal-levens!)
       (cond
-        ((eq? type 'rood) (set! levens 1)) ;; Verander met constanten levens (magische constanten vermijden)
+        ((eq? type 'rood) (set! levens 1))
         (else
          "Geen correcte type")))
 
@@ -52,7 +52,7 @@
           ((eq? msg 'einde?) (>= (positie 'x) (einde 'x)))
           ((eq? msg 'gestorven?) (<= levens 0))
           ((eq? msg 'verander-levens!) verander-levens!)
-          ((eq? msg 'soort) 'monster) ;; Toegevoegd om code duplicatie bij teken-adt te vermijden
+          ((eq? msg 'soort) 'monster)
           (else "maak-monster-adt: ongeldig bericht")))
       dispatch))
 

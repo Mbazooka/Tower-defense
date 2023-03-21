@@ -37,7 +37,7 @@
               ((teken-adt 'teken-toren!) toren))
              (else "Beweging niet mogelijk"))))))
     
-    ;; Volgende code implementeert de spel lus van het spel
+    ;; Volgende code implementeert de spel lus van het pel
     (define (spel-lus-procedure dt)
       (if (>= monster-tijd *monster-spawn-frequentie*) ;; Zal monsters op scherm updaten na ongeveer 2 seconden
           (begin
