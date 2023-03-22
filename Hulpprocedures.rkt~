@@ -19,7 +19,6 @@
   (accumulate append '() lijst))
 
 ;; Volgende code zijn abstracties om vectoren-van-posities af te handelen
-;;(kan niet in PAD ADT gezet worden vermits de data genomen word onmiddelijke bij de aanmaak (in let* expressie))
 (define neem-inflectie-counter car)
 (define neem-inflectie-tekens cadr)
 (define neem-vector caddr)
