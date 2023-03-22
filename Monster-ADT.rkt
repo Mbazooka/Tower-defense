@@ -11,7 +11,7 @@
         (beweging-zin +)) ;; #t beweeg x-richting, #f betekent beweeg y richting
 
     ;; Voglende code gaat na hoeveel levens het monster mag hebben (op basis van type)
-    ;; MERK OP VOEG NOG SPECIALE DINGEN TOE
+    
     (define (bepaal-levens!)
       (cond
         ((eq? type 'rood) (set! levens *levens-rood-monster*)) 
@@ -30,7 +30,9 @@
           ((and (null? inflectie-tekens) (eq? beweging-zin +)) (set! beweging-zin -))
           ((and (null? inflectie-tekens) (eq? beweging-zin -)) (set! beweging-zin +))
           ((eq? (car inflectie-tekens) '-) (set! beweging-zin -) (set! inflectie-tekens (cdr inflectie-tekens)))
-          ((eq? (car inflectie-tekens) '+) (set! beweging-zin +) (set! inflectie-tekens (cdr inflectie-tekens)))))
+          ((eq? (car inflectie-tekens) '+) (set! beweging-zin +) (set! inflectie-tekens (cdr inflectie-tekens)))
+          (else
+           "Doe niets")))
               
       (define (richting-verandering!) ;; Zal bij het bereiken van een inflectie punt, veranderen van bewegingsrichting 
         (if (not (null? inflectie-punten))
