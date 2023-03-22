@@ -11,9 +11,13 @@
         (beweging-zin +)) ;; #t beweeg x-richting, #f betekent beweeg y richting
 
     ;; Voglende code gaat na hoeveel levens het monster mag hebben (op basis van type)
+    ;; MERK OP VOEG NOG SPECIALE DINGEN TOE
     (define (bepaal-levens!)
       (cond
-        ((eq? type 'rood) (set! levens 1)) ;; Verander met constanten levens (magische constanten vermijden)
+        ((eq? type 'rood) (set! levens *levens-rood-monster*)) 
+        ((eq? type 'groen) (set! levens *levens-groen-monster*))
+        ((eq? type 'geel) (set! levens *levens-geel-monster*))
+        ((eq? type 'paars) (set! levens *levens-paars-monster*))
         (else
          "Geen correcte type")))
 
