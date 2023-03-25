@@ -3,13 +3,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (maak-leven-adt aantal)
   
-  (define (levens-verminder!)
-    (if (> aantal 0)
-        (set! aantal (- aantal 1))
-        "Einde spel"))
+  (define (levens-verminder! hoeveel)
+    (set! aantal (- aantal hoeveel)))
 
   (define (dood?)
-    (= aantal 0))
+    (<= aantal 0))
 
   (define (reset!)
     (set! aantal *levens-hoeveelheid*))
