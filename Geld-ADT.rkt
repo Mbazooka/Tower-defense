@@ -1,17 +1,21 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                  Geld ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(load "Constanten.Rkt")
 (define (maak-geld-adt begin-bedrag)
 
-  ;; Volgende procedure gaat na indien de speler voldoende geld heeft voor een power-up of toren te kopen
-  (define (voldoende-geld? type)
+  ;; Volgende code heeft het bedrag terug naargelang het type-object
+  (define (bedrag type)
     (cond
-      ((eq? type 'basis) (>= begin-bedrag *basis-toren-kost*))
+      ((eq? type 'basis) *basis-toren-kost*)
       (else "Ongeldig type")))
-  
-  (define (verwijder-geld! bedrag)
-    (set! begin-bedrag (- begin-bedrag bedrag)))
+
+  ;; Volgende code gaat na als de speler genoeg geld heeft
+  (define (voldoende-geld? type)
+    (>= begin-bedrag (bedrag type)))
+
+  ;; Volgende code zaar na gelang de type van object het juiste bedrag aftrekken
+  (define (verwijder-geld! type)
+    (set! begin-bedrag (- begin-bedrag (bedrag type))))
 
   (define (voeg-geld-toe! bedrag)
     (set! begin-bedrag (+ begin-bedrag bedrag)))

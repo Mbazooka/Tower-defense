@@ -20,10 +20,10 @@
 
     ;; De procedure die het klikken van muis op scherm voorstelt    
     (define (muis-klik-procedure toets toestand x y)
-      (cond
+      (cond ;; !!!!!Zet dit in de het Teken-adt!!!!!
         ((and (eq? toets 'left) (eq? toestand 'pressed) (>= x *toren-knop-breedte-start*) (<= x *toren-knop-breedte-einde*) (>= y *toren-1-knop-hoogte-start*) (<= y *toren-1-knop-hoogte-einde*)) ;; Initialiseert toren type
          (set! toren-type 'basis))
-        ((eq? toren-type #f) "Beweging niet mogelijk") ;; Indien nog niks in de menu gekozen is
+        ((eq? toren-type #f) "Beweging niet mogelijk") ;; Indien nog geen toren gekozen is
         ((and (eq? toets 'left) (eq? toestand 'pressed)
               (<= x (- *start-x-pos-menu* (* 2 *px-breedte*))) ;; Plaats toren buiten menu. De constante 2 is om speling te vermijden en niks op menu te hebben terwijl positie van toren er toch buiten zit (stukje van toren in menu)
               (not (and (<= x *beperking-1-breedte*) (<= y *beperking-1-hoogte*)))
