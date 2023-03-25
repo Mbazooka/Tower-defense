@@ -28,7 +28,7 @@
 
 ;; Tijd constanten
 (define *monster-spawn-frequentie* 3000) ;; Monster spawn frequentie (te veranderen)
-(define *monster-loop-snelheid* 0.05) ;; Monster beweeg snelheid
+(define *monster-loop-snelheid* 0.5) ;; Monster beweeg snelheid
 (define *toren-afvuur-frequentie* 2000) ;; Toren schiet frequentie
 (define *projectiel-afvuur-snelheid* 0.1) ;; Hoe snel het projectiel afgevuurd word
 
@@ -62,7 +62,7 @@
 (define *steen-projectiel-bitmap&&mask* (cons "Images/projectiel.png" "Images/projectiel-mask.png"))
 
 ;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid
-(define *geld-bedrag* 1000)
+(define *geld-begin-bedrag* 1000)
 (define *levens-hoeveelheid* 5)
 
 ;; Constanten die geld van speler voorstelt

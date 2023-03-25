@@ -5,7 +5,8 @@
   (let* ((level (maak-level-adt level-1))
          (pad (level 'pad))
          (teken-adt (maak-teken-adt (+ *menu-breedte-px* *spel-breedte-px*) *spel/menu-hoogte-px*));; maak de fundamenten van het spel
-         (geld (maak-geld-adt 1000))
+         (geld (maak-geld-adt *geld-begin-bedrag*))
+         (levens (maak-leven-adt *levens-hoeveelheid*))
          (toren-type #f) ;; Om torens te plaatsen veranderen we dit om te weten welk type te plaatsen.
          (monster-tijd 0) ;; Tijd afgelopen sinds vorige monster op pad
          (projectiel-tijd 0)) ;; Tijd afgelopen sinds vorige projectiel die geschoten werd
@@ -42,6 +43,8 @@
     
     ;; Volgende code implementeert de spel lus van het pel
     (define (spel-lus-procedure dt)
+      (if ((levens 'dood?))
+          ((level 'level-einde!)))
       (if (>= monster-tijd *monster-spawn-frequentie*) ;; Zal monsters op scherm updaten na ongeveer 2 seconden
           (begin
             ((level 'update-monsters!) 'toevoegen)
@@ -60,7 +63,7 @@
     ;;Volgende code implementeert een toets om het spel de laten starten
     (define (toets-procedure toestand toets)
       (cond
-        ((and (eq? toestand 'pressed) (eq? toets #\space) ((level 'einde?)))
+        ((and (eq? toestand 'pressed) (eq? toets #\space) ((level 'einde?))) 
          (set! level (maak-level-adt level-1 (level 'torens))))
         ((and (eq? toestand 'pressed) (eq? toets #\space))
          ((teken-adt 'set-spel-lus!) spel-lus-procedure))

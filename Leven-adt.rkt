@@ -2,6 +2,7 @@
 ;;                                 Leven ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (maak-leven-adt aantal)
+  
   (define (levens-verminder!)
     (if (> aantal 0)
         (set! aantal (- aantal 1))
