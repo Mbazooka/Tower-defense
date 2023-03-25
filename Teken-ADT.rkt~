@@ -27,8 +27,6 @@
     ((toren-1-tegel 'set-x!) *toren-knop-breedte-start*) 
     ((toren-1-tegel 'set-y!) *toren-1-knop-hoogte-start*)
     ((user-interface 'add-drawable!) toren-1-tegel)
-
-    ;; Volgende is om het geld en de levens van de speler voor te stellen.
       
     ;; Laag waarop pad getekent word
     (define laag-pad ((venster 'new-layer!))) 
