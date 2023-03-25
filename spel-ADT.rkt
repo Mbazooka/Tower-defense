@@ -2,11 +2,11 @@
 ;;                                  Spel ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (maak-spel-adt)
-  (let* ((level (maak-level-adt level-1))
+  (let* ((geld (maak-geld-adt *geld-begin-bedrag*))
+         (levens (maak-leven-adt *levens-hoeveelheid*))
+         (level (maak-level-adt level-1 geld levens))
          (pad (level 'pad))
          (teken-adt (maak-teken-adt (+ *menu-breedte-px* *spel-breedte-px*) *spel/menu-hoogte-px*));; maak de fundamenten van het spel
-         (geld (maak-geld-adt *geld-begin-bedrag*))
-         (levens (maak-leven-adt *levens-hoeveelheid*))
          (toren-type #f) ;; Om torens te plaatsen veranderen we dit om te weten welk type te plaatsen.
          (monster-tijd 0) ;; Tijd afgelopen sinds vorige monster op pad
          (projectiel-tijd 0)) ;; Tijd afgelopen sinds vorige projectiel die geschoten werd
@@ -64,7 +64,7 @@
     (define (toets-procedure toestand toets)
       (cond
         ((and (eq? toestand 'pressed) (eq? toets #\space) ((level 'einde?))) 
-         (set! level (maak-level-adt level-1 (level 'torens))))
+         (set! level (maak-level-adt level-1 geld levens (level 'torens))))
         ((and (eq? toestand 'pressed) (eq? toets #\space))
          ((teken-adt 'set-spel-lus!) spel-lus-procedure))
         ((and (eq? toestand 'pressed) (eq? toets 'escape))

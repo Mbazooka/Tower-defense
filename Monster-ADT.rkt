@@ -45,22 +45,31 @@
       (if beweging-richting-x
           ((positie 'x!) (+ (positie 'x) *monster-loop-snelheid*))
           ((positie 'y!) (beweging-zin (positie 'y) *monster-loop-snelheid*))))
-      
-      ;; Volgende code zal het leven van het monstertje verminderen met 1.
-      (define (verander-levens!)
-        (set! levens (- levens 1)))
 
-      (define (dispatch msg)
-        (cond
-          ((eq? msg 'positie) positie)
-          ((eq? msg 'type) type)
-          ((eq? msg 'volgende-positie!) volgende-positie!)
-          ((eq? msg 'einde?) (>= (positie 'x) (einde 'x)))
-          ((eq? msg 'gestorven?) (<= levens 0))
-          ((eq? msg 'verander-levens!) verander-levens!)
-          ((eq? msg 'soort) 'monster) ;; Toegevoegd om code duplicatie bij teken-adt te vermijden
-          (else "maak-monster-adt: ongeldig bericht")))
-      dispatch))
+    ;; Volgende code zal na gaan indien het monster aan het einde is van het pad
+    (define (einde?)
+      (>= (positie 'x) (einde 'x)))
+
+    ;; Volgende code gaat na indien monster gestorven is of niet
+    (define (gestorven?)
+      (<= levens 0))
+      
+    ;; Volgende code zal het leven van het monstertje verminderen met 1.
+    (define (verander-levens!)
+      (if (not (= levens 0))
+          (set! levens (- levens 1))))
+        
+    (define (dispatch msg)
+      (cond
+        ((eq? msg 'positie) positie)
+        ((eq? msg 'type) type)
+        ((eq? msg 'volgende-positie!) volgende-positie!)
+        ((eq? msg 'einde?) einde?)
+        ((eq? msg 'gestorven?) gestorven?)
+        ((eq? msg 'verander-levens!) verander-levens!)
+        ((eq? msg 'soort) 'monster) ;; Toegevoegd om code duplicatie bij teken-adt te vermijden
+        (else "maak-monster-adt: ongeldig bericht")))
+    dispatch))
 
 
   
