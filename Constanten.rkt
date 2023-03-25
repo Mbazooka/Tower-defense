@@ -65,10 +65,15 @@
 (define *geld-bedrag* 1000)
 (define *levens-hoeveelheid* 5)
 
+;; Constanten die geld van speler voorstelt
+(define *basis-toren-kost* 500)
+
 ;; Constanten die levens van monsters voorstellen
 (define *levens-rood-monster* 1)
 (define *levens-groen-monster* 2)
 (define *levens-geel-monster* 2)
 (define *levens-paars-monster* 4)
+
+
 
 

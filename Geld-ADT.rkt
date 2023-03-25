@@ -1,11 +1,17 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                  Geld ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(load "Constanten.Rkt")
 (define (maak-geld-adt begin-bedrag)
+
+  ;; Volgende procedure gaat na indien de speler voldoende geld heeft voor een power-up of toren te kopen
+  (define (voldoende-geld? type)
+    (cond
+      ((eq? type 'basis) (>= begin-bedrag *basis-toren-kost*))
+      (else "Ongeldig type")))
+  
   (define (verwijder-geld! bedrag)
-    (if (< bedrag begin-bedrag)
-        (set! begin-bedrag (- begin-bedrag bedrag))
-        "Niet genoeg funds"))
+    (set! begin-bedrag (- begin-bedrag bedrag)))
 
   (define (voeg-geld-toe! bedrag)
     (set! begin-bedrag (+ begin-bedrag bedrag)))
@@ -14,7 +20,8 @@
     (set! begin-bedrag *geld-bedrag*))
 
   (define (dispatch msg)
-    (cond 
+    (cond
+      ((eq? msg 'voldoende-geld?) voldoende-geld?)
       ((eq? msg 'verwijder-geld!) verwijder-geld!)
       ((eq? msg 'voeg-geld-toe!) voeg-geld-toe!)
       ((eq? msg 'reset!) reset!)

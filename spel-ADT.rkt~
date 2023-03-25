@@ -4,8 +4,7 @@
 (define (maak-spel-adt)
   (let* ((level (maak-level-adt level-1))
          (pad (level 'pad))
-         (teken-adt (maak-teken-adt (+ *menu-breedte-px* *spel-breedte-px*) *spel/menu-hoogte-px*));; maak de fundamenten van het spel
-         (geld (maak-geld-adt 1000))
+         (teken-adt (maak-teken-adt (+ *menu-breedte-px* *spel-breedte-px*) *spel/menu-hoogte-px*));; maak de fundamenten van het spel             
          (toren-type #f) ;; Om torens te plaatsen veranderen we dit om te weten welk type te plaatsen.
          (monster-tijd 0) ;; Tijd afgelopen sinds vorige monster op pad
          (projectiel-tijd 0)) ;; Tijd afgelopen sinds vorige projectiel die geschoten werd
@@ -16,7 +15,7 @@
     ;; Start het van het spel door toetsen te initialiseren
     (define (start!)
       ((teken-adt 'set-muis-toets!) muis-klik-procedure)
-      ((teken-adt 'set-toets-procedure!) toets-procedure))
+      ((teken-adt 'set-toets-procedure!) toets-procedure))   
 
     ;; De procedure die het klikken van muis op scherm voorstelt    
     (define (muis-klik-procedure toets toestand x y)
