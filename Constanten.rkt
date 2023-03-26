@@ -47,6 +47,9 @@
 ;; Tekst constanten voor op menu
 (define *tekst-toren-breedte* (+ *px-breedte* 10)) ;; + 5 want orange rand centreert de tekst niet
 (define *tekst-toren-hoogte* *px-hoogte*)
+(define *tekst-font* 15)
+(define *algemeen-tekst-breedte* (* 2 *px-breedte*))
+(define *algemeen-tekst-hoogte* *px-hoogte*)
 
 ;; Abstracties om bitmap en mask te acesseren
 (define bitmap car)

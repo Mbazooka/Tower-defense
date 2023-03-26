@@ -22,7 +22,7 @@
     ;; De procedure die het klikken van muis op scherm voorstelt    
     (define (muis-klik-procedure toets toestand x y)
       (cond ;; !!!!!Zet dit in de het Teken-adt!!!!!
-        ((and (eq? toets 'left) (eq? toestand 'pressed) (>= x *toren-knop-breedte-start*) (<= x *toren-knop-breedte-einde*) (>= y *toren-1-knop-hoogte-start*) (<= y *toren-1-knop-hoogte-einde*)) ;; Initialiseert toren type
+        ((and (eq? toets 'left) (eq? toestand 'pressed) (>= x *start-data-menu*) (<= x *toren-knop-breedte-einde*) (>= y *toren-1-knop-hoogte-start*) (<= y *toren-1-knop-hoogte-einde*)) ;; Initialiseert toren type
          (set! toren-type 'basis))
         ((eq? toren-type #f) "Beweging niet mogelijk") ;; Indien nog geen toren gekozen is
         ((and (eq? toets 'left) (eq? toestand 'pressed)
@@ -58,8 +58,9 @@
             (set! projectiel-tijd 0)))
       (set! projectiel-tijd (+ projectiel-tijd dt))
       ((level 'update-torens-projectielen-positie!))
-      ((teken-adt 'teken-projectielen!) ((level 'verkrijg-projectielen))))     
-
+      ((teken-adt 'teken-projectielen!) ((level 'verkrijg-projectielen)))
+      ((teken-adt 'update-tekst-teken!) geld))
+      
     ;;Volgende code implementeert een toets om het spel de laten starten
     (define (toets-procedure toestand toets)
       (cond

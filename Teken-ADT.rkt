@@ -12,12 +12,12 @@
     (define achtergrond-tegel (make-bitmap-tile "Images/Lava-Achtergrond.png"))
     ((laag-achtergrond 'add-drawable!) achtergrond-tegel)
 
-    ;; Volgende code is om een menu te maken 
+    ;; Volgende code is om een menu te maken !!!!(Proberen geld layer hier toe te voegen)!!!!
     (define laag-menu ((venster 'new-layer!)))
     (define menu-tegel (make-tile *menu-breedte-px* *spel/menu-hoogte-px*))
     ((menu-tegel 'draw-rectangle!) 0 0 *menu-breedte-px* *spel/menu-hoogte-px* "black")
     ((menu-tegel 'draw-rectangle!) 0 0 (/ *px-breedte* 2) *spel/menu-hoogte-px* "darkorange") ;; Voegt lijntje van om stijlvoller te maken
-    ((menu-tegel 'draw-text!) "Torens" 12 *tekst-toren-breedte* *tekst-toren-hoogte* "darkorange")
+    ((menu-tegel 'draw-text!) "Torens" *tekst-font* *tekst-toren-breedte* *tekst-toren-hoogte* "darkorange")
     ((menu-tegel 'set-x!) *spel-breedte-px*)
     ((laag-menu 'add-drawable!) menu-tegel)
 
@@ -29,16 +29,32 @@
     ((laag-user-interface 'add-drawable!) toren-1-tegel)
 
     ;; Volgende is om het geld en de levens van de speler voor te stellen.
-    (define laag-geld-levens ((venster 'new-layer!)))
+    (define laag-geld&&levens ((venster 'new-layer!)))
     (define geld-tegel (make-bitmap-tile "Images/geld.png" "Images/geld-mask.png"))
+    (define geld-tekst-tegel (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*))
     ((geld-tegel 'set-x!) *start-data-menu*)
     ((geld-tegel 'set-y!) 575) ;; Verander naar constante
-    ((laag-geld-levens 'add-drawable!) geld-tegel)
+    ((laag-geld&&levens 'add-drawable!) geld-tegel)
+    ((geld-tekst-tegel 'draw-text!) (number->string *geld-begin-bedrag*) *tekst-font* 0 0 "white")
+    ((geld-tekst-tegel 'set-x!) (+ *start-data-menu* 20)) 
+    ((geld-tekst-tegel 'set-y!) 577) ;; Verander naar constante
+    ((laag-geld&&levens 'add-drawable!) geld-tekst-tegel)
       
     ;; Laag waarop pad getekent word
-    (define laag-pad ((venster 'new-layer!))) 
+    (define laag-pad ((venster 'new-layer!)))
 
-    ;; Procedure die tegel op juiste pixel positie zet
+    (define (update-tekst-teken! object)
+      (define (update-tekst-hulp! tegel)
+        (tegel 'clear!)
+        ((tegel 'draw-text!) (number->string (object 'status)) *tekst-font* 0 0 "white"))
+        
+      (cond
+        ((eq? 'geld (object 'type)) (update-tekst-hulp! geld-tekst-tegel))
+        ((eq? 'levens (object 'type)) #f)
+        (else
+         "Ongeldig object ingegeven")))
+
+    ;; Procedure die tegel op juiste pixel positie zet (vanaf hiet beginnen de procedures voor de spelelementen)
     ;;met positie gedaan (niet object als formele parameter) want pad geeft meerdere posities, code kan enkel 1 positie per keer doen (zo hebben we maar 1 procedure voor alle px posities te bepalen)
     (define (bepaal-tegel-px-positie! positie tegel)
       (let ((scherm-x (* (positie 'x) *px-breedte*))
@@ -184,5 +200,6 @@
         ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)
         ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)
         ((eq? msg 'set-toets-procedure!) set-toets-procedure!)
+        ((eq? msg 'update-tekst-teken!) update-tekst-teken!)
         (else "maak-teken-adt: ongeldig bericht")))
     dispatch))
