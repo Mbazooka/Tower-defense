@@ -45,7 +45,7 @@
 
     (define (update-tekst-teken! object)
       (define (update-tekst-hulp! tegel)
-        (tegel 'clear!)
+        ((tegel 'clear!))
         ((tegel 'draw-text!) (number->string (object 'status)) *tekst-font* 0 0 "white"))
         
       (cond
