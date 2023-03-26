@@ -22,13 +22,15 @@
     ((laag-menu 'add-drawable!) menu-tegel)
 
     ;; Volgende code is om de user-interface van de menu te maken
-    (define user-interface ((venster 'new-layer!)))
+    (define laag-user-interface ((venster 'new-layer!)))
     (define toren-1-tegel (make-bitmap-tile "Images/Toren-1-Game.png" "Images/Toren-1-game-mask.png"))
     ((toren-1-tegel 'set-x!) *toren-knop-breedte-start*) 
     ((toren-1-tegel 'set-y!) *toren-1-knop-hoogte-start*)
-    ((user-interface 'add-drawable!) toren-1-tegel)
+    ((laag-user-interface 'add-drawable!) toren-1-tegel)
 
     ;; Volgende is om het geld en de levens van de speler voor te stellen.
+    (define laag-geld-levens ((venster 'new-layer!)))
+    (define geld-tegel (make-bitmap-tile))
       
     ;; Laag waarop pad getekent word
     (define laag-pad ((venster 'new-layer!))) 
