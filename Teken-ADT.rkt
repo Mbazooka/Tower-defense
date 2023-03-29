@@ -36,22 +36,22 @@
     (define levens-tegel (make-bitmap-tile "Images/levens.png" "Images/levens-mask.png"))
     (define levens-tekst-tegel (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*))
     
-    ((geld-tegel 'set-x!) *start-data-menu*) ;; Bitmap verplaatsen
-    ((geld-tegel 'set-y!) 575) ;; Verander naar constante
+    ((geld-tegel 'set-x!) *start-data-menu*) ;; Bitmap verplaatsen naar juiste plaats
+    ((geld-tegel 'set-y!) *geld&&levens-tegel-px-hoogte*) 
     ((laag-geld&&levens 'add-drawable!) geld-tegel)
     
     ((geld-tekst-tegel 'draw-text!) (number->string *geld-begin-bedrag*) *tekst-font* 0 0 "white") ;; Tekst naast bitmap
     ((geld-tekst-tegel 'set-x!) (+ *start-data-menu* *px-breedte*)) 
-    ((geld-tekst-tegel 'set-y!) 577) ;; Verander naar constante
+    ((geld-tekst-tegel 'set-y!) *tekst-geld&&levens-px-hoogte*) ;; Verander naar constante
     ((laag-geld&&levens 'add-drawable!) geld-tekst-tegel)
 
-    ((levens-tegel 'set-x!) (+ *start-data-menu* (* 4 *px-breedte*))) ;; Bitmap verplaatsen
-    ((levens-tegel 'set-y!) 575) ;; Verander naar constante
+    ((levens-tegel 'set-x!) (+ *start-data-menu* (* 4 *px-breedte*))) ;; Bitmap verplaatsen naar juiste plaats
+    ((levens-tegel 'set-y!) *geld&&levens-tegel-px-hoogte*) 
     ((laag-geld&&levens 'add-drawable!) levens-tegel)
 
     ((levens-tekst-tegel 'draw-text!) (number->string *levens-hoeveelheid*) *tekst-font* 0 0 "white") ;; Tekst naast bitmap
-    ((levens-tekst-tegel 'set-x!) (+ *start-data-menu* (* 5 *px-breedte*)))
-    ((levens-tekst-tegel 'set-y!) 577) ;; Verander naar constante
+    ((levens-tekst-tegel 'set-x!) *tekst-levens-px-breedte*)
+    ((levens-tekst-tegel 'set-y!) *tekst-geld&&levens-px-hoogte*) 
     ((laag-geld&&levens 'add-drawable!) levens-tekst-tegel)
       
     ;; Laag waarop pad getekent word
@@ -67,7 +67,7 @@
         ((eq? 'geld (object 'soort)) (update-tekst-hulp! geld-tekst-tegel))
         ((eq? 'levens (object 'soort)) (update-tekst-hulp! levens-tekst-tegel))
         (else
-         "Ongeldig object ingegeven")))
+         "Update-tekst-teken!: Ongeldig object ingegeven")))
 
     ;; Procedure die tegel op juiste pixel positie zet (vanaf hiet beginnen de procedures voor de spelelementen)
     ;;met positie gedaan (niet object als formele parameter) want pad geeft meerdere posities, code kan enkel 1 positie per keer doen (zo hebben we maar 1 procedure voor alle px posities te bepalen)

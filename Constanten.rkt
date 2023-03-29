@@ -50,6 +50,9 @@
 (define *tekst-font* 15)
 (define *algemeen-tekst-breedte* (* 2 *px-breedte*))
 (define *algemeen-tekst-hoogte* *px-hoogte*)
+(define *tekst-geld-px-breedte* (+ *start-data-menu* *px-breedte*))
+(define *tekst-levens-px-breedte* (+ *start-data-menu* (* 5 *px-breedte*)))
+(define *tekst-geld&&levens-px-hoogte* (- *spel/menu-hoogte-px* 23)) ;; 23 Zo gekozen voor stijlvolle manier
 
 ;; Abstracties om bitmap en mask te acesseren
 (define bitmap car)
@@ -63,6 +66,9 @@
 
 ;; Constanten voor bitmap van projectielen
 (define *steen-projectiel-bitmap&&mask* (cons "Images/projectiel.png" "Images/projectiel-mask.png"))
+
+;; Constanten voor tegel-positie van bitmap van geld en levens
+(define *geld&&levens-tegel-px-hoogte* (- *spel/menu-hoogte-px* 25)) ;; 23 Zo gekozen voor stijlvolle manier
 
 ;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid
 (define *geld-begin-bedrag* 1000)
