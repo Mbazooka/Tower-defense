@@ -1,19 +1,35 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                  Geld ADT                                  ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (maak-geld-adt begin-bedrag)
-   (define (verwijder-geld! bedrag)
-      (if (< bedrag begin-bedrag)
-	(set! begin-bedrag (- begin-bedrag bedrag))
-	"Niet genoeg funds"))
 
-    (define (voeg-geld-toe! bedrag)
-      (set! begin-bedrag (+ begin-bedrag bedrag)))
+  ;; Volgende code heeft het bedrag terug naargelang het type-object
+  (define (bedrag type)
+    (cond
+      ((eq? type 'basis) *basis-toren-kost*)
+      (else "Ongeldig type")))
 
-    (define (reset!)
-      (set! begin-bedrag initieel-bedrag))
+  ;; Volgende code gaat na als de speler genoeg geld heeft
+  (define (voldoende-geld? type)
+    (>= begin-bedrag (bedrag type)))
 
-    (define (dispatch msg)
-      (cond 
-	((msg 'verwijder-geld!) verwijder-geld!)
-	((msg 'voeg-geld-toe!) voeg-geld-toe!)
-	((msg 'reset!) reset!)
-	(else "maak-geld-adt: ongeldig bericht")))
-    dispatch)
+  ;; Volgende code zaar na gelang de type van object het juiste bedrag aftrekken
+  (define (verwijder-geld! type)
+    (set! begin-bedrag (- begin-bedrag (bedrag type))))
+
+  (define (voeg-geld-toe! bedrag)
+    (set! begin-bedrag (+ begin-bedrag bedrag)))
+
+  (define (reset!)
+    (set! begin-bedrag *geld-bedrag*))
+
+  (define (dispatch msg)
+    (cond
+      ((eq? msg 'voldoende-geld?) voldoende-geld?)
+      ((eq? msg 'verwijder-geld!) verwijder-geld!)
+      ((eq? msg 'voeg-geld-toe!) voeg-geld-toe!)
+      ((eq? msg 'status) begin-bedrag)
+      ((eq? msg 'soort) 'geld)
+      ((eq? msg 'reset!) reset!)
+      (else "maak-geld-adt: ongeldig bericht")))
+  dispatch)

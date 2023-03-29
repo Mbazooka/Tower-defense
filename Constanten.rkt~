@@ -28,7 +28,7 @@
 
 ;; Tijd constanten
 (define *monster-spawn-frequentie* 3000) ;; Monster spawn frequentie (te veranderen)
-(define *monster-loop-snelheid* 0.05) ;; Monster beweeg snelheid
+(define *monster-loop-snelheid* 0.5) ;; Monster beweeg snelheid
 (define *toren-afvuur-frequentie* 2000) ;; Toren schiet frequentie
 (define *projectiel-afvuur-snelheid* 0.1) ;; Hoe snel het projectiel afgevuurd word
 
@@ -40,13 +40,19 @@
 ;; Menu constante (stelt de x coordinaat voor die de start van de menu voorstelt, nodig voor torens te plaatsen)
 (define *start-x-pos-menu* (* *spel-breedte* *px-breedte*))
 (define *toren-1-knop-hoogte-start* (* 2 *px-hoogte*)) ;; zijn keuzes om knopen hier te starten en daar te eindigen
-(define *toren-knop-breedte-start* (+ *spel-breedte-px* *px-breedte*))
+(define *start-data-menu* (+ *spel-breedte-px* *px-breedte*))
 (define *toren-1-knop-hoogte-einde* (* 5 *px-hoogte*))
 (define *toren-knop-breedte-einde* (* *spel-breedte* (* 4 *px-breedte*)))
 
 ;; Tekst constanten voor op menu
 (define *tekst-toren-breedte* (+ *px-breedte* 10)) ;; + 5 want orange rand centreert de tekst niet
 (define *tekst-toren-hoogte* *px-hoogte*)
+(define *tekst-font* 15)
+(define *algemeen-tekst-breedte* (* 2 *px-breedte*))
+(define *algemeen-tekst-hoogte* *px-hoogte*)
+(define *tekst-geld-px-breedte* (+ *start-data-menu* *px-breedte*))
+(define *tekst-levens-px-breedte* (+ *start-data-menu* (* 5 *px-breedte*)))
+(define *tekst-geld&&levens-px-hoogte* (- *spel/menu-hoogte-px* 23)) ;; 23 Zo gekozen voor stijlvolle manier
 
 ;; Abstracties om bitmap en mask te acesseren
 (define bitmap car)
@@ -61,8 +67,22 @@
 ;; Constanten voor bitmap van projectielen
 (define *steen-projectiel-bitmap&&mask* (cons "Images/projectiel.png" "Images/projectiel-mask.png"))
 
+;; Constanten voor tegel-positie van bitmap van geld en levens
+(define *geld&&levens-tegel-px-hoogte* (- *spel/menu-hoogte-px* 25)) ;; 23 Zo gekozen voor stijlvolle manier
+
 ;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid
-(define *geld-bedrag* 1000)
+(define *geld-begin-bedrag* 1000)
 (define *levens-hoeveelheid* 5)
+
+;; Constanten die geld van speler voorstelt
+(define *basis-toren-kost* 500)
+
+;; Constanten die levens van monsters voorstellen
+(define *levens-rood-monster* 1)
+(define *levens-groen-monster* 2)
+(define *levens-geel-monster* 2)
+(define *levens-paars-monster* 4)
+
+
 
 

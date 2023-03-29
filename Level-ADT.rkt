@@ -17,6 +17,8 @@
     ;; voglende code update de monsters die op het pad lopen
     (define (update-monsters! . update-teken)
       ((levens 'levens-verminder!) (length (filter (lambda (monster) ((monster 'einde?))) monsters))) ;; Telt aantal monsters aan het einde en vermindert levens
+      (for-each (lambda (monster) ((geld 'voeg-geld-toe!) (monster 'type)))
+                                     (filter (lambda (monster) ((monster 'gestorven?))) monsters))
       (set! monsters (filter 
                       (lambda (monster)
                         (and (not ((monster 'einde?)))

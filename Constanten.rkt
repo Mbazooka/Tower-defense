@@ -74,8 +74,9 @@
 (define *geld-begin-bedrag* 1000)
 (define *levens-hoeveelheid* 5)
 
-;; Constanten die geld van speler voorstelt
+;; Constanten die geld van speler doet veranderen
 (define *basis-toren-kost* 500)
+(define *rood-monster-winst* 20)
 
 ;; Constanten die levens van monsters voorstellen
 (define *levens-rood-monster* 1)
