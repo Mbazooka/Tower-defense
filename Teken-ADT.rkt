@@ -49,8 +49,8 @@
         ((tegel 'draw-text!) (number->string (object 'status)) *tekst-font* 0 0 "white"))
         
       (cond
-        ((eq? 'geld (object 'type)) (update-tekst-hulp! geld-tekst-tegel))
-        ((eq? 'levens (object 'type)) #f)
+        ((eq? 'geld (object 'soort)) (update-tekst-hulp! geld-tekst-tegel))
+        ((eq? 'levens (object 'soort)) #f)
         (else
          "Ongeldig object ingegeven")))
 

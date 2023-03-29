@@ -38,7 +38,8 @@
                    (not ((pad 'toren-in-pad?) toren)))
               ((geld 'verwijder-geld!) toren-type)
               ((level 'voeg-toren-toe!) toren)
-              ((teken-adt 'teken-toren!) toren))
+              ((teken-adt 'teken-toren!) toren)
+              ((teken-adt 'update-tekst-teken!) geld))
              (else "Beweging niet mogelijk"))))))
     
     ;; Volgende code implementeert de spel lus van het pel
@@ -58,8 +59,7 @@
             (set! projectiel-tijd 0)))
       (set! projectiel-tijd (+ projectiel-tijd dt))
       ((level 'update-torens-projectielen-positie!))
-      ((teken-adt 'teken-projectielen!) ((level 'verkrijg-projectielen)))
-      ((teken-adt 'update-tekst-teken!) geld))
+      ((teken-adt 'teken-projectielen!) ((level 'verkrijg-projectielen))))
       
     ;;Volgende code implementeert een toets om het spel de laten starten
     (define (toets-procedure toestand toets)
