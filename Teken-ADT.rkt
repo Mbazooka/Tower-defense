@@ -31,18 +31,33 @@
     ;; Volgende is om het geld en de levens van de speler voor te stellen.
     (define laag-geld&&levens ((venster 'new-layer!)))
     (define geld-tegel (make-bitmap-tile "Images/geld.png" "Images/geld-mask.png"))
-    (define geld-tekst-tegel (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*))
-    ((geld-tegel 'set-x!) *start-data-menu*)
+    (define geld-tekst-tegel (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*)) ;; Waarop de hoeveelheid zal staan
+
+    (define levens-tegel (make-bitmap-tile "Images/levens.png" "Images/levens-mask.png"))
+    (define levens-tekst-tegel (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*))
+    
+    ((geld-tegel 'set-x!) *start-data-menu*) ;; Bitmap verplaatsen
     ((geld-tegel 'set-y!) 575) ;; Verander naar constante
     ((laag-geld&&levens 'add-drawable!) geld-tegel)
-    ((geld-tekst-tegel 'draw-text!) (number->string *geld-begin-bedrag*) *tekst-font* 0 0 "white")
-    ((geld-tekst-tegel 'set-x!) (+ *start-data-menu* 20)) 
+    
+    ((geld-tekst-tegel 'draw-text!) (number->string *geld-begin-bedrag*) *tekst-font* 0 0 "white") ;; Tekst naast bitmap
+    ((geld-tekst-tegel 'set-x!) (+ *start-data-menu* *px-breedte*)) 
     ((geld-tekst-tegel 'set-y!) 577) ;; Verander naar constante
     ((laag-geld&&levens 'add-drawable!) geld-tekst-tegel)
+
+    ((levens-tegel 'set-x!) (+ *start-data-menu* (* 4 *px-breedte*))) ;; Bitmap verplaatsen
+    ((levens-tegel 'set-y!) 575) ;; Verander naar constante
+    ((laag-geld&&levens 'add-drawable!) levens-tegel)
+
+    ((levens-tekst-tegel 'draw-text!) (number->string *levens-hoeveelheid*) *tekst-font* 0 0 "white") ;; Tekst naast bitmap
+    ((levens-tekst-tegel 'set-x!) (+ *start-data-menu* (* 5 *px-breedte*)))
+    ((levens-tekst-tegel 'set-y!) 577) ;; Verander naar constante
+    ((laag-geld&&levens 'add-drawable!) levens-tekst-tegel)
       
     ;; Laag waarop pad getekent word
     (define laag-pad ((venster 'new-layer!)))
 
+    ;; Volgende code is om de tekst delen van het spel up te daten
     (define (update-tekst-teken! object)
       (define (update-tekst-hulp! tegel)
         ((tegel 'clear!))
@@ -50,7 +65,7 @@
         
       (cond
         ((eq? 'geld (object 'soort)) (update-tekst-hulp! geld-tekst-tegel))
-        ((eq? 'levens (object 'soort)) #f)
+        ((eq? 'levens (object 'soort)) (update-tekst-hulp! levens-tekst-tegel))
         (else
          "Ongeldig object ingegeven")))
 

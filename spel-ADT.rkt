@@ -59,7 +59,8 @@
             (set! projectiel-tijd 0)))
       (set! projectiel-tijd (+ projectiel-tijd dt))
       ((level 'update-torens-projectielen-positie!))
-      ((teken-adt 'teken-projectielen!) ((level 'verkrijg-projectielen))))
+      ((teken-adt 'teken-projectielen!) ((level 'verkrijg-projectielen)))
+      ((teken-adt 'update-tekst-teken!) levens))
       
     ;;Volgende code implementeert een toets om het spel de laten starten
     (define (toets-procedure toestand toets)

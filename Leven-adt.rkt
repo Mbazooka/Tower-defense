@@ -16,7 +16,8 @@
     (cond
       ((eq? msg 'levens-verminder!) levens-verminder!)
       ((eq? msg 'dood?) dood?)
-      ((eq? msg status) status)
+      ((eq? msg 'status) aantal)
+      ((eq? msg 'soort) 'levens)
       ((eq? msg 'reset!) reset!)
       (else "maak-leven-adt: ongeldig bericht")))
   dispatch)
