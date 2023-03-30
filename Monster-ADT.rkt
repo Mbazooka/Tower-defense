@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                               Monster ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (maak-monster-adt type pad) 
+(define (maak-monster-adt type pad . pos inflec-punten inflec-tekens beweging-richt beweging-zin) ;; Optionele parameters zijn nodig om huidige stand van over te zetten van groen monster naar rood monster 
   (let ((positie (((pad 'begin) 'positie-copieer)))
         (levens #f)
         (monster-loop-snelheid *rood&&groen&&paars-monster-loop-snelheid*)
