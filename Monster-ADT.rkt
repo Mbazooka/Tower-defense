@@ -4,24 +4,26 @@
 (define (maak-monster-adt type pad) 
   (let ((positie (((pad 'begin) 'positie-copieer)))
         (levens #f)
+        (monster-loop-snelheid *rood&&groen&&paars-monster-loop-snelheid*)
+        (schild #f)
         (einde (pad 'einde))
         (inflectie-punten (pad 'inflectie-punten))
         (inflectie-tekens (pad 'inflectie-tekens))
         (beweging-richting-x #t)
         (beweging-zin +)) ;; #t beweeg x-richting, #f betekent beweeg y richting
 
-    ;; Voglende code gaat na hoeveel levens het monster mag hebben (op basis van type)
-    
-    (define (bepaal-levens!)
+    ;; Voglende code gaat na ... !!!!  
+    (define (bepaal-initieel!)
       (cond
-        ((eq? type 'rood) (set! levens *levens-rood-monster*)) 
+        ((eq? type 'rood) (set! levens *levens-rood-monster*))
         ((eq? type 'groen) (set! levens *levens-groen-monster*))
-        ((eq? type 'geel) (set! levens *levens-geel-monster*))
+        ((eq? type 'geel) (set! levens *levens-geel-monster*)
+                          (set! *geel-monster-loop-snelheid*) ;; Enkel hier geassigned voor efficiente
+                          (set! schild *schild-geel-monster*))        
         ((eq? type 'paars) (set! levens *levens-paars-monster*))
         (else
          "Geen correcte type")))
-
-    (bepaal-levens!)
+    (bepaal-initieel!)
 
     ;; Volgende code zal het monstertje op de volgende positie zetten
     (define (volgende-positie!)
@@ -56,8 +58,13 @@
       
     ;; Volgende code zal het leven van het monstertje verminderen met 1.
     (define (verander-levens!)
-      (if (not (= levens 0))
-          (set! levens (- levens 1))))
+      (cond
+        ((eq? type 'rood)  (set! levens (- levens 1)))
+        ((eq? type 'groen) (set! levens 0))
+        ((eq? type 'geel) (if (= schild 0) (set! levens (- levens 1)) (set! schild (- schild 1)))) ;; !!!!Moet nog veranderen normaal!!!!
+        ((eq? type 'paars) (set! levens (- levens 1))) ;; !!!!Meer monster levens!!!!
+        (else
+         "monster-type: ongeldig type")))
         
     (define (dispatch msg)
       (cond
