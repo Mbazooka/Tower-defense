@@ -22,16 +22,6 @@
 (define *beperking-3-breedte* 800) 
 (define *beperking-3-hoogte* 220)
 
-;; Toren constanten
-(define *toren-rand-afstand* 1.6) ;; Hier werd speling gebruikt om te zorgen bitmap niet op pad komt (zorgt voor meer afstand tussen torens en pad)
-(define *buurt-rand-afstand* 10)
-
-;; Tijd constanten
-(define *monster-spawn-frequentie* 3000) ;; Monster spawn frequentie (te veranderen)
-(define *monster-loop-snelheid* 0.5) ;; Monster beweeg snelheid
-(define *toren-afvuur-frequentie* 2000) ;; Toren schiet frequentie
-(define *projectiel-afvuur-snelheid* 0.1) ;; Hoe snel het projectiel afgevuurd word
-
 ;; Constanten die de totale spelgrootte voorstellen (met verschillende componenten)
 (define *menu-breedte-px* (* *menu-breedte* *px-breedte*))
 (define *spel-breedte-px* (* *spel-breedte* *px-breedte*))
@@ -70,6 +60,19 @@
 ;; Constanten voor tegel-positie van bitmap van geld en levens
 (define *geld&&levens-tegel-px-hoogte* (- *spel/menu-hoogte-px* 25)) ;; 23 Zo gekozen voor stijlvolle manier
 
+;; Toren constanten
+(define *toren-rand-afstand* 1.6) ;; Hier werd speling gebruikt om te zorgen bitmap niet op pad komt (zorgt voor meer afstand tussen torens en pad)
+(define *buurt-rand-afstand* 10)
+
+;; Tijd constanten
+(define *monster-spawn-frequentie* 3000) ;; Monster spawn frequentie (te veranderen)
+(define *rood&&groen&&paars-monster-loop-snelheid* 0.05) ;; Monster beweeg snelheid
+(define *geel-monster-loop-snelheid* 0.025)
+
+
+(define *toren-afvuur-frequentie* 2000) ;; Toren schiet frequentie
+(define *projectiel-afvuur-snelheid* 0.1) ;; Hoe snel het projectiel afgevuurd word
+
 ;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid
 (define *geld-begin-bedrag* 1000)
 (define *levens-hoeveelheid* 5)
@@ -82,6 +85,7 @@
 (define *levens-rood-monster* 1)
 (define *levens-groen-monster* 2)
 (define *levens-geel-monster* 2)
+(define *schild-geel-monster* 3)
 (define *levens-paars-monster* 4)
 
 

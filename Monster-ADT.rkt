@@ -18,7 +18,7 @@
         ((eq? type 'rood) (set! levens *levens-rood-monster*))
         ((eq? type 'groen) (set! levens *levens-groen-monster*))
         ((eq? type 'geel) (set! levens *levens-geel-monster*)
-                          (set! *geel-monster-loop-snelheid*) ;; Enkel hier geassigned voor efficiente
+                          (set! monster-loop-snelheid *geel-monster-loop-snelheid*) ;; Enkel hier geassigned voor efficiente
                           (set! schild *schild-geel-monster*))        
         ((eq? type 'paars) (set! levens *levens-paars-monster*))
         (else
@@ -45,8 +45,8 @@
                   (teken-bepaling!)))))     
       (richting-verandering!)      
       (if beweging-richting-x
-          ((positie 'x!) (+ (positie 'x) *monster-loop-snelheid*))
-          ((positie 'y!) (beweging-zin (positie 'y) *monster-loop-snelheid*))))
+          ((positie 'x!) (+ (positie 'x) monster-loop-snelheid))
+          ((positie 'y!) (beweging-zin (positie 'y) monster-loop-snelheid))))
 
     ;; Volgende code zal na gaan indien het monster aan het einde is van het pad
     (define (einde?)
@@ -57,10 +57,14 @@
       (<= levens 0))
       
     ;; Volgende code zal het leven van het monstertje verminderen met 1.
-    (define (verander-levens!)
-      (cond
+    ;; De optionele parameter activeer zorgt ervoor dat het groen monster rood monster kan komen
+    ;; Meer bepaald, het groen monster word vermoord om bij het level adt als dood beschouwd te worden
+    ;; Zo kan men dat monster vast pakken, wetende dat hij geraakt is, en kan men dan het monster omvormen naar rood
+    ;; Deze activeer neemt enkel de waarde #t. 
+    (define (verander-levens! . activeer) 
+      (cond 
         ((eq? type 'rood)  (set! levens (- levens 1)))
-        ((eq? type 'groen) (set! levens 0))
+        ((eq? type 'groen) (if activeer (begin (set! levens 1) (set! type 'rood)) (set! levens 0)))
         ((eq? type 'geel) (if (= schild 0) (set! levens (- levens 1)) (set! schild (- schild 1)))) ;; !!!!Moet nog veranderen normaal!!!!
         ((eq? type 'paars) (set! levens (- levens 1))) ;; !!!!Meer monster levens!!!!
         (else
