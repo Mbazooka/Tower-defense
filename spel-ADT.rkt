@@ -69,7 +69,8 @@
       (cond
         ((and (eq? toestand 'pressed) (eq? toets #\space) ((level 'einde?)))
          (set! level (maak-level-adt level-1 geld levens (level 'torens)))
-         (set! level-tal (+ level-tal 1)))
+         (set! level-tal (+ level-tal 1))
+         ((teken-adt 'update-tekst-teken!) level))
         ((and (eq? toestand 'pressed) (eq? toets #\space))
          ((teken-adt 'set-spel-lus!) spel-lus-procedure))
         ((and (eq? toestand 'pressed) (eq? toets 'escape))

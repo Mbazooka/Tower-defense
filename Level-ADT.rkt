@@ -102,6 +102,7 @@
         ((eq? msg 'verkrijg-projectielen) verkrijg-projectielen)
         ((eq? msg 'einde?) einde?)
         ((eq? msg 'level-einde!) level-einde!)
+        ((eq? msg 'soort) 'level)
         (else
          "maak-level-adt: ongeldig bericht")))
     dispatch))
