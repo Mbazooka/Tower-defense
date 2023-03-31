@@ -29,31 +29,44 @@
     ((laag-user-interface 'add-drawable!) toren-1-tegel)
 
     ;; Volgende is om het geld en de levens van de speler voor te stellen.
-    (define laag-geld&&levens ((venster 'new-layer!)))
+    (define laag-geld&&levens&&level ((venster 'new-layer!)))
+    
     (define geld-tegel (make-bitmap-tile "Images/geld.png" "Images/geld-mask.png"))
     (define geld-tekst-tegel (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*)) ;; Waarop de hoeveelheid zal staan
 
     (define levens-tegel (make-bitmap-tile "Images/levens.png" "Images/levens-mask.png"))
     (define levens-tekst-tegel (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*))
-    
+
+    (define level-tekst-tegel-statisch (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*))
+    (define level-tekst-tegel-dynamisch (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*))
+      
     ((geld-tegel 'set-x!) *start-data-menu*) ;; Bitmap verplaatsen naar juiste plaats
     ((geld-tegel 'set-y!) *geld&&levens-tegel-px-hoogte*) 
-    ((laag-geld&&levens 'add-drawable!) geld-tegel)
+    ((laag-geld&&levens&&level 'add-drawable!) geld-tegel)
     
     ((geld-tekst-tegel 'draw-text!) (number->string *geld-begin-bedrag*) *tekst-font* 0 0 "white") ;; Tekst naast bitmap
     ((geld-tekst-tegel 'set-x!) (+ *start-data-menu* *px-breedte*)) 
-    ((geld-tekst-tegel 'set-y!) *tekst-geld&&levens-px-hoogte*) ;; Verander naar constante
-    ((laag-geld&&levens 'add-drawable!) geld-tekst-tegel)
+    ((geld-tekst-tegel 'set-y!) *tekst-geld&&levens-px-hoogte*) 
+    ((laag-geld&&levens&&level 'add-drawable!) geld-tekst-tegel)
 
     ((levens-tegel 'set-x!) (+ *start-data-menu* (* 4 *px-breedte*))) ;; Bitmap verplaatsen naar juiste plaats
     ((levens-tegel 'set-y!) *geld&&levens-tegel-px-hoogte*) 
-    ((laag-geld&&levens 'add-drawable!) levens-tegel)
+    ((laag-geld&&levens&&level 'add-drawable!) levens-tegel)
 
     ((levens-tekst-tegel 'draw-text!) (number->string *levens-hoeveelheid*) *tekst-font* 0 0 "white") ;; Tekst naast bitmap
     ((levens-tekst-tegel 'set-x!) *tekst-levens-px-breedte*)
     ((levens-tekst-tegel 'set-y!) *tekst-geld&&levens-px-hoogte*) 
-    ((laag-geld&&levens 'add-drawable!) levens-tekst-tegel)
-      
+    ((laag-geld&&levens&&level 'add-drawable!) levens-tekst-tegel)
+
+    ((level-tekst-tegel-statisch 'draw-text!) "Level" *tekst-font* 0 0 "white")
+    ((level-tekst-tegel-statisch 'set-y!) (- verticale-pixels *algemeen-tekst-hoogte*)) 
+    ((laag-geld&&levens&&level 'add-drawable!) level-tekst-tegel-statisch)
+
+    ((level-tekst-tegel-dynamisch 'draw-text!) "1" *tekst-font* 0 0 "white")
+    ((level-tekst-tegel-dynamisch 'set-x!) *algemeen-tekst-breedte*)
+    ((level-tekst-tegel-dynamisch 'set-y!) (- verticale-pixels *algemeen-tekst-hoogte*))
+    ((laag-geld&&levens&&level 'add-drawable!) level-tekst-tegel-dynamisch)
+    
     ;; Laag waarop pad getekent word
     (define laag-pad ((venster 'new-layer!)))
 

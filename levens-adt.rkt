@@ -1,6 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;                                 Leven ADT                                  ;;
+;;                                 Levens ADT                                 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; !!!!! Op basis van mosnter type, levens veranderen !!!!!
 (define (maak-leven-adt aantal)
   
   (define (levens-verminder! hoeveel)

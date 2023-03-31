@@ -16,10 +16,21 @@
     
     ;; voglende code update de monsters die op het pad lopen
     (define (update-monsters! . update-teken)
+      (define (zet-terug-monster-lijst! zoeken-monster nieuw-monster monsters) ;; Hulp procedure om monsters te verwisselen (nodig om groen monster te switchen met rood monster)
+        (cond
+          ((null? monsters) "Error: Iets misgegaan")
+          ((eq? (car monsters) zoeken-monster)
+           (set-car! monsters nieuw-monster))
+          (else
+           (zet-terug-monster-lijst! zoeken-monster nieuw-monster (cdr monsters)))))
+      
       ((levens 'levens-verminder!) (length (filter (lambda (monster) ((monster 'einde?))) monsters))) ;; Telt aantal monsters aan het einde en vermindert levens
       (for-each (lambda (monster)
-                  ((geld 'voeg-geld-toe!) (monster 'type))) ;; Zal geld updaten, en voor elk geraakt groen monster, een rood monster spawnen
-                                     (filter (lambda (monster) ((monster 'gestorven?))) monsters))
+                  (if (not (eq? (monster 'type) 'groen))
+                      ((geld 'voeg-geld-toe!) (monster 'type))) ;; Zal geld updaten, en indien het een groen monster is, een rood monster spawnen
+                  (if (eq? (monster 'type) 'groen)
+                      (zet-terug-monster-lijst! monster ((monster 'verander-levens!) #t))))
+                (filter (lambda (monster) ((monster 'gestorven?))) monsters))
       (set! monsters (filter 
                       (lambda (monster)
                         (and (not ((monster 'einde?)))

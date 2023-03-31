@@ -8,6 +8,7 @@
     (cond
       ((eq? type 'basis) *basis-toren-kost*)
       ((eq? type 'rood) *rood-monster-winst*)
+      ((eq? type 'level) *level-winst*)
       (else "Ongeldig type")))
 
   ;; Volgende code gaat na als de speler genoeg geld heeft

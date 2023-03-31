@@ -1,18 +1,21 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                               Monster ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (maak-monster-adt type pad . pos inflec-punten inflec-tekens beweging-richt beweging-zin) ;; Optionele parameters zijn nodig om huidige stand van over te zetten van groen monster naar rood monster 
-  (let ((positie (((pad 'begin) 'positie-copieer)))
+;; Optionele parameters zijn nodig om huidige stand van zaken over te zetten van groen monster naar rood monster
+;; Zoals de Inflectie-punten, tekens, enzo.
+(define (maak-monster-adt type pad . opt) 
+  (let* ((bool (null? opt)) ;; Gedaan vermits dit vaak nodig is (efficientie)
+        (positie (if bool (((pad 'begin) 'positie-copieer)) (list-ref opt 0)))
         (levens #f)
         (monster-loop-snelheid *rood&&groen&&paars-monster-loop-snelheid*)
         (schild #f)
         (einde (pad 'einde))
-        (inflectie-punten (pad 'inflectie-punten))
-        (inflectie-tekens (pad 'inflectie-tekens))
-        (beweging-richting-x #t)
-        (beweging-zin +)) ;; #t beweeg x-richting, #f betekent beweeg y richting
+        (inflectie-punten (if bool (pad 'inflectie-punten) (list-ref opt 1)))
+        (inflectie-tekens (if bool (pad 'inflectie-tekens) (list-ref opt 2)))
+        (beweging-richting-x (if bool #t (list-ref opt 3)))
+        (beweging-zin (if bool + (list-ref opt 4)))) ;; #t beweeg x-richting, #f betekent beweeg y richting
 
-    ;; Voglende code gaat na ... !!!!  
+    ;; Voglende code zet de initiele dingen klaar  
     (define (bepaal-initieel!)
       (cond
         ((eq? type 'rood) (set! levens *levens-rood-monster*))
@@ -64,7 +67,8 @@
     (define (verander-levens! . activeer) 
       (cond 
         ((eq? type 'rood)  (set! levens (- levens 1)))
-        ((eq? type 'groen) (if activeer (begin (set! levens 1) (set! type 'rood)) (set! levens 0)))
+        ((eq? type 'groen) (if (eq? activeer #t) (maak-monster 'rood pad positie inflectie-punten inflectie-tekens beweging-richting-x beweging-zin)
+                                                      (set! levens 0))) ;; !!!! Verander hier nog de procedure !!!! 
         ((eq? type 'geel) (if (= schild 0) (set! levens (- levens 1)) (set! schild (- schild 1)))) ;; !!!!Moet nog veranderen normaal!!!!
         ((eq? type 'paars) (set! levens (- levens 1))) ;; !!!!Meer monster levens!!!!
         (else

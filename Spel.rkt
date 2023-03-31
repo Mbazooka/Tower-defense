@@ -35,7 +35,7 @@
 (load "Monster-ADT.rkt")
 (load "Level-ADT.rkt")
 (load "Geld-ADT.rkt")
-(load "Leven-adt.rkt")
+(load "Levens-adt.rkt")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                               Teken en spel ADTs                           ;;

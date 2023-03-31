@@ -5,6 +5,7 @@
   (let* ((geld (maak-geld-adt *geld-begin-bedrag*))
          (levens (maak-leven-adt *levens-hoeveelheid*))
          (level (maak-level-adt level-1 geld levens))
+         (level-tal 1) ;; Huidige level
          (pad (level 'pad))
          (teken-adt (maak-teken-adt (+ *menu-breedte-px* *spel-breedte-px*) *spel/menu-hoogte-px*));; maak de fundamenten van het spel
          (toren-type #f) ;; Om torens te plaatsen veranderen we dit om te weten welk type te plaatsen.
@@ -66,8 +67,9 @@
     ;;Volgende code implementeert een toets om het spel de laten starten
     (define (toets-procedure toestand toets)
       (cond
-        ((and (eq? toestand 'pressed) (eq? toets #\space) ((level 'einde?))) 
-         (set! level (maak-level-adt level-1 geld levens (level 'torens))))
+        ((and (eq? toestand 'pressed) (eq? toets #\space) ((level 'einde?)))
+         (set! level (maak-level-adt level-1 geld levens (level 'torens)))
+         (set! level-tal (+ level-tal 1)))
         ((and (eq? toestand 'pressed) (eq? toets #\space))
          ((teken-adt 'set-spel-lus!) spel-lus-procedure))
         ((and (eq? toestand 'pressed) (eq? toets 'escape))

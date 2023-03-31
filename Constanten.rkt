@@ -80,6 +80,7 @@
 ;; Constanten die geld van speler doet veranderen
 (define *basis-toren-kost* 500)
 (define *rood-monster-winst* 20)
+(define *level-winst* 1000)
 
 ;; Constanten die levens van monsters voorstellen
 (define *levens-rood-monster* 1)
