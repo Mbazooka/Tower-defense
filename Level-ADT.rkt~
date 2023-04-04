@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                 Level ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (maak-level-adt monster-rij . vorige-torens) ;; Neemt een rij van monster in die gereleased zullen zijn op het pad, optionele parameter torens om torens vorige level mee te nemen
+(define (maak-level-adt monster-rij geld levens . vorige-torens) ;; Neemt een rij van monster in die gereleased zullen zijn op het pad, (alsook geld en levens) optionele parameter torens om torens vorige level mee te nemen
   (let ((pad (maak-pad-adt vector-1))
         (torens (if (not (null? vorige-torens)) (car vorige-torens) vorige-torens))
         (monsters '())) ;; Lijst omdat elk element bewerken gemakkelijk is (for-each)
@@ -16,10 +16,25 @@
     
     ;; voglende code update de monsters die op het pad lopen
     (define (update-monsters! . update-teken)
+      (define (zet-terug-monster-lijst! zoeken-monster nieuw-monster monsters) ;; Hulp procedure om monsters te verwisselen (nodig om groen monster te switchen met rood monster)
+        (cond
+          ((null? monsters) "Error: Iets misgegaan")
+          ((eq? (car monsters) zoeken-monster)
+           (set-car! monsters nieuw-monster))
+          (else
+           (zet-terug-monster-lijst! zoeken-monster nieuw-monster (cdr monsters)))))
+      
+      ((levens 'levens-verminder!) (length (filter (lambda (monster) ((monster 'einde?))) monsters))) ;; Telt aantal monsters aan het einde en vermindert levens
+      (for-each (lambda (monster)
+                  (if (not (eq? (monster 'type) 'groen))
+                      ((geld 'voeg-geld-toe!) (monster 'type))) ;; Zal geld updaten, en indien het een groen monster is, een rood monster spawnen
+                  (if (eq? (monster 'type) 'groen)
+                      (zet-terug-monster-lijst! monster ((monster 'verander-levens!) #t))))
+                (filter (lambda (monster) ((monster 'gestorven?))) monsters))
       (set! monsters (filter 
                       (lambda (monster)
-                        (and (not (monster 'einde?))
-                             (not (monster 'gestorven?))))
+                        (and (not ((monster 'einde?)))
+                             (not ((monster 'gestorven?)))))
                       monsters)) ;; Overblijvende monsters te vermoorden
       (for-each (lambda (monster) ((monster 'volgende-positie!))) monsters) ;; Overblijvende monster verder laten wandelen
       (if (and (not (null? update-teken)) (eq? (car update-teken) 'toevoegen) (not (null? monster-rij))) ;; Het toevoegen van monsters gedeelte van de procedure
@@ -87,6 +102,7 @@
         ((eq? msg 'verkrijg-projectielen) verkrijg-projectielen)
         ((eq? msg 'einde?) einde?)
         ((eq? msg 'level-einde!) level-einde!)
+        ((eq? msg 'soort) 'level)
         (else
          "maak-level-adt: ongeldig bericht")))
     dispatch))

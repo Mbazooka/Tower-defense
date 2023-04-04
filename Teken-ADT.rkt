@@ -1,4 +1,4 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                 Teken ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Doel van dit ADT is om alles gemakkelijk te teken gebruikmakend van de grafische bibliotheek (dit zal gebruikt worden door spel ADT)
@@ -71,7 +71,7 @@
     (define laag-pad ((venster 'new-layer!)))
 
     ;; Volgende code is om de tekst delen van het spel up te daten
-    (define (update-tekst-teken! object)
+    (define (update-tekst-teken! object . level-tal) ;; Dit werd gedaan omdat het level object zijn level niet bijhoud
       (define (update-tekst-hulp! tegel)
         ((tegel 'clear!))
         ((tegel 'draw-text!) (number->string (object 'status)) *tekst-font* 0 0 "white"))
@@ -79,6 +79,7 @@
       (cond
         ((eq? 'geld (object 'soort)) (update-tekst-hulp! geld-tekst-tegel))
         ((eq? 'levens (object 'soort)) (update-tekst-hulp! levens-tekst-tegel))
+;        ((eq? 'level (object 'soort)) (update-tekst-hulp! level-tekst-tegel-dynamisch))
         (else
          "Update-tekst-teken!: Ongeldig object ingegeven")))
 
