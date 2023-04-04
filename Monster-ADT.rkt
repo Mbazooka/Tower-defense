@@ -72,7 +72,7 @@
         ((eq? type 'geel) (if (= schild 0) (set! levens (- levens 1)) (set! schild (- schild 1)))) ;; !!!!Moet nog veranderen normaal!!!!
         ((eq? type 'paars) (set! levens (- levens 1))) ;; !!!!Meer monster levens!!!!
         (else
-         "monster-type: ongeldig type")))
+         "monster-type: ongeldig type")))    
         
     (define (dispatch msg)
       (cond
