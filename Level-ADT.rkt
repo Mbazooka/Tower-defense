@@ -29,7 +29,7 @@
                   (if (not (eq? (monster 'type) 'groen))
                       ((geld 'voeg-geld-toe!) (monster 'type))) ;; Zal geld updaten, en indien het een groen monster is, een rood monster spawnen
                   (if (eq? (monster 'type) 'groen)
-                      (zet-terug-monster-lijst! monster ((monster 'verander-levens!) #t))))
+                      (zet-terug-monster-lijst! monster ((monster 'verander-levens!) #t) monsters)))
                 (filter (lambda (monster) ((monster 'gestorven?))) monsters))
       (set! monsters (filter 
                       (lambda (monster)

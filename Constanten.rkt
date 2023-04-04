@@ -53,6 +53,7 @@
 
 ;; Constanten voor bitmap van monsters (geheugen vriendelijker)
 (define *rood-monster-bitmap&&mask* (cons "Images/Rood-monster.jpg" "Images/Rood-monster-mask.png"))
+(define *groen-monster-bitmap&&mask* (cons "Images/Groen-monster.png" "Images/Groen-monster-mask.png"))
 
 ;; Constanten voor bitmap van projectielen
 (define *steen-projectiel-bitmap&&mask* (cons "Images/projectiel.png" "Images/projectiel-mask.png"))
