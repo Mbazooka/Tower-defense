@@ -87,12 +87,15 @@
 (define *paars-monster-winst* 30)
 (define *level-winst* 500)
 
-;; Constanten die levens van monsters voorstellen
+;; Constanten die levens (en ook rand) van monsters voorstellen 
 (define *levens-rood-monster* 1)
 (define *levens-groen-monster* 2)
 (define *levens-geel-monster* 2)
 (define *schild-geel-monster* 3)
 (define *levens-paars-monster* 4)
+(define *paars-monster-rand-afstand* 4)
+
+
 
 
 

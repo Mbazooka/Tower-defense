@@ -1,27 +1,32 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                               Monster ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (maak-monster-adt type pad) 
-  (let ((positie (((pad 'begin) 'positie-copieer)))
+;; Optionele parameters zijn nodig om huidige stand van zaken over te zetten van groen monster naar rood monster
+;; Zoals de Inflectie-punten, tekens, enzo.
+(define (maak-monster-adt type pad . opt) 
+  (let* ((bool (null? opt)) ;; Gedaan vermits dit vaak nodig is (efficientie)
+        (positie (if bool (((pad 'begin) 'positie-copieer)) (list-ref opt 0)))
         (levens #f)
+        (monster-loop-snelheid *rood&&groen&&paars-monster-loop-snelheid*)
+        (schild #f)
         (einde (pad 'einde))
-        (inflectie-punten (pad 'inflectie-punten))
-        (inflectie-tekens (pad 'inflectie-tekens))
-        (beweging-richting-x #t)
-        (beweging-zin +)) ;; #t beweeg x-richting, #f betekent beweeg y richting
+        (inflectie-punten (if bool (pad 'inflectie-punten) (list-ref opt 1)))
+        (inflectie-tekens (if bool (pad 'inflectie-tekens) (list-ref opt 2)))
+        (beweging-richting-x (if bool #t (list-ref opt 3)))
+        (beweging-zin (if bool + (list-ref opt 4)))) ;; #t beweeg x-richting, #f betekent beweeg y richting
 
-    ;; Voglende code gaat na hoeveel levens het monster mag hebben (op basis van type)
-    
-    (define (bepaal-levens!)
+    ;; Voglende code zet de initiele dingen klaar  
+    (define (bepaal-initieel!)
       (cond
-        ((eq? type 'rood) (set! levens *levens-rood-monster*)) 
+        ((eq? type 'rood) (set! levens *levens-rood-monster*))
         ((eq? type 'groen) (set! levens *levens-groen-monster*))
-        ((eq? type 'geel) (set! levens *levens-geel-monster*))
+        ((eq? type 'geel) (set! levens *levens-geel-monster*)
+                          (set! monster-loop-snelheid *geel-monster-loop-snelheid*) ;; Enkel hier geassigned voor efficiente
+                          (set! schild *schild-geel-monster*))        
         ((eq? type 'paars) (set! levens *levens-paars-monster*))
         (else
          "Geen correcte type")))
-
-    (bepaal-levens!)
+    (bepaal-initieel!)
 
     ;; Volgende code zal het monstertje op de volgende positie zetten
     (define (volgende-positie!)
@@ -43,8 +48,8 @@
                   (teken-bepaling!)))))     
       (richting-verandering!)      
       (if beweging-richting-x
-          ((positie 'x!) (+ (positie 'x) *monster-loop-snelheid*))
-          ((positie 'y!) (beweging-zin (positie 'y) *monster-loop-snelheid*))))
+          ((positie 'x!) (+ (positie 'x) monster-loop-snelheid))
+          ((positie 'y!) (beweging-zin (positie 'y) monster-loop-snelheid))))
 
     ;; Volgende code zal na gaan indien het monster aan het einde is van het pad
     (define (einde?)
@@ -55,9 +60,19 @@
       (<= levens 0))
       
     ;; Volgende code zal het leven van het monstertje verminderen met 1.
-    (define (verander-levens!)
-      (if (not (= levens 0))
-          (set! levens (- levens 1))))
+    ;; De optionele parameter activeer zorgt ervoor dat het groen monster rood monster kan komen
+    ;; Meer bepaald, het groen monster word vermoord om bij het level adt als dood beschouwd te worden
+    ;; Zo kan men dat monster vast pakken, wetende dat hij geraakt is, en kan men dan het monster omvormen naar rood
+    ;; Deze activeer neemt enkel de waarde #t. 
+    (define (verander-levens! . activeer)
+      (cond
+        ((eq? type 'rood)  (set! levens (- levens 1)))
+        ((eq? type 'groen) (if (and (pair? activeer) (eq? (car activeer) #t)) (maak-monster-adt 'rood pad positie inflectie-punten inflectie-tekens beweging-richting-x beweging-zin)
+                                                      (set! levens 0)))
+        ((eq? type 'geel) (if (= schild 0) (set! levens (- levens 1)) (set! schild (- schild 1)))) ;; 
+        ((eq? type 'paars) (set! levens (- levens 1))) ;; !!!!Meer monster levens!!!!
+        (else
+         "monster-type: ongeldig type")))    
         
     (define (dispatch msg)
       (cond

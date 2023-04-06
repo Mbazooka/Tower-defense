@@ -64,7 +64,7 @@
     ;; Meer bepaald, het groen monster word vermoord om bij het level adt als dood beschouwd te worden
     ;; Zo kan men dat monster vast pakken, wetende dat hij geraakt is, en kan men dan het monster omvormen naar rood
     ;; Deze activeer neemt enkel de waarde #t. 
-    (define (verander-levens! . activeer)
+    (define (verminder-levens! . activeer)
       (cond
         ((eq? type 'rood)  (set! levens (- levens 1)))
         ((eq? type 'groen) (if (and (pair? activeer) (eq? (car activeer) #t)) (maak-monster-adt 'rood pad positie inflectie-punten inflectie-tekens beweging-richting-x beweging-zin)
@@ -72,7 +72,11 @@
         ((eq? type 'geel) (if (= schild 0) (set! levens (- levens 1)) (set! schild (- schild 1)))) ;; 
         ((eq? type 'paars) (set! levens (- levens 1))) ;; !!!!Meer monster levens!!!!
         (else
-         "monster-type: ongeldig type")))    
+         "monster-type: ongeldig type")))
+
+    ;; Volgende code zal de levens van een monster met 1 verhogen
+    (define (verhoog-levens!)
+      (set! levens (+ levens 1)))
         
     (define (dispatch msg)
       (cond
@@ -81,7 +85,8 @@
         ((eq? msg 'volgende-positie!) volgende-positie!)
         ((eq? msg 'einde?) einde?)
         ((eq? msg 'gestorven?) gestorven?)
-        ((eq? msg 'verander-levens!) verander-levens!)
+        ((eq? msg 'verminder-levens!) verminder-levens!)
+        ((eq? msg 'verhoog-levens!) verhoog-levens!)
         ((eq? msg 'soort) 'monster) ;; Toegevoegd om code duplicatie bij teken-adt te vermijden
         (else "maak-monster-adt: ongeldig bericht")))
     dispatch))

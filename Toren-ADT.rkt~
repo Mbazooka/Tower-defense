@@ -6,10 +6,29 @@
         (buurt-rand (make-vector 4)) ;; Stelt buurt voor (geheugenvriendelijker)
         (projectielen '()))
 
+    ;; Geeft de rand van een bepaald abstract object a.d.h.v 4 posities (bv toren rand)
+    (define (positie->rand! afstand vector)
+      (let ((x-pos-cent (centraal-positie 'x))
+            (y-pos-cent (centraal-positie 'y)))
+        (vector-set! vector 0 (maak-positie-adt (- x-pos-cent afstand) (+ y-pos-cent afstand)))
+        (vector-set! vector 1 (maak-positie-adt (+ x-pos-cent afstand) (+ y-pos-cent afstand)))
+        (vector-set! vector 2 (maak-positie-adt (- x-pos-cent afstand) (- y-pos-cent afstand)))
+        (vector-set! vector 3 (maak-positie-adt (+ x-pos-cent afstand) (- y-pos-cent afstand)))))
+
     ;; Maakt de werkelijke 4-punt randen aan
-    (positie->rand! centraal-positie *toren-rand-afstand* toren-rand) 
-    (positie->rand! centraal-positie *buurt-rand-afstand* buurt-rand)
+    (positie->rand! *toren-rand-afstand* toren-rand) 
+    (positie->rand! *buurt-rand-afstand* buurt-rand)
     
+    ;; Kijkt als positie in een bepaalde rand zit 
+    (define (in-rand? positie rand)
+      (let ((x-pos (positie 'x))
+            (y-pos (positie 'y)))
+        (and (>= x-pos ((vector-ref rand 0) 'x))
+             (<= y-pos ((vector-ref rand 0) 'y))
+             (<= x-pos ((vector-ref rand 3) 'x))
+             (>= y-pos ((vector-ref rand 3) 'y)))))
+    
+
     ;; Gaat na als de ingegeven toren op de beshouwde toren staat
     (define (in-toren? toren)
       (let ((posities (toren 'toren-posities)))
@@ -35,7 +54,7 @@
     (define (projectiel-update!)
       (for-each
        (lambda (projectiel)
-         (((projectiel 'te-raken-monster) 'verminder-levens!)))
+         (((projectiel 'te-raken-monster) 'verander-levens!)))
        (filter
         (lambda (project) ((project 'bestemming-bereikt?)))
         projectielen))
