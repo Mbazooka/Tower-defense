@@ -68,8 +68,8 @@
       (cond
         ((eq? type 'rood)  (set! levens (- levens 1)))
         ((eq? type 'groen) (if (and (pair? activeer) (eq? (car activeer) #t)) (maak-monster-adt 'rood pad positie inflectie-punten inflectie-tekens beweging-richting-x beweging-zin)
-                                                      (set! levens 0))) ;; !!!! Verander hier nog de procedure !!!! 
-        ((eq? type 'geel) (if (= schild 0) (set! levens (- levens 1)) (set! schild (- schild 1)))) ;; !!!!Moet nog veranderen normaal!!!!
+                                                      (set! levens 0)))
+        ((eq? type 'geel) (if (= schild 0) (set! levens (- levens 1)) (set! schild (- schild 1)))) ;; 
         ((eq? type 'paars) (set! levens (- levens 1))) ;; !!!!Meer monster levens!!!!
         (else
          "monster-type: ongeldig type")))    

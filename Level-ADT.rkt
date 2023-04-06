@@ -6,8 +6,9 @@
         (torens (if (not (null? vorige-torens)) (car vorige-torens) vorige-torens))
         (monsters '())) ;; Lijst omdat elk element bewerken gemakkelijk is (for-each)
     
-    ;; Abstracties om type en rest uit lijst te krijgen
+    ;; Abstracties om type, eerste monster en rest uit lijst te krijgen
     (define type car)
+    (define eerste car)
     (define rest cdr)
         
     ;; Volgende code voegt een toren toe tot het spel wereld
@@ -16,13 +17,13 @@
     
     ;; voglende code update de monsters die op het pad lopen
     (define (update-monsters! . update-teken)
-      (define (zet-terug-monster-lijst! zoeken-monster nieuw-monster monsters) ;; Hulp procedure om monsters te verwisselen (nodig om groen monster te switchen met rood monster)
+      (define (zet-terug-monster-lijst! zoeken-monster nieuw-monster monsters) ;; Hulp procedure om monsters te verwisselen (nodig om groen monster te switchen met rood monster zodat torens in juiste volgorde schieten)
         (cond
           ((null? monsters) "Error: Iets misgegaan")
-          ((eq? (car monsters) zoeken-monster)
+          ((eq? (eerste monsters) zoeken-monster)
            (set-car! monsters nieuw-monster))
           (else
-           (zet-terug-monster-lijst! zoeken-monster nieuw-monster (cdr monsters)))))
+           (zet-terug-monster-lijst! zoeken-monster nieuw-monster (rest monsters)))))
       
       ((levens 'levens-verminder!) (length (filter (lambda (monster) ((monster 'einde?))) monsters))) ;; Telt aantal monsters aan het einde en vermindert levens
       (for-each (lambda (monster)
@@ -49,7 +50,7 @@
          ((toren 'projectiel-update!)))        
        torens))
 
-    ;; Volgende code zal projectielen afschieten naar een monster
+    ;; Volgende code zal projectielen afschieten naar een monster 
     (define (update-torens-projectielen-afschieten!) 
       (define (eerste-monster mons)
         (if (null? (cdr mons))

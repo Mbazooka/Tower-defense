@@ -85,7 +85,7 @@
 (define *rood-groen-monster-winst* 20)
 (define *geel-monster-winst* 50)
 (define *paars-monster-winst* 30)
-(define *level-winst* 1000)
+(define *level-winst* 500)
 
 ;; Constanten die levens van monsters voorstellen
 (define *levens-rood-monster* 1)
