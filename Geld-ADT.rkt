@@ -7,7 +7,9 @@
   (define (bedrag type)
     (cond
       ((eq? type 'basis) *basis-toren-kost*)
-      ((eq? type 'rood) *rood-monster-winst*)
+      ((eq? type 'rood) *rood-groen-monster-winst*)
+      ((eq? type 'geel) *geel-monster-winst*)
+      ((eq? type 'paars) *paars-monster-winst*)
       ((eq? type 'level) *level-winst*)
       (else "Ongeldig type")))
 

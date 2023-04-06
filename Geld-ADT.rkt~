@@ -3,22 +3,24 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (maak-geld-adt begin-bedrag)
 
-  ;; Volgende code heeft het bedrag terug naargelang het type-object
+  ;; Volgende code heeft het bedrag terug naargelang het type-object (zijn disjunct)
   (define (bedrag type)
     (cond
       ((eq? type 'basis) *basis-toren-kost*)
+      ((eq? type 'rood) *rood-monster-winst*)
+      ((eq? type 'level) *level-winst*)
       (else "Ongeldig type")))
 
   ;; Volgende code gaat na als de speler genoeg geld heeft
   (define (voldoende-geld? type)
     (>= begin-bedrag (bedrag type)))
 
-  ;; Volgende code zaar na gelang de type van object het juiste bedrag aftrekken
+  ;; Volgende code zal naar gelang de type van object het juiste bedrag aftrekken
   (define (verwijder-geld! type)
     (set! begin-bedrag (- begin-bedrag (bedrag type))))
 
-  (define (voeg-geld-toe! bedrag)
-    (set! begin-bedrag (+ begin-bedrag bedrag)))
+  (define (voeg-geld-toe! type)
+    (set! begin-bedrag (+ begin-bedrag (bedrag type))))
 
   (define (reset!)
     (set! begin-bedrag *geld-bedrag*))

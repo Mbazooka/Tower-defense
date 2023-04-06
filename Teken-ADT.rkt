@@ -118,7 +118,9 @@
         ((eq? object 'monster)
          (cond
            ((eq? object-type 'rood) *rood-monster-bitmap&&mask*)
-           ((eq? object-type 'groen) *groen-monster-bitmap&&mask*)))
+           ((eq? object-type 'groen) *groen-monster-bitmap&&mask*)
+           ((eq? object-type 'geel) *geel-monster-bitmap&&mask*)
+           ((eq? object-type 'paars) *paars-monster-bitmap&&mask*)))
         ((eq? object 'projectiel)
          (cond
            ((eq? object-type 'steen) *steen-projectiel-bitmap&&mask*)))))
