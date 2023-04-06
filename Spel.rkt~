@@ -22,7 +22,7 @@
 ;;                               Posities voor pad                            ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(load "vectoren-van-posities.rkt")
+(load "Pad-lijst.rkt")
 (load "Monster-lijst.rkt")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -34,6 +34,8 @@
 (load "Toren-adt.rkt")
 (load "Monster-ADT.rkt")
 (load "Level-ADT.rkt")
+(load "Geld-ADT.rkt")
+(load "Levens-adt.rkt")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                               Teken en spel ADTs                           ;;
