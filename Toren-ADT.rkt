@@ -33,9 +33,9 @@
     ;; Volgende code laat toe om projectielen te schieten naar een bepaald monster
     (define (schiet! monster)
       (let ((projectiel (maak-projectiel-adt
-                          ((centraal-positie 'positie-copieer))
-                          (projectiel-type-toren)
-                          monster)))
+                         ((centraal-positie 'positie-copieer))
+                         (projectiel-type-toren)
+                         monster)))
         (set! projectielen (cons projectiel projectielen))))
 
     ;; Volgende code laat toe om de projectielen hun posities up te daten
@@ -51,8 +51,9 @@
                             (not (and ((projectiel 'bestemming-bereikt?)) ((projectiel 'afgehandelt?)))))
                           projectielen))
       (for-each (lambda (projectiel)
-                  ((projectiel 'volgende-positie!)))
-                projectielen))
+                  (if (not ((projectiel 'bestemming-bereikt?)))
+                      ((projectiel 'volgende-positie!)))
+                  projectielen)))
                                           
     (define (dispatch msg)
       (cond
