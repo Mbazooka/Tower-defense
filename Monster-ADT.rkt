@@ -88,9 +88,10 @@
 
     ;; Volgende code zal een monster een actie laten doen
     (define (actie-monster-levend! actie)
-      (if (eq? actie 'vertraag)
-          (vertraag-monster!)
-          (verminder-levens!)))
+      (cond
+        ((eq? actie 'vertraag) (vertraag-monster!))
+        ((eq? actie 'verminder) (verminder-levens!))
+        (else "Ongeldige actie")))
                  
     (define (dispatch msg)
       (cond
@@ -100,7 +101,7 @@
         ((eq? msg 'einde?) einde?)
         ((eq? msg 'gestorven?) gestorven?)
         ((eq? msg 'verminder-levens!) verminder-levens!) ;; Mogelijks weghalen
-        ((eq? msg 'verhoog-levens!) verhoog-levens!) ;; Mogelijks weghalen
+        ((eq? msg 'verhoog-levens!) verhoog-levens!) ;; Mogelijk
         ((eq? msg 'actie-monster-sterven!) actie-monster-sterven!)
         ((eq? msg 'actie-monster-levend!) actie-monster-levend!)
         ((eq? msg 'soort) 'monster) ;; Toegevoegd om code duplicatie bij teken-adt te vermijden
