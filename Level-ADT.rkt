@@ -25,23 +25,19 @@
           (else
            (zet-terug-monster-lijst! zoeken-monster nieuw-monster (rest monsters)))))
 
-      (define (verhoog-levens-paars-monster! paars-monster) ;; Hulp procedure om alle monsters in buurt van dode paarse monster, hun levens te verhogen
-        (let* ((positie-paars-monster (paars-monster 'positie))
-               (rand-paars-monster (make-vector 4)))
-          (positie->rand! positie-paars-monster *paars-monster-rand-afstand* rand-paars-monster)
+      (define (verhoog-levens-paars-monster! rand-paars-monster) ;; Hulp procedure om alle monsters in buurt van dode paarse monster, hun levens te verhogen
           (for-each (lambda (monster)
                       (if (and (not (eq? (monster 'type) 'paars)) (in-rand? (monster 'positie) rand-paars-monster))
                           ((monster 'verhoog-levens!))))
-                    monsters)))                
+                    monsters))                
       
       ((levens 'levens-verminder!) (length (filter (lambda (monster) ((monster 'einde?))) monsters))) ;; Telt aantal monsters aan het einde en vermindert levens
       (for-each (lambda (monster)
                   (if (not (eq? (monster 'type) 'groen))
                       ((geld 'voeg-geld-toe!) (monster 'type))) ;; Zal geld updaten, en indien het een groen monster is, een rood monster spawnen
-                  (if (eq? (monster 'type) 'groen)
-                      (zet-terug-monster-lijst! monster ((monster 'verminder-levens!) #t) monsters)) ;; Zal rood monster doen spawnen van groen monster
-                  (if (eq? (monster 'type) 'paars)
-                      (verhoog-levens-paars-monster! monster)))
+                  (cond
+                    ((eq? (monster 'type) 'groen) (zet-terug-monster-lijst! monster ((monster 'actie-monster!)) monsters)) ;; Zal rood monster doen spawnen van groen monster
+                    ((eq? (monster 'type) 'paars) (verhoog-levens-paars-monster! ((monster 'actie-monster!))))))                    
                 (filter (lambda (monster) ((monster 'gestorven?))) monsters))
       (set! monsters (filter 
                       (lambda (monster)

@@ -5,15 +5,15 @@
 ;; Zoals de Inflectie-punten, tekens, enzo.
 (define (maak-monster-adt type pad . opt) 
   (let* ((bool (null? opt)) ;; Gedaan vermits dit vaak nodig is (efficientie)
-        (positie (if bool (((pad 'begin) 'positie-copieer)) (list-ref opt 0)))
-        (levens #f)
-        (monster-loop-snelheid *rood&&groen&&paars-monster-loop-snelheid*)
-        (schild #f)
-        (einde (pad 'einde))
-        (inflectie-punten (if bool (pad 'inflectie-punten) (list-ref opt 1)))
-        (inflectie-tekens (if bool (pad 'inflectie-tekens) (list-ref opt 2)))
-        (beweging-richting-x (if bool #t (list-ref opt 3)))
-        (beweging-zin (if bool + (list-ref opt 4)))) ;; #t beweeg x-richting, #f betekent beweeg y richting
+         (positie (if bool (((pad 'begin) 'positie-copieer)) (list-ref opt 0)))
+         (levens #f)
+         (monster-loop-snelheid *rood&&groen&&paars-monster-loop-snelheid*)
+         (schild #f)
+         (einde (pad 'einde))
+         (inflectie-punten (if bool (pad 'inflectie-punten) (list-ref opt 1)))
+         (inflectie-tekens (if bool (pad 'inflectie-tekens) (list-ref opt 2)))
+         (beweging-richting-x (if bool #t (list-ref opt 3)))
+         (beweging-zin (if bool + (list-ref opt 4)))) ;; #t beweeg x-richting, #f betekent beweeg y richting
 
     ;; Voglende code zet de initiele dingen klaar  
     (define (bepaal-initieel!)
@@ -64,15 +64,25 @@
     ;; Meer bepaald, het groen monster word vermoord om bij het level adt als dood beschouwd te worden
     ;; Zo kan men dat monster vast pakken, wetende dat hij geraakt is, en kan men dan het monster omvormen naar rood
     ;; Deze activeer neemt enkel de waarde #t. 
-    (define (verminder-levens! . activeer)
+    (define (verminder-levens!)
       (cond
-        ((eq? type 'rood)  (set! levens (- levens 1)))
-        ((eq? type 'groen) (if (and (pair? activeer) (eq? (car activeer) #t)) (maak-monster-adt 'rood pad positie inflectie-punten inflectie-tekens beweging-richting-x beweging-zin)
-                                                      (set! levens 0)))
-        ((eq? type 'geel) (if (= schild 0) (set! levens (- levens 1)) (set! schild (- schild 1)))) ;; 
-        ((eq? type 'paars) (set! levens (- levens 1))) ;; !!!!Meer monster levens!!!!
+        ((or (eq? type 'rood) (eq? type 'paars))  (set! levens (- levens 1)))
+        ((eq? type 'groen) (set! levens 0))
+        ((eq? type 'geel) (if (= schild 0) (set! levens (- levens 1)) (set! schild (- schild 1))))  
         (else
          "monster-type: ongeldig type")))
+
+    ;; Volgende
+    (define (actie-monster!)
+      (cond
+        ((eq? type 'groen) (maak-monster-adt 'rood pad positie inflectie-punten inflectie-tekens beweging-richting-x beweging-zin))
+        ((eq? type 'paars)
+         (let ((rand-paars-monster (make-vector 4)))
+           (positie->rand! positie *paars-monster-rand-afstand* rand-paars-monster) ;; Maakt rand dat level kan gebruiken om alle monster in de buurt met levens te verhogen
+           rand-paars-monster))
+        (else
+         "monster-type: ongeldig type")))
+          
 
     ;; Volgende code zal de levens van een monster met 1 verhogen
     (define (verhoog-levens!)
@@ -87,6 +97,7 @@
         ((eq? msg 'gestorven?) gestorven?)
         ((eq? msg 'verminder-levens!) verminder-levens!)
         ((eq? msg 'verhoog-levens!) verhoog-levens!)
+        ((eq? msg 'actie-monster!) actie-monster!)
         ((eq? msg 'soort) 'monster) ;; Toegevoegd om code duplicatie bij teken-adt te vermijden
         (else "maak-monster-adt: ongeldig bericht")))
     dispatch))
