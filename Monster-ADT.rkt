@@ -59,11 +59,7 @@
     (define (gestorven?)
       (<= levens 0))
       
-    ;; Volgende code zal het leven van het monstertje verminderen met 1.
-    ;; De optionele parameter activeer zorgt ervoor dat het groen monster rood monster kan komen
-    ;; Meer bepaald, het groen monster word vermoord om bij het level adt als dood beschouwd te worden
-    ;; Zo kan men dat monster vast pakken, wetende dat hij geraakt is, en kan men dan het monster omvormen naar rood
-    ;; Deze activeer neemt enkel de waarde #t. 
+    ;; Volgende code zal het leven van het monstertje aanpassen afhankelijk van het soort
     (define (verminder-levens!)
       (cond
         ((or (eq? type 'rood) (eq? type 'paars))  (set! levens (- levens 1)))
@@ -72,6 +68,13 @@
         (else
          "monster-type: ongeldig type")))
 
+    ;; Volgende code zal de levens van een monster met 1 verhogen
+    (define (verhoog-levens!)
+      (set! levens (+ levens 1)))
+
+   (define (vertraag-monster!)
+     (set! monster-loop-snelheid (* *net-projectiel-vertaging* monster-loop-snelheid)))
+    
     ;; Volgende code zal een actie uitvoeren als een monster gestorven is (als die een actie hoeft te doen)
     (define (actie-monster-sterven!)
       (cond
@@ -82,11 +85,13 @@
            rand-paars-monster))
         (else
          "monster-type: ongeldig type")))
-          
-    ;; Volgende code zal de levens van een monster met 1 verhogen
-    (define (verhoog-levens!)
-      (set! levens (+ levens 1)))
-        
+
+    ;; Volgende code zal een monster een actie laten doen
+    (define (actie-monster-levend! actie)
+      (if (eq? actie 'vertraag)
+          (vertraag-monster!)
+          (verminder-levens!)))
+                 
     (define (dispatch msg)
       (cond
         ((eq? msg 'positie) positie)
@@ -94,9 +99,10 @@
         ((eq? msg 'volgende-positie!) volgende-positie!)
         ((eq? msg 'einde?) einde?)
         ((eq? msg 'gestorven?) gestorven?)
-        ((eq? msg 'verminder-levens!) verminder-levens!)
-        ((eq? msg 'verhoog-levens!) verhoog-levens!)
+        ((eq? msg 'verminder-levens!) verminder-levens!) ;; Mogelijks weghalen
+        ((eq? msg 'verhoog-levens!) verhoog-levens!) ;; Mogelijks weghalen
         ((eq? msg 'actie-monster-sterven!) actie-monster-sterven!)
+        ((eq? msg 'actie-monster-levend!) actie-monster-levend!)
         ((eq? msg 'soort) 'monster) ;; Toegevoegd om code duplicatie bij teken-adt te vermijden
         (else "maak-monster-adt: ongeldig bericht")))
     dispatch))

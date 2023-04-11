@@ -63,18 +63,19 @@
 ;; Constanten voor tegel-positie van bitmap van geld en levens
 (define *geld&&levens-tegel-px-hoogte* (- *spel/menu-hoogte-px* 25)) ;; 23 Zo gekozen voor stijlvolle manier
 
-;; Toren constanten
+;; Toren constanten (tijd en geen tijd constanten)
 (define *toren-rand-afstand* 1.6) ;; Hier werd speling gebruikt om te zorgen bitmap niet op pad komt (zorgt voor meer afstand tussen torens en pad)
 (define *buurt-rand-afstand* 10)
+(define *toren-afvuur-frequentie* 2000) ;; Toren schiet frequentie
 
-;; Tijd constanten
+;; Projectiel constanten
+(define *projectiel-afvuur-snelheid* 0.1) ;; Hoe snel het projectiel afgevuurd word
+(define *net-projectiel-vertaging 0.8) ;; Vertraagt bepaald monster met 20% van zijn huidige snelheid
+
+;; Monster tijd constanten
 (define *monster-spawn-frequentie* 3000) ;; Monster spawn frequentie (te veranderen)
 (define *rood&&groen&&paars-monster-loop-snelheid* 0.05) ;; Monster beweeg snelheid
 (define *geel-monster-loop-snelheid* 0.025)
-
-
-(define *toren-afvuur-frequentie* 2000) ;; Toren schiet frequentie
-(define *projectiel-afvuur-snelheid* 0.1) ;; Hoe snel het projectiel afgevuurd word
 
 ;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid
 (define *geld-begin-bedrag* 1000)
