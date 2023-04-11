@@ -12,7 +12,8 @@
          (bestemming-extra-4 (maak-positie-adt (- bestemming-x 1) (- bestemming-y 1)))
          (bestemming-lijst (list bestemming bestemming-extra-1 bestemming-extra-2 bestemming-extra-3 bestemming-extra-4)) 
          (positie-update-hoeveelheid-x (- bestemming-x (initiele-positie 'x))) ;; Dit zijn positie update constanten om gewicht te introduceren en ze zo smooth naar hun eindbestemming te brengen
-         (positie-update-hoeveelheid-y (- bestemming-y (initiele-positie 'y))))
+         (positie-update-hoeveelheid-y (- bestemming-y (initiele-positie 'y)))
+         (stop-beweging #f)) ;; Workt gebruikt voor netten
 
     ;; Volgende code gaat na als het projectiel de bestemming of de extra bestemming posities bereikt heeft.    
     (define (bestemming-bereikt?)
@@ -22,6 +23,15 @@
             ((((positie 'ceil)) 'gelijk?)  ((bestemming-positie 'flo)))
             ((((positie 'flo)) 'gelijk?)  ((bestemming-positie 'ceil)))))
       (accumulate (lambda (x y) (or x y)) #f (map positie-bereikt bestemming-lijst)))
+
+    ;; Volgende code zal na gaan indien alle acties afgehandelt zijn van een projectiel
+    (define (afgehandelt?)
+      (cond
+        ((eq? type 'steen) #t)
+        ((eq? type 'net) (and (not (eq? stop-beweging #f)) (> stop-beweging *net-blijf-liggen-tijd*)))
+        (else
+         "Ongeldig type projectiel")))
+                             
 
     ;; Volgende code zal de positie van het projectiel updaten
     (define (volgende-positie!)
@@ -44,6 +54,7 @@
         ((eq? msg 'type) type)
         ((eq? msg 'te-raken-monster) te-raken-monster)
         ((eq? msg 'bestemming-bereikt?) bestemming-bereikt?)
+        ((eq? msg 'afgehandelt?) afgehandelt?)
         ((eq? msg 'volgende-positie!) volgende-positie!)
         ((eq? msg 'actie-te-raken-monster!) actie-te-raken-monster!)
         ((eq? msg 'soort) 'projectiel)

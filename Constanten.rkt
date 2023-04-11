@@ -68,9 +68,10 @@
 (define *buurt-rand-afstand* 10)
 (define *toren-afvuur-frequentie* 2000) ;; Toren schiet frequentie
 
-;; Projectiel constanten
+;; Projectiel constanten (tijd en geen tijd constanten)
 (define *projectiel-afvuur-snelheid* 0.1) ;; Hoe snel het projectiel afgevuurd word
 (define *net-projectiel-vertaging* 0.8) ;; Vertraagt bepaald monster met 20% van zijn huidige snelheid
+(define *net-blijf-liggen-tijd* 3000)
 
 ;; Monster tijd constanten
 (define *monster-spawn-frequentie* 3000) ;; Monster spawn frequentie (te veranderen)

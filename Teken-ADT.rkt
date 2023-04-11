@@ -219,9 +219,9 @@
     (define (set-spel-lus-procedure! proc)
       ((venster 'set-update-callback!) proc))
 
-    ;; Voglende code is om een knop in te voegen
+    ;; Volgende code is om een knop in te voegen
     (define (set-toets-procedure! proc)
-      ((venster 'set-key-callback!) proc))
+      ((venster 'set-key-callback!) proc))  
               
     (define (dispatch msg)
       (cond

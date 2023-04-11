@@ -48,7 +48,7 @@
         projectielen))
       (set! projectielen (filter
                           (lambda (projectiel)
-                            (not ((projectiel 'bestemming-bereikt?))))
+                            (not (and ((projectiel 'bestemming-bereikt?)) ((projectiel 'afgehandelt?)))))
                           projectielen))
       (for-each (lambda (projectiel)
                   ((projectiel 'volgende-positie!)))

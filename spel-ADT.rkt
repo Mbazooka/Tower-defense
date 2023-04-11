@@ -7,7 +7,7 @@
          (level (maak-level-adt level-1 geld levens))
          (pad (level 'pad))
          (teken-adt (maak-teken-adt (+ *menu-breedte-px* *spel-breedte-px*) *spel/menu-hoogte-px*));; maak de fundamenten van het spel
-         (toren-type #f) ;; Om torens te plaatsen veranderen we dit om te weten welk type te plaatsen.
+         (toren-type #f) ;; Om torens te plaatsen veranderen we dit om te weten welk type toren te plaatsen.
          (monster-tijd 0) ;; Tijd afgelopen sinds vorige monster op pad
          (projectiel-tijd 0)) ;; Tijd afgelopen sinds vorige projectiel die geschoten werd
 
@@ -21,10 +21,10 @@
 
     ;; De procedure die het klikken van muis op scherm voorstelt    
     (define (muis-klik-procedure toets toestand x y)
-      (cond ;; !!!!!Zet dit in de het Teken-adt!!!!!
+      (cond 
         ((and (eq? toets 'left) (eq? toestand 'pressed) (>= x *start-data-menu*) (<= x *toren-knop-breedte-einde*) (>= y *toren-1-knop-hoogte-start*) (<= y *toren-1-knop-hoogte-einde*)) ;; Initialiseert toren type
          (set! toren-type 'basis-toren))
-        ((eq? toren-type #f) "Beweging niet mogelijk") ;; Indien nog geen toren gekozen is
+        ((eq? toren-type #f) "Kies een toren") ;; Indien nog geen toren gekozen is dan moet
         ((and (eq? toets 'left) (eq? toestand 'pressed)
               (<= x (- *start-x-pos-menu* (* 2 *px-breedte*))) ;; Plaats toren buiten menu. De constante 2 is om speling te vermijden en niks op menu te hebben terwijl positie van toren er toch buiten zit (stukje van toren in menu)
               (not (and (<= x *beperking-1-breedte*) (<= y *beperking-1-hoogte*)))
