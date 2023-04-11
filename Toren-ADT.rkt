@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                 Toren ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (maak-toren-adt centraal-positie type) ;; Positie stelt midden van de toren voor, type voor uitbreidbaarheid (later)
+(define (maak-toren-adt centraal-positie type) ;; Positie stelt midden van de toren voor, type is het type toren
   (let ((toren-rand (make-vector 4)) ;; Stelt werkelijke posities toren voor (enkel 4 punten van rand, voor geheugenvriendelijkheid)
         (buurt-rand (make-vector 4)) ;; Stelt buurt voor (geheugenvriendelijker om met 4 te werken)
         (projectielen '()))
@@ -22,13 +22,20 @@
     (define (in-buurt? monster) 
       (in-rand? (monster 'positie) buurt-rand))
 
+    ;; Volgende geeft het type projectiel dat een toren afschiet afhankelijk van het type toren
+    (define (projectiel-type-toren)
+      (cond
+        ((eq? type 'basis-toren) 'steen)
+        ((eq? type 'net-toren) 'net)
+        (else
+         "Ongeldig toren type")))
+
     ;; Volgende code laat toe om projectielen te schieten naar een bepaald monster
     (define (schiet! monster)
       (let ((projectiel (maak-projectiel-adt
                           ((centraal-positie 'positie-copieer))
-                          'steen
-                          monster
-                          )))
+                          (projectiel-type-toren)
+                          monster)))
         (set! projectielen (cons projectiel projectielen))))
 
     ;; Volgende code laat toe om de projectielen hun posities up te daten

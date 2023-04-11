@@ -23,7 +23,7 @@
     (define (muis-klik-procedure toets toestand x y)
       (cond ;; !!!!!Zet dit in de het Teken-adt!!!!!
         ((and (eq? toets 'left) (eq? toestand 'pressed) (>= x *start-data-menu*) (<= x *toren-knop-breedte-einde*) (>= y *toren-1-knop-hoogte-start*) (<= y *toren-1-knop-hoogte-einde*)) ;; Initialiseert toren type
-         (set! toren-type 'basis))
+         (set! toren-type 'basis-toren))
         ((eq? toren-type #f) "Beweging niet mogelijk") ;; Indien nog geen toren gekozen is
         ((and (eq? toets 'left) (eq? toestand 'pressed)
               (<= x (- *start-x-pos-menu* (* 2 *px-breedte*))) ;; Plaats toren buiten menu. De constante 2 is om speling te vermijden en niks op menu te hebben terwijl positie van toren er toch buiten zit (stukje van toren in menu)

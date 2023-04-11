@@ -6,7 +6,7 @@
   ;; Volgende code heeft het bedrag terug naargelang het type-object (zijn disjunct)
   (define (bedrag type)
     (cond
-      ((eq? type 'basis) *basis-toren-kost*)
+      ((eq? type 'basis-toren) *basis-toren-kost*)
       ((eq? type 'rood) *rood-groen-monster-winst*)
       ((eq? type 'geel) *geel-monster-winst*)
       ((eq? type 'paars) *paars-monster-winst*)

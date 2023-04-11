@@ -31,11 +31,12 @@
             ((positie 'x!) (+ (* positie-update-hoeveelheid-x *projectiel-afvuur-snelheid*) x-pos-proj))
             ((positie 'y!) (+ (* positie-update-hoeveelheid-y *projectiel-afvuur-snelheid*) y-pos-proj)))))
 
-    ;; Volgende code voert actie uit op monster
+    ;; Volgende code voert actie uit op monster (afhankelijk van het type projectiel)
     (define (actie-te-raken-monster!)
-      (if (eq? type 'net)
-          ((te-raken-monster 'actie-monster-levend!) 'vertraag)
-          ((te-raken-monster 'actie-monster-levend!) 'verminder)))
+      (cond
+        ((eq? type 'steen) ((te-raken-monster 'actie-monster-levend!) 'verminder))
+        ((eq? type 'net) ((te-raken-monster 'actie-monster-levend!) 'vertraag))
+        (else "Projectiel: ongeldig type")))
 
     (define (dispatch msg)
       (cond
