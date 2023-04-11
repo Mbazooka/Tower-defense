@@ -72,8 +72,8 @@
         (else
          "monster-type: ongeldig type")))
 
-    ;; Volgende
-    (define (actie-monster!)
+    ;; Volgende code zal een actie uitvoeren als een monster gestorven is (als die een actie hoeft te doen)
+    (define (actie-monster-sterven!)
       (cond
         ((eq? type 'groen) (maak-monster-adt 'rood pad positie inflectie-punten inflectie-tekens beweging-richting-x beweging-zin))
         ((eq? type 'paars)
@@ -83,7 +83,6 @@
         (else
          "monster-type: ongeldig type")))
           
-
     ;; Volgende code zal de levens van een monster met 1 verhogen
     (define (verhoog-levens!)
       (set! levens (+ levens 1)))
@@ -97,7 +96,7 @@
         ((eq? msg 'gestorven?) gestorven?)
         ((eq? msg 'verminder-levens!) verminder-levens!)
         ((eq? msg 'verhoog-levens!) verhoog-levens!)
-        ((eq? msg 'actie-monster!) actie-monster!)
+        ((eq? msg 'actie-monster-sterven!) actie-monster-sterven!)
         ((eq? msg 'soort) 'monster) ;; Toegevoegd om code duplicatie bij teken-adt te vermijden
         (else "maak-monster-adt: ongeldig bericht")))
     dispatch))
