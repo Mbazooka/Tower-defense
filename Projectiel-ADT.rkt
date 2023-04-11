@@ -13,7 +13,7 @@
          (bestemming-lijst (list bestemming bestemming-extra-1 bestemming-extra-2 bestemming-extra-3 bestemming-extra-4)) 
          (positie-update-hoeveelheid-x (- bestemming-x (initiele-positie 'x))) ;; Dit zijn positie update constanten om gewicht te introduceren en ze zo smooth naar hun eindbestemming te brengen
          (positie-update-hoeveelheid-y (- bestemming-y (initiele-positie 'y)))
-         (stop-beweging #f)) ;; Workt gebruikt voor netten
+         (projectiel-snelheid-percentage 1)) ;; Idee voor vuurbal
 
     ;; Volgende code gaat na als het projectiel de bestemming of de extra bestemming posities bereikt heeft.    
     (define (bestemming-bereikt?)
@@ -28,10 +28,9 @@
     (define (afgehandelt?)
       (cond
         ((eq? type 'steen) #t)
-        ((eq? type 'net) (and (not (eq? stop-beweging #f)) (> stop-beweging *net-blijf-liggen-tijd*)))
+        ((eq? type 'vuurbal) (= projectiel-snelheid-percentage 0))
         (else
-         "Ongeldig type projectiel")))
-                             
+         "Ongeldig type projectiel")))                             
 
     ;; Volgende code zal de positie van het projectiel updaten
     (define (volgende-positie!)
