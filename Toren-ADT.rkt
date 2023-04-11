@@ -35,7 +35,7 @@
     (define (projectiel-update!)
       (for-each
        (lambda (projectiel)
-         (((projectiel 'te-raken-monster) 'verminder-levens!)))
+         ((projectiel 'actie-te-raken-monster!)))
        (filter
         (lambda (project) ((project 'bestemming-bereikt?)))
         projectielen))

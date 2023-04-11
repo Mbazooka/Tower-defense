@@ -70,7 +70,7 @@
 
 ;; Projectiel constanten
 (define *projectiel-afvuur-snelheid* 0.1) ;; Hoe snel het projectiel afgevuurd word
-(define *net-projectiel-vertaging 0.8) ;; Vertraagt bepaald monster met 20% van zijn huidige snelheid
+(define *net-projectiel-vertaging* 0.8) ;; Vertraagt bepaald monster met 20% van zijn huidige snelheid
 
 ;; Monster tijd constanten
 (define *monster-spawn-frequentie* 3000) ;; Monster spawn frequentie (te veranderen)

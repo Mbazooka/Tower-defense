@@ -31,6 +31,12 @@
             ((positie 'x!) (+ (* positie-update-hoeveelheid-x *projectiel-afvuur-snelheid*) x-pos-proj))
             ((positie 'y!) (+ (* positie-update-hoeveelheid-y *projectiel-afvuur-snelheid*) y-pos-proj)))))
 
+    ;; Volgende code voert actie uit op monster
+    (define (actie-te-raken-monster!)
+      (if (eq? type 'net)
+          ((te-raken-monster 'actie-monster-levend!) 'vertraag)
+          ((te-raken-monster 'actie-monster-levend!) 'verminder)))
+
     (define (dispatch msg)
       (cond
         ((eq? msg 'positie) positie)
@@ -38,7 +44,7 @@
         ((eq? msg 'te-raken-monster) te-raken-monster)
         ((eq? msg 'bestemming-bereikt?) bestemming-bereikt?)
         ((eq? msg 'volgende-positie!) volgende-positie!)
-        ((eq? msg 'vertraag!) vertraag!)
+        ((eq? msg 'actie-te-raken-monster!) actie-te-raken-monster!)
         ((eq? msg 'soort) 'projectiel)
         (else "maak-projectiel-adt: ongeldig bericht")))
     dispatch))
