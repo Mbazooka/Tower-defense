@@ -83,10 +83,10 @@
     (define (monster-na-monster monster)
       (define (hulp-procedure monsters)
         (cond
-          ((null? monsters) #f)
+          ((null? (rest monsters)) #f)
           ((eq? monster (eerste (rest monsters))) (eerste monsters))
           (else
-           (hulp-procedure monster))))
+           (hulp-procedure (rest monsters)))))
       (hulp-procedure monsters)) 
       
     ;; Volgende code is om de projectielen van alle torens te verkrijgen (haal weg, maak beter)

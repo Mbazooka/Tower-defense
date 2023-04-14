@@ -50,9 +50,14 @@
 
     (define (actie-na-monster-raak! level) ;; Voeg andere dingen toe
       (cond
-        ((eq? type 'vuurbal) (maak-projectiel-adt positie 'vuurbal
-                                                  ((level 'monster-na-monster) te-raken-monster)
-                                                  (- projectiel-afvuur-snelheid *vuurbal-hits-snelheid-verander*)))
+        ((eq? type 'vuurbal)
+         (let ((snelheid (- projectiel-afvuur-snelheid *vuurbal-hits-snelheid-verander*)))
+           (if (> snelheid 0)               
+               (maak-projectiel-adt positie 'vuurbal
+                                    ((level 'monster-na-monster) te-raken-monster)
+                                    snelheid)
+               #f)))
+           
         (else
          "Heeft geen actie na het raken van monsters")))
                                                   

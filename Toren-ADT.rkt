@@ -45,7 +45,9 @@
          ((projectiel 'actie-te-raken-monster!))
          (cond ;; !!!!Verander misschien!!!!
            ((eq? 'vuurbal (projectiel 'type))
-            (set! projectielen (cons ((projectiel 'actie-na-monster-raak!) level) projectielen)))))
+            (let ((actie ((projectiel 'actie-na-monster-raak!) level)))
+              (if actie ;; Gaat na als er een actie gedaan moet worden of niet
+                  (set! projectielen (cons actie projectielen)))))))
        (filter
         (lambda (project) ((project 'bestemming-bereikt?)))
         projectielen))
