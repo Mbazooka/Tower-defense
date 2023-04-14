@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                 Projectiel ADT                             ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (maak-projectiel-adt positie type te-raken-monster) 
+(define (maak-projectiel-adt positie type te-raken-monster . afvuur-snelheid) 
   (let* ((bestemming (((te-raken-monster 'positie) 'positie-copieer)))
          (bestemming-x (bestemming 'x)) ;; Vaak nodig dus 1 maal berekent
          (bestemming-y (bestemming 'y))
@@ -13,7 +13,7 @@
          (bestemming-lijst (list bestemming bestemming-extra-1 bestemming-extra-2 bestemming-extra-3 bestemming-extra-4)) 
          (positie-update-hoeveelheid-x (- bestemming-x (initiele-positie 'x))) ;; Dit zijn positie update constanten om gewicht te introduceren en ze zo smooth naar hun eindbestemming te brengen
          (positie-update-hoeveelheid-y (- bestemming-y (initiele-positie 'y)))
-         (projectiel-snelheid-percentage 1)) ;; Idee voor vuurbal
+         (projectiel-afvuur-snelheid (if (pair? afvuur-snelheid) (car afvuur-snelheid) *projectiel-afvuur-snelheid*)))
 
     ;; Volgende code gaat na als het projectiel de bestemming of de extra bestemming posities bereikt heeft.    
     (define (bestemming-bereikt?)
@@ -27,8 +27,8 @@
     ;; Volgende code zal na gaan indien alle acties afgehandelt zijn van een projectiel
     (define (afgehandelt?)
       (cond
-        ((eq? type 'steen) #t)
-        ((eq? type 'vuurbal) (= projectiel-snelheid-percentage 0))
+        ((or (eq? type 'steen) (eq? type 'vuurbal)) #t)
+        ((eq? type 'net) #f) ;; Verander mogelijks
         (else
          "Ongeldig type projectiel")))                             
 
@@ -37,8 +37,8 @@
       (if (not (bestemming-bereikt?))
           (let ((x-pos-proj (positie 'x))
                 (y-pos-proj (positie 'y)))
-            ((positie 'x!) (+ (* positie-update-hoeveelheid-x *projectiel-afvuur-snelheid*) x-pos-proj))
-            ((positie 'y!) (+ (* positie-update-hoeveelheid-y *projectiel-afvuur-snelheid*) y-pos-proj)))))
+            ((positie 'x!) (+ (* positie-update-hoeveelheid-x projectiel-afvuur-snelheid) x-pos-proj))
+            ((positie 'y!) (+ (* positie-update-hoeveelheid-y projectiel-afvuur-snelheid) y-pos-proj)))))
 
     ;; Volgende code voert actie uit op monster (afhankelijk van het type projectiel)
     (define (actie-te-raken-monster!)
@@ -47,6 +47,15 @@
          ((te-raken-monster 'actie-monster-levend!) 'verminder))
         ((eq? type 'net) ((te-raken-monster 'actie-monster-levend!) 'vertraag))
         (else "Projectiel: ongeldig type")))
+
+    (define (actie-na-monster-raak! level) ;; Voeg andere dingen toe
+      (cond
+        ((eq? type 'vuurbal) (maak-projectiel-adt positie 'vuurbal
+                                                  ((level 'monster-na-monster) te-raken-monster)
+                                                  (- projectiel-afvuur-snelheid *vuurbal-hits-snelheid-verander*)))
+        (else
+         "Heeft geen actie na het raken van monsters")))
+                                                  
 
     (define (dispatch msg)
       (cond
@@ -57,6 +66,7 @@
         ((eq? msg 'afgehandelt?) afgehandelt?)
         ((eq? msg 'volgende-positie!) volgende-positie!)
         ((eq? msg 'actie-te-raken-monster!) actie-te-raken-monster!)
+        ((eq? msg 'actie-na-monster-raak!) actie-na-monster-raak!)
         ((eq? msg 'soort) 'projectiel)
         (else "maak-projectiel-adt: ongeldig bericht")))
     dispatch))

@@ -54,6 +54,8 @@
 ;; Constanten voor bitmap van monsters (geheugen vriendelijker)
 (define *rood-monster-bitmap&&mask* (cons "Images/Rood-monster.jpg" "Images/Rood-monster-mask.png"))
 (define *groen-monster-bitmap&&mask* (cons "Images/Groen-monster.png" "Images/Groen-monster-mask.png"))
+(define *geel-monster-bitmap&&mask* (cons "Images/Geel-monster.png" "Images/Geel-monster-mask.png"))
+(define *paars-monster-bitmap&&mask* (cons "Images/Paars-monster.png" "Images/Paars-monster-mask.png"))
 
 ;; Constanten voor bitmap van projectielen
 (define *steen-projectiel-bitmap&&mask* (cons "Images/projectiel.png" "Images/projectiel-mask.png"))
@@ -61,18 +63,20 @@
 ;; Constanten voor tegel-positie van bitmap van geld en levens
 (define *geld&&levens-tegel-px-hoogte* (- *spel/menu-hoogte-px* 25)) ;; 23 Zo gekozen voor stijlvolle manier
 
-;; Toren constanten
+;; Toren constanten (tijd en geen tijd constanten)
 (define *toren-rand-afstand* 1.6) ;; Hier werd speling gebruikt om te zorgen bitmap niet op pad komt (zorgt voor meer afstand tussen torens en pad)
 (define *buurt-rand-afstand* 10)
+(define *toren-afvuur-frequentie* 2000) ;; Toren schiet frequentie
 
-;; Tijd constanten
+;; Projectiel constanten (tijd en geen tijd constanten)
+(define *projectiel-afvuur-snelheid* 0.1) ;; Hoe snel het projectiel afgevuurd word
+(define *net-projectiel-vertaging* 0.8) ;; Vertraagt bepaald monster met 20% van zijn huidige snelheid
+(define *net-blijf-liggen-tijd* 3000)
+
+;; Monster tijd constanten
 (define *monster-spawn-frequentie* 3000) ;; Monster spawn frequentie (te veranderen)
 (define *rood&&groen&&paars-monster-loop-snelheid* 0.05) ;; Monster beweeg snelheid
 (define *geel-monster-loop-snelheid* 0.025)
-
-
-(define *toren-afvuur-frequentie* 2000) ;; Toren schiet frequentie
-(define *projectiel-afvuur-snelheid* 0.1) ;; Hoe snel het projectiel afgevuurd word
 
 ;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid
 (define *geld-begin-bedrag* 1000)
@@ -80,15 +84,20 @@
 
 ;; Constanten die geld van speler doet veranderen
 (define *basis-toren-kost* 500)
-(define *rood-monster-winst* 20)
-(define *level-winst* 1000)
+(define *rood-groen-monster-winst* 20)
+(define *geel-monster-winst* 50)
+(define *paars-monster-winst* 30)
+(define *level-winst* 500)
 
-;; Constanten die levens van monsters voorstellen
+;; Constanten die levens (en ook rand) van monsters voorstellen 
 (define *levens-rood-monster* 1)
 (define *levens-groen-monster* 2)
 (define *levens-geel-monster* 2)
 (define *schild-geel-monster* 3)
 (define *levens-paars-monster* 4)
+(define *paars-monster-rand-afstand* 4)
+
+
 
 
 

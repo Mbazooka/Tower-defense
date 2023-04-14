@@ -39,10 +39,13 @@
         (set! projectielen (cons projectiel projectielen))))
 
     ;; Volgende code laat toe om de projectielen hun posities up te daten
-    (define (projectiel-update!)
+    (define (projectiel-update! level)
       (for-each
        (lambda (projectiel)
-         ((projectiel 'actie-te-raken-monster!)))
+         ((projectiel 'actie-te-raken-monster!))
+         (cond ;; !!!!Verander misschien!!!!
+           ((eq? 'vuurbal (projectiel 'type))
+            (set! projectielen (cons ((projectiel 'actie-na-monster-raak!) level) projectielen)))))
        (filter
         (lambda (project) ((project 'bestemming-bereikt?)))
         projectielen))
@@ -52,8 +55,8 @@
                           projectielen))
       (for-each (lambda (projectiel)
                   (if (not ((projectiel 'bestemming-bereikt?)))
-                      ((projectiel 'volgende-positie!)))
-                  projectielen)))
+                      ((projectiel 'volgende-positie!))))
+                projectielen))
                                           
     (define (dispatch msg)
       (cond

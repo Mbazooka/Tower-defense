@@ -26,10 +26,10 @@
            (zet-terug-monster-lijst! zoeken-monster nieuw-monster (rest monsters)))))
 
       (define (verhoog-levens-paars-monster! rand-paars-monster) ;; Hulp procedure om alle monsters in buurt van dode paarse monster, hun levens te verhogen
-          (for-each (lambda (monster)
-                      (if (and (not (eq? (monster 'type) 'paars)) (in-rand? (monster 'positie) rand-paars-monster))
-                          ((monster 'verhoog-levens!))))
-                    monsters))                
+        (for-each (lambda (monster)
+                    (if (and (not (eq? (monster 'type) 'paars)) (in-rand? (monster 'positie) rand-paars-monster))
+                        ((monster 'verhoog-levens!))))
+                  monsters))                
       
       ((levens 'levens-verminder!) (length (filter (lambda (monster) ((monster 'einde?))) monsters))) ;; Telt aantal monsters aan het einde en vermindert levens
       (for-each (lambda (monster)
@@ -54,7 +54,7 @@
     (define (update-torens-projectielen-positie!)
       (for-each
        (lambda (toren)         
-         ((toren 'projectiel-update!)))        
+         ((toren 'projectiel-update!) dispatch))        
        torens))
 
     ;; Volgende code zal projectielen afschieten naar een monster 
@@ -72,15 +72,24 @@
           (if ((toren 'in-buurt?) monster)
               ((toren 'schiet!) monster)
               (if (not (null? (cdr monsters)))
-                  (toren-schiet-y/n toren (laatste-monster-weglaten monsters))))))
-      
+                  (toren-schiet-y/n toren (laatste-monster-weglaten monsters))))))    
       (if (not (null? monsters))
           (for-each
            (lambda (toren)
              (toren-schiet-y/n toren monsters))
            torens)))
+
+    ;; Volgende code zoekt het monster die volgt op het gegeven monster
+    (define (monster-na-monster monster)
+      (define (hulp-procedure monsters)
+        (cond
+          ((null? monsters) #f)
+          ((eq? monster (eerste (rest monsters))) (eerste monsters))
+          (else
+           (hulp-procedure monster (rest monsters)))))
+      (hulp-procedure monsters)) 
       
-    ;; Volgende code is om de projectielen van alle torens te verkrijgen
+    ;; Volgende code is om de projectielen van alle torens te verkrijgen (haal weg, maak beter)
     (define (verkrijg-projectielen)
       (flatten
        (map (lambda (toren)
@@ -107,6 +116,7 @@
         ((eq? msg 'update-monsters!) update-monsters!)
         ((eq? msg 'update-torens-projectielen-positie!) update-torens-projectielen-positie!)
         ((eq? msg 'update-torens-projectielen-afschieten!) update-torens-projectielen-afschieten!)
+        ((eq? msg 'monster-na-monster) monster-na-monster)
         ((eq? msg 'verkrijg-projectielen) verkrijg-projectielen)
         ((eq? msg 'einde?) einde?)
         ((eq? msg 'level-einde!) level-einde!)

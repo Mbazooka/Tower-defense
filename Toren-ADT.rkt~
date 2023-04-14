@@ -1,34 +1,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                 Toren ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (maak-toren-adt centraal-positie type) ;; Positie stelt midden van de toren voor, type voor uitbreidbaarheid (later)
+(define (maak-toren-adt centraal-positie type) ;; Positie stelt midden van de toren voor, type is het type toren
   (let ((toren-rand (make-vector 4)) ;; Stelt werkelijke posities toren voor (enkel 4 punten van rand, voor geheugenvriendelijkheid)
-        (buurt-rand (make-vector 4)) ;; Stelt buurt voor (geheugenvriendelijker)
+        (buurt-rand (make-vector 4)) ;; Stelt buurt voor (geheugenvriendelijker om met 4 te werken)
         (projectielen '()))
 
-    ;; Geeft de rand van een bepaald abstract object a.d.h.v 4 posities (bv toren rand)
-    (define (positie->rand! afstand vector)
-      (let ((x-pos-cent (centraal-positie 'x))
-            (y-pos-cent (centraal-positie 'y)))
-        (vector-set! vector 0 (maak-positie-adt (- x-pos-cent afstand) (+ y-pos-cent afstand)))
-        (vector-set! vector 1 (maak-positie-adt (+ x-pos-cent afstand) (+ y-pos-cent afstand)))
-        (vector-set! vector 2 (maak-positie-adt (- x-pos-cent afstand) (- y-pos-cent afstand)))
-        (vector-set! vector 3 (maak-positie-adt (+ x-pos-cent afstand) (- y-pos-cent afstand)))))
-
     ;; Maakt de werkelijke 4-punt randen aan
-    (positie->rand! *toren-rand-afstand* toren-rand) 
-    (positie->rand! *buurt-rand-afstand* buurt-rand)
+    (positie->rand! centraal-positie *toren-rand-afstand* toren-rand) 
+    (positie->rand! centraal-positie *buurt-rand-afstand* buurt-rand)
     
-    ;; Kijkt als positie in een bepaalde rand zit 
-    (define (in-rand? positie rand)
-      (let ((x-pos (positie 'x))
-            (y-pos (positie 'y)))
-        (and (>= x-pos ((vector-ref rand 0) 'x))
-             (<= y-pos ((vector-ref rand 0) 'y))
-             (<= x-pos ((vector-ref rand 3) 'x))
-             (>= y-pos ((vector-ref rand 3) 'y)))))
-    
-
     ;; Gaat na als de ingegeven toren op de beshouwde toren staat
     (define (in-toren? toren)
       (let ((posities (toren 'toren-posities)))
@@ -41,30 +22,38 @@
     (define (in-buurt? monster) 
       (in-rand? (monster 'positie) buurt-rand))
 
+    ;; Volgende geeft het type projectiel dat een toren afschiet afhankelijk van het type toren
+    (define (projectiel-type-toren)
+      (cond
+        ((eq? type 'basis-toren) 'steen)
+        ((eq? type 'net-toren) 'net)
+        (else
+         "Ongeldig toren type")))
+
     ;; Volgende code laat toe om projectielen te schieten naar een bepaald monster
     (define (schiet! monster)
       (let ((projectiel (maak-projectiel-adt
-                          ((centraal-positie 'positie-copieer))
-                          'steen
-                          monster
-                          )))
+                         ((centraal-positie 'positie-copieer))
+                         (projectiel-type-toren)
+                         monster)))
         (set! projectielen (cons projectiel projectielen))))
 
     ;; Volgende code laat toe om de projectielen hun posities up te daten
     (define (projectiel-update!)
       (for-each
        (lambda (projectiel)
-         (((projectiel 'te-raken-monster) 'verander-levens!)))
+         ((projectiel 'actie-te-raken-monster!)))
        (filter
         (lambda (project) ((project 'bestemming-bereikt?)))
         projectielen))
       (set! projectielen (filter
                           (lambda (projectiel)
-                            (not ((projectiel 'bestemming-bereikt?))))
+                            (not (and ((projectiel 'bestemming-bereikt?)) ((projectiel 'afgehandelt?)))))
                           projectielen))
       (for-each (lambda (projectiel)
-                  ((projectiel 'volgende-positie!)))
-                projectielen))
+                  (if (not ((projectiel 'bestemming-bereikt?)))
+                      ((projectiel 'volgende-positie!)))
+                  projectielen)))
                                           
     (define (dispatch msg)
       (cond
