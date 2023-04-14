@@ -25,7 +25,7 @@
     ;; Volgende geeft het type projectiel dat een toren afschiet afhankelijk van het type toren
     (define (projectiel-type-toren)
       (cond
-        ((eq? type 'basis-toren) 'steen)
+        ((eq? type 'basis-toren) 'vuurbal)
         ((eq? type 'net-toren) 'net)
         (else
          "Ongeldig toren type")))

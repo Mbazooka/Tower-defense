@@ -1,4 +1,4 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                 Teken ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Doel van dit ADT is om alles gemakkelijk te teken gebruikmakend van de grafische bibliotheek (dit zal gebruikt worden door spel ADT)
@@ -71,7 +71,7 @@
     (define laag-pad ((venster 'new-layer!)))
 
     ;; Volgende code is om de tekst delen van het spel up te daten
-    (define (update-tekst-teken! object)
+    (define (update-tekst-teken! object . level-tal) ;; Dit werd gedaan omdat het level object zijn level niet bijhoud
       (define (update-tekst-hulp! tegel)
         ((tegel 'clear!))
         ((tegel 'draw-text!) (number->string (object 'status)) *tekst-font* 0 0 "white"))
@@ -79,6 +79,7 @@
       (cond
         ((eq? 'geld (object 'soort)) (update-tekst-hulp! geld-tekst-tegel))
         ((eq? 'levens (object 'soort)) (update-tekst-hulp! levens-tekst-tegel))
+;        ((eq? 'level (object 'soort)) (update-tekst-hulp! level-tekst-tegel-dynamisch))
         (else
          "Update-tekst-teken!: Ongeldig object ingegeven")))
 
@@ -116,7 +117,10 @@
            ((eq? object-type 'basis) *basis-toren-bitmap&&mask*)))
         ((eq? object 'monster)
          (cond
-           ((eq? object-type 'rood) *rood-monster-bitmap&&mask*)))
+           ((eq? object-type 'rood) *rood-monster-bitmap&&mask*)
+           ((eq? object-type 'groen) *groen-monster-bitmap&&mask*)
+           ((eq? object-type 'geel) *geel-monster-bitmap&&mask*)
+           ((eq? object-type 'paars) *paars-monster-bitmap&&mask*)))
         ((eq? object 'projectiel)
          (cond
            ((eq? object-type 'steen) *steen-projectiel-bitmap&&mask*)))))
@@ -215,9 +219,9 @@
     (define (set-spel-lus-procedure! proc)
       ((venster 'set-update-callback!) proc))
 
-    ;; Voglende code is om een knop in te voegen
+    ;; Volgende code is om een knop in te voegen
     (define (set-toets-procedure! proc)
-      ((venster 'set-key-callback!) proc))
+      ((venster 'set-key-callback!) proc))  
               
     (define (dispatch msg)
       (cond

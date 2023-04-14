@@ -86,7 +86,7 @@
           ((null? monsters) #f)
           ((eq? monster (eerste (rest monsters))) (eerste monsters))
           (else
-           (hulp-procedure monster (rest monsters)))))
+           (hulp-procedure monster))))
       (hulp-procedure monsters)) 
       
     ;; Volgende code is om de projectielen van alle torens te verkrijgen (haal weg, maak beter)
