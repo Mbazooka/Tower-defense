@@ -43,7 +43,8 @@
     ;; Volgende code voert actie uit op monster (afhankelijk van het type projectiel)
     (define (actie-te-raken-monster!)
       (cond
-        ((eq? type 'steen) ((te-raken-monster 'actie-monster-levend!) 'verminder))
+        ((or (eq? type 'steen) (eq? type 'vuurbal) (eq? type 'bom))
+         ((te-raken-monster 'actie-monster-levend!) 'verminder))
         ((eq? type 'net) ((te-raken-monster 'actie-monster-levend!) 'vertraag))
         (else "Projectiel: ongeldig type")))
 
