@@ -76,9 +76,9 @@
 (define *vuurbal-hits-snelheid-verander* 0.025) ;; Vertraging vuurbal-hits
 
 ;; Monster tijd constanten
-(define *monster-spawn-frequentie* 3000) ;; Monster spawn frequentie (te veranderen)
-(define *rood&&groen&&paars-monster-loop-snelheid* 0.05) ;; Monster beweeg snelheid
-(define *geel-monster-loop-snelheid* 0.025)
+(define *monster-spawn-frequentie* 7000) ;; Monster spawn frequentie (te veranderen)
+(define *rood&&groen&&paars-monster-loop-snelheid* 0.1) ;; Monster beweeg snelheid
+(define *geel-monster-loop-snelheid* 0.05)
 
 ;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid
 (define *geld-begin-bedrag* 1000)

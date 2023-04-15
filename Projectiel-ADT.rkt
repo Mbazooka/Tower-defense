@@ -62,10 +62,6 @@
         (else
          "Heeft geen actie na het raken van monsters")))
 
-    ;; Volgende code gaat na als een bepaalde projectiel stilstaat
-    (define (staat-stil?)
-      (<= projectiel-afvuur-snelheid 0))
-
     (define (dispatch msg)
       (cond
         ((eq? msg 'positie) positie)
@@ -76,7 +72,6 @@
         ((eq? msg 'volgende-positie!) volgende-positie!)
         ((eq? msg 'actie-te-raken-monster!) actie-te-raken-monster!)
         ((eq? msg 'actie-na-monster-raak!) actie-na-monster-raak!)
-        ((eq? msg 'staat-stil?) staat-stil?)
         ((eq? msg 'soort) 'projectiel)
         (else "maak-projectiel-adt: ongeldig bericht")))
     dispatch))
