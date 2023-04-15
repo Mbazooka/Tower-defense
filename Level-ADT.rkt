@@ -83,6 +83,7 @@
     (define (monster-na-monster monster)
       (define (hulp-procedure monsters)
         (cond
+          ((null? monsters) #f)
           ((null? (rest monsters)) #f)
           ((eq? monster (eerste (rest monsters))) (eerste monsters))
           (else

@@ -13,7 +13,7 @@
          (bestemming-lijst (list bestemming bestemming-extra-1 bestemming-extra-2 bestemming-extra-3 bestemming-extra-4)) 
          (positie-update-hoeveelheid-x (- bestemming-x (initiele-positie 'x))) ;; Dit zijn positie update constanten om gewicht te introduceren en ze zo smooth naar hun eindbestemming te brengen
          (positie-update-hoeveelheid-y (- bestemming-y (initiele-positie 'y)))
-         (projectiel-afvuur-snelheid (if (pair? afvuur-snelheid) (car afvuur-snelheid) *projectiel-afvuur-snelheid*)))
+         (projectiel-afvuur-snelheid (if (pair? afvuur-snelheid) (car afvuur-snelheid) *projectiel-afvuur-snelheid-vuurbal*))) ;; Verander voor algemeenheid
 
     ;; Volgende code gaat na als het projectiel de bestemming of de extra bestemming posities bereikt heeft.    
     (define (bestemming-bereikt?)
@@ -48,19 +48,23 @@
         ((eq? type 'net) ((te-raken-monster 'actie-monster-levend!) 'vertraag))
         (else "Projectiel: ongeldig type")))
 
+    ;; Volgende code zal een projectiel een actie doen uitvoeren na dat hij een monster heeft geraakt
     (define (actie-na-monster-raak! level) ;; Voeg andere dingen toe
       (cond
         ((eq? type 'vuurbal)
-         (let ((snelheid (- projectiel-afvuur-snelheid *vuurbal-hits-snelheid-verander*)))
-           (if (> snelheid 0)               
-               (maak-projectiel-adt positie 'vuurbal
-                                    ((level 'monster-na-monster) te-raken-monster)
+         (let ((snelheid (- projectiel-afvuur-snelheid *vuurbal-hits-snelheid-verander*))
+               (volgend-monster ((level 'monster-na-monster) te-raken-monster)))
+           (if (and (> snelheid 0)  volgend-monster)         
+               (maak-projectiel-adt positie type
+                                    volgend-monster
                                     snelheid)
                #f)))
-           
         (else
          "Heeft geen actie na het raken van monsters")))
-                                                  
+
+    ;; Volgende code gaat na als een bepaalde projectiel stilstaat
+    (define (staat-stil?)
+      (<= projectiel-afvuur-snelheid 0))
 
     (define (dispatch msg)
       (cond
@@ -72,6 +76,7 @@
         ((eq? msg 'volgende-positie!) volgende-positie!)
         ((eq? msg 'actie-te-raken-monster!) actie-te-raken-monster!)
         ((eq? msg 'actie-na-monster-raak!) actie-na-monster-raak!)
+        ((eq? msg 'staat-stil?) staat-stil?)
         ((eq? msg 'soort) 'projectiel)
         (else "maak-projectiel-adt: ongeldig bericht")))
     dispatch))
