@@ -89,7 +89,11 @@
           ((eq? monster (eerste (rest monsters))) (eerste monsters))
           (else
            (hulp-procedure (rest monsters)))))
-      (hulp-procedure monsters)) 
+      (hulp-procedure monsters))
+
+    ;; Volgende code voegt een net projectiel toe aan de lijst van net projectielen
+    (define (voeg-net-projectiel-toe! projectiel)
+      (set! net-projectielen (cons projectiel net-projectielen)))
       
     ;; Volgende code is om de projectielen van alle torens te verkrijgen (haal weg, maak beter)
     (define (verkrijg-projectielen)

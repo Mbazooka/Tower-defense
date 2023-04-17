@@ -14,7 +14,7 @@
          (positie-update-hoeveelheid-x (- bestemming-x (initiele-positie 'x))) ;; Dit zijn positie update constanten om gewicht te introduceren en ze zo smooth naar hun eindbestemming te brengen
          (positie-update-hoeveelheid-y (- bestemming-y (initiele-positie 'y)))
          (projectiel-afvuur-snelheid (if (pair? afvuur-snelheid) (car afvuur-snelheid) *projectiel-afvuur-snelheid-vuurbal*)) ;; Verander voor algemeenheid
-         (lig-tijd #f)) ;; Is de tijd dat een projectiel al blijft liggen
+         (lig-tijd 0)) ;; Is de tijd dat een projectiel al blijft liggen (voor net)
 
     ;; Volgende code gaat na als het projectiel de bestemming of de extra bestemming posities bereikt heeft.    
     (define (bestemming-bereikt?)
@@ -29,7 +29,7 @@
     (define (afgehandelt?)
       (cond
         ((or (eq? type 'steen) (eq? type 'vuurbal)) #t)
-        ((eq? type 'net) #f) 
+        ((eq? type 'net) (>= lig-tijd *net-blijf-liggen-tijd*)) ;; Maak constanten 
         (else
          "Ongeldig type projectiel")))                             
 
@@ -50,7 +50,7 @@
         (else "Projectiel: ongeldig type")))
 
     ;; Volgende code zal een projectiel een actie doen uitvoeren na dat hij een monster heeft geraakt
-    (define (actie-na-monster-raak! level) ;; Voeg andere dingen toe
+    (define (actie-na-monster-raak! level dt) ;; Voeg andere dingen toe
       (cond
         ((eq? type 'vuurbal)
          (let ((snelheid (- projectiel-afvuur-snelheid *vuurbal-hits-snelheid-verander*))
@@ -60,6 +60,7 @@
                                     volgend-monster
                                     snelheid)
                #f)))
+        ((eq? type 'net-projectiel) (set! lig-tijd (+ lig-tijd dt)))
         (else
          "Heeft geen actie na het raken van monsters")))
 
