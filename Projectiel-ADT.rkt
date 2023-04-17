@@ -60,7 +60,7 @@
                                     volgend-monster
                                     snelheid)
                #f)))
-        ((eq? type 'net-projectiel) (set! lig-tijd (+ lig-tijd dt)))
+        ((eq? type 'net) (set! lig-tijd (+ lig-tijd dt)))
         (else
          "Heeft geen actie na het raken van monsters")))
 

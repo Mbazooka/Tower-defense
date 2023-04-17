@@ -26,7 +26,7 @@
     (define (projectiel-type-toren)
       (cond
         ((eq? type 'basis-toren) 'net)
-        ((eq? type 'net-toren) 'net)
+        ((eq? type 'net-toren) #f)
         (else
          "Ongeldig toren type")))
 
@@ -45,9 +45,11 @@
          ((projectiel 'actie-te-raken-monster!))
          (cond ;; !!!!Verander misschien!!!!
            ((eq? 'vuurbal (projectiel 'type))
-            (let ((actie ((projectiel 'actie-na-monster-raak!) level)))
+            (let ((actie ((projectiel 'actie-na-monster-raak!) level dt)))
               (if actie ;; Gaat na als er een actie gedaan moet worden of niet
-                  (set! projectielen (cons actie projectielen)))))))
+                  (set! projectielen (cons actie projectielen)))))
+           ((eq? 'net (projectiel 'type))
+            ((projectiel 'actie-na-monster-raak!) level dt))))
        (filter
         (lambda (project) ((project 'bestemming-bereikt?)))
         projectielen))
