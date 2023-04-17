@@ -58,7 +58,7 @@
             ((level 'update-torens-projectielen-afschieten!))
             (set! projectiel-tijd 0)))
       (set! projectiel-tijd (+ projectiel-tijd dt))
-      ((level 'update-torens-projectielen-positie!))
+      ((level 'update-torens-projectielen-positie!) dt)
       ((teken-adt 'teken-projectielen!) ((level 'verkrijg-projectielen)))
       ((teken-adt 'update-tekst-teken!) geld)
       ((teken-adt 'update-tekst-teken!) levens))
