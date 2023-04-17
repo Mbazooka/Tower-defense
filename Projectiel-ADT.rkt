@@ -13,7 +13,8 @@
          (bestemming-lijst (list bestemming bestemming-extra-1 bestemming-extra-2 bestemming-extra-3 bestemming-extra-4)) 
          (positie-update-hoeveelheid-x (- bestemming-x (initiele-positie 'x))) ;; Dit zijn positie update constanten om gewicht te introduceren en ze zo smooth naar hun eindbestemming te brengen
          (positie-update-hoeveelheid-y (- bestemming-y (initiele-positie 'y)))
-         (projectiel-afvuur-snelheid (if (pair? afvuur-snelheid) (car afvuur-snelheid) *projectiel-afvuur-snelheid-vuurbal*))) ;; Verander voor algemeenheid
+         (projectiel-afvuur-snelheid (if (pair? afvuur-snelheid) (car afvuur-snelheid) *projectiel-afvuur-snelheid-vuurbal*)) ;; Verander voor algemeenheid
+         (lig-tijd #f)) ;; Is de tijd dat een projectiel al blijft liggen
 
     ;; Volgende code gaat na als het projectiel de bestemming of de extra bestemming posities bereikt heeft.    
     (define (bestemming-bereikt?)
@@ -28,7 +29,7 @@
     (define (afgehandelt?)
       (cond
         ((or (eq? type 'steen) (eq? type 'vuurbal)) #t)
-        ((eq? type 'net) #f) ;; Verander mogelijks
+        ((eq? type 'net) #f) 
         (else
          "Ongeldig type projectiel")))                             
 

@@ -25,7 +25,7 @@
     ;; Volgende geeft het type projectiel dat een toren afschiet afhankelijk van het type toren
     (define (projectiel-type-toren)
       (cond
-        ((eq? type 'basis-toren) 'vuurbal)
+        ((eq? type 'basis-toren) 'net)
         ((eq? type 'net-toren) 'net)
         (else
          "Ongeldig toren type")))
@@ -56,7 +56,7 @@
                             (not (and ((projectiel 'bestemming-bereikt?)) ((projectiel 'afgehandelt?)))))
                           projectielen))
       (for-each (lambda (projectiel)
-                  (if (not ((projectiel 'bestemming-bereikt?)))
+                  (if (not ((projectiel 'bestemming-bereikt?))) ;; Nodig want soms bestemming bereikt en dus wil je niet dat je ze verder bewegen (vb. net)
                       ((projectiel 'volgende-positie!))))
                 projectielen))
                                           

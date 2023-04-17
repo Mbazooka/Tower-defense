@@ -4,7 +4,8 @@
 (define (maak-level-adt monster-rij geld levens . vorige-torens) ;; Neemt een rij van monster in die gereleased zullen zijn op het pad, (alsook geld en levens) optionele parameter torens om torens vorige level mee te nemen
   (let ((pad (maak-pad-adt vector-1))
         (torens (if (not (null? vorige-torens)) (car vorige-torens) vorige-torens))
-        (monsters '())) ;; Lijst omdat elk element bewerken gemakkelijk is (for-each)
+        (monsters '()) ;; Lijst omdat elk element bewerken gemakkelijk is (for-each)
+        (net-projectielen '())) ;; Alle projectielen die op het pad liggen
     
     ;; Abstracties om type, eerste monster en rest uit lijst te krijgen
     (define type car)
@@ -51,10 +52,10 @@
             (set! monster-rij (rest monster-rij)))))
 
     ;; Volgende code update de projectielen die door torens werden afgeschoten
-    (define (update-torens-projectielen-positie!)
+    (define (update-torens-projectielen-positie! dt)
       (for-each
        (lambda (toren)         
-         ((toren 'projectiel-update!) dispatch))        
+         ((toren 'projectiel-update!) dispatch dt))        
        torens))
 
     ;; Volgende code zal projectielen afschieten naar een monster 
