@@ -16,7 +16,7 @@
          (projectiel-afvuur-snelheid (if (pair? afvuur-snelheid) (car afvuur-snelheid) *projectiel-afvuur-snelheid-vuurbal*)) ;; Verander voor algemeenheid
          (lig-tijd 0) ;; Is de tijd dat een projectiel al blijft liggen (voor net)
          (toegevoegd #f) ;; Is om na te gaan als het net-projectiel toegevoegd is aan het level-adt (om te zien als monster over netten lopen)
-         (vertraag #f)) ;; Is om na te gaan indien een projectiel een monster al vertraag heeft (zodat niet in elke loop het monster vertraag)
+         (vertraagd #f)) ;; Is om na te gaan indien een projectiel een monster al vertraagd heeft (zodat niet in elke loop het monster vertraag)
 
     ;; Volgende code gaat na als het projectiel de bestemming of de extra bestemming posities bereikt heeft.    
     (define (bestemming-bereikt?)
@@ -48,7 +48,10 @@
       (cond
         ((or (eq? type 'steen) (eq? type 'vuurbal) (eq? type 'bom))
          ((te-raken-monster 'actie-monster-levend!) 'verminder))
-        ((eq? type 'net) ((te-raken-monster 'actie-monster-levend!) 'vertraag))
+        ((eq? type 'net) (if (not vertraagd)
+                             (begin
+                               (set! vertraagd #t)
+                               ((te-raken-monster 'actie-monster-levend!) 'vertraag))))
         (else "Projectiel: ongeldig type")))
 
     ;; Volgende code zal een projectiel een actie doen uitvoeren na dat hij een monster heeft geraakt
@@ -72,7 +75,7 @@
 
     ;; Volgende code gaat na als het projectiel toegevoegd is aan het level-adt
     (define (toegevoegd?) toegevoegd)
-     
+              
     (define (dispatch msg)
       (cond
         ((eq? msg 'positie) positie)
