@@ -1,6 +1,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                               Monster ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; !!!!!!!!! Toevoegen van lijst die bijhoud als projectiel al vertraagd heeft of niet !!!!!!
+
 ;; Optionele parameters zijn nodig om huidige stand van zaken over te zetten van groen monster naar rood monster
 ;; Zoals de Inflectie-punten, tekens, enzo.
 (define (maak-monster-adt type pad . opt) 
