@@ -49,6 +49,7 @@
               (if actie ;; Gaat na als er een actie gedaan moet worden of niet
                   (set! projectielen (cons actie projectielen)))))
            ((eq? 'net (projectiel 'type))
+            ((projectiel 'maak-rand!) level)
             ((projectiel 'actie-na-monster-raak!) level dt))))
        (filter
         (lambda (project) ((project 'bestemming-bereikt?)))

@@ -79,11 +79,16 @@
     (define (toegevoegd?) toegevoegd)
 
     ;; Volgende code maakt een rand voor een net-projectiel
-    (define (maak-rand!)
+    (define (maak-rand! level)
       (if (not projectiel-rand)
             (let ((vec (make-vector 4)))
               (positie->rand! positie 2 vec)
-              (set! projectiel-rand vec))))
+              (set! projectiel-rand vec)
+              ((level 'voeg-net-projectiel-toe!) dispatch)))) ;; Moet zo gedaan worden, zodat net-projectiel niet meermaals aan level word toegevoegd
+
+    ;; Volgende code gaat na als een monster in de rand van een net-projectiel zit
+    (define (in-net-rand? monster)
+      (in-rand? (monster 'positie) projectiel-rand))
               
     (define (dispatch msg)
       (cond
@@ -98,6 +103,7 @@
         ((eq? msg 'toegevoegd!) toegevoegd!)
         ((eq? msg 'toegevoegd?) toegevoegd?)
         ((eq? msg 'maak-rand!) maak-rand!)
+        ((eq? msg 'in-net-rand?) in-net-rand?)
         ((eq? msg 'soort) 'projectiel)
         (else "maak-projectiel-adt: ongeldig bericht")))
     dispatch))

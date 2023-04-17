@@ -17,7 +17,7 @@
       (set! torens (cons toren torens)))
     
     ;; voglende code update de monsters die op het pad lopen
-    (define (update-monsters! . update-teken)
+    (define (update-monsters! . update-teken) ;; !!!! Kijk naar volgerde voor efficientie
       (define (zet-terug-monster-lijst! zoeken-monster nieuw-monster monsters) ;; Hulp procedure om monsters te verwisselen (nodig om groen monster te switchen met rood monster zodat torens in juiste volgorde schieten)
         (cond
           ((null? monsters) "Error: Iets misgegaan")
