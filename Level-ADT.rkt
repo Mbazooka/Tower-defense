@@ -33,6 +33,12 @@
                   monsters))  ;; !!!!!! Mogelijks deel kan van andere for each !!!!!!!            
       
       ((levens 'levens-verminder!) (length (filter (lambda (monster) ((monster 'einde?))) monsters))) ;; Telt aantal monsters aan het einde en vermindert levens
+      (for-each (lambda (projectiel)
+                  (for-each (lambda (monster)
+                              (if ((projectiel 'in-net-rand?) monster)
+                                  ((monster 'actie-monster-levend!) 'vertraag)))
+                            monsters))
+                net-projectielen)
       (for-each (lambda (monster)
                   (if (not (eq? (monster 'type) 'groen))
                       ((geld 'voeg-geld-toe!) (monster 'type))) ;; Zal geld updaten, en indien het een groen monster is, een rood monster spawnen
