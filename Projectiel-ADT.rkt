@@ -15,7 +15,8 @@
          (positie-update-hoeveelheid-y (- bestemming-y (initiele-positie 'y)))
          (projectiel-afvuur-snelheid (if (pair? afvuur-snelheid) (car afvuur-snelheid) *projectiel-afvuur-snelheid-vuurbal*)) ;; Verander voor algemeenheid
          (lig-tijd 0) ;; Is de tijd dat een projectiel al blijft liggen (voor net)
-         (toegevoegd #f)) ;; Is om na te gaan als het net-projectiel toegevoegd is aan het level-adt (om te zien als monster over netten lopen)
+         (toegevoegd #f) ;; Is om na te gaan als het net-projectiel toegevoegd is aan het level-adt (om te zien als monster over netten lopen)
+         (vertraag #f)) ;; Is om na te gaan indien een projectiel een monster al vertraag heeft (zodat niet in elke loop het monster vertraag)
 
     ;; Volgende code gaat na als het projectiel de bestemming of de extra bestemming posities bereikt heeft.    
     (define (bestemming-bereikt?)
@@ -71,8 +72,7 @@
 
     ;; Volgende code gaat na als het projectiel toegevoegd is aan het level-adt
     (define (toegevoegd?) toegevoegd)
-      
-
+     
     (define (dispatch msg)
       (cond
         ((eq? msg 'positie) positie)
