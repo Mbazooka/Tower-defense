@@ -43,7 +43,7 @@
       (for-each
        (lambda (projectiel)
          ((projectiel 'actie-te-raken-monster!))
-         (cond ;; !!!!Verander misschien!!!!
+         (cond ;; !!!! Verander misschien !!!!
            ((eq? 'vuurbal (projectiel 'type))
             (let ((actie ((projectiel 'actie-na-monster-raak!) level dt)))
               (if actie ;; Gaat na als er een actie gedaan moet worden of niet

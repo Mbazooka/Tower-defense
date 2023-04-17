@@ -16,7 +16,9 @@
          (projectiel-afvuur-snelheid (if (pair? afvuur-snelheid) (car afvuur-snelheid) *projectiel-afvuur-snelheid-vuurbal*)) ;; Verander voor algemeenheid
          (lig-tijd 0) ;; Is de tijd dat een projectiel al blijft liggen (voor net)
          (toegevoegd #f) ;; Is om na te gaan als het net-projectiel toegevoegd is aan het level-adt (om te zien als monster over netten lopen)
-         (vertraagd #f)) ;; Is om na te gaan indien een projectiel een monster al vertraagd heeft (zodat niet in elke loop het monster vertraag)
+         (vertraagd #f) ;; Is om na te gaan indien een projectiel een monster al vertraagd heeft (zodat niet in elke loop het monster vertraag)
+         (projectiel-rand #f)) ;; Is de rand van een projectiel (indien nodig bv bij een net-projectiel)
+         
 
     ;; Volgende code gaat na als het projectiel de bestemming of de extra bestemming posities bereikt heeft.    
     (define (bestemming-bereikt?)
@@ -75,6 +77,13 @@
 
     ;; Volgende code gaat na als het projectiel toegevoegd is aan het level-adt
     (define (toegevoegd?) toegevoegd)
+
+    ;; Volgende code maakt een rand voor een net-projectiel
+    (define (maak-rand!)
+      (if (not projectiel-rand)
+            (let ((vec (make-vector 4)))
+              (positie->rand! positie 2 vec)
+              (set! projectiel-rand vec))))
               
     (define (dispatch msg)
       (cond
@@ -88,6 +97,7 @@
         ((eq? msg 'actie-na-monster-raak!) actie-na-monster-raak!)
         ((eq? msg 'toegevoegd!) toegevoegd!)
         ((eq? msg 'toegevoegd?) toegevoegd?)
+        ((eq? msg 'maak-rand!) maak-rand!)
         ((eq? msg 'soort) 'projectiel)
         (else "maak-projectiel-adt: ongeldig bericht")))
     dispatch))

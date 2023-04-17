@@ -30,7 +30,7 @@
         (for-each (lambda (monster)
                     (if (and (not (eq? (monster 'type) 'paars)) (in-rand? (monster 'positie) rand-paars-monster))
                         ((monster 'verhoog-levens!))))
-                  monsters))                
+                  monsters))  ;; !!!!!! Mogelijks deel kan van andere for each !!!!!!!            
       
       ((levens 'levens-verminder!) (length (filter (lambda (monster) ((monster 'einde?))) monsters))) ;; Telt aantal monsters aan het einde en vermindert levens
       (for-each (lambda (monster)
