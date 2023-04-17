@@ -79,6 +79,7 @@
 (define *monster-spawn-frequentie* 7000) ;; Monster spawn frequentie (te veranderen)
 (define *rood&&groen&&paars-monster-loop-snelheid* 0.1) ;; Monster beweeg snelheid
 (define *geel-monster-loop-snelheid* 0.05)
+(define *monster-vetraag-tijd* 5000)
 
 ;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid
 (define *geld-begin-bedrag* 1000)

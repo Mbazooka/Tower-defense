@@ -14,7 +14,8 @@
          (positie-update-hoeveelheid-x (- bestemming-x (initiele-positie 'x))) ;; Dit zijn positie update constanten om gewicht te introduceren en ze zo smooth naar hun eindbestemming te brengen
          (positie-update-hoeveelheid-y (- bestemming-y (initiele-positie 'y)))
          (projectiel-afvuur-snelheid (if (pair? afvuur-snelheid) (car afvuur-snelheid) *projectiel-afvuur-snelheid-vuurbal*)) ;; Verander voor algemeenheid
-         (lig-tijd 0)) ;; Is de tijd dat een projectiel al blijft liggen (voor net)
+         (lig-tijd 0) ;; Is de tijd dat een projectiel al blijft liggen (voor net)
+         (toegevoegd #f)) ;; Is om na te gaan als het net-projectiel toegevoegd is aan het level-adt (om te zien als monster over netten lopen)
 
     ;; Volgende code gaat na als het projectiel de bestemming of de extra bestemming posities bereikt heeft.    
     (define (bestemming-bereikt?)
@@ -64,6 +65,14 @@
         (else
          "Heeft geen actie na het raken van monsters")))
 
+    ;; Volgende code zal het toegevoegd Lokale Variabele aanpassen naar #t
+    (define (toegevoegd!)
+      (set! toegevoegd #t))
+
+    ;; Volgende code gaat na als het projectiel toegevoegd is aan het level-adt
+    (define (toegevoegd?) toegevoegd)
+      
+
     (define (dispatch msg)
       (cond
         ((eq? msg 'positie) positie)
@@ -74,6 +83,8 @@
         ((eq? msg 'volgende-positie!) volgende-positie!)
         ((eq? msg 'actie-te-raken-monster!) actie-te-raken-monster!)
         ((eq? msg 'actie-na-monster-raak!) actie-na-monster-raak!)
+        ((eq? msg 'toegevoegd!) toegevoegd!)
+        ((eq? msg 'toegevoegd?) toegevoegd?)
         ((eq? msg 'soort) 'projectiel)
         (else "maak-projectiel-adt: ongeldig bericht")))
     dispatch))
