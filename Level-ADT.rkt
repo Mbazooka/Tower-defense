@@ -129,6 +129,7 @@
         ((eq? msg 'update-torens-projectielen-positie!) update-torens-projectielen-positie!)
         ((eq? msg 'update-torens-projectielen-afschieten!) update-torens-projectielen-afschieten!)
         ((eq? msg 'monster-na-monster) monster-na-monster)
+        ((eq? msg 'voeg-net-projectiel-toe!) voeg-net-projectiel-toe!)
         ((eq? msg 'verkrijg-projectielen) verkrijg-projectielen)
         ((eq? msg 'einde?) einde?)
         ((eq? msg 'level-einde!) level-einde!)
