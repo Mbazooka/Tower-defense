@@ -62,6 +62,11 @@
                   (if (not ((projectiel 'bestemming-bereikt?))) ;; Nodig want soms bestemming bereikt en dus wil je niet dat je ze verder bewegen (vb. net)
                       ((projectiel 'volgende-positie!))))
                 projectielen))
+
+    ;; Volgende code gaat na als een projectiel in een de lijst van nog niet bereikte of afgehandelte projectielen zit
+    ;; Indien hij er niet in zit, wil dat zeggen dat je dit projectiel mag op kuizen uit level-adt (garbage collection, geheugenvriendelijker)
+    (define (niet-bereikt-afgehandelt? projectiel)
+      (memq projectiel projectielen))
                                           
     (define (dispatch msg)
       (cond
