@@ -75,7 +75,7 @@
 
     ;; Volgende code zal een monster vertragen
    (define (vertraag-monster!)
-     (set! monster-loop-snelheid (* *net-projectiel-vertaging* monster-loop-snelheid)))
+     (set! monster-loop-snelheid (- monster-loop-snelheid *net-projectiel-vertaging*)))
     
     ;; Volgende code zal een actie uitvoeren als een monster gestorven is (als die een actie hoeft te doen)
     (define (actie-monster-sterven!)
