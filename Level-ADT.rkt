@@ -5,7 +5,7 @@
   (let ((pad (maak-pad-adt vector-1))
         (torens (if (not (null? vorige-torens)) (car vorige-torens) vorige-torens))
         (monsters '()) ;; Lijst omdat elk element bewerken gemakkelijk is (for-each)
-        (net-projectielen '())) ;; Alle projectielen die op het pad liggen
+        (net-projectielen '())) ;; Alle net-projectielen die op het pad liggen
     
     ;; Abstracties om type, eerste monster en rest uit lijst te krijgen
     (define type car)
@@ -35,9 +35,11 @@
       ((levens 'levens-verminder!) (length (filter (lambda (monster) ((monster 'einde?))) monsters))) ;; Telt aantal monsters aan het einde en vermindert levens
       (for-each (lambda (projectiel)
                   (for-each (lambda (monster)
-                              (if ((projectiel 'in-net-rand?) monster)
-                                  ((monster 'actie-monster-levend!) 'vertraag)))
-                            monsters))
+                              (if (and ((projectiel 'in-net-rand?) monster) (not ((monster 'net-al-vetraagd?) projectiel)))
+                                  (begin
+                                    ((monster 'voeg-net-projectiel-toe!) projectiel)
+                                    ((monster 'actie-monster-levend!) 'vertraag))))
+                            monsters))   
                 net-projectielen)
       (for-each (lambda (monster)
                   (if (not (eq? (monster 'type) 'groen))

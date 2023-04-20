@@ -66,7 +66,7 @@
 ;; Toren constanten (tijd en geen tijd constanten)
 (define *toren-rand-afstand* 1.6) ;; Hier werd speling gebruikt om te zorgen bitmap niet op pad komt (zorgt voor meer afstand tussen torens en pad)
 (define *buurt-rand-afstand* 10)
-(define *toren-afvuur-frequentie* 2000) ;; Toren schiet frequentie
+(define *toren-afvuur-frequentie* 10000) ;; Toren schiet frequentie (2000)
 (define *net-toren-afvuur-frequentie* 10000) ;; Toren schiet frequentie voor net toren
 
 ;; Projectiel constanten (tijd en geen tijd constanten)

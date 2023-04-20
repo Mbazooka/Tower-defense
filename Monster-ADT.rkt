@@ -1,8 +1,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                               Monster ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; !!!!!!!!! Toevoegen van lijst die bijhoud als projectiel al vertraagd heeft of niet !!!!!!
-
 ;; Optionele parameters zijn nodig om huidige stand van zaken over te zetten van groen monster naar rood monster
 ;; Zoals de Inflectie-punten, tekens, enzo.
 (define (maak-monster-adt type pad . opt) 
@@ -15,7 +13,8 @@
          (inflectie-punten (if bool (pad 'inflectie-punten) (list-ref opt 1)))
          (inflectie-tekens (if bool (pad 'inflectie-tekens) (list-ref opt 2)))
          (beweging-richting-x (if bool #t (list-ref opt 3)))
-         (beweging-zin (if bool + (list-ref opt 4)))) ;; #t beweeg x-richting, #f betekent beweeg y richting
+         (beweging-zin (if bool + (list-ref opt 4))) ;; #t beweeg x-richting, #f betekent beweeg y richting
+         (net-projectielen '())) ;; Lijst van van net-projectielen die het monster vertraagt hebben
 
     ;; Voglende code zet de initiele dingen klaar  
     (define (bepaal-initieel!)
@@ -74,6 +73,7 @@
     (define (verhoog-levens!)
       (set! levens (+ levens 1)))
 
+    ;; Volgende code zal een monster vertragen
    (define (vertraag-monster!)
      (set! monster-loop-snelheid (* *net-projectiel-vertaging* monster-loop-snelheid)))
     
@@ -94,6 +94,14 @@
         ((eq? actie 'vertraag) (vertraag-monster!))
         ((eq? actie 'verminder) (verminder-levens!))
         (else "Ongeldige actie")))
+
+    ;; Volgende code zal een net-projectiel toevoegen aan de lijst
+    (define (voeg-net-projectiel-toe! net-projectiel)
+      (set! net-projectielen (cons net-projectiel net-projectielen)))
+
+    ;; Volgende code zal na gaan als een net-projectiel een monster al vertraagd heeft
+    (define (net-al-vetraagd? net-projectiel)
+      (memq net-projectiel net-projectielen))
                  
     (define (dispatch msg)
       (cond
@@ -106,6 +114,8 @@
         ((eq? msg 'verhoog-levens!) verhoog-levens!) ;; Mogelijk
         ((eq? msg 'actie-monster-sterven!) actie-monster-sterven!)
         ((eq? msg 'actie-monster-levend!) actie-monster-levend!)
+        ((eq? msg 'voeg-net-projectiel-toe!) voeg-net-projectiel-toe!)
+        ((eq? msg 'net-al-vetraagd?) net-al-vetraagd?)
         ((eq? msg 'soort) 'monster) ;; Toegevoegd om code duplicatie bij teken-adt te vermijden
         (else "maak-monster-adt: ongeldig bericht")))
     dispatch))

@@ -51,9 +51,9 @@
         ((or (eq? type 'steen) (eq? type 'vuurbal) (eq? type 'bom))
          ((te-raken-monster 'actie-monster-levend!) 'verminder))
         ((eq? type 'net) (if (not vertraagd)
-                             (begin
-                               (set! vertraagd #t)
-                               ((te-raken-monster 'actie-monster-levend!) 'vertraag))))
+                             (begin                              
+                               ((te-raken-monster 'actie-monster-levend!) 'vertraag)
+                               (set! vertraagd #t))))
         (else "Projectiel: ongeldig type")))
 
     ;; Volgende code zal een projectiel een actie doen uitvoeren na dat hij een monster heeft geraakt
