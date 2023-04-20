@@ -65,8 +65,10 @@
 
     ;; Volgende code gaat na als een projectiel in een de lijst van nog niet bereikte of afgehandelte projectielen zit
     ;; Indien hij er niet in zit, wil dat zeggen dat je dit projectiel mag op kuizen uit level-adt (garbage collection, geheugenvriendelijker)
-    (define (niet-bereikt-afgehandelt? projectiel)
-      (memq projectiel projectielen))
+    (define (niet-bereikt&&afgehandelt? projectiel)
+      (if (memq projectiel projectielen)
+          #t
+          #f))
                                           
     (define (dispatch msg)
       (cond
@@ -78,6 +80,7 @@
         ((eq? msg 'schiet!) schiet!)
         ((eq? msg 'projectiel-update!) projectiel-update!)
         ((eq? msg 'projectielen) projectielen)
+        ((eq? msg 'niet-bereikt&&afgehandelt?) niet-bereikt&&afgehandelt?)
         ((eq? msg 'soort) 'toren)
         (else "maak-toren-adt: ongeldig bericht")))
     dispatch))

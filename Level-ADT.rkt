@@ -39,8 +39,12 @@
                                   (begin
                                     ((monster 'voeg-net-projectiel-toe!) projectiel)
                                     ((monster 'actie-monster-levend!) 'vertraag))))
-                            monsters))   
+                            monsters))
                 net-projectielen)
+      (set! projectielen (filter ;; Nodig anders zal een bepaald net, tot het eind van het spel blijven vertragen
+                          (lambda (projectiel)
+                            ((projectiel 'niet-bereikt&&afgehandelt?) projectiel))
+                          net-projectielen))     
       (for-each (lambda (monster)
                   (if (not (eq? (monster 'type) 'groen))
                       ((geld 'voeg-geld-toe!) (monster 'type))) ;; Zal geld updaten, en indien het een groen monster is, een rood monster spawnen
