@@ -14,7 +14,7 @@
          (inflectie-tekens (if bool (pad 'inflectie-tekens) (list-ref opt 2)))
          (beweging-richting-x (if bool #t (list-ref opt 3)))
          (beweging-zin (if bool + (list-ref opt 4))) ;; #t beweeg x-richting, #f betekent beweeg y richting
-         (net-projectielen '())) ;; Lijst van van net-projectielen die het monster vertraagt hebben
+         (net-projectielen (cons 'projectiel '()))) ;; Lijst van van net-projectielen die het monster vertraagt hebben
 
     ;; Voglende code zet de initiele dingen klaar  
     (define (bepaal-initieel!)
@@ -98,13 +98,32 @@
         ((eq? actie 'verminder) (verminder-levens!))
         (else "Ongeldige actie")))
 
-    ;; Volgende code zal een net-projectiel toevoegen aan de lijst
+    ;; Volgende code zal een net-projectiel toevoegen aan de lijst (neemt constante 0 binnen die tijd voorstelt)
     (define (voeg-net-projectiel-toe! net-projectiel)
-      (set! net-projectielen (cons net-projectiel net-projectielen)))
+      (insert! net-projectiel 0  net-projectielen)) 
 
     ;; Volgende code zal na gaan als een net-projectiel een monster al vertraagd heeft
     (define (net-al-vetraagd? net-projectiel)
-      (memq net-projectiel net-projectielen))
+      (assq net-projectiel (rest-dict net-projectielen)))
+
+    ;; Volgende code zijn hulpprocedures om de net-projectiel vertragings tijd te bekomen
+    (define tijd cdr)
+
+    ;; Volgende code zal de net-projectielen hun vertragings actie tijd update
+    (define (update-tijd-net-projectielen! dt)
+      (if (not (null? net-projectielen))
+          (for-each (lambda (projectiel)              
+                        (set-cdr! projectiel (+ (tijd projectiel) dt)))
+                    (rest-dict net-projectielen)))) ;; rest-dict gedaan vermits het een getagde associate lijst is
+
+    ;; Volgende code zal de net-projectielen waarvan hun vertragingstijd verlopen is weghalen (garbage collection)
+    (define (haal-weg-verlopen-net-projectielen!)
+      (for-each (lambda (projectiel)
+                  (if (>= (tijd projectiel) *net-vertraag-tijd*)
+                      (begin
+                        (set! monster-loop-snelheid (+  monster-loop-snelheid *net-projectiel-vertaging*))
+                        (delete! projectiel net-projectielen)))) ;; !!!! Foutje bij deleten !!!!! 
+                (rest-dict net-projectielen)))
                  
     (define (dispatch msg)
       (cond
@@ -118,7 +137,9 @@
         ((eq? msg 'actie-monster-sterven!) actie-monster-sterven!)
         ((eq? msg 'actie-monster-levend!) actie-monster-levend!)
         ((eq? msg 'voeg-net-projectiel-toe!) voeg-net-projectiel-toe!)
+        ((eq? msg 'update-tijd-net-projectielen!) update-tijd-net-projectielen!)
         ((eq? msg 'net-al-vetraagd?) net-al-vetraagd?)
+        ((eq? msg 'haal-weg-verlopen-net-projectielen!) haal-weg-verlopen-net-projectielen!) 
         ((eq? msg 'soort) 'monster) ;; Toegevoegd om code duplicatie bij teken-adt te vermijden
         (else "maak-monster-adt: ongeldig bericht")))
     dispatch))

@@ -74,6 +74,7 @@
 (define *projectiel-afvuur-snelheid-vuurbal* 0.1) ;; Hoe snel het steen projectiel afgevuurd word
 (define *net-projectiel-vertaging* 0.02) ;; Vertraagt bepaald monster met 20% van zijn huidige snelheid
 (define *net-blijf-liggen-tijd* 5000)
+(define *net-vertraag-tijd* 5000)
 (define *vuurbal-hits-snelheid-verander* 0.025) ;; Vertraging vuurbal-hits
 
 ;; Monster tijd constanten

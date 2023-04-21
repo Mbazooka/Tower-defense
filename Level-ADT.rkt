@@ -16,8 +16,8 @@
     (define (voeg-toren-toe! toren)
       (set! torens (cons toren torens)))
     
-    ;; voglende code update de monsters die op het pad lopen
-    (define (update-monsters! . update-teken) ;; !!!! Kijk naar volgerde voor efficientie
+       ;; voglende code update de monsters die op het pad lopen
+    (define (update-monsters! dt . update-teken) ;; !!!! Kijk naar volgerde voor efficientie
       (define (zet-terug-monster-lijst! zoeken-monster nieuw-monster monsters) ;; Hulp procedure om monsters te verwisselen (nodig om groen monster te switchen met rood monster zodat torens in juiste volgorde schieten)
         (cond
           ((null? monsters) "Error: Iets misgegaan")
@@ -30,7 +30,13 @@
         (for-each (lambda (monster)
                     (if (and (not (eq? (monster 'type) 'paars)) (in-rand? (monster 'positie) rand-paars-monster))
                         ((monster 'verhoog-levens!))))
-                  monsters))  ;; !!!!!! Mogelijks deel kan van andere for each !!!!!!!            
+                  monsters))  ;; !!!!!! Mogelijks deel kan van andere for each !!!!!!!
+      
+      (define (update-vertragings-tijd-monsters!)
+        (for-each (lambda (monster)
+                    ((monster 'update-tijd-net-projectielen!) dt)
+                    ((monster 'haal-weg-verlopen-net-projectielen!)))
+                  monsters))
       
       ((levens 'levens-verminder!) (length (filter (lambda (monster) ((monster 'einde?))) monsters))) ;; Telt aantal monsters aan het einde en vermindert levens
       (for-each (lambda (projectiel)
@@ -41,10 +47,11 @@
                                     ((monster 'actie-monster-levend!) 'vertraag))))
                             monsters))
                 net-projectielen)
-      (set! projectielen (filter ;; Nodig anders zal een bepaald net, tot het eind van het spel blijven vertragen
-                          (lambda (projectiel)
-                            ((projectiel 'niet-bereikt&&afgehandelt?) projectiel))
-                          net-projectielen))     
+      (set! net-projectielen (filter ;; Nodig anders zal een bepaald net, tot het eind van het spel blijven vertragen
+                              (lambda (projectiel)
+                                ((projectiel 'niet-bereikt&&afgehandelt?)))
+                              net-projectielen));;!!!!!!
+      (update-vertragings-tijd-monsters!)
       (for-each (lambda (monster)
                   (if (not (eq? (monster 'type) 'groen))
                       ((geld 'voeg-geld-toe!) (monster 'type))) ;; Zal geld updaten, en indien het een groen monster is, een rood monster spawnen
@@ -62,7 +69,7 @@
           (begin
             (set! monsters (cons (maak-monster-adt (type monster-rij) pad) monsters))
             (set! monster-rij (rest monster-rij)))))
-
+    
     ;; Volgende code update de projectielen die door torens werden afgeschoten
     (define (update-torens-projectielen-positie! dt)
       (for-each
@@ -124,7 +131,7 @@
           (begin
             (set! monster-rij '())
             (set! monsters '()))))
-                  
+                                   
     (define (dispatch msg)
       (cond
         ((eq? msg 'pad) pad)

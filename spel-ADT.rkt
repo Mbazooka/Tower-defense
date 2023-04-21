@@ -48,9 +48,9 @@
           ((level 'level-einde!)))
       (if (>= monster-tijd *monster-spawn-frequentie*) ;; Zal monsters op scherm updaten na ongeveer 2 seconden
           (begin
-            ((level 'update-monsters!) 'toevoegen)
+            ((level 'update-monsters!) dt 'toevoegen)
             (set! monster-tijd 0))
-          ((level 'update-monsters!)))
+          ((level 'update-monsters!) dt))
       ((teken-adt 'teken-monsters!) (level 'monsters))
       (set! monster-tijd (+ monster-tijd dt))
       (if (>= projectiel-tijd *toren-afvuur-frequentie*)
