@@ -1,4 +1,4 @@
- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                 Teken ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Doel van dit ADT is om alles gemakkelijk te teken gebruikmakend van de grafische bibliotheek (dit zal gebruikt worden door spel ADT)
@@ -79,7 +79,7 @@
       (cond
         ((eq? 'geld (object 'soort)) (update-tekst-hulp! geld-tekst-tegel))
         ((eq? 'levens (object 'soort)) (update-tekst-hulp! levens-tekst-tegel))
-;        ((eq? 'level (object 'soort)) (update-tekst-hulp! level-tekst-tegel-dynamisch))
+        ;        ((eq? 'level (object 'soort)) (update-tekst-hulp! level-tekst-tegel-dynamisch))
         (else
          "Update-tekst-teken!: Ongeldig object ingegeven")))
 
@@ -123,7 +123,7 @@
            ((eq? object-type 'paars) *paars-monster-bitmap&&mask*)))
         ((eq? object 'projectiel)
          (cond
-           ((eq? object-type 'steen) *steen-projectiel-bitmap&&mask*)))))
+           ((eq? object-type 'net) *steen-projectiel-bitmap&&mask*))))) ;; 8888888888!!!!!!!!
 
     ;; Volgende code is een venster om torens op te plaatsen
     (define laag-toren ((venster 'new-layer!)))
@@ -133,39 +133,6 @@
       (let ((toren-positie (toren 'positie)))
         (let ((bitmap-adressen (bitmap-type (toren 'soort) 'basis)))
           (teken-object-scherm! (maak-positie-adt (- (toren-positie 'x) 1) (- (toren-positie 'y) 1)) (bitmap bitmap-adressen) (mask bitmap-adressen) laag-toren)))) ;; nieuwe positie om toren te centreren
-
-    ;; Volgende code zijn abstracties om met dictionaries te werken (hier gezet want enkel hier gebruikt)
-    (define (associatie dict)
-      (car dict))
-
-    (define (rest-dict dict)
-      (cdr dict))
-
-    (define (sleutel associatie)
-      (car associatie))
-
-    (define (waarde associatie)
-      (cdr associatie))
-
-    ;; Volgende code steekt een associatie in de dictionary
-    (define (insert! sleut value tagged-dict)
-      (let ((toe-te-voegen (list (cons sleut value))))
-        (set-cdr! toe-te-voegen (rest-dict tagged-dict))
-        (set-cdr! tagged-dict toe-te-voegen)))   
-
-    ;; Volgende code delete een bepaalde sleutel uit de dictionary
-    (define (delete! sleut dict) 
-      (define (delete-hulp huidige vorige)
-        (cond
-          ((null? (rest-dict huidige))
-           (if (eq? (sleutel (associatie huidige)) sleut)
-               (set-cdr! vorige '())
-               #f))
-          ((eq? (sleutel (associatie huidige)) sleut)
-           (set-cdr! vorige (rest-dict huidige)))
-          (else
-           (delete-hulp (rest-dict huidige) huidige))))
-      (delete-hulp (cdr dict) dict))
 
     ;; Volgende code is om tiles weg te halen van het scherm die niet meer nodig zijn
     (define (haal-weg-tiles-dict! objecten diction diction-te-verwijderen laag) ;; Zit het in de dictionary maar niet in de lijst van objecten dan moet hij weg

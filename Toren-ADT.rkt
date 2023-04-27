@@ -26,7 +26,7 @@
     (define (projectiel-type-toren)
       (cond
         ((eq? type 'basis-toren) 'net)
-        ((eq? type 'vurball-toren) 'vuurball)
+        ((eq? type 'vuurbal-toren) 'vuurbal)
         ((eq? type 'net-toren) #f)
         (else
          "Ongeldig toren type")))

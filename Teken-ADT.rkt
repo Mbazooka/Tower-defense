@@ -134,6 +134,18 @@
         (let ((bitmap-adressen (bitmap-type (toren 'soort) 'basis)))
           (teken-object-scherm! (maak-positie-adt (- (toren-positie 'x) 1) (- (toren-positie 'y) 1)) (bitmap bitmap-adressen) (mask bitmap-adressen) laag-toren)))) ;; nieuwe positie om toren te centreren
 
+    ;; Volgende code gaat na welke toren geselecteerd werd van de menu
+    (define (toren-selectie x y)
+      (cond
+        ((and (>= x *start-data-menu*) (<= x *toren-knop-breedte-einde*) (>= y *toren-1-knop-hoogte-start*) (<= y *toren-1-knop-hoogte-einde*))
+         'basis-toren)
+        ((and (>= x *start-data-menu*) (<= x *toren-knop-breedte-einde*) (>= y *toren-2-knop-hoogte-start*) (<= y *toren-2-knop-hoogte-einde*))
+         'net-toren)
+        ((and (>= x *start-data-menu*) (<= x *toren-knop-breedte-einde*) (>= y *toren-3-knop-hoogte-start*) (<= y *toren-3-knop-hoogte-einde*))
+         'vuurbal-toren)
+        (else
+         #f)))
+        
     ;; Volgende code is om tiles weg te halen van het scherm die niet meer nodig zijn
     (define (haal-weg-tiles-dict! objecten diction diction-te-verwijderen laag) ;; Zit het in de dictionary maar niet in de lijst van objecten dan moet hij weg
       (if (null? diction)
@@ -188,17 +200,33 @@
 
     ;; Volgende code is om een knop in te voegen
     (define (set-toets-procedure! proc)
-      ((venster 'set-key-callback!) proc))  
+      ((venster 'set-key-callback!) proc))
+
+    ;; Volgende code is om na te gaan als object geplaatst worden bij een beperking
+    (define (buiten-menu? x y)
+      (<= x (- *start-x-pos-menu* (* 2 *px-breedte*))))
+
+    (define (buiten-lava? x y)
+      (and 
+      (not (and (<= x *beperking-1-breedte*) (<= y *beperking-1-hoogte*))) 
+      (not (and (>= x *beperking-1-breedte*) (<= x *beperking-2-breedte*) (<= y *beperking-2-hoogte*)))
+      (not (and (>= x *beperking-2-breedte*) (<= x *beperking-3-breedte*) (<= y *beperking-3-hoogte*)))))
+      
+    (define (buiten-beperking? x y)
+      (and (buiten-menu? x y)
+           (buiten-lava? x y)))
               
-    (define (dispatch msg)
-      (cond
-        ((eq? msg 'teken-pad!) teken-pad!)
-        ((eq? msg 'teken-toren!) teken-toren!)
-        ((eq? msg 'teken-monsters!) teken-monsters!)
-        ((eq? msg 'teken-projectielen!) teken-projectielen!)
-        ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)
-        ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)
-        ((eq? msg 'set-toets-procedure!) set-toets-procedure!)
-        ((eq? msg 'update-tekst-teken!) update-tekst-teken!)
-        (else "maak-teken-adt: ongeldig bericht")))
-    dispatch))
+      (define (dispatch msg)
+        (cond
+          ((eq? msg 'teken-pad!) teken-pad!)
+          ((eq? msg 'teken-toren!) teken-toren!)
+          ((eq? msg 'toren-selectie) toren-selectie)
+          ((eq? msg 'teken-monsters!) teken-monsters!)
+          ((eq? msg 'teken-projectielen!) teken-projectielen!)
+          ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)
+          ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)
+          ((eq? msg 'set-toets-procedure!) set-toets-procedure!)
+          ((eq? msg 'update-tekst-teken!) update-tekst-teken!)
+          ((eq? msg 'buiten-beperking?) buiten-beperking?)
+          (else "maak-teken-adt: ongeldig bericht")))
+      dispatch))
