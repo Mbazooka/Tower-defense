@@ -28,14 +28,32 @@
 (define *spel/menu-hoogte-px* (* *spel-hoogte* *px-hoogte*))
 
 ;; Menu constante (stelt de x coordinaat voor die de start van de menu voorstelt, nodig voor torens te plaatsen)
-(define *start-x-pos-menu* (* *spel-breedte* *px-breedte*))
-(define *toren-1-knop-hoogte-start* (* 2 *px-hoogte*)) ;; zijn keuzes om knopen hier te starten en daar te eindigen
+(define *start-x-pos-menu* (* *spel-breedte* *px-breedte*)) 
 (define *start-data-menu* (+ *spel-breedte-px* *px-breedte*))
+(define *toren-knop-breedte-einde* (* *spel-breedte* (* 4 *px-breedte*))) ;; zijn keuzes om knopen hier te starten en daar te eindigen
+(define *toren-1-knop-hoogte-start* (* 2 *px-hoogte*))
 (define *toren-1-knop-hoogte-einde* (* 5 *px-hoogte*))
-(define *toren-knop-breedte-einde* (* *spel-breedte* (* 4 *px-breedte*)))
+
+(define *toren-2-knop-hoogte-start* (* 7 *px-hoogte*))
+(define *toren-2-knop-hoogte-einde* (* 10 *px-hoogte*))
+
+(define *toren-3-knop-hoogte-start* (* 12 *px-hoogte*))
+(define *toren-3-knop-hoogte-einde* (* 15 *px-hoogte*))
+
+(define *toren-4-knop-hoogte-start* (* 17 *px-hoogte*))
+(define *toren-4-knop-hoogte-einde* (* 20 *px-hoogte*))
+
+(define *start-data-menu-power-up* (+ *spel-breedte-px* (* 2 *px-breedte*)))
+(define *toren-knop-breedte-einde* (+ *spel-breedte-px* (* 5 *px-hoogte*)))
+
+(define *power-up-1-knop-hoogte-start* (* 2 *px-hoogte*))
+(define *power-up-1-knop-hoogte-einde* (* 5 *px-hoogte*))
+
+(define *power-up-2-knop-hoogte-start* (* 7 *px-hoogte*))
+(define *power-up-2-knop-hoogte-einde* (* 10 *px-hoogte*))
 
 ;; Tekst constanten voor op menu
-(define *tekst-toren-breedte* (+ *px-breedte* 10)) ;; + 5 want orange rand centreert de tekst niet
+(define *tekst-toren-breedte* (+ *px-breedte* 10)) ;; + 5 want oranje rand centreert de tekst niet
 (define *tekst-toren-hoogte* *px-hoogte*)
 (define *tekst-font* 15)
 (define *algemeen-tekst-breedte* (* 2 *px-breedte*))
