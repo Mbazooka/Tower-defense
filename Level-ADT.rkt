@@ -43,8 +43,10 @@
                   (for-each (lambda (monster)
                               (if (and ((projectiel 'in-net-rand?) monster) (not ((monster 'net-al-vetraagd?) projectiel)))
                                   (begin
+                                    (display "Vertraag hier")
+                                    (newline)
                                     ((monster 'voeg-net-projectiel-toe!) projectiel)
-                                    ((monster 'actie-monster-levend!) 'vertraag))))
+                                    ((monster 'actie-monster-levend!) 'vertraag)))) ;; Zou in 1 kunnen
                             monsters))
                 net-projectielen)
       (set! net-projectielen (filter ;; Nodig anders zal een bepaald net, tot het eind van het spel blijven vertragen

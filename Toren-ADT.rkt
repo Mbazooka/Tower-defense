@@ -42,7 +42,7 @@
     (define (projectiel-update! level dt)
       (for-each
        (lambda (projectiel)
-         ((projectiel 'actie-te-raken-monster!))
+         ((projectiel 'actie-te-raken-monster!)) 
          (cond ;; !!!! Verander misschien !!!!
            ((eq? 'vuurbal (projectiel 'type))
             (let ((actie ((projectiel 'actie-na-monster-raak!) level dt)))

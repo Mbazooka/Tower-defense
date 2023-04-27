@@ -100,13 +100,14 @@
 
     ;; Volgende code zal een net-projectiel toevoegen aan de lijst (neemt constante 0 binnen die tijd voorstelt)
     (define (voeg-net-projectiel-toe! net-projectiel)
-      (insert! net-projectiel 0  net-projectielen)) 
+      (insert! net-projectiel 0 net-projectielen)) 
 
     ;; Volgende code zal na gaan als een net-projectiel een monster al vertraagd heeft
     (define (net-al-vetraagd? net-projectiel)
       (assq net-projectiel (rest-dict net-projectielen)))
 
     ;; Volgende code zijn hulpprocedures om de net-projectiel vertragings tijd te bekomen
+    (define proj car)
     (define tijd cdr)
 
     ;; Volgende code zal de net-projectielen hun vertragings actie tijd update
@@ -121,19 +122,24 @@
       (for-each (lambda (projectiel)
                   (if (>= (tijd projectiel) *net-vertraag-tijd*)
                       (begin
+                        (display "Snelheid-voor-1: ")
+                        (display monster-loop-snelheid)
+                        (newline)
                         (set! monster-loop-snelheid (+  monster-loop-snelheid *net-projectiel-vertaging*))
-                        (delete! projectiel net-projectielen)))) ;; !!!! Foutje bij deleten !!!!! 
+                        (delete! (proj projectiel) net-projectielen)
+                        (display "Snelheid-na-1: ")
+                        (display monster-loop-snelheid)
+                        (newline))))
                 (rest-dict net-projectielen)))
                  
     (define (dispatch msg)
       (cond
+        ((eq? msg 'snelheid) monster-loop-snelheid)
         ((eq? msg 'positie) positie)
         ((eq? msg 'type) type)
         ((eq? msg 'volgende-positie!) volgende-positie!)
         ((eq? msg 'einde?) einde?)
         ((eq? msg 'gestorven?) gestorven?)
-        ((eq? msg 'verminder-levens!) verminder-levens!) ;; Mogelijks weghalen
-        ((eq? msg 'verhoog-levens!) verhoog-levens!) ;; Mogelijk
         ((eq? msg 'actie-monster-sterven!) actie-monster-sterven!)
         ((eq? msg 'actie-monster-levend!) actie-monster-levend!)
         ((eq? msg 'voeg-net-projectiel-toe!) voeg-net-projectiel-toe!)

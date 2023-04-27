@@ -25,8 +25,8 @@
     ;; Volgende geeft het type projectiel dat een toren afschiet afhankelijk van het type toren
     (define (projectiel-type-toren)
       (cond
-        ((eq? type 'basis-toren) 'steen)
-        ((eq? type 'net-toren) 'net)
+        ((eq? type 'basis-toren) 'net)
+        ((eq? type 'net-toren) #f)
         (else
          "Ongeldig toren type")))
 
@@ -39,10 +39,18 @@
         (set! projectielen (cons projectiel projectielen))))
 
     ;; Volgende code laat toe om de projectielen hun posities up te daten
-    (define (projectiel-update!)
+    (define (projectiel-update! level dt)
       (for-each
        (lambda (projectiel)
-         ((projectiel 'actie-te-raken-monster!)))
+         ((projectiel 'actie-te-raken-monster!))
+         (cond ;; !!!! Verander misschien !!!!
+           ((eq? 'vuurbal (projectiel 'type))
+            (let ((actie ((projectiel 'actie-na-monster-raak!) level dt)))
+              (if actie ;; Gaat na als er een actie gedaan moet worden of niet
+                  (set! projectielen (cons actie projectielen)))))
+           ((eq? 'net (projectiel 'type))
+            ((projectiel 'maak-rand!) level)
+            ((projectiel 'actie-na-monster-raak!) level dt))))
        (filter
         (lambda (project) ((project 'bestemming-bereikt?)))
         projectielen))
@@ -51,9 +59,16 @@
                             (not (and ((projectiel 'bestemming-bereikt?)) ((projectiel 'afgehandelt?)))))
                           projectielen))
       (for-each (lambda (projectiel)
-                  (if (not ((projectiel 'bestemming-bereikt?)))
-                      ((projectiel 'volgende-positie!)))
-                  projectielen)))
+                  (if (not ((projectiel 'bestemming-bereikt?))) ;; Nodig want soms bestemming bereikt en dus wil je niet dat je ze verder bewegen (vb. net)
+                      ((projectiel 'volgende-positie!))))
+                projectielen))
+
+    ;; Volgende code gaat na als een projectiel in een de lijst van nog niet bereikte of afgehandelte projectielen zit
+    ;; Indien hij er niet in zit, wil dat zeggen dat je dit projectiel mag op kuizen uit level-adt (garbage collection, geheugenvriendelijker)
+    (define (niet-bereikt&&afgehandelt? projectiel)
+      (if (memq projectiel projectielen)
+          #t
+          #f))
                                           
     (define (dispatch msg)
       (cond
@@ -65,6 +80,7 @@
         ((eq? msg 'schiet!) schiet!)
         ((eq? msg 'projectiel-update!) projectiel-update!)
         ((eq? msg 'projectielen) projectielen)
+        ((eq? msg 'niet-bereikt&&afgehandelt?) niet-bereikt&&afgehandelt?)
         ((eq? msg 'soort) 'toren)
         (else "maak-toren-adt: ongeldig bericht")))
     dispatch))

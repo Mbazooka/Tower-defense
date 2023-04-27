@@ -51,8 +51,14 @@
         ((or (eq? type 'steen) (eq? type 'vuurbal) (eq? type 'bom))
          ((te-raken-monster 'actie-monster-levend!) 'verminder))
         ((eq? type 'net) (if (not vertraagd)
-                             (begin                              
+                             (begin
+                               (display "Snelheid-voor: ")
+                               (display (te-raken-monster 'snelheid))
+                               (newline)
                                ((te-raken-monster 'actie-monster-levend!) 'vertraag)
+                               (display "Snelheid-na: ")
+                               (display (te-raken-monster 'snelheid))
+                               (newline)
                                (set! vertraagd #t))))
         (else "Projectiel: ongeldig type")))
 
