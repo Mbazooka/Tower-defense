@@ -66,17 +66,22 @@
 ;; Toren constanten (tijd en geen tijd constanten)
 (define *toren-rand-afstand* 1.6) ;; Hier werd speling gebruikt om te zorgen bitmap niet op pad komt (zorgt voor meer afstand tussen torens en pad)
 (define *buurt-rand-afstand* 10)
-(define *toren-afvuur-frequentie* 2000) ;; Toren schiet frequentie
+(define *toren-afvuur-frequentie* 10000) ;; Toren schiet frequentie (2000)
+(define *net-toren-afvuur-frequentie* 10000) ;; Toren schiet frequentie voor net toren
 
 ;; Projectiel constanten (tijd en geen tijd constanten)
-(define *projectiel-afvuur-snelheid* 0.1) ;; Hoe snel het projectiel afgevuurd word
-(define *net-projectiel-vertaging* 0.8) ;; Vertraagt bepaald monster met 20% van zijn huidige snelheid
-(define *net-blijf-liggen-tijd* 3000)
+(define *projectiel-afvuur-snelheid-steen* 0.1) ;; Hoe snel het steen projectiel afgevuurd word
+(define *projectiel-afvuur-snelheid-vuurbal* 0.1) ;; Hoe snel het steen projectiel afgevuurd word
+(define *net-projectiel-vertaging* 0.02) ;; Vertraagt bepaald monster met 20% van zijn huidige snelheid
+(define *net-blijf-liggen-tijd* 5000)
+(define *net-vertraag-tijd* 5000)
+(define *vuurbal-hits-snelheid-verander* 0.025) ;; Vertraging vuurbal-hits
 
 ;; Monster tijd constanten
-(define *monster-spawn-frequentie* 3000) ;; Monster spawn frequentie (te veranderen)
-(define *rood&&groen&&paars-monster-loop-snelheid* 0.05) ;; Monster beweeg snelheid
-(define *geel-monster-loop-snelheid* 0.025)
+(define *monster-spawn-frequentie* 7000) ;; Monster spawn frequentie (te veranderen)
+(define *rood&&groen&&paars-monster-loop-snelheid* 0.1) ;; Monster beweeg snelheid
+(define *geel-monster-loop-snelheid* 0.05)
+(define *monster-vetraag-tijd* 5000) ;; Hoelang een monster vertraagd word door een net
 
 ;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid
 (define *geld-begin-bedrag* 1000)

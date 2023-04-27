@@ -124,7 +124,7 @@
                   (if (>= (tijd projectiel) *net-vertraag-tijd*)
                       (begin
                         (set! monster-loop-snelheid (+  monster-loop-snelheid *net-projectiel-vertaging*))
-                        (delete! (proj projectiel) net-projectielen)
+                        (delete! (proj projectiel) net-projectielen))))
                 (rest-dict net-projectielen)))
                  
     (define (dispatch msg)
