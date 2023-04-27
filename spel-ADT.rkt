@@ -21,15 +21,16 @@
 
     ;; De procedure die het klikken van muis op scherm voorstelt    
     (define (muis-klik-procedure toets toestand x y)
+      (let ((geselecteerde-toren ((teken-adt 'toren-selectie) x y)))
       (cond 
-        ((and (eq? toets 'left) (eq? toestand 'pressed) (>= x *start-data-menu*) (<= x *toren-knop-breedte-einde*) (>= y *toren-1-knop-hoogte-start*) (<= y *toren-1-knop-hoogte-einde*)) ;; Initialiseert toren type
-         (set! toren-type 'basis-toren))
+        ((and (eq? toets 'left) (eq? toestand 'pressed) geselecteerde-toren) ;; Initialiseert toren type
+         (set! toren-type geselecteerde-toren))
         ((eq? toren-type #f) "Kies een toren") ;; Indien nog geen toren gekozen is dan moet
         ((and (eq? toets 'left) (eq? toestand 'pressed)
               (<= x (- *start-x-pos-menu* (* 2 *px-breedte*))) ;; Plaats toren buiten menu. De constante 2 is om speling te vermijden en niks op menu te hebben terwijl positie van toren er toch buiten zit (stukje van toren in menu)
               (not (and (<= x *beperking-1-breedte*) (<= y *beperking-1-hoogte*)))
               (not (and (>= x *beperking-1-breedte*) (<= x *beperking-2-breedte*) (<= y *beperking-2-hoogte*)))
-              (not (and (>= x *beperking-2-breedte*) (<= x *beperking-3-breedte*) (<= y *beperking-3-hoogte*)))
+              (not (and (>= x *beperking-2-breedte*) (<= x *beperking-3-breedte*) (<= y *beperking-3-hoogte*))) ;; !!!!Voeg beperking toe aan teken-adt!!!!
               ((geld 'voldoende-geld?) toren-type))
         
          (let ((toren (maak-toren-adt (maak-positie-adt (/ x *px-breedte*) (/ y *px-hoogte*)) toren-type)))

@@ -48,9 +48,9 @@
           ((level 'level-einde!)))
       (if (>= monster-tijd *monster-spawn-frequentie*) ;; Zal monsters op scherm updaten na ongeveer 2 seconden
           (begin
-            ((level 'update-monsters!) 'toevoegen)
+            ((level 'update-monsters!) dt 'toevoegen)
             (set! monster-tijd 0))
-          ((level 'update-monsters!)))
+          ((level 'update-monsters!) dt))
       ((teken-adt 'teken-monsters!) (level 'monsters))
       (set! monster-tijd (+ monster-tijd dt))
       (if (>= projectiel-tijd *toren-afvuur-frequentie*)
@@ -58,7 +58,7 @@
             ((level 'update-torens-projectielen-afschieten!))
             (set! projectiel-tijd 0)))
       (set! projectiel-tijd (+ projectiel-tijd dt))
-      ((level 'update-torens-projectielen-positie!))
+      ((level 'update-torens-projectielen-positie!) dt)
       ((teken-adt 'teken-projectielen!) ((level 'verkrijg-projectielen)))
       ((teken-adt 'update-tekst-teken!) geld)
       ((teken-adt 'update-tekst-teken!) levens))
