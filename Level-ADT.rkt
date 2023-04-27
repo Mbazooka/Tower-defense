@@ -30,7 +30,7 @@
         (for-each (lambda (monster)
                     (if (and (not (eq? (monster 'type) 'paars)) (in-rand? (monster 'positie) rand-paars-monster))
                         ((monster 'verhoog-levens!))))
-                  monsters))  ;; !!!!!! Mogelijks deel kan van andere for each !!!!!!!
+                  monsters))  
       
       (define (update-vertragings-tijd-monsters!)
         (for-each (lambda (monster)
@@ -43,10 +43,8 @@
                   (for-each (lambda (monster)
                               (if (and ((projectiel 'in-net-rand?) monster) (not ((monster 'net-al-vetraagd?) projectiel)))
                                   (begin
-                                    (display "Vertraag hier")
-                                    (newline)
                                     ((monster 'voeg-net-projectiel-toe!) projectiel)
-                                    ((monster 'actie-monster-levend!) 'vertraag)))) ;; Zou in 1 kunnen
+                                    ((monster 'actie-monster-levend!) 'vertraag)))) 
                             monsters))
                 net-projectielen)
       (set! net-projectielen (filter ;; Nodig anders zal een bepaald net, tot het eind van het spel blijven vertragen

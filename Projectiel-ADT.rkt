@@ -52,13 +52,7 @@
          ((te-raken-monster 'actie-monster-levend!) 'verminder))
         ((eq? type 'net) (if (not vertraagd)
                              (begin
-                               (display "Snelheid-voor: ")
-                               (display (te-raken-monster 'snelheid))
-                               (newline)
-                               ((te-raken-monster 'actie-monster-levend!) 'vertraag)
-                               (display "Snelheid-na: ")
-                               (display (te-raken-monster 'snelheid))
-                               (newline)
+                               ((te-raken-monster 'actie-monster-levend!) 'vertraag dispatch)
                                (set! vertraagd #t))))
         (else "Projectiel: ongeldig type")))
 
@@ -87,10 +81,10 @@
     ;; Volgende code maakt een rand voor een net-projectiel
     (define (maak-rand! level)
       (if (not projectiel-rand)
-            (let ((vec (make-vector 4)))
-              (positie->rand! positie 2 vec)
-              (set! projectiel-rand vec)
-              ((level 'voeg-net-projectiel-toe!) dispatch)))) ;; Moet zo gedaan worden, zodat net-projectiel niet meermaals aan level word toegevoegd
+          (let ((vec (make-vector 4)))
+            (positie->rand! positie 2 vec)
+            (set! projectiel-rand vec)
+            ((level 'voeg-net-projectiel-toe!) dispatch)))) ;; Moet zo gedaan worden, zodat net-projectiel niet meermaals aan level word toegevoegd
 
     ;; Volgende code gaat na als een monster in de rand van een net-projectiel zit
     (define (in-net-rand? monster)

@@ -39,7 +39,7 @@
         (set! projectielen (cons projectiel projectielen))))
 
     ;; Volgende code laat toe om de projectielen hun posities up te daten
-    (define (projectiel-update! level dt)
+    (define (projectiel-update! level dt) ;; Verander zodat overzichtelijker wordt
       (for-each
        (lambda (projectiel)
          ((projectiel 'actie-te-raken-monster!)) 

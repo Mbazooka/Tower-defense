@@ -92,9 +92,10 @@
          "monster-type: ongeldig type")))
 
     ;; Volgende code zal een monster een actie laten doen
-    (define (actie-monster-levend! actie)
+    (define (actie-monster-levend! actie . projectiel)
       (cond
-        ((eq? actie 'vertraag) (vertraag-monster!))
+        ((eq? actie 'vertraag) (vertraag-monster!)
+                               (voeg-net-projectiel-toe! (car projectiel)))
         ((eq? actie 'verminder) (verminder-levens!))
         (else "Ongeldige actie")))
 
@@ -122,14 +123,8 @@
       (for-each (lambda (projectiel)
                   (if (>= (tijd projectiel) *net-vertraag-tijd*)
                       (begin
-                        (display "Snelheid-voor-1: ")
-                        (display monster-loop-snelheid)
-                        (newline)
                         (set! monster-loop-snelheid (+  monster-loop-snelheid *net-projectiel-vertaging*))
                         (delete! (proj projectiel) net-projectielen)
-                        (display "Snelheid-na-1: ")
-                        (display monster-loop-snelheid)
-                        (newline))))
                 (rest-dict net-projectielen)))
                  
     (define (dispatch msg)
