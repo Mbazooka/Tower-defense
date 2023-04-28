@@ -138,7 +138,7 @@
            ((eq? object-type 'paars) *paars-monster-bitmap&&mask*)))
         ((eq? object 'projectiel)
          (cond
-           ((eq? object-type 'net) *steen-projectiel-bitmap&&mask*))))) ;; 8888888888!!!!!!!!
+           ((eq? object-type 'net) *steen-projectiel-bitmap&&mask*))))) 
 
     ;; Volgende code is een venster om torens op te plaatsen
     (define laag-toren ((venster 'new-layer!)))
@@ -152,7 +152,7 @@
     ;; Volgende code gaat na welke toren geselecteerd werd van de menu
     (define (toren-selectie x y)
       (cond
-        ((and (>= x *start-data-menu*) (<= x *toren-knop-breedte-einde*) (>= y *toren-1-knop-hoogte-start*) (<= y *toren-1-knop-hoogte-einde*))
+        ((and (>= x *start-data-menu*) (<= x *toren-knop-breedte-einde*) (>= y *toren-1-knop-hoogte-start*) (<= y *toren-1-knop-hoogte-einde*))g
          'basis-toren)
         ((and (>= x *start-data-menu*) (<= x *toren-knop-breedte-einde*) (>= y *toren-2-knop-hoogte-start*) (<= y *toren-2-knop-hoogte-einde*))
          'net-toren)

@@ -26,8 +26,8 @@
     (define (projectiel-type-toren)
       (cond
         ((eq? type 'basis-toren) 'steen)
-        ((eq? type 'vuurbal-toren) 'vuurbal)
         ((eq? type 'net-toren) 'net)
+        ((eq? type 'vuurbal-toren) 'vuurbal)
         (else
          "Ongeldig toren type")))
 
