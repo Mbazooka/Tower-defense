@@ -139,7 +139,8 @@
         ((eq? object 'projectiel)
          (cond
            ((eq? object-type 'steen) *steen-projectiel-bitmap&&mask*)
-           ((eq? object-type 'net) *net-projectiel-bitmap&&mask*))))) 
+           ((eq? object-type 'net) *net-projectiel-bitmap&&mask*)
+           ((eq? object-type 'vuurbal) *vuurbal-projectiel-bitmap&&mask*))))) 
 
     ;; Volgende code is een venster om torens op te plaatsen
     (define laag-toren ((venster 'new-layer!)))

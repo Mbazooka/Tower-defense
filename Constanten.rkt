@@ -80,8 +80,8 @@
 
 ;; Constanten voor bitmap van projectielen
 (define *steen-projectiel-bitmap&&mask* (cons "Images/projectiel.png" "Images/projectiel-mask.png")) ;; Veranderen naam
-(define *vuurbal-projectiel-bitmap&&mask* #f)
-(define *net-projectiel-bitmap&&mask* (cons "Images/Net.png" "Images/Net_mask.png"))
+(define *net-projectiel-bitmap&&mask* (cons "Images/Net.png" "Images/Net-mask.png"))
+(define *vuurbal-projectiel-bitmap&&mask*  (cons "Images/Vuurbal.png" "Images/Vuurbal-mask.png"))
 
 ;; Constanten voor tegel-positie van bitmap van geld en levens
 (define *geld&&levens-tegel-px-hoogte* (- *spel/menu-hoogte-px* 25)) ;; 23 Zo gekozen voor stijlvolle manier
