@@ -23,9 +23,6 @@
   (define (positie-copieer)
     (maak-positie-adt x y))
 
-  (define (afstand positie2)
-    (round (sqrt (+ (expt (- (positie2 'x) x) 2) (expt (- (positie2 'y) y) 2)))))
-
   (define (dispatch msg)
     (cond
       ((eq? msg 'x) x)
@@ -36,6 +33,5 @@
       ((eq? msg 'ceil) ceil)
       ((eq? msg 'flo) flo)
       ((eq? msg 'positie-copieer) positie-copieer)
-      ((eq? msg 'afstand) afstand)
       (else "maak-positie-adt: ongeldig bericht")))
   dispatch)

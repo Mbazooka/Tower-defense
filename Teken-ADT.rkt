@@ -154,7 +154,7 @@
     ;; Volgende code gaat na welke toren geselecteerd werd van de menu
     (define (toren-selectie x y)
       (cond
-        ((and (>= x *start-data-menu*) (<= x *toren-knop-breedte-einde*) (>= y *toren-1-knop-hoogte-start*) (<= y *toren-1-knop-hoogte-einde*))g
+        ((and (>= x *start-data-menu*) (<= x *toren-knop-breedte-einde*) (>= y *toren-1-knop-hoogte-start*) (<= y *toren-1-knop-hoogte-einde*))
          'basis-toren)
         ((and (>= x *start-data-menu*) (<= x *toren-knop-breedte-einde*) (>= y *toren-2-knop-hoogte-start*) (<= y *toren-2-knop-hoogte-einde*))
          'net-toren)

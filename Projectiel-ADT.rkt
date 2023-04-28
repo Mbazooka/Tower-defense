@@ -19,7 +19,6 @@
          (vertraagd #f) ;; Is om na te gaan indien een projectiel een monster al vertraagd heeft (zodat niet in elke loop het monster vertraag)
          (projectiel-rand #f)) ;; Is de rand van een projectiel (indien nodig bv bij een net-projectiel)
          
-
     ;; Volgende code gaat na als het projectiel de bestemming of de extra bestemming posities bereikt heeft.    
     (define (bestemming-bereikt?)
       (define (positie-bereikt bestemming-positie)
@@ -67,7 +66,7 @@
                                     volgend-monster
                                     snelheid)
                #f)))
-        ((eq? type 'net) (set! lig-tijd (+ lig-tijd dt)))
+        ((eq? type 'net) (set! lig-tijd (+ lig-tijd dt))) ;; Aanpassen voor bomwerp ook
         (else
          "Heeft geen actie na het raken van monsters")))
 

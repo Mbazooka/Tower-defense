@@ -28,6 +28,7 @@
         ((eq? type 'basis-toren) 'steen)
         ((eq? type 'net-toren) 'net)
         ((eq? type 'vuurbal-toren) 'vuurbal)
+        ((eq? type 'bomwerp-toren) 'bomwerp)
         (else
          "Ongeldig toren type")))
 
