@@ -138,7 +138,8 @@
            ((eq? object-type 'paars) *paars-monster-bitmap&&mask*)))
         ((eq? object 'projectiel)
          (cond
-           ((eq? object-type 'net) *steen-projectiel-bitmap&&mask*))))) 
+           ((eq? object-type 'steen) *steen-projectiel-bitmap&&mask*)
+           ((eq? object-type 'net) *net-projectiel-bitmap&&mask*))))) 
 
     ;; Volgende code is een venster om torens op te plaatsen
     (define laag-toren ((venster 'new-layer!)))
