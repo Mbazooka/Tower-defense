@@ -153,7 +153,6 @@
     (define (toren-selectie x y)
       (cond
         ((and (>= x *start-data-menu*) (<= x *toren-knop-breedte-einde*) (>= y *toren-1-knop-hoogte-start*) (<= y *toren-1-knop-hoogte-einde*))
-         (display "Deze word gekozen")
          'basis-toren)
         ((and (>= x *start-data-menu*) (<= x *toren-knop-breedte-einde*) (>= y *toren-2-knop-hoogte-start*) (<= y *toren-2-knop-hoogte-einde*))
          'net-toren)
