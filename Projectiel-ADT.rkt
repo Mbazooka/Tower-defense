@@ -13,7 +13,7 @@
          (bestemming-lijst (list bestemming bestemming-extra-1 bestemming-extra-2 bestemming-extra-3 bestemming-extra-4)) 
          (positie-update-hoeveelheid-x (- bestemming-x (initiele-positie 'x))) ;; Dit zijn positie update constanten om gewicht te introduceren en ze zo smooth naar hun eindbestemming te brengen
          (positie-update-hoeveelheid-y (- bestemming-y (initiele-positie 'y)))
-         (projectiel-afvuur-snelheid (if (pair? afvuur-snelheid) (car afvuur-snelheid) *projectiel-afvuur-snelheid-vuurbal*)) ;; Verander voor algemeenheid
+         (projectiel-afvuur-snelheid (if (pair? afvuur-snelheid) (car afvuur-snelheid) *projectiel-afvuur-snelheid-steen-net-vuurbal*)) ;; Verander voor algemeenheid
          (lig-tijd 0) ;; Is de tijd dat een projectiel al blijft liggen (voor net)
          (toegevoegd #f) ;; Is om na te gaan als het net-projectiel toegevoegd is aan het level-adt (om te zien als monster over netten lopen)
          (vertraagd #f) ;; Is om na te gaan indien een projectiel een monster al vertraagd heeft (zodat niet in elke loop het monster vertraag)

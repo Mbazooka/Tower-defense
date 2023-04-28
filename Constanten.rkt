@@ -93,8 +93,7 @@
 (define *net-toren-afvuur-frequentie* 10000) ;; Toren schiet frequentie voor net toren
 
 ;; Projectiel constanten (tijd en geen tijd constanten)
-(define *projectiel-afvuur-snelheid-steen* 0.1) ;; Hoe snel het steen projectiel afgevuurd word
-(define *projectiel-afvuur-snelheid-vuurbal* 0.1) ;; Hoe snel het steen projectiel afgevuurd word
+(define *projectiel-afvuur-snelheid-steen-net-vuurbal* 0.1) ;; Hoe snel het steen projectiel afgevuurd word
 (define *net-projectiel-vertaging* 0.05) ;; Vertraagt bepaald monster met 20% van zijn huidige snelheid
 (define *net-blijf-liggen-tijd* 5000)
 (define *net-vertraag-tijd* 5000)
