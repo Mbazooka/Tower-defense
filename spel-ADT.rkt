@@ -31,7 +31,6 @@
                 ((geld 'voldoende-geld?) toren-type))
         
            (let ((toren (maak-toren-adt (maak-positie-adt (/ x *px-breedte*) (/ y *px-hoogte*)) toren-type)))
-             (display toren-type)
              (cond
                ((and (not (accumulate (lambda (x y) (or x y)) #f (map (lambda (t) ((t 'in-toren?) toren)) (level 'torens))))
                      (not ((pad 'toren-in-pad?) toren)))

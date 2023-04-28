@@ -126,10 +126,10 @@
       (cond
         ((eq? object 'toren)
          (cond
-           ((eq? object-type 'basis) *basis-toren-bitmap&&mask*)
-           ((eq? object-type 'net) *net-toren-bitmap&&mask*)
-           ((eq? object-type 'vuurbal) *vuurbal-toren-bitmap&&mask*)
-           ((eq? object-type 'bomwerp) *bomwerp-toren-bitmap&&mask*)))
+           ((eq? object-type 'basis-toren) *basis-toren-bitmap&&mask*)
+           ((eq? object-type 'net-toren) *net-toren-bitmap&&mask*)
+           ((eq? object-type 'vuurbal-toren) *vuurbal-toren-bitmap&&mask*)
+           ((eq? object-type 'bomwerp-toren) *bomwerp-toren-bitmap&&mask*)))
         ((eq? object 'monster)
          (cond
            ((eq? object-type 'rood) *rood-monster-bitmap&&mask*)
