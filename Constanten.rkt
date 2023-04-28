@@ -110,6 +110,9 @@
 
 ;; Constanten die geld van speler doet veranderen
 (define *basis-toren-kost* 500)
+(define *net-toren-kost* 500)
+(define *vuurbal-toren-kost* 1000)
+(define *vuurbal-toren-kost* 1500)
 (define *rood-groen-monster-winst* 20)
 (define *geel-monster-winst* 50)
 (define *paars-monster-winst* 30)

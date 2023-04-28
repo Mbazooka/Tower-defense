@@ -7,6 +7,9 @@
   (define (bedrag type)
     (cond
       ((eq? type 'basis-toren) *basis-toren-kost*)
+      ((eq? type 'net-toren) *basis-toren-kost*)
+      ((eq? type 'vuurbal-toren) *basis-toren-kost*)
+      ((eq? type 'bomwerp-toren) *basis-toren-kost*)
       ((eq? type 'rood) *rood-groen-monster-winst*)
       ((eq? type 'geel) *geel-monster-winst*)
       ((eq? type 'paars) *paars-monster-winst*)
