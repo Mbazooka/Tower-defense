@@ -34,14 +34,14 @@
 (define *toren-1-knop-hoogte-start* (* 2 *px-hoogte*))
 (define *toren-1-knop-hoogte-einde* (* 5 *px-hoogte*))
 
-(define *toren-2-knop-hoogte-start* (* 7 *px-hoogte*))
-(define *toren-2-knop-hoogte-einde* (* 10 *px-hoogte*))
+(define *toren-2-knop-hoogte-start* (* 6 *px-hoogte*))
+(define *toren-2-knop-hoogte-einde* (* 9 *px-hoogte*))
 
-(define *toren-3-knop-hoogte-start* (* 12 *px-hoogte*))
-(define *toren-3-knop-hoogte-einde* (* 15 *px-hoogte*))
+(define *toren-3-knop-hoogte-start* (* 10 *px-hoogte*))
+(define *toren-3-knop-hoogte-einde* (* 13 *px-hoogte*))
 
-(define *toren-4-knop-hoogte-start* (* 17 *px-hoogte*))
-(define *toren-4-knop-hoogte-einde* (* 20 *px-hoogte*))
+(define *toren-4-knop-hoogte-start* (* 14 *px-hoogte*))
+(define *toren-4-knop-hoogte-einde* (* 17 *px-hoogte*))
 
 (define *start-data-menu-power-up* (+ *spel-breedte-px* (* 2 *px-breedte*)))
 (define *toren-knop-breedte-einde* (+ *spel-breedte-px* (* 5 *px-hoogte*)))
@@ -49,8 +49,8 @@
 (define *power-up-1-knop-hoogte-start* (* 2 *px-hoogte*))
 (define *power-up-1-knop-hoogte-einde* (* 5 *px-hoogte*))
 
-(define *power-up-2-knop-hoogte-start* (* 7 *px-hoogte*))
-(define *power-up-2-knop-hoogte-einde* (* 10 *px-hoogte*))
+(define *power-up-2-knop-hoogte-start* (* 6 *px-hoogte*))
+(define *power-up-2-knop-hoogte-einde* (* 9 *px-hoogte*))
 
 ;; Tekst constanten voor op menu
 (define *tekst-toren-breedte* (+ *px-breedte* 10)) ;; + 5 want oranje rand centreert de tekst niet
@@ -68,6 +68,9 @@
 
 ;; Constanten voor bitmap van torens
 (define *basis-toren-bitmap&&mask* (cons "Images/Toren-1-game.png" "Images/Toren-1-game-mask.png"))
+(define *net-toren-bitmap&&mask* (cons "Images/Toren-2-game.png" "Images/Toren-2-game-mask.png"))
+(define *vuurbal-toren-bitmap&&mask* (cons "Images/Toren-3-game.png" "Images/Toren-3-game-mask.png"))
+(define *bomwerp-toren-bitmap&&mask* (cons "Images/Toren-4-game.png" "Images/Toren-4-game-mask.png"))
 
 ;; Constanten voor bitmap van monsters (geheugen vriendelijker)
 (define *rood-monster-bitmap&&mask* (cons "Images/Rood-monster.jpg" "Images/Rood-monster-mask.png"))

@@ -24,9 +24,21 @@
     ;; Volgende code is om de user-interface van de menu te maken
     (define laag-user-interface ((venster 'new-layer!)))
     (define toren-1-tegel (make-bitmap-tile "Images/Toren-1-Game.png" "Images/Toren-1-game-mask.png"))
+    (define toren-2-tegel (make-bitmap-tile "Images/Toren-2-Game.png" "Images/Toren-2-game-mask.png"))
+    (define toren-3-tegel (make-bitmap-tile "Images/Toren-3-Game.png" "Images/Toren-3-game-mask.png"))
+    (define toren-4-tegel (make-bitmap-tile "Images/Toren-4-Game.png" "Images/Toren-4-game-mask.png"))
     ((toren-1-tegel 'set-x!) *start-data-menu*) 
     ((toren-1-tegel 'set-y!) *toren-1-knop-hoogte-start*)
+    ((toren-2-tegel 'set-x!) *start-data-menu*) 
+    ((toren-2-tegel 'set-y!) *toren-2-knop-hoogte-start*)
+    ((toren-3-tegel 'set-x!) *start-data-menu*) 
+    ((toren-3-tegel 'set-y!) *toren-3-knop-hoogte-start*)
+    ((toren-4-tegel 'set-x!) *start-data-menu*) 
+    ((toren-4-tegel 'set-y!) *toren-4-knop-hoogte-start*)
     ((laag-user-interface 'add-drawable!) toren-1-tegel)
+    ((laag-user-interface 'add-drawable!) toren-2-tegel)
+    ((laag-user-interface 'add-drawable!) toren-3-tegel)
+    ((laag-user-interface 'add-drawable!) toren-4-tegel)
 
     ;; Volgende is om het geld en de levens van de speler voor te stellen.
     (define laag-geld&&levens&&level ((venster 'new-layer!)))
