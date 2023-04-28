@@ -51,7 +51,7 @@
           ((level 'update-monsters!) dt))
       ((teken-adt 'teken-monsters!) (level 'monsters))
       (set! monster-tijd (+ monster-tijd dt))
-      (if (>= projectiel-tijd *toren-afvuur-frequentie*)
+      (if (>= projectiel-tijd *toren-afvuur-frequentie*) ;; Moet veranderd worden
           (begin
             ((level 'update-torens-projectielen-afschieten!))
             (set! projectiel-tijd 0)))
