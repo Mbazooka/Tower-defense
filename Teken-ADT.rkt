@@ -126,7 +126,10 @@
       (cond
         ((eq? object 'toren)
          (cond
-           ((eq? object-type 'basis) *basis-toren-bitmap&&mask*)))
+           ((eq? object-type 'basis) *basis-toren-bitmap&&mask*)
+           ((eq? object-type 'net) *net-toren-bitmap&&mask*)
+           ((eq? object-type 'vuurbal) *vuurbal-toren-bitmap&&mask*)
+           ((eq? object-type 'bomwerp) *bomwerp-toren-bitmap&&mask*)))
         ((eq? object 'monster)
          (cond
            ((eq? object-type 'rood) *rood-monster-bitmap&&mask*)
@@ -143,7 +146,7 @@
     ;; Tekent toren op het scherm gegeven een toren
     (define (teken-toren! toren)
       (let ((toren-positie (toren 'positie)))
-        (let ((bitmap-adressen (bitmap-type (toren 'soort) 'basis)))
+        (let ((bitmap-adressen (bitmap-type (toren 'soort) (toren 'type))))
           (teken-object-scherm! (maak-positie-adt (- (toren-positie 'x) 1) (- (toren-positie 'y) 1)) (bitmap bitmap-adressen) (mask bitmap-adressen) laag-toren)))) ;; nieuwe positie om toren te centreren
 
     ;; Volgende code gaat na welke toren geselecteerd werd van de menu
