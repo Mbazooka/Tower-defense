@@ -61,9 +61,11 @@
       (<= levens 0))
       
     ;; Volgende code zal het leven van het monstertje aanpassen afhankelijk van het soort
-    (define (verminder-levens!)
+    (define (verminder-levens! . bomwerp)
       (cond
-        ((or (eq? type 'rood) (eq? type 'paars))  (set! levens (- levens 1)))
+        ((eq? type 'rood) (if (pair? bomwerp) (set! levens 0) (set! levens (- levens 1))))
+        ((eq? type 'paars) (cond
+                             (set! levens (- levens 1)))
         ((eq? type 'groen) (set! levens 0))
         ((eq? type 'geel) (if (= schild 0) (set! levens (- levens 1)) (set! schild (- schild 1))))  
         (else
@@ -91,12 +93,14 @@
         (else
          "monster-type: ongeldig type")))
 
-    ;; Volgende code zal een monster een actie laten doen
-    (define (actie-monster-levend! actie . projectiel)
+    ;; Volgende code zal een monster een actie laten doen wanneer de projectiel de bestemming bereikt heeft maar nog niks heeft gedaan
+    (define (actie-monster-levend! actie . projectiel/levens) ;; Neemt optionele projectiel of levens variabele mee
       (cond
         ((eq? actie 'vertraag) (vertraag-monster!)
                                (voeg-net-projectiel-toe! (car projectiel)))
-        ((eq? actie 'verminder) (verminder-levens!))
+        ((eq? actie 'verminder) (if (pair? levens)
+                                    (verminder-levens! ....
+                                    (verminder-levens!))
         (else "Ongeldige actie")))
 
     ;; Volgende code zal een net-projectiel toevoegen aan de lijst (neemt constante 0 binnen die tijd voorstelt)

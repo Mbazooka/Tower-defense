@@ -78,7 +78,7 @@
 
     ;; Volgende code gaat na als het projectiel toegevoegd is aan het level-adt
     (define (toegevoegd?) toegevoegd)
-
+ 
     ;; Volgende code maakt een rand voor een net-projectiel
     (define (maak-rand! level)
       (if (not projectiel-rand)
@@ -94,7 +94,7 @@
 
     ;; Volgende code explodeert de bom
     (define (explodeer! level rand)
-      ((level 'bomwerp-monsters-in-buurt) rand))
+      ((level 'bomwerp-monsters-in-buurt!) rand))
     
     ;; Volgende code gaat na als een projectiel niet bereikt of afgehandelt is
     (define (niet-bereikt&&afgehandelt?)
