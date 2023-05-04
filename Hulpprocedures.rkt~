@@ -43,3 +43,35 @@
          (<= x-pos ((vector-ref rand 3) 'x))
          (>= y-pos ((vector-ref rand 3) 'y)))))
 
+;; Volgende code zijn abstracties om met dictionaries te werken (hier gezet want enkel hier gebruikt)
+(define (associatie dict)
+  (car dict))
+
+(define (rest-dict dict)
+  (cdr dict))
+
+(define (sleutel associatie)
+  (car associatie))
+
+(define (waarde associatie)
+  (cdr associatie))
+
+;; Volgende code steekt een associatie in de dictionary
+(define (insert! sleut value tagged-dict)
+  (let ((toe-te-voegen (list (cons sleut value))))
+    (set-cdr! toe-te-voegen (rest-dict tagged-dict))
+    (set-cdr! tagged-dict toe-te-voegen)))
+
+;; Volgende code delete een bepaalde sleutel uit de dictionary
+(define (delete! sleut dict) 
+  (define (delete-hulp huidige vorige)
+    (cond
+      ((null? (rest-dict huidige))
+       (if (eq? (sleutel (associatie huidige)) sleut)
+           (set-cdr! vorige '())
+           #f))
+      ((eq? (sleutel (associatie huidige)) sleut)
+       (set-cdr! vorige (rest-dict huidige)))
+      (else
+       (delete-hulp (rest-dict huidige) huidige))))
+  (delete-hulp (cdr dict) dict))

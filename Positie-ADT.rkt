@@ -36,6 +36,6 @@
       ((eq? msg 'ceil) ceil)
       ((eq? msg 'flo) flo)
       ((eq? msg 'positie-copieer) positie-copieer)
-      ((eq? msg 'afstand) afstand)
+      ((eq? msg 'afstand) afstand) ;; Nieuw
       (else "maak-positie-adt: ongeldig bericht")))
   dispatch)

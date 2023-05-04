@@ -16,7 +16,7 @@
     (define (voeg-toren-toe! toren)
       (set! torens (cons toren torens)))
     
-       ;; voglende code update de monsters die op het pad lopen
+    ;; voglende code update de monsters die op het pad lopen
     (define (update-monsters! dt . update-teken) ;; !!!! Kijk naar volgerde voor efficientie
       (define (zet-terug-monster-lijst! zoeken-monster nieuw-monster monsters) ;; Hulp procedure om monsters te verwisselen (nodig om groen monster te switchen met rood monster zodat torens in juiste volgorde schieten)
         (cond
@@ -30,7 +30,7 @@
         (for-each (lambda (monster)
                     (if (and (not (eq? (monster 'type) 'paars)) (in-rand? (monster 'positie) rand-paars-monster))
                         ((monster 'verhoog-levens!))))
-                  monsters))  ;; !!!!!! Mogelijks deel kan van andere for each !!!!!!!
+                  monsters))  
       
       (define (update-vertragings-tijd-monsters!)
         (for-each (lambda (monster)
@@ -38,37 +38,56 @@
                     ((monster 'haal-weg-verlopen-net-projectielen!)))
                   monsters))
       
-      ((levens 'levens-verminder!) (length (filter (lambda (monster) ((monster 'einde?))) monsters))) ;; Telt aantal monsters aan het einde en vermindert levens
-      (for-each (lambda (projectiel)
-                  (for-each (lambda (monster)
-                              (if (and ((projectiel 'in-net-rand?) monster) (not ((monster 'net-al-vetraagd?) projectiel)))
-                                  (begin
-                                    ((monster 'voeg-net-projectiel-toe!) projectiel)
-                                    ((monster 'actie-monster-levend!) 'vertraag))))
-                            monsters))
-                net-projectielen)
-      (set! net-projectielen (filter ;; Nodig anders zal een bepaald net, tot het eind van het spel blijven vertragen
-                              (lambda (projectiel)
-                                ((projectiel 'niet-bereikt&&afgehandelt?)))
-                              net-projectielen));;!!!!!!
+      (define (levens-verminder!) ;; Telt aantal monsters aan het einde en vermindert levens
+        ((levens 'levens-verminder!) (length (filter (lambda (monster) ((monster 'einde?))) monsters))))
+
+      (define (afhandeling-net-projectielen!)
+        (for-each (lambda (projectiel) ;;Vertraagd de monster in de rand van het net-projectiel
+                    (for-each (lambda (monster)
+                                (if (and ((projectiel 'in-rand?) monster) (not ((monster 'net-al-vetraagd?) projectiel)))
+                                    (begin
+                                      ((monster 'voeg-net-projectiel-toe!) projectiel)
+                                      ((monster 'actie-monster-levend!) 'vertraag)))) 
+                              monsters))
+                  net-projectielen)
+        (set! net-projectielen (filter ;; Nodig anders zal een bepaald net, tot het eind van het spel blijven vertragen
+                                (lambda (projectiel)
+                                  ((projectiel 'niet-bereikt&&afgehandelt?)))
+                                net-projectielen)))
+
+      (define (geld-en-sterven-acties!)
+        (for-each (lambda (monster)
+                    (if (not (eq? (monster 'type) 'groen))
+                        ((geld 'voeg-geld-toe!) (monster 'type))) ;; Zal geld updaten, en indien het een groen monster is, een rood monster spawnen
+                    (cond
+                      ((eq? (monster 'type) 'groen) (zet-terug-monster-lijst! monster ((monster 'actie-monster-sterven!)) monsters)) ;; Zal rood monster doen spawnen van groen monster
+                      ((eq? (monster 'type) 'paars) (verhoog-levens-paars-monster! ((monster 'actie-monster-sterven!))))))                    
+                  (filter (lambda (monster) ((monster 'gestorven?))) monsters)))
+
+      (define (overblijvende-monsters!)
+        (set! monsters (filter 
+                        (lambda (monster)
+                          (and (not ((monster 'einde?)))
+                               (not ((monster 'gestorven?)))))
+                        monsters))) ;; Overblijvende monsters te vermoorden
+
+      (define (monsters-voort-bewegen!)
+        (for-each (lambda (monster) ((monster 'volgende-positie!))) monsters)) ;; Overblijvende monster verder laten wandelen
+      (monsters-voort-bewegen!)
+
+      (define (volgend-monster-vrijlaten!)
+        (if (and (not (null? update-teken)) (eq? (car update-teken) 'toevoegen) (not (null? monster-rij))) ;; Het toevoegen van monsters gedeelte van de procedure
+            (begin
+              (set! monsters (cons (maak-monster-adt (type monster-rij) pad) monsters))
+              (set! monster-rij (rest monster-rij)))))
+
+      ;; Uitvoeren van alle acties 
+      (levens-verminder!)
+      (afhandeling-net-projectielen!)
       (update-vertragings-tijd-monsters!)
-      (for-each (lambda (monster)
-                  (if (not (eq? (monster 'type) 'groen))
-                      ((geld 'voeg-geld-toe!) (monster 'type))) ;; Zal geld updaten, en indien het een groen monster is, een rood monster spawnen
-                  (cond
-                    ((eq? (monster 'type) 'groen) (zet-terug-monster-lijst! monster ((monster 'actie-monster-sterven!)) monsters)) ;; Zal rood monster doen spawnen van groen monster
-                    ((eq? (monster 'type) 'paars) (verhoog-levens-paars-monster! ((monster 'actie-monster-sterven!))))))                    
-                (filter (lambda (monster) ((monster 'gestorven?))) monsters))
-      (set! monsters (filter 
-                      (lambda (monster)
-                        (and (not ((monster 'einde?)))
-                             (not ((monster 'gestorven?)))))
-                      monsters)) ;; Overblijvende monsters te vermoorden
-      (for-each (lambda (monster) ((monster 'volgende-positie!))) monsters) ;; Overblijvende monster verder laten wandelen
-      (if (and (not (null? update-teken)) (eq? (car update-teken) 'toevoegen) (not (null? monster-rij))) ;; Het toevoegen van monsters gedeelte van de procedure
-          (begin
-            (set! monsters (cons (maak-monster-adt (type monster-rij) pad) monsters))
-            (set! monster-rij (rest monster-rij)))))
+      (geld-en-sterven-acties!)
+      (monsters-voort-bewegen!)
+      (volgende-monster-vrijlaten!))
     
     ;; Volgende code update de projectielen die door torens werden afgeschoten
     (define (update-torens-projectielen-positie! dt)
@@ -113,6 +132,15 @@
     ;; Volgende code voegt een net projectiel toe aan de lijst van net projectielen
     (define (voeg-net-projectiel-toe! projectiel)
       (set! net-projectielen (cons projectiel net-projectielen)))
+
+    ;; Volgende code verminder de levens van alle monsters
+    ;;
+    ;;
+    ;;
+    ;;
+    ;;
+    ;;
+    
       
     ;; Volgende code is om de projectielen van alle torens te verkrijgen (haal weg, maak beter)
     (define (verkrijg-projectielen)

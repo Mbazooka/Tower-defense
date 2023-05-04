@@ -1,8 +1,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                 Projectiel ADT                             ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (maak-projectiel-adt positie type te-raken-monster . afvuur-snelheid) 
-  (let* ((bestemming (((te-raken-monster 'positie) 'positie-copieer)))
+(define (maak-projectiel-adt positie type te-raken . afvuur-snelheid) 
+  (let* ((monster-of-niet (monster? te-raken)) ;; boolean die vaak herhaald word (#t dan monster, #f dan positie)
+         (bestemming (if monster-of-niet (((te-raken 'positie) 'positie-copieer)) te-raken))
          (bestemming-x (bestemming 'x)) ;; Vaak nodig dus 1 maal berekent
          (bestemming-y (bestemming 'y))
          (initiele-positie ((positie 'positie-copieer)))
@@ -17,7 +18,7 @@
          (lig-tijd 0) ;; Is de tijd dat een projectiel al blijft liggen (voor net)
          (toegevoegd #f) ;; Is om na te gaan als het net-projectiel toegevoegd is aan het level-adt (om te zien als monster over netten lopen)
          (vertraagd #f) ;; Is om na te gaan indien een projectiel een monster al vertraagd heeft (zodat niet in elke loop het monster vertraag)
-         (projectiel-rand #f)) ;; Is de rand van een projectiel (indien nodig bv bij een net-projectiel)
+         (projectiel-rand #f)) ;; Is de rand van een projectiel (indien nodig bv bij een net-projectiel of bomwerp)
          
     ;; Volgende code gaat na als het projectiel de bestemming of de extra bestemming posities bereikt heeft.    
     (define (bestemming-bereikt?)
@@ -48,25 +49,26 @@
     (define (actie-te-raken-monster!)
       (cond
         ((or (eq? type 'steen) (eq? type 'vuurbal) (eq? type 'bom))
-         ((te-raken-monster 'actie-monster-levend!) 'verminder))
+         ((te-raken 'actie-monster-levend!) 'verminder))
         ((eq? type 'net) (if (not vertraagd)
                              (begin
-                               ((te-raken-monster 'actie-monster-levend!) 'vertraag dispatch)
+                               ((te-raken 'actie-monster-levend!) 'vertraag dispatch)
                                (set! vertraagd #t))))
         (else "Projectiel: ongeldig type")))
 
     ;; Volgende code zal een projectiel een actie doen uitvoeren na dat hij een monster heeft geraakt
-    (define (actie-na-monster-raak! level dt) ;; Voeg andere dingen toe
+    (define (actie-na-monster-raak! level dt) 
       (cond
         ((eq? type 'vuurbal)
          (let ((snelheid (- projectiel-afvuur-snelheid *vuurbal-hits-snelheid-verander*))
-               (volgend-monster ((level 'monster-na-monster) te-raken-monster)))
+               (volgend-monster ((level 'monster-na-monster) te-raken)))
            (if (and (> snelheid 0)  volgend-monster)         
                (maak-projectiel-adt positie type
                                     volgend-monster
                                     snelheid)
                #f)))
-        ((eq? type 'net) (set! lig-tijd (+ lig-tijd dt))) ;; Aanpassen voor bomwerp ook
+        ((eq? type 'net) (set! lig-tijd (+ lig-tijd dt)))
+        ((eq? type 'bomwerp) (maak-rand! level) (explodeer! level rand)) ;; Nog te veranderen
         (else
          "Heeft geen actie na het raken van monsters")))
 
@@ -83,12 +85,17 @@
           (let ((vec (make-vector 4)))
             (positie->rand! positie 2 vec)
             (set! projectiel-rand vec)
-            ((level 'voeg-net-projectiel-toe!) dispatch)))) ;; Moet zo gedaan worden, zodat net-projectiel niet meermaals aan level word toegevoegd
+            (if (eq? type 'net)
+                ((level 'voeg-net-projectiel-toe!) dispatch))))) ;; Moet zo gedaan worden, zodat net-projectiel niet meermaals aan level word toegevoegd
 
     ;; Volgende code gaat na als een monster in de rand van een net-projectiel zit
-    (define (in-net-rand? monster)
+    (define (in-rand? monster)
       (in-rand? (monster 'positie) projectiel-rand))
 
+    ;; Volgende code explodeert de bom
+    (define (explodeer! level rand)
+      ((level 'bomwerp-monsters-in-buurt) rand))
+    
     ;; Volgende code gaat na als een projectiel niet bereikt of afgehandelt is
     (define (niet-bereikt&&afgehandelt?)
       (not (and (bestemming-bereikt?) (afgehandelt?))))
@@ -97,7 +104,6 @@
       (cond
         ((eq? msg 'positie) positie)
         ((eq? msg 'type) type)
-        ((eq? msg 'te-raken-monster) te-raken-monster)
         ((eq? msg 'bestemming-bereikt?) bestemming-bereikt?)
         ((eq? msg 'afgehandelt?) afgehandelt?)
         ((eq? msg 'volgende-positie!) volgende-positie!)
@@ -106,7 +112,7 @@
         ((eq? msg 'toegevoegd!) toegevoegd!)
         ((eq? msg 'toegevoegd?) toegevoegd?)
         ((eq? msg 'maak-rand!) maak-rand!)
-        ((eq? msg 'in-net-rand?) in-net-rand?)
+        ((eq? msg 'in-rand?) in-rand?)
         ((eq? msg 'niet-bereikt&&afgehandelt?) niet-bereikt&&afgehandelt?)
         ((eq? msg 'soort) 'projectiel)
         (else "maak-projectiel-adt: ongeldig bericht")))
