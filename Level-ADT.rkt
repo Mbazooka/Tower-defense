@@ -134,9 +134,9 @@
       (set! net-projectielen (cons projectiel net-projectielen)))
 
     ;; Volgende code bomwerpt alle monsters in de buurt
-    (define ('bomwerp-monsters-in-buurt! rand)
+    (define (bomwerp-monsters-in-buurt! rand)
       (for-each (monster)
-                ...
+                (if (
                 monsters))
                 
     
@@ -171,6 +171,7 @@
         ((eq? msg 'monster-na-monster) monster-na-monster)
         ((eq? msg 'voeg-net-projectiel-toe!) voeg-net-projectiel-toe!)
         ((eq? msg 'verkrijg-projectielen) verkrijg-projectielen)
+        ((eq? msg 'bomwerp-monsters-in-buurt!) bomwerp-monsters-in-buurt!)
         ((eq? msg 'einde?) einde?)
         ((eq? msg 'level-einde!) level-einde!)
         ((eq? msg 'soort) 'level)
