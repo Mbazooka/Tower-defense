@@ -5,7 +5,7 @@
   (let* ((vector-posities (neem-vector lijst))
          (lengte (vector-length vector-posities))
          (inflectie-counter (neem-inflectie-counter lijst))
-         (inflectie-tekens (neem-inflectie-tekens lijst)) ;; Verander naam
+         (inflectie-tekens (neem-inflectie-tekens lijst))
          (inflectie-punten '())) 
 
     ;; Maakt de inflectie punten lijst van de pad
@@ -33,11 +33,6 @@
               (or (in-pad? (vector-ref toren-rand ctr))
                   (overlopen-torens (+ ctr 1)))))
         (overlopen-torens 0)))
-
-    ;; Dichtsbijzijnde punt op pad relatief tot een rand
-    (define (dichtse-punt rand)
-      
-      
                    
     (define (dispatch msg)
       (cond
