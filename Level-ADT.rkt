@@ -136,7 +136,8 @@
     ;; Volgende code bomwerpt alle monsters in de buurt
     (define (bomwerp-monsters-in-buurt! rand)
       (for-each (monster)
-                (if (
+                (if (in-rand? rand)
+                    ((monster 'actie-monster-levend!
                 monsters))
                 
     

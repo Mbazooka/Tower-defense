@@ -97,10 +97,10 @@
     (define (actie-monster-levend! actie . projectiel/levens) ;; Neemt optionele projectiel of levens variabele mee
       (cond
         ((eq? actie 'vertraag) (vertraag-monster!)
-                               (voeg-net-projectiel-toe! (car projectiel)))
+                               (voeg-net-projectiel-toe! (car projectiel/levens)))
         ((eq? actie 'verminder) (if (pair? levens)
-                                    (verminder-levens! ....
-                                    (verminder-levens!))
+                                    (verminder-levens! (car projectiel/levens))
+                                    (verminder-levens!)))
         (else "Ongeldige actie")))
 
     ;; Volgende code zal een net-projectiel toevoegen aan de lijst (neemt constante 0 binnen die tijd voorstelt)
