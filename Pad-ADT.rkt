@@ -44,7 +44,7 @@
                       ((and (in-rand? positie rand))
                        (if (> ((huidige-dichste 'afstand) centraal-positie)
                               ((positie 'afstand) centraal-positie))
-                           (set! huidige-dichtse positie)))))
+                           (set! huidige-dichste positie)))))
                   lijst-van-posities)
         huidige-dichste))
 
