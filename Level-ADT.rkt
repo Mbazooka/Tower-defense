@@ -5,8 +5,7 @@
   (let ((pad (maak-pad-adt vector-1))
         (torens (if (not (null? vorige-torens)) (car vorige-torens) vorige-torens))
         (monsters '()) ;; Lijst omdat elk element bewerken gemakkelijk is (for-each)
-        (net-projectielen '()) ;; Alle net-projectielen die op het pad liggen
-        (bomwerp-projectielen '()))
+        (net-projectielen '())) ;; Alle net-projectielen die op het pad liggen
     
     ;; Abstracties om type, eerste monster en rest uit lijst te krijgen
     (define type car)
@@ -133,15 +132,15 @@
 
     ;; Volgende code voegt een net projectiel toe aan de lijst van net projectielen
     (define (voeg-projectiel-toe! projectiel)
-      (if (eq? 'net (projectiel 'type))
-          (set! net-projectielen (cons projectiel net-projectielen))
-          (set! bomwerp-projectielen (cons projectiel bomwerp-projectielen))))
+      (if (eq? type (projectiel 'type))
+      (set! net-projectielen (cons projectiel net-projectielen))
+      (set! 
 
     ;; Volgende code bomwerpt alle monsters in de buurt
     (define (explodeer-monsters-in-buurt! rand)
       (for-each (lambda (monster)
-                  (if (in-rand? (monster 'positie) rand)
-                      ((monster 'actie-monster-levend!) 'verminder 'bomwerp)))
+                (if (in-rand? (monster 'positie) rand)
+                    ((monster 'actie-monster-levend!) 'verminder 'bomwerp)))
                 monsters))
                          
     ;; Volgende code is om de projectielen van alle torens te verkrijgen (haal weg, maak beter)
@@ -172,7 +171,7 @@
         ((eq? msg 'update-torens-projectielen-positie!) update-torens-projectielen-positie!)
         ((eq? msg 'update-torens-projectielen-afschieten!) update-torens-projectielen-afschieten!)
         ((eq? msg 'monster-na-monster) monster-na-monster)
-        ((eq? msg 'voeg-projectiel-toe!) voeg-projectiel-toe!)
+        ((eq? msg 'voeg-net-projectiel-toe!) voeg-net-projectiel-toe!)
         ((eq? msg 'verkrijg-projectielen) verkrijg-projectielen)
         ((eq? msg 'explodeer-monsters-in-buurt!) explodeer-monsters-in-buurt!)
         ((eq? msg 'einde?) einde?)

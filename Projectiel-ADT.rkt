@@ -34,7 +34,7 @@
     (define (afgehandelt?)
       (cond
         ((or (eq? type 'steen) (eq? type 'vuurbal) (eq? type 'bomwerp)) #t)
-        ((eq? type 'net) (>= lig-tijd *net-blijf-liggen-tijd*)) ;; Maak constanten 
+        ((or (eq? type 'net) (eq? type 'bomwerp)) (>= lig-tijd *net-blijf-liggen-tijd*)) ;; Maak constanten 
         (else
          "Ongeldig type projectiel")))                             
 
@@ -86,8 +86,9 @@
           (let ((vec (make-vector 4)))
             (positie->rand! positie 2 vec)
             (set! projectiel-rand vec)
-            ((level 'voeg-projectiel-toe!) dispatch)))) ;; Moet zo gedaan worden, zodat net-projectiel niet meermaals aan level word toegevoegd
-
+            (if (eq? type 'net)
+                ((level 'voeg-net-projectiel-toe!) dispatch) ;; Moet zo gedaan worden, zodat net-projectiel niet meermaals aan level word toegevoegd
+                vec))))
 
     ;; Volgende code gaat na als een monster in de rand van een net-projectiel zit
     (define (in-rand? monster)
