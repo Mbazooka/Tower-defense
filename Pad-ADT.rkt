@@ -34,12 +34,15 @@
                   (overlopen-torens (+ ctr 1)))))
         (overlopen-torens 0)))
 
-    ;; Dichtsbijzijnde punt op pad relatief tot een rand
-    (define (dichtse-punt rand)
+    ;; Dichtsbijzijnde punt op pad relatief tot een rand en een andere positie
+    (define (dichtse-punt rand centraal-positie) 
       (let ((huidige-dichtse #f))
-      (filter (lambda (positie)
-                ())
-       lijst-van-posities)
+        (for-each (lambda (positie) ;; Beter om tweemalig de afstand te berekenen voor een positie dan voor elke positie die mogelijks niet in de rand zit
+                    (if (and (in-rand? positie in-rand)
+                             (> huidige-dichste ((positie 'afstand) centraal-positie)))
+                        (set! huidige-dichtse centraal-positie)))
+                  lijst-van-posities)
+        huidige-dichste))
 
     ;; Begin van het pad
     (define (begin)
@@ -58,5 +61,6 @@
         ((eq? msg 'begin) begin) ;; + 1, begin te zetten in midden van pad
         ((eq? msg 'einde) einde) 
         ((eq? msg 'toren-in-pad?) toren-in-pad?)
+        ((eq? msg 'dichtse-punt) dichtse-punt)
         (else "maak-pad-adt: ongeldig bericht")))
     dispatch))
