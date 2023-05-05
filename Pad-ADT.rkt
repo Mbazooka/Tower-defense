@@ -9,7 +9,7 @@
          (inflectie-tekens (neem-inflectie-tekens lijst)) ;; Verander naam
          (inflectie-punten '())) 
 
-    ;; Maakt de inflectie punten lijst van de pad
+    ;; Maakt de inflectie punten lijst van het pad
     (define (maak-inflectie-lijst)
       (define (iter ctr res)
         (if (< ctr inflectie-counter)               
@@ -35,7 +35,7 @@
         (overlopen-torens 0)))
 
     ;; Dichtsbijzijnde punt op pad relatief tot een rand en een andere positie
-    (define (dichtse-punt rand centraal-positie) 
+    (define (dichtse-punt rand centraal-positie)  ;; Aan te passen
       (let ((huidige-dichste #f))
         (for-each (lambda (positie) ;; Beter om tweemalig de afstand te berekenen voor een positie dan voor elke positie die mogelijks niet in de rand zit
                     (cond

@@ -62,15 +62,14 @@
       
     ;; Volgende code zal het leven van het monstertje aanpassen afhankelijk van het soort
     (define (verminder-levens! . bomwerp)
-      (let ((test (and (pair? bomwerp) (eq? (car bomwerp) 'bomwerp)))) ;; Ga na indien bomwerp-projectiel leven vermindert
+      (let ((test (and (pair? bomwerp) (eq? (car bomwerp) 'bomwerp)))) ;; Ga na indien bomwerp-projectiel de levens zal verminderen
         (cond
-          ((or (eq? type 'rood) (eq? type groen)) (set! levens (- levens 1)))
-          ((eq? type 'paars) (cond
+          ((or (eq? type 'rood) (eq? type 'groen)) (set! levens (- levens 1)))
+          ((eq? type 'paars) (cond                             
                                ((and test (<= levens *bomwerp-projectiel-schade*))
                                 (set! levens 0))
                                ((and test (> levens *bomwerp-projectiel-schade*))
-                                (set! levens (- levens *bomwerp-projectiel-schade*))
-                                (set! levens (- levens 1)))
+                                (set! levens (- levens *bomwerp-projectiel-schade*)))
                                (else
                                 (set! levens (- levens 1)))))
           ((eq? type 'geel) (cond
@@ -168,6 +167,3 @@
         ((eq? msg 'soort) 'monster) ;; Toegevoegd om code duplicatie bij teken-adt te vermijden
         (else "maak-monster-adt: ongeldig bericht")))
     dispatch))
-
-
-  

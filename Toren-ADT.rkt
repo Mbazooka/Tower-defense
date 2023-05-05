@@ -35,7 +35,7 @@
     ;; Volgende code laat toe om projectielen te schieten naar een bepaald monster
     (define (schiet! obj pad)
       (if (eq? type 'bomwerp-toren)
-          (set! obj ((pad 'dichtse-punt) buurt-rand centraal-positie)))
+          (set! obj ((pad 'dichtse-punt) buurt-rand centraal-positie))) 
       (let ((projectiel (maak-projectiel-adt
                          ((centraal-positie 'positie-copieer))
                          (projectiel-type-toren)

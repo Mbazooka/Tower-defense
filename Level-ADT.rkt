@@ -86,6 +86,7 @@
       (afhandeling-net-projectielen!)
       (update-vertragings-tijd-monsters!)
       (geld-en-sterven-acties!)
+      (overblijvende-monsters!)
       (monsters-voort-bewegen!)
       (volgend-monster-vrijlaten!))
     
@@ -136,8 +137,8 @@
     ;; Volgende code bomwerpt alle monsters in de buurt
     (define (explodeer-monsters-in-buurt! rand)
       (for-each (lambda (monster)
-                (if (in-rand? rand)
-                    ((monster 'actie-monster-levend!) 'bomwerp)))
+                (if (in-rand? (monster 'positie) rand)
+                    ((monster 'actie-monster-levend!) 'verminder 'bomwerp)))
                 monsters))
                          
     ;; Volgende code is om de projectielen van alle torens te verkrijgen (haal weg, maak beter)
