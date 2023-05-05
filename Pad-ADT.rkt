@@ -4,7 +4,7 @@
 (define (maak-pad-adt lijst) 
   (let* ((vector-posities (neem-vector lijst))
          (lengte (vector-length vector-posities))
-         (lijst-versie (
+         (lijst-van-posities (vector->list vector-posities))
          (inflectie-counter (neem-inflectie-counter lijst))
          (inflectie-tekens (neem-inflectie-tekens lijst)) ;; Verander naam
          (inflectie-punten '())) 
@@ -21,8 +21,7 @@
           
     ;; Gaat na als toren in pad zit 
     (define (toren-in-pad? toren)
-      (let ((lijst-van-posities (vector->list vector-posities))
-            (toren-rand (toren 'toren-posities)))
+      (let ((toren-rand (toren 'toren-posities)))
         
         (define (in-pad? positie)
           (let ((afgeronde-pos ((positie 'ceil)))) ;; nodig want pad posities zijn discreet
@@ -37,7 +36,10 @@
 
     ;; Dichtsbijzijnde punt op pad relatief tot een rand
     (define (dichtse-punt rand)
-      (filter (pad )))
+      (let ((huidige-dichtse #f))
+      (filter (lambda (positie)
+                ())
+       lijst-van-posities)
 
     ;; Begin van het pad
     (define (begin)
@@ -45,8 +47,7 @@
     
     ;; Einde van het pad
     (define (einde)
-      (vector-ref vector-posities (- lengte 2)))
-      
+      (vector-ref vector-posities (- lengte 2)))     
                    
     (define (dispatch msg)
       (cond
