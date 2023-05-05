@@ -66,95 +66,108 @@
         (cond
           ((or (eq? type 'rood) (eq? type groen)) (set! levens (- levens 1)))
           ((eq? type 'paars) (cond
-                               ((and test (<= levens 3))
+                               ((and test (<= levens *bomwerp-projectiel-schade*))
                                 (set! levens 0))
-                               ((and test (> levens 3))
-                                (set! levens (- levens 3))
-                               (set! levens (- levens 1)))
+                               ((and test (> levens *bomwerp-projectiel-schade*))
+                                (set! levens (- levens *bomwerp-projectiel-schade*))
+                                (set! levens (- levens 1)))
                                (else
                                 (set! levens (- levens 1)))))
-          ((eq? type 'geel) (if (= schild 0) (set! levens (- levens 1)) (set! schild (- schild 1))))  
+          ((eq? type 'geel) (cond
+                              ((and test (> schild 2))
+                               (set! schild 0))
+                              ((test (= schild 0))
+                               (set! levens 0))
+                              (test 
+                               (let ((rest (- *bomwerp-projectiel-schade* schild)))
+                                 (set! schild 0)
+                                 (if (<= levens rest)
+                                     (set! levens 0)
+                                     (set! levens (- levens 1)))))
+                              (else
+                               (if (= schild 0)
+                                   (set! levens (- levens 1))
+                                   (set! schild (- schild 1))))))                                                       
           (else
-           "monster-type: ongeldig type")))
+           "monster-type: ongeldig type"))))
 
-      ;; Volgende code zal de levens van een monster met 1 verhogen
-      (define (verhoog-levens!)
-        (set! levens (+ levens 1)))
+    ;; Volgende code zal de levens van een monster met 1 verhogen
+    (define (verhoog-levens!)
+      (set! levens (+ levens 1)))
 
-      ;; Volgende code zal een monster vertragen
-      (define (vertraag-monster!)
-        (let ((nieuwe-snelheid (- monster-loop-snelheid *net-projectiel-vertaging*)))
-          (if (>= nieuwe-snelheid 0)
-              (set! monster-loop-snelheid nieuwe-snelheid)
-              (set! monster-loop-snelheid 0))))
+    ;; Volgende code zal een monster vertragen
+    (define (vertraag-monster!)
+      (let ((nieuwe-snelheid (- monster-loop-snelheid *net-projectiel-vertaging*)))
+        (if (>= nieuwe-snelheid 0)
+            (set! monster-loop-snelheid nieuwe-snelheid)
+            (set! monster-loop-snelheid 0))))
     
-      ;; Volgende code zal een actie uitvoeren als een monster gestorven is (als die een actie hoeft te doen)
-      (define (actie-monster-sterven!)
-        (cond
-          ((eq? type 'groen) (maak-monster-adt 'rood pad positie inflectie-punten inflectie-tekens beweging-richting-x beweging-zin))
-          ((eq? type 'paars)
-           (let ((rand-paars-monster (make-vector 4)))
-             (positie->rand! positie *paars-monster-rand-afstand* rand-paars-monster) ;; Maakt rand dat level kan gebruiken om alle monster in de buurt met levens te verhogen
-             rand-paars-monster))
-          (else
-           "monster-type: ongeldig type")))
+    ;; Volgende code zal een actie uitvoeren als een monster gestorven is (als die een actie hoeft te doen)
+    (define (actie-monster-sterven!)
+      (cond
+        ((eq? type 'groen) (maak-monster-adt 'rood pad positie inflectie-punten inflectie-tekens beweging-richting-x beweging-zin))
+        ((eq? type 'paars)
+         (let ((rand-paars-monster (make-vector 4)))
+           (positie->rand! positie *paars-monster-rand-afstand* rand-paars-monster) ;; Maakt rand dat level kan gebruiken om alle monster in de buurt met levens te verhogen
+           rand-paars-monster))
+        (else
+         "monster-type: ongeldig type")))
 
-      ;; Volgende code zal een monster een actie laten doen wanneer de projectiel de bestemming bereikt heeft maar nog niks heeft gedaan
-      (define (actie-monster-levend! actie . projectiel/levens) ;; Neemt optionele projectiel of levens variabele mee
-        (cond
-          ((eq? actie 'vertraag) (vertraag-monster!)
-                                 (voeg-net-projectiel-toe! (car projectiel/levens)))
-          ((eq? actie 'verminder) (if (and (pair? projectiel/levens) (eq? (car projectiel/levens) 'bomwerp))
-                                      (verminder-levens! (car projectiel/levens))
-                                      (verminder-levens!)))
-          (else "Ongeldige actie")))
+    ;; Volgende code zal een monster een actie laten doen wanneer de projectiel de bestemming bereikt heeft maar nog niks heeft gedaan
+    (define (actie-monster-levend! actie . projectiel/levens) ;; Neemt optionele projectiel of levens variabele mee
+      (cond
+        ((eq? actie 'vertraag) (vertraag-monster!)
+                               (voeg-net-projectiel-toe! (car projectiel/levens)))
+        ((eq? actie 'verminder) (if (and (pair? projectiel/levens) (eq? (car projectiel/levens) 'bomwerp))
+                                    (verminder-levens! (car projectiel/levens))
+                                    (verminder-levens!)))
+        (else "Ongeldige actie")))
 
-      ;; Volgende code zal een net-projectiel toevoegen aan de lijst (neemt constante 0 binnen die tijd voorstelt)
-      (define (voeg-net-projectiel-toe! net-projectiel)
-        (insert! net-projectiel 0 net-projectielen)) 
+    ;; Volgende code zal een net-projectiel toevoegen aan de lijst (neemt constante 0 binnen die tijd voorstelt)
+    (define (voeg-net-projectiel-toe! net-projectiel)
+      (insert! net-projectiel 0 net-projectielen)) 
 
-      ;; Volgende code zal na gaan als een net-projectiel een monster al vertraagd heeft
-      (define (net-al-vetraagd? net-projectiel)
-        (assq net-projectiel (rest-dict net-projectielen)))
+    ;; Volgende code zal na gaan als een net-projectiel een monster al vertraagd heeft
+    (define (net-al-vetraagd? net-projectiel)
+      (assq net-projectiel (rest-dict net-projectielen)))
 
-      ;; Volgende code zijn hulpprocedures om de net-projectiel vertragings tijd te bekomen
-      (define proj car)
-      (define tijd cdr)
+    ;; Volgende code zijn hulpprocedures om de net-projectiel vertragings tijd te bekomen
+    (define proj car)
+    (define tijd cdr)
 
-      ;; Volgende code zal de net-projectielen hun vertragings actie tijd update
-      (define (update-tijd-net-projectielen! dt)
-        (if (not (null? net-projectielen))
-            (for-each (lambda (projectiel)              
-                        (set-cdr! projectiel (+ (tijd projectiel) dt)))
-                      (rest-dict net-projectielen)))) ;; rest-dict gedaan vermits het een getagde associate lijst is
+    ;; Volgende code zal de net-projectielen hun vertragings actie tijd update
+    (define (update-tijd-net-projectielen! dt)
+      (if (not (null? net-projectielen))
+          (for-each (lambda (projectiel)              
+                      (set-cdr! projectiel (+ (tijd projectiel) dt)))
+                    (rest-dict net-projectielen)))) ;; rest-dict gedaan vermits het een getagde associate lijst is
 
-      ;; Volgende code zal de net-projectielen waarvan hun vertragingstijd verlopen is weghalen (garbage collection)
-      (define (haal-weg-verlopen-net-projectielen!)
-        (for-each (lambda (projectiel)
-                    (if (>= (tijd projectiel) *net-vertraag-tijd*)
-                        (begin
-                          (set! monster-loop-snelheid (+  monster-loop-snelheid *net-projectiel-vertaging*))
-                          (delete! (proj projectiel) net-projectielen))))
-                  (rest-dict net-projectielen)))
+    ;; Volgende code zal de net-projectielen waarvan hun vertragingstijd verlopen is weghalen (garbage collection)
+    (define (haal-weg-verlopen-net-projectielen!)
+      (for-each (lambda (projectiel)
+                  (if (>= (tijd projectiel) *net-vertraag-tijd*)
+                      (begin
+                        (set! monster-loop-snelheid (+  monster-loop-snelheid *net-projectiel-vertaging*))
+                        (delete! (proj projectiel) net-projectielen))))
+                (rest-dict net-projectielen)))
                  
-      (define (dispatch msg)
-        (cond
-          ((eq? msg 'snelheid) monster-loop-snelheid)
-          ((eq? msg 'positie) positie)
-          ((eq? msg 'type) type)
-          ((eq? msg 'volgende-positie!) volgende-positie!)
-          ((eq? msg 'einde?) einde?)
-          ((eq? msg 'gestorven?) gestorven?)
-          ((eq? msg 'actie-monster-sterven!) actie-monster-sterven!)
-          ((eq? msg 'actie-monster-levend!) actie-monster-levend!)
-          ((eq? msg 'voeg-net-projectiel-toe!) voeg-net-projectiel-toe!)
-          ((eq? msg 'update-tijd-net-projectielen!) update-tijd-net-projectielen!)
-          ((eq? msg 'net-al-vetraagd?) net-al-vetraagd?)
-          ((eq? msg 'haal-weg-verlopen-net-projectielen!) haal-weg-verlopen-net-projectielen!) 
-          ((eq? msg 'soort) 'monster) ;; Toegevoegd om code duplicatie bij teken-adt te vermijden
-          (else "maak-monster-adt: ongeldig bericht")))
-      dispatch))
+    (define (dispatch msg)
+      (cond
+        ((eq? msg 'snelheid) monster-loop-snelheid)
+        ((eq? msg 'positie) positie)
+        ((eq? msg 'type) type)
+        ((eq? msg 'volgende-positie!) volgende-positie!)
+        ((eq? msg 'einde?) einde?)
+        ((eq? msg 'gestorven?) gestorven?)
+        ((eq? msg 'actie-monster-sterven!) actie-monster-sterven!)
+        ((eq? msg 'actie-monster-levend!) actie-monster-levend!)
+        ((eq? msg 'voeg-net-projectiel-toe!) voeg-net-projectiel-toe!)
+        ((eq? msg 'update-tijd-net-projectielen!) update-tijd-net-projectielen!)
+        ((eq? msg 'net-al-vetraagd?) net-al-vetraagd?)
+        ((eq? msg 'haal-weg-verlopen-net-projectielen!) haal-weg-verlopen-net-projectielen!) 
+        ((eq? msg 'soort) 'monster) ;; Toegevoegd om code duplicatie bij teken-adt te vermijden
+        (else "maak-monster-adt: ongeldig bericht")))
+    dispatch))
 
 
-  
   

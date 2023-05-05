@@ -100,6 +100,7 @@
 (define *net-blijf-liggen-tijd* 5000)
 (define *net-vertraag-tijd* 5000)
 (define *vuurbal-hits-snelheid-verander* 0.025) ;; Vertraging vuurbal-hits
+(define *bomwerp-projectiel-schade* 3)
 
 ;; Monster tijd constanten
 (define *monster-spawn-frequentie* 7000) ;; Monster spawn frequentie (te veranderen)
