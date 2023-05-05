@@ -86,9 +86,8 @@
           (let ((vec (make-vector 4)))
             (positie->rand! positie 2 vec)
             (set! projectiel-rand vec)
-            (if (eq? type 'net)
-                ((level 'voeg-net-projectiel-toe!) dispatch) ;; Moet zo gedaan worden, zodat net-projectiel niet meermaals aan level word toegevoegd
-                vec))))
+            ((level 'voeg-projectiel-toe!) dispatch)))) ;; Moet zo gedaan worden, zodat net-projectiel niet meermaals aan level word toegevoegd
+
 
     ;; Volgende code gaat na als een monster in de rand van een net-projectiel zit
     (define (in-rand? monster)

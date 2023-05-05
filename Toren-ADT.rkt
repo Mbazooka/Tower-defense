@@ -35,7 +35,7 @@
     ;; Volgende code laat toe om projectielen te schieten naar een bepaald monster
     (define (schiet! obj pad)
       (if (eq? type 'bomwerp-toren)
-          (set! obj ((pad 'dichtse-punt) buurt-rand centraal-positie))) 
+          (set! obj ((pad 'dichste-punt) centraal-positie))) 
       (let ((projectiel (maak-projectiel-adt
                          ((centraal-positie 'positie-copieer))
                          (projectiel-type-toren)
@@ -55,11 +55,9 @@
                 (let ((actie ((projectiel 'actie-na-monster-raak!) level dt)))
                   (if actie ;; Gaat na als er een actie gedaan moet worden of niet
                       (set! projectielen (cons actie projectielen)))))
-               ((eq? 'net type-var)
+               ((or (eq? 'net type-var) (eq? 'bomwerp type-var))
                 ((projectiel 'maak-rand!) level)
-                ((projectiel 'actie-na-monster-raak!) level dt))
-               ((eq? 'bomwerp type-var)
-                ((projectiel 'explodeer!) level ((projectiel 'maak-rand!) level))))))
+                ((projectiel 'actie-na-monster-raak!) level dt)))))
          (filter
           (lambda (project) ((project 'bestemming-bereikt?)))
           projectielen)))

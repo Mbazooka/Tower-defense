@@ -35,26 +35,36 @@
         (overlopen-torens 0)))
 
     ;; Dichtsbijzijnde punt op pad relatief tot een rand en een andere positie
-;    (define (dichtse-punt rand centraal-positie)  ;; Aan te passen
-;      (let ((huidige-dichste #f))
-;        (for-each (lambda (positie) ;; Beter om tweemalig de afstand te berekenen voor een positie dan voor elke positie die mogelijks niet in de rand zit
-;                    (cond
-;                      ((and (in-rand? positie rand) (eq? huidige-dichste #f))
-;                       (set! huidige-dichste positie))
-;                      ((and (in-rand? positie rand))
-;                       (if (> ((huidige-dichste 'afstand) centraal-positie)
-;                              ((positie 'afstand) centraal-positie))
-;                           (set! huidige-dichste positie)))))
-;                  lijst-van-posities)
-;        huidige-dichste))
+    ;    (define (dichtse-punt rand centraal-positie)  ;; Aan te passen
+    ;      (let ((huidige-dichste #f))
+    ;        (for-each (lambda (positie) ;; Beter om tweemalig de afstand te berekenen voor een positie dan voor elke positie die mogelijks niet in de rand zit
+    ;                    (cond
+    ;                      ((and (in-rand? positie rand) (eq? huidige-dichste #f))
+    ;                       (set! huidige-dichste positie))
+    ;                      ((and (in-rand? positie rand))
+    ;                       (if (> ((huidige-dichste 'afstand) centraal-positie)
+    ;                              ((positie 'afstand) centraal-positie))
+    ;                           (set! huidige-dichste positie)))))
+    ;                  lijst-van-posities)
+    ;        huidige-dichste))
 
-    (define (dichtse-punt rand centraal-positie)  ;; Aan te passen
-      (let ((huidige-dichste #f))
+    (define (dichste-punt centraal-positie)  ;; Aan te passen
+      (let ((huidige-dichste #f)
+            (huidige-dichste-afstand #f))
         (for-each
          (lambda (positie)
-           (in-rand? positie in-rand
-
+           (cond
+             ((eq? huidige-dichste #f)
+              (set! huidige-dichste positie)
+              (set! huidige-dichste-afstand ((huidige-dichste 'afstand) centraal-positie)))
+             (else
+              (let ((afstand ((positie 'afstand) centraal-positie)))
+                (cond
+                  ((< afstand huidige-dichste-afstand)
+                   (set! huidige-dichste-afstand positie)
+                   (set! huidige-dichste-afstand afstand)))))))
          lijst-van-posities)
+        huidige-dichste))
 
     ;; Begin van het pad
     (define (begin)
@@ -73,6 +83,6 @@
         ((eq? msg 'begin) begin) ;; + 1, begin te zetten in midden van pad
         ((eq? msg 'einde) einde) 
         ((eq? msg 'toren-in-pad?) toren-in-pad?)
-        ((eq? msg 'dichtse-punt) dichtse-punt)
+        ((eq? msg 'dichste-punt) dichste-punt)
         (else "maak-pad-adt: ongeldig bericht")))
     dispatch))
