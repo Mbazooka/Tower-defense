@@ -36,13 +36,17 @@
 
     ;; Dichtsbijzijnde punt op pad relatief tot een rand en een andere positie
     (define (dichtse-punt rand centraal-positie) 
-      (let ((huidige-dichtse #f))
+      (let ((huidige-dichste #f))
         (for-each (lambda (positie) ;; Beter om tweemalig de afstand te berekenen voor een positie dan voor elke positie die mogelijks niet in de rand zit
-                    (if (and (in-rand? positie in-rand)
-                             (> huidige-dichste ((positie 'afstand) centraal-positie)))
-                        (set! huidige-dichtse centraal-positie)))
-                  lijst-van-posities)
-        huidige-dichste))
+                    (cond
+                      ((and (in-rand? positie rand) (eq? huidige-dichste #f))
+                       (set! huidige-dichste positie))
+                      ((and (in-rand? positie rand))
+                       (if (> ((huidige-dichste 'afstand) centraal-positie)
+                              ((positie 'afstand) centraal-positie))
+                           (set! huidige-dichtse positie)))
+                      lijst-van-posities)
+                    huidige-dichste))))
 
     ;; Begin van het pad
     (define (begin)
