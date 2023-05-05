@@ -16,7 +16,7 @@
     (define (voeg-toren-toe! toren)
       (set! torens (cons toren torens)))
     
-    ;; voglende code update de monsters die op het pad lopen
+    ;; Volgende code update de monsters die op het pad lopen
     (define (update-monsters! dt . update-teken) ;; !!!! Kijk naar volgerde voor efficientie
       (define (zet-terug-monster-lijst! zoeken-monster nieuw-monster monsters) ;; Hulp procedure om monsters te verwisselen (nodig om groen monster te switchen met rood monster zodat torens in juiste volgorde schieten)
         (cond
@@ -97,7 +97,7 @@
        torens))
 
     ;; Volgende code zal projectielen afschieten naar een monster 
-    (define (update-torens-projectielen-afschieten!) 
+    (define (update-torens-projectielen-afschieten! pad) 
       (define (eerste-monster mons)
         (if (null? (cdr mons))
             (car mons)
@@ -109,7 +109,7 @@
       (define (toren-schiet-y/n toren monsters) ;; Procedure die monster zal vinden waarnaar de toren kan schieten (indien monsters in buurt)
         (let ((monster (eerste-monster monsters)))
           (if ((toren 'in-buurt?) monster)
-              ((toren 'schiet!) monster)
+              ((toren 'schiet!) monster pad)
               (if (not (null? (cdr monsters)))
                   (toren-schiet-y/n toren (laatste-monster-weglaten monsters))))))    
       (if (not (null? monsters))

@@ -53,7 +53,7 @@
       (set! monster-tijd (+ monster-tijd dt))
       (if (>= projectiel-tijd *toren-afvuur-frequentie*) ;; Moet veranderd worden
           (begin
-            ((level 'update-torens-projectielen-afschieten!))
+            ((level 'update-torens-projectielen-afschieten!) pad)
             (set! projectiel-tijd 0)))
       (set! projectiel-tijd (+ projectiel-tijd dt))
       ((level 'update-torens-projectielen-positie!) dt)
