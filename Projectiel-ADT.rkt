@@ -1,6 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                 Projectiel ADT                             ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; !!!!!!!! Verander de namen van sommige procedures want niet meer enkel voor monsters !!!!!!!!
 (define (maak-projectiel-adt positie type te-raken . afvuur-snelheid) 
   (let* ((monster-of-niet (monster? te-raken)) ;; boolean die vaak herhaald word (#t dan monster, #f dan positie)
          (bestemming (if monster-of-niet (((te-raken 'positie) 'positie-copieer)) te-raken))
@@ -32,7 +33,7 @@
     ;; Volgende code zal na gaan indien alle acties afgehandelt zijn van een projectiel
     (define (afgehandelt?)
       (cond
-        ((or (eq? type 'steen) (eq? type 'vuurbal)) #t)
+        ((or (eq? type 'steen) (eq? type 'vuurbal) (eq? type 'bomwerp)) #t)
         ((eq? type 'net) (>= lig-tijd *net-blijf-liggen-tijd*)) ;; Maak constanten 
         (else
          "Ongeldig type projectiel")))                             
@@ -68,6 +69,7 @@
                                     snelheid)
                #f)))
         ((eq? type 'net) (set! lig-tijd (+ lig-tijd dt)))
+        ((eq? type 'bomwerp) (explodeer! level (maak-rand! level)))
         (else
          "Heeft geen actie na het raken van monsters")))
 
@@ -93,7 +95,7 @@
 
     ;; Volgende code explodeert de bom
     (define (explodeer! level rand)
-      ((level 'bomwerp-monsters-in-buurt!) rand))
+      ((level 'explodeer-monsters-in-buurt!) rand))
     
     ;; Volgende code gaat na als een projectiel niet bereikt of afgehandelt is
     (define (niet-bereikt&&afgehandelt?)

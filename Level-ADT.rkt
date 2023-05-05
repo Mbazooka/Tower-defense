@@ -170,7 +170,7 @@
         ((eq? msg 'monster-na-monster) monster-na-monster)
         ((eq? msg 'voeg-net-projectiel-toe!) voeg-net-projectiel-toe!)
         ((eq? msg 'verkrijg-projectielen) verkrijg-projectielen)
-        ((eq? msg 'bomwerp-monsters-in-buurt!) bomwerp-monsters-in-buurt!)
+        ((eq? msg 'explodeer-monsters-in-buurt!) explodeer-monsters-in-buurt!)
         ((eq? msg 'einde?) einde?)
         ((eq? msg 'level-einde!) level-einde!)
         ((eq? msg 'soort) 'level)
