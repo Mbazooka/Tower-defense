@@ -59,7 +59,7 @@
                 ((projectiel 'maak-rand!) level)
                 ((projectiel 'actie-na-monster-raak!) level dt))
                ((eq? 'bomwerp type-var)
-                ((projectiel 'explodeer!) ((projectiel 'maak-rand!) level))))))
+                ((projectiel 'explodeer!) level ((projectiel 'maak-rand!) level))))))
          (filter
           (lambda (project) ((project 'bestemming-bereikt?)))
           projectielen)))

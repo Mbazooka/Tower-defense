@@ -135,10 +135,10 @@
 
     ;; Volgende code bomwerpt alle monsters in de buurt
     (define (explodeer-monsters-in-buurt! rand)
-      (for-each (monster)
+      (for-each (lambda (monster)
                 (if (in-rand? rand)
-                    ((monster 'actie-monster-levend!) 'bomwerp)
-                monsters)))
+                    ((monster 'actie-monster-levend!) 'bomwerp)))
+                monsters))
                          
     ;; Volgende code is om de projectielen van alle torens te verkrijgen (haal weg, maak beter)
     (define (verkrijg-projectielen)
