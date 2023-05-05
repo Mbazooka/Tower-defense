@@ -4,6 +4,7 @@
 (define (maak-pad-adt lijst) 
   (let* ((vector-posities (neem-vector lijst))
          (lengte (vector-length vector-posities))
+         (lijst-versie (
          (inflectie-counter (neem-inflectie-counter lijst))
          (inflectie-tekens (neem-inflectie-tekens lijst)) ;; Verander naam
          (inflectie-punten '())) 
@@ -36,7 +37,15 @@
 
     ;; Dichtsbijzijnde punt op pad relatief tot een rand
     (define (dichtse-punt rand)
-      
+      (filter (pad )))
+
+    ;; Begin van het pad
+    (define (begin)
+      (vector-ref vector-posities (+ inflectie-counter 1)))
+    
+    ;; Einde van het pad
+    (define (einde)
+      (vector-ref vector-posities (- lengte 2)))
       
                    
     (define (dispatch msg)
@@ -45,8 +54,8 @@
         ((eq? msg 'lengte) lengte)
         ((eq? msg 'inflectie-punten) inflectie-punten)
         ((eq? msg 'inflectie-tekens) inflectie-tekens)
-        ((eq? msg 'begin) (vector-ref vector-posities (+ inflectie-counter 1))) ;; + 1, begin te zetten in midden van pad
-        ((eq? msg 'einde) (vector-ref vector-posities (- lengte 2))) 
+        ((eq? msg 'begin) begin) ;; + 1, begin te zetten in midden van pad
+        ((eq? msg 'einde) einde) 
         ((eq? msg 'toren-in-pad?) toren-in-pad?)
         (else "maak-pad-adt: ongeldig bericht")))
     dispatch))
