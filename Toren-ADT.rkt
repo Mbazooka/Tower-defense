@@ -33,11 +33,11 @@
          "Ongeldig toren type")))
 
     ;; Volgende code laat toe om projectielen te schieten naar een bepaald monster
-    (define (schiet! monster)
+    (define (schiet! obj)
       (let ((projectiel (maak-projectiel-adt
                          ((centraal-positie 'positie-copieer))
                          (projectiel-type-toren)
-                         monster)))
+                         obj)))
         (set! projectielen (cons projectiel projectielen))))
 
     ;; Volgende code laat toe om de projectielen hun posities up te daten

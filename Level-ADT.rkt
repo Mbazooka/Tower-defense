@@ -139,9 +139,7 @@
                 (if (in-rand? rand)
                     ((monster 'actie-monster-levend!) 'bomwerp)
                 monsters)))
-                
-    
-      
+                         
     ;; Volgende code is om de projectielen van alle torens te verkrijgen (haal weg, maak beter)
     (define (verkrijg-projectielen)
       (flatten

@@ -68,7 +68,6 @@
                                     snelheid)
                #f)))
         ((eq? type 'net) (set! lig-tijd (+ lig-tijd dt)))
-        ((eq? type 'bomwerp) (maak-rand! level) (explodeer! level rand)) ;; Nog te veranderen
         (else
          "Heeft geen actie na het raken van monsters")))
 
@@ -114,6 +113,7 @@
         ((eq? msg 'maak-rand!) maak-rand!)
         ((eq? msg 'in-rand?) in-rand?)
         ((eq? msg 'niet-bereikt&&afgehandelt?) niet-bereikt&&afgehandelt?)
+        ((eq? msg 'explodeer!) explodeer!)
         ((eq? msg 'soort) 'projectiel)
         (else "maak-projectiel-adt: ongeldig bericht")))
     dispatch))
