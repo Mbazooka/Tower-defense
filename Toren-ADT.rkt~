@@ -25,8 +25,10 @@
     ;; Volgende geeft het type projectiel dat een toren afschiet afhankelijk van het type toren
     (define (projectiel-type-toren)
       (cond
-        ((eq? type 'basis-toren) 'net)
-        ((eq? type 'net-toren) #f)
+        ((eq? type 'basis-toren) 'steen)
+        ((eq? type 'net-toren) 'net)
+        ((eq? type 'vuurbal-toren) 'vuurbal)
+        ((eq? type 'bomwerp-toren) 'bomwerp)
         (else
          "Ongeldig toren type")))
 
@@ -39,10 +41,10 @@
         (set! projectielen (cons projectiel projectielen))))
 
     ;; Volgende code laat toe om de projectielen hun posities up te daten
-    (define (projectiel-update! level dt)
+    (define (projectiel-update! level dt) ;; Verander zodat overzichtelijker wordt
       (for-each
        (lambda (projectiel)
-         ((projectiel 'actie-te-raken-monster!))
+         ((projectiel 'actie-te-raken-monster!)) 
          (cond ;; !!!! Verander misschien !!!!
            ((eq? 'vuurbal (projectiel 'type))
             (let ((actie ((projectiel 'actie-na-monster-raak!) level dt)))

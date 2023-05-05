@@ -42,47 +42,61 @@
 
     ;; Volgende code laat toe om de projectielen hun posities up te daten
     (define (projectiel-update! level dt) ;; Verander zodat overzichtelijker wordt
-      (for-each
-       (lambda (projectiel)
-         ((projectiel 'actie-te-raken-monster!)) 
-         (cond ;; !!!! Verander misschien !!!!
-           ((eq? 'vuurbal (projectiel 'type))
-            (let ((actie ((projectiel 'actie-na-monster-raak!) level dt)))
-              (if actie ;; Gaat na als er een actie gedaan moet worden of niet
-                  (set! projectielen (cons actie projectielen)))))
-           ((eq? 'net (projectiel 'type))
-            ((projectiel 'maak-rand!) level)
-            ((projectiel 'actie-na-monster-raak!) level dt))))
-       (filter
-        (lambda (project) ((project 'bestemming-bereikt?)))
-        projectielen))
-      (set! projectielen (filter
-                          (lambda (projectiel)
-                            (not (and ((projectiel 'bestemming-bereikt?)) ((projectiel 'afgehandelt?)))))
-                          projectielen))
-      (for-each (lambda (projectiel)
-                  (if (not ((projectiel 'bestemming-bereikt?))) ;; Nodig want soms bestemming bereikt en dus wil je niet dat je ze verder bewegen (vb. net)
-                      ((projectiel 'volgende-positie!))))
-                projectielen))
+      (define (acties-bestemming-bereikt!)
+        (for-each
+         (lambda (projectiel)
+           (let (type-var (projectiel 'type))
+             (if (not (eq? type-var 'bomwerp))
+                 ((projectiel 'actie-te-raken-monster!))) 
+             (cond ;; Volgende actie na monster geraakt is
+               ((eq? 'vuurbal type-var)
+                (let ((actie ((projectiel 'actie-na-monster-raak!) level dt)))
+                  (if actie ;; Gaat na als er een actie gedaan moet worden of niet
+                      (set! projectielen (cons actie projectielen)))))
+               ((eq? 'net type-var)
+                ((projectiel 'maak-rand!) level)
+                ((projectiel 'actie-na-monster-raak!) level dt))
+               ((eq? 'bomwerp type-var)
+                ((projectiel 'explodeer!) ((projectiel 'maak-rand!) level))))))
+         (filter
+          (lambda (project) ((project 'bestemming-bereikt?)))
+          projectielen)))
 
-    ;; Volgende code gaat na als een projectiel in een de lijst van nog niet bereikte of afgehandelte projectielen zit
-    ;; Indien hij er niet in zit, wil dat zeggen dat je dit projectiel mag op kuizen uit level-adt (garbage collection, geheugenvriendelijker)
-    (define (niet-bereikt&&afgehandelt? projectiel)
-      (if (memq projectiel projectielen)
-          #t
-          #f))
+      (define (haal-projectielen-weg!)
+        (set! projectielen (filter
+                            (lambda (projectiel)
+                              (not (and ((projectiel 'bestemming-bereikt?)) ((projectiel 'afgehandelt?)))))
+                            projectielen)))
+      
+      (define (beweeg-projectielen-voort!)
+        (for-each (lambda (projectiel)
+                    (if (not ((projectiel 'bestemming-bereikt?))) ;; Nodig want soms bestemming bereikt en dus wil je niet dat je ze verder bewegen (vb. net)
+                        ((projectiel 'volgende-positie!))))
+                  projectielen))
+
+      ;; Uitvoeren van alle acties
+      (acties-bestemming-bereikt!)
+      (haal-projectielen-weg!)
+      (beweeg-projectielen-voort!))
+
+      ;; Volgende code gaat na als een projectiel in een de lijst van nog niet bereikte of afgehandelte projectielen zit
+      ;; Indien hij er niet in zit, wil dat zeggen dat je dit projectiel mag op kuizen uit level-adt (garbage collection, geheugenvriendelijker)
+      (define (niet-bereikt&&afgehandelt? projectiel)
+        (if (memq projectiel projectielen)
+            #t
+            #f))
                                           
-    (define (dispatch msg)
-      (cond
-        ((eq? msg 'positie) centraal-positie)
-        ((eq? msg 'type) type)
-        ((eq? msg 'toren-posities) toren-rand) 
-        ((eq? msg 'in-toren?) in-toren?)
-        ((eq? msg 'in-buurt?) in-buurt?)
-        ((eq? msg 'schiet!) schiet!)
-        ((eq? msg 'projectiel-update!) projectiel-update!)
-        ((eq? msg 'projectielen) projectielen)
-        ((eq? msg 'niet-bereikt&&afgehandelt?) niet-bereikt&&afgehandelt?)
-        ((eq? msg 'soort) 'toren)
-        (else "maak-toren-adt: ongeldig bericht")))
-    dispatch))
+      (define (dispatch msg)
+        (cond
+          ((eq? msg 'positie) centraal-positie)
+          ((eq? msg 'type) type)
+          ((eq? msg 'toren-posities) toren-rand) 
+          ((eq? msg 'in-toren?) in-toren?)
+          ((eq? msg 'in-buurt?) in-buurt?)
+          ((eq? msg 'schiet!) schiet!)
+          ((eq? msg 'projectiel-update!) projectiel-update!)
+          ((eq? msg 'projectielen) projectielen)
+          ((eq? msg 'niet-bereikt&&afgehandelt?) niet-bereikt&&afgehandelt?)
+          ((eq? msg 'soort) 'toren)
+          (else "maak-toren-adt: ongeldig bericht")))
+      dispatch))

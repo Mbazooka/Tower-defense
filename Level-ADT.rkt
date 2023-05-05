@@ -137,8 +137,8 @@
     (define (bomwerp-monsters-in-buurt! rand)
       (for-each (monster)
                 (if (in-rand? rand)
-                    ((monster 'actie-monster-levend!
-                monsters))
+                    ((monster 'actie-monster-levend!) 'bomwerp)
+                monsters)))
                 
     
       
