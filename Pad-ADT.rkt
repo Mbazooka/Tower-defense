@@ -44,9 +44,9 @@
                       ((and (in-rand? positie rand))
                        (if (> ((huidige-dichste 'afstand) centraal-positie)
                               ((positie 'afstand) centraal-positie))
-                           (set! huidige-dichtse positie)))
-                      lijst-van-posities)
-                    huidige-dichste))))
+                           (set! huidige-dichtse positie)))))
+                  lijst-van-posities)
+        huidige-dichste))
 
     ;; Begin van het pad
     (define (begin)
