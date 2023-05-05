@@ -5,11 +5,11 @@
 ;; Zoals de Inflectie-punten, tekens, enzo.
 (define (maak-monster-adt type pad . opt) 
   (let* ((bool (null? opt)) ;; Gedaan vermits dit vaak nodig is (efficientie)
-         (positie (if bool (((pad 'begin) 'positie-copieer)) (list-ref opt 0)))
+         (positie (if bool ((((pad 'begin)) 'positie-copieer)) (list-ref opt 0)))
          (levens #f)
          (monster-loop-snelheid *rood&&groen&&paars-monster-loop-snelheid*)
          (schild #f)
-         (einde (pad 'einde))
+         (einde ((pad 'einde)))
          (inflectie-punten (if bool (pad 'inflectie-punten) (list-ref opt 1)))
          (inflectie-tekens (if bool (pad 'inflectie-tekens) (list-ref opt 2)))
          (beweging-richting-x (if bool #t (list-ref opt 3)))
