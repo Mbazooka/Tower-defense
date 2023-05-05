@@ -47,7 +47,7 @@
       (define (acties-bestemming-bereikt!)
         (for-each
          (lambda (projectiel)
-           (let (type-var (projectiel 'type))
+           (let ((type-var (projectiel 'type)))
              (if (not (eq? type-var 'bomwerp))
                  ((projectiel 'actie-te-raken-monster!))) 
              (cond ;; Volgende actie na monster geraakt is

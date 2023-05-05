@@ -160,6 +160,8 @@
          'net-toren)
         ((and (>= x *start-data-menu*) (<= x *toren-knop-breedte-einde*) (>= y *toren-3-knop-hoogte-start*) (<= y *toren-3-knop-hoogte-einde*))
          'vuurbal-toren)
+        ((and (>= x *start-data-menu*) (<= x *toren-knop-breedte-einde*) (>= y *toren-4-knop-hoogte-start*) (<= y *toren-4-knop-hoogte-einde*))
+         'bomwerp-toren)
         (else
          #f)))
         

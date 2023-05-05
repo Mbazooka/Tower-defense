@@ -24,9 +24,21 @@
     ;; Volgende code is om de user-interface van de menu te maken
     (define laag-user-interface ((venster 'new-layer!)))
     (define toren-1-tegel (make-bitmap-tile "Images/Toren-1-Game.png" "Images/Toren-1-game-mask.png"))
+    (define toren-2-tegel (make-bitmap-tile "Images/Toren-2-Game.png" "Images/Toren-2-game-mask.png"))
+    (define toren-3-tegel (make-bitmap-tile "Images/Toren-3-Game.png" "Images/Toren-3-game-mask.png"))
+    (define toren-4-tegel (make-bitmap-tile "Images/Toren-4-Game.png" "Images/Toren-4-game-mask.png"))
     ((toren-1-tegel 'set-x!) *start-data-menu*) 
     ((toren-1-tegel 'set-y!) *toren-1-knop-hoogte-start*)
+    ((toren-2-tegel 'set-x!) *start-data-menu*) 
+    ((toren-2-tegel 'set-y!) *toren-2-knop-hoogte-start*)
+    ((toren-3-tegel 'set-x!) *start-data-menu*) 
+    ((toren-3-tegel 'set-y!) *toren-3-knop-hoogte-start*)
+    ((toren-4-tegel 'set-x!) *start-data-menu*) 
+    ((toren-4-tegel 'set-y!) *toren-4-knop-hoogte-start*)
     ((laag-user-interface 'add-drawable!) toren-1-tegel)
+    ((laag-user-interface 'add-drawable!) toren-2-tegel)
+    ((laag-user-interface 'add-drawable!) toren-3-tegel)
+    ((laag-user-interface 'add-drawable!) toren-4-tegel)
 
     ;; Volgende is om het geld en de levens van de speler voor te stellen.
     (define laag-geld&&levens&&level ((venster 'new-layer!)))
@@ -114,7 +126,10 @@
       (cond
         ((eq? object 'toren)
          (cond
-           ((eq? object-type 'basis) *basis-toren-bitmap&&mask*)))
+           ((eq? object-type 'basis-toren) *basis-toren-bitmap&&mask*)
+           ((eq? object-type 'net-toren) *net-toren-bitmap&&mask*)
+           ((eq? object-type 'vuurbal-toren) *vuurbal-toren-bitmap&&mask*)
+           ((eq? object-type 'bomwerp-toren) *bomwerp-toren-bitmap&&mask*)))
         ((eq? object 'monster)
          (cond
            ((eq? object-type 'rood) *rood-monster-bitmap&&mask*)
@@ -123,7 +138,9 @@
            ((eq? object-type 'paars) *paars-monster-bitmap&&mask*)))
         ((eq? object 'projectiel)
          (cond
-           ((eq? object-type 'net) *steen-projectiel-bitmap&&mask*))))) ;; 8888888888!!!!!!!!
+           ((eq? object-type 'steen) *steen-projectiel-bitmap&&mask*)
+           ((eq? object-type 'net) *net-projectiel-bitmap&&mask*)
+           ((eq? object-type 'vuurbal) *vuurbal-projectiel-bitmap&&mask*))))) 
 
     ;; Volgende code is een venster om torens op te plaatsen
     (define laag-toren ((venster 'new-layer!)))
@@ -131,9 +148,21 @@
     ;; Tekent toren op het scherm gegeven een toren
     (define (teken-toren! toren)
       (let ((toren-positie (toren 'positie)))
-        (let ((bitmap-adressen (bitmap-type (toren 'soort) 'basis)))
+        (let ((bitmap-adressen (bitmap-type (toren 'soort) (toren 'type))))
           (teken-object-scherm! (maak-positie-adt (- (toren-positie 'x) 1) (- (toren-positie 'y) 1)) (bitmap bitmap-adressen) (mask bitmap-adressen) laag-toren)))) ;; nieuwe positie om toren te centreren
 
+    ;; Volgende code gaat na welke toren geselecteerd werd van de menu
+    (define (toren-selectie x y)
+      (cond
+        ((and (>= x *start-data-menu*) (<= x *toren-knop-breedte-einde*) (>= y *toren-1-knop-hoogte-start*) (<= y *toren-1-knop-hoogte-einde*))
+         'basis-toren)
+        ((and (>= x *start-data-menu*) (<= x *toren-knop-breedte-einde*) (>= y *toren-2-knop-hoogte-start*) (<= y *toren-2-knop-hoogte-einde*))
+         'net-toren)
+        ((and (>= x *start-data-menu*) (<= x *toren-knop-breedte-einde*) (>= y *toren-3-knop-hoogte-start*) (<= y *toren-3-knop-hoogte-einde*))
+         'vuurbal-toren)
+        (else
+         #f)))
+        
     ;; Volgende code is om tiles weg te halen van het scherm die niet meer nodig zijn
     (define (haal-weg-tiles-dict! objecten diction diction-te-verwijderen laag) ;; Zit het in de dictionary maar niet in de lijst van objecten dan moet hij weg
       (if (null? diction)
@@ -188,17 +217,33 @@
 
     ;; Volgende code is om een knop in te voegen
     (define (set-toets-procedure! proc)
-      ((venster 'set-key-callback!) proc))  
+      ((venster 'set-key-callback!) proc))
+
+    ;; Volgende code is om na te gaan als object geplaatst worden bij een beperking
+    (define (buiten-menu? x y)
+      (<= x (- *start-x-pos-menu* (* 2 *px-breedte*))))
+
+    (define (buiten-lava? x y)
+      (and 
+      (not (and (<= x *beperking-1-breedte*) (<= y *beperking-1-hoogte*))) 
+      (not (and (>= x *beperking-1-breedte*) (<= x *beperking-2-breedte*) (<= y *beperking-2-hoogte*)))
+      (not (and (>= x *beperking-2-breedte*) (<= x *beperking-3-breedte*) (<= y *beperking-3-hoogte*)))))
+      
+    (define (buiten-beperking? x y)
+      (and (buiten-menu? x y)
+           (buiten-lava? x y)))
               
-    (define (dispatch msg)
-      (cond
-        ((eq? msg 'teken-pad!) teken-pad!)
-        ((eq? msg 'teken-toren!) teken-toren!)
-        ((eq? msg 'teken-monsters!) teken-monsters!)
-        ((eq? msg 'teken-projectielen!) teken-projectielen!)
-        ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)
-        ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)
-        ((eq? msg 'set-toets-procedure!) set-toets-procedure!)
-        ((eq? msg 'update-tekst-teken!) update-tekst-teken!)
-        (else "maak-teken-adt: ongeldig bericht")))
-    dispatch))
+      (define (dispatch msg)
+        (cond
+          ((eq? msg 'teken-pad!) teken-pad!)
+          ((eq? msg 'teken-toren!) teken-toren!)
+          ((eq? msg 'toren-selectie) toren-selectie)
+          ((eq? msg 'teken-monsters!) teken-monsters!)
+          ((eq? msg 'teken-projectielen!) teken-projectielen!)
+          ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)
+          ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)
+          ((eq? msg 'set-toets-procedure!) set-toets-procedure!)
+          ((eq? msg 'update-tekst-teken!) update-tekst-teken!)
+          ((eq? msg 'buiten-beperking?) buiten-beperking?)
+          (else "maak-teken-adt: ongeldig bericht")))
+      dispatch))

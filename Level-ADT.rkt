@@ -87,7 +87,7 @@
       (update-vertragings-tijd-monsters!)
       (geld-en-sterven-acties!)
       (monsters-voort-bewegen!)
-      (volgende-monster-vrijlaten!))
+      (volgend-monster-vrijlaten!))
     
     ;; Volgende code update de projectielen die door torens werden afgeschoten
     (define (update-torens-projectielen-positie! dt)

@@ -109,7 +109,7 @@
 (define *monster-vetraag-tijd* 5000) ;; Hoelang een monster vertraagd word door een net
 
 ;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid
-(define *geld-begin-bedrag* 1000)
+(define *geld-begin-bedrag* 3000)
 (define *levens-hoeveelheid* 5)
 
 ;; Constanten die geld van speler doet veranderen
