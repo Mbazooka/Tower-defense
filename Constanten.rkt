@@ -107,7 +107,7 @@
 (define *bomwerp-projectiel-rand-afstand* 4)
 
 ;; Monster tijd constanten
-(define *monster-spawn-frequentie* 7000) ;; Monster spawn frequentie (te veranderen)
+(define *monster-spawn-frequentie* 2000) ;; Monster spawn frequentie (te veranderen)
 (define *rood&&groen&&paars-monster-loop-snelheid* 0.1) ;; Monster beweeg snelheid
 (define *geel-monster-loop-snelheid* 0.05)
 (define *monster-vetraag-tijd* 5000) ;; Hoelang een monster vertraagd word door een net
