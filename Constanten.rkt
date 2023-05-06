@@ -94,6 +94,7 @@
 (define *net-toren-afvuur-frequentie* 10000) ;; Toren schiet frequentie voor net toren
 (define *vuurbal-toren-afvuur-frequentie 10000)
 (define *bomwerp-toren-afvuur-frequentie* 10000)
+(define *meerdere-monsters* 2)
 
 ;; Projectiel constanten (tijd en geen tijd constanten)
 (define *projectiel-afvuur-snelheid-steen-net-vuurbal* 0.1) ;; Hoe snel het steen projectiel afgevuurd word

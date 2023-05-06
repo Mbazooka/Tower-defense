@@ -109,10 +109,22 @@
       
       (define (toren-schiet-y/n toren monsters) ;; Procedure die monster zal vinden waarnaar de toren kan schieten (indien monsters in buurt)
         (let ((monster (eerste-monster monsters)))
-          (if ((toren 'in-buurt?) monster)
-              ((toren 'schiet!) monster pad)
-              (if (not (null? (cdr monsters)))
-                  (toren-schiet-y/n toren (laatste-monster-weglaten monsters))))))    
+          (cond
+            ((and ((toren 'in-buurt?) monster) (eq? (toren 'type) 'bomwerp-toren))
+             (let ((aantal (length (filter (lambda (monster)
+                                       ((toren 'in-buurt?) monster))
+                                       monsters))))
+               (if (> aantal *meerdere-monsters*)
+                   ((toren 'schiet!) monster pad))))
+            (((toren 'in-buurt?) monster) ((toren 'schiet!) monster pad))
+            (else
+             (if (not (null? (cdr monsters)))
+                 (toren-schiet-y/n toren (laatste-monster-weglaten monsters)))))))
+;          
+;          (if ((toren 'in-buurt?) monster)
+;              ((toren 'schiet!) monster pad)
+;              (if (not (null? (cdr monsters)))
+;                  (toren-schiet-y/n toren (laatste-monster-weglaten monsters))))))    
       (if (not (null? monsters))
           (for-each
            (lambda (toren)
