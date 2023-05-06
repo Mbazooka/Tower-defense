@@ -61,7 +61,7 @@
               (let ((afstand ((positie 'afstand) centraal-positie)))
                 (cond
                   ((< afstand huidige-dichste-afstand)
-                   (set! huidige-dichste-afstand positie)
+                   (set! huidige-dichste positie)
                    (set! huidige-dichste-afstand afstand)))))))
          lijst-van-posities)
         huidige-dichste))
