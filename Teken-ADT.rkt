@@ -17,8 +17,11 @@
     (define menu-tegel (make-tile *menu-breedte-px* *spel/menu-hoogte-px*))
     ((menu-tegel 'draw-rectangle!) 0 0 *menu-breedte-px* *spel/menu-hoogte-px* "black")
     ((menu-tegel 'draw-rectangle!) 0 0 (/ *px-breedte* 2) *spel/menu-hoogte-px* "darkorange") ;; Voegt lijntje van om stijlvoller te maken
-    ((menu-tegel 'draw-text!) "Torens" *tekst-font* *tekst-toren-breedte* *tekst-toren-hoogte* "darkorange")
+    (define GUI (make-bitmap-tile "Images/Text.png"))
+;    ((menu-tegel 'draw-text!) "Torens" *tekst-font* *tekst-toren-breedte* *tekst-toren-hoogte* "darkorange")
     ((menu-tegel 'set-x!) *spel-breedte-px*)
+    ((GUI 'set-x!) (+ *spel-breedte-px* 10))
+    ((laag-menu 'add-drawable!) GUI)
     ((laag-menu 'add-drawable!) menu-tegel)
 
     ;; Volgende code is om de user-interface van de menu te maken
