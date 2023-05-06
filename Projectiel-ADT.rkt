@@ -33,8 +33,9 @@
     ;; Volgende code zal na gaan indien alle acties afgehandelt zijn van een projectiel
     (define (afgehandelt?)
       (cond
-        ((or (eq? type 'steen) (eq? type 'vuurbal) (eq? type 'bomwerp)) #t)
-        ((or (eq? type 'net) (eq? type 'bomwerp)) (>= lig-tijd *net-blijf-liggen-tijd*)) ;; Maak constanten 
+        ((or (eq? type 'steen) (eq? type 'vuurbal)) #t)
+        ((eq? type 'net) (>= lig-tijd *net-blijf-liggen-tijd*)) ;; Maak constanten
+        ((eq? type 'bomwerp) (>= lig-tijd *bomwerp-projectiel-ligtijd*))
         (else
          "Ongeldig type projectiel")))                             
 
@@ -69,7 +70,9 @@
                                     snelheid)
                #f)))
         ((eq? type 'net) (set! lig-tijd (+ lig-tijd dt)))
-        ((eq? type 'bomwerp) (explodeer! level (maak-rand! level)))
+        ((eq? type 'bomwerp) (set! lig-tijd (+ lig-tijd dt))
+                             (if (>= lig-tijd *bomwerp-projectiel-ligtijd*)
+                                   (explodeer! level (maak-rand! *bomwerp-projectiel-rand-afstand* level))))
         (else
          "Heeft geen actie na het raken van monsters")))
 
@@ -81,17 +84,17 @@
     (define (toegevoegd?) toegevoegd)
  
     ;; Volgende code maakt een rand voor een net-projectiel
-    (define (maak-rand! level)
+    (define (maak-rand! afstand level)
       (if (not projectiel-rand)
           (let ((vec (make-vector 4)))
-            (positie->rand! positie 2 vec)
+            (positie->rand! positie afstand vec)
             (set! projectiel-rand vec)
             (if (eq? type 'net)
                 ((level 'voeg-net-projectiel-toe!) dispatch) ;; Moet zo gedaan worden, zodat net-projectiel niet meermaals aan level word toegevoegd
                 vec))))
 
     ;; Volgende code gaat na als een monster in de rand van een net-projectiel zit
-    (define (in-rand? monster)
+    (define (binnen-rand? monster)
       (in-rand? (monster 'positie) projectiel-rand))
 
     ;; Volgende code explodeert de bom
@@ -114,7 +117,7 @@
         ((eq? msg 'toegevoegd!) toegevoegd!)
         ((eq? msg 'toegevoegd?) toegevoegd?)
         ((eq? msg 'maak-rand!) maak-rand!)
-        ((eq? msg 'in-rand?) in-rand?)
+        ((eq? msg 'binnen-rand?) binnen-rand?)
         ((eq? msg 'niet-bereikt&&afgehandelt?) niet-bereikt&&afgehandelt?)
         ((eq? msg 'explodeer!) explodeer!)
         ((eq? msg 'soort) 'projectiel)

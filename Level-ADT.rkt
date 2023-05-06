@@ -44,10 +44,10 @@
       (define (afhandeling-net-projectielen!)
         (for-each (lambda (projectiel) ;;Vertraagd de monster in de rand van het net-projectiel
                     (for-each (lambda (monster)
-                                (if (and ((projectiel 'in-rand?) monster) (not ((monster 'net-al-vetraagd?) projectiel)))
+                                (if (and ((projectiel 'binnen-rand?) monster) (not ((monster 'net-al-vetraagd?) projectiel)))
                                     (begin
                                       ((monster 'voeg-net-projectiel-toe!) projectiel)
-                                      ((monster 'actie-monster-levend!) 'vertraag)))) 
+                                      ((monster 'actie-monster-levend!) 'vertraag projectiel)))) 
                               monsters))
                   net-projectielen)
         (set! net-projectielen (filter ;; Nodig anders zal een bepaald net, tot het eind van het spel blijven vertragen
@@ -131,10 +131,8 @@
       (hulp-procedure monsters))
 
     ;; Volgende code voegt een net projectiel toe aan de lijst van net projectielen
-    (define (voeg-projectiel-toe! projectiel)
-      (if (eq? type (projectiel 'type))
-      (set! net-projectielen (cons projectiel net-projectielen))
-      (set! 
+    (define (voeg-net-projectiel-toe! projectiel)
+      (set! net-projectielen (cons projectiel net-projectielen)))
 
     ;; Volgende code bomwerpt alle monsters in de buurt
     (define (explodeer-monsters-in-buurt! rand)

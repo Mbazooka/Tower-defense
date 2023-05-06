@@ -64,18 +64,20 @@
     (define (verminder-levens! . bomwerp)
       (let ((test (and (pair? bomwerp) (eq? (car bomwerp) 'bomwerp)))) ;; Ga na indien bomwerp-projectiel de levens zal verminderen
         (cond
-          ((or (eq? type 'rood) (eq? type 'groen)) (set! levens (- levens 1)))
-          ((eq? type 'paars) (cond                             
+          ((eq? type 'rood) (set! levens (- levens 1)))
+          ((eq? type 'groen) (set! levens 0))
+          ((eq? type 'paars) (display levens) (display " : ") (cond                               
                                ((and test (<= levens *bomwerp-projectiel-schade*))
                                 (set! levens 0))
                                ((and test (> levens *bomwerp-projectiel-schade*))
                                 (set! levens (- levens *bomwerp-projectiel-schade*)))
                                (else
-                                (set! levens (- levens 1)))))
+                                (set! levens (- levens 1))))
+                             (display levens) (display " : "))
           ((eq? type 'geel) (cond
                               ((and test (> schild 2))
                                (set! schild 0))
-                              ((test (= schild 0))
+                              ((and test (= schild 0))
                                (set! levens 0))
                               (test 
                                (let ((rest (- *bomwerp-projectiel-schade* schild)))
@@ -117,7 +119,7 @@
       (cond
         ((eq? actie 'vertraag) (vertraag-monster!)
                                (voeg-net-projectiel-toe! (car projectiel/levens)))
-        ((eq? actie 'verminder) (if (and (pair? projectiel/levens) (eq? (car projectiel/levens) 'bomwerp))
+        ((eq? actie 'verminder) (if (and (pair? projectiel/levens) (eq? (car projectiel/levens) 'bomwerp))                                    
                                     (verminder-levens! (car projectiel/levens))
                                     (verminder-levens!)))
         (else "Ongeldige actie")))

@@ -55,8 +55,10 @@
                 (let ((actie ((projectiel 'actie-na-monster-raak!) level dt)))
                   (if actie ;; Gaat na als er een actie gedaan moet worden of niet
                       (set! projectielen (cons actie projectielen)))))
-               ((or (eq? 'net type-var) (eq? 'bomwerp type-var))
-                ((projectiel 'maak-rand!) level)
+               ((eq? 'net type-var)
+                ((projectiel 'maak-rand!) *net-projectiel-rand-afstand* level)
+                ((projectiel 'actie-na-monster-raak!) level dt))
+               ((eq? 'bomwerp type-var)
                 ((projectiel 'actie-na-monster-raak!) level dt)))))
          (filter
           (lambda (project) ((project 'bestemming-bereikt?)))

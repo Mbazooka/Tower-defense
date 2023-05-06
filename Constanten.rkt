@@ -102,6 +102,9 @@
 (define *net-vertraag-tijd* 5000)
 (define *vuurbal-hits-snelheid-verander* 0.025) ;; Vertraging vuurbal-hits
 (define *bomwerp-projectiel-schade* 3)
+(define *bomwerp-projectiel-ligtijd* 3000)
+(define *net-projectiel-rand-afstand* 2)
+(define *bomwerp-projectiel-rand-afstand* 4)
 
 ;; Monster tijd constanten
 (define *monster-spawn-frequentie* 7000) ;; Monster spawn frequentie (te veranderen)
