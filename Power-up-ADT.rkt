@@ -3,6 +3,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (maak-power-up-adt pad type)
   (let ((einde ((pad 'einde)))
+        (activatie #f)
         (inflectie-punten (if bool (pad 'inflectie-punten) (list-ref opt 1)))
         (inflectie-tekens (if bool (pad 'inflectie-tekens) (list-ref opt 2)))
         (beweging-richting-x (if bool #t (list-ref opt 3)))
@@ -42,10 +43,19 @@
          (volgende-positie!))        
         ((eq? type 'bommen-regen) #f)))
 
+    ;; Volgende code zal de power-up activeren
+    (define (activeer!)
+      (set! activatie #t))
+
+    ;; Volgende code gaat na als een power-up geactiveerd is
+    (define (geactiveerd?) activatie)
+
     (define (dispatch msg)
       (cond
         ((eq? msg 'einde?) einde?)
         ((eq? msg 'update!) update!)
+        ((eq? msg 'activeer!) activeer!)
+        ((eq? msg 'geactiveerd?) geactiveerd?)
         (else
          "maak-power-up-adt: Ongeldig bericht")))
     dispatch))

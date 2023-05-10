@@ -115,6 +115,7 @@
 
 ;; Power-up tijd constanten
 (define *tank-rijd-snelheid* 1)
+(define *power-afkoel-tijd* 15000)
 
 ;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid
 (define *geld-begin-bedrag* 3000) ;; Verander achteraf
