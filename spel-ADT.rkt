@@ -27,10 +27,17 @@
 
     ;; De procedure die het klikken van muis op scherm voorstelt    
     (define (muis-klik-procedure toets toestand x y)
-      (let ((geselecteerde-toren ((teken-adt 'toren-selectie) x y)))
+      (let ((geselecteerde-toren ((teken-adt 'toren-selectie) x y))
+            (geselecteerde-power-up ((teken-adt 'power-up-selectie) x y)))
         (cond 
           ((and (eq? toets 'left) (eq? toestand 'pressed) geselecteerde-toren) ;; Initialiseert toren type
            (set! toren-type geselecteerde-toren))
+          ((and (eq? toets 'left) (eq? toestand 'pressed) geselecteerde-power-up)
+           (if ((geld 'voldoende-geld?) geselecteerde-power-up)
+               (begin
+                ((geld 'verwijder-geld!) geselecteerde-power-up)
+                (if (eq? geselecteerde-power-up 'tank)
+                    (set! tank-power-up (cons (maak-power-up-adt pad 'tank) tank-power-up))))))                                               
           ((eq? toren-type #f) "Kies een toren") ;; Indien nog geen toren gekozen is dan moet
           ((and (eq? toets 'left) (eq? toestand 'pressed)
                 ((teken-adt 'buiten-beperking?) x y)

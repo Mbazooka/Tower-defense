@@ -167,6 +167,15 @@
          'bomwerp-toren)
         (else
          #f)))
+
+    ;; Volgende code
+    (define (power-up-selectie x y)
+      (cond
+        ((and (>= x *start-data-menu-power-up*) (<= x *power-up-knop-breedte-einde*) (>= y *power-up-1-knop-hoogte-start*) (<= y *power-up-1-knop-hoogte-einde*))
+         'tank)
+        ((and (>= x *start-data-menu-power-up*) (<= x *power-up-knop-breedte-einde*) (>= y *power-up-2-knop-hoogte-start*) (<= y *power-up-2-knop-hoogte-einde*))
+         'bom-regen)
+        (else #f)))
         
     ;; Volgende code is om tiles weg te halen van het scherm die niet meer nodig zijn
     (define (haal-weg-tiles-dict! objecten diction diction-te-verwijderen laag) ;; Zit het in de dictionary maar niet in de lijst van objecten dan moet hij weg
@@ -243,6 +252,7 @@
           ((eq? msg 'teken-pad!) teken-pad!)
           ((eq? msg 'teken-toren!) teken-toren!)
           ((eq? msg 'toren-selectie) toren-selectie)
+          ((eq? msg 'power-up-selectie) power-up-selectie)
           ((eq? msg 'teken-monsters!) teken-monsters!)
           ((eq? msg 'teken-projectielen!) teken-projectielen!)
           ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)

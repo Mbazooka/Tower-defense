@@ -44,7 +44,7 @@
 (define *toren-4-knop-hoogte-einde* (* 17 *px-hoogte*))
 
 (define *start-data-menu-power-up* (+ *spel-breedte-px* (* 2 *px-breedte*)))
-(define *toren-knop-breedte-einde* (+ *spel-breedte-px* (* 5 *px-hoogte*)))
+(define *power-up-knop-breedte-einde* (+ *spel-breedte-px* (* 5 *px-hoogte*)))
 
 (define *power-up-1-knop-hoogte-start* (* 2 *px-hoogte*))
 (define *power-up-1-knop-hoogte-einde* (* 5 *px-hoogte*))
@@ -126,6 +126,8 @@
 (define *net-toren-kost* 500)
 (define *vuurbal-toren-kost* 1000)
 (define *bomwerp-toren-kost* 1500)
+(define *tank-kost* 700)
+(define *bommen-regen-kost* 800)
 (define *rood-groen-monster-winst* 20)
 (define *geel-monster-winst* 50)
 (define *paars-monster-winst* 30)

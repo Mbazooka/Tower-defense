@@ -10,10 +10,12 @@
       ((eq? type 'net-toren) *net-toren-kost*)
       ((eq? type 'vuurbal-toren) *vuurbal-toren-kost*)
       ((eq? type 'bomwerp-toren) *bomwerp-toren-kost*)
+      ((eq? type 'tank) *tank-kost*)
+      ((eq? type 'bommen-regen) *bommen-regen-kost*)
       ((eq? type 'rood) *rood-groen-monster-winst*)
       ((eq? type 'geel) *geel-monster-winst*)
       ((eq? type 'paars) *paars-monster-winst*)
-      ((eq? type 'level) *level-winst*)
+      ((eq? type 'level) *level-winst*)      
       (else "Ongeldig type")))
 
   ;; Volgende code gaat na als de speler genoeg geld heeft
