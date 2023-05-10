@@ -119,12 +119,7 @@
             (((toren 'in-buurt?) monster) ((toren 'schiet!) monster pad))
             (else
              (if (not (null? (cdr monsters)))
-                 (toren-schiet-y/n toren (laatste-monster-weglaten monsters)))))))
-;          
-;          (if ((toren 'in-buurt?) monster)
-;              ((toren 'schiet!) monster pad)
-;              (if (not (null? (cdr monsters)))
-;                  (toren-schiet-y/n toren (laatste-monster-weglaten monsters))))))    
+                 (toren-schiet-y/n toren (laatste-monster-weglaten monsters)))))))    
       (if (not (null? monsters))
           (for-each
            (lambda (toren)

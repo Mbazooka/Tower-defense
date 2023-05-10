@@ -29,29 +29,6 @@
          "Geen correcte type")))
     (bepaal-initieel!)
 
-    ;; Volgende code zal het monstertje op de volgende positie zetten
-    (define (volgende-positie!)
-      (define (teken-bepaling!) ;; Zal nagaan bij het veranderen van bewegingsdimensie in welke zin verandert moet worden.
-        (cond
-          ((and (null? inflectie-tekens) (eq? beweging-zin +)) (set! beweging-zin -))
-          ((and (null? inflectie-tekens) (eq? beweging-zin -)) (set! beweging-zin +))
-          ((eq? (car inflectie-tekens) '-) (set! beweging-zin -) (set! inflectie-tekens (cdr inflectie-tekens)))
-          ((eq? (car inflectie-tekens) '+) (set! beweging-zin +) (set! inflectie-tekens (cdr inflectie-tekens)))
-          (else
-           "Doe niets")))
-              
-      (define (richting-verandering!) ;; Zal bij het bereiken van een inflectie punt, veranderen van bewegingsrichting 
-        (if (not (null? inflectie-punten))
-            (if ((((positie 'ceil)) 'gelijk?) (car inflectie-punten)) ;; inflectie punt bereikt?
-                (begin
-                  (set! beweging-richting-x (not beweging-richting-x))
-                  (set! inflectie-punten (cdr inflectie-punten))
-                  (teken-bepaling!)))))     
-      (richting-verandering!)      
-      (if beweging-richting-x
-          ((positie 'x!) (+ (positie 'x) monster-loop-snelheid))
-          ((positie 'y!) (beweging-zin (positie 'y) monster-loop-snelheid))))
-
     ;; Volgende code zal na gaan indien het monster aan het einde is van het pad
     (define (einde?)
       (>= (positie 'x) (einde 'x)))
