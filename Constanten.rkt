@@ -113,6 +113,9 @@
 (define *geel-monster-loop-snelheid* 0.05)
 (define *monster-vetraag-tijd* 5000) ;; Hoelang een monster vertraagd word door een net
 
+;; Power-up tijd constanten
+(define *tank-rijd-snelheid* 1)
+
 ;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid
 (define *geld-begin-bedrag* 3000) ;; Verander achteraf
 (define *levens-hoeveelheid* 5)
