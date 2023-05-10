@@ -129,7 +129,8 @@
            torens)))
 
     ;; Volgende zal power-ups hun staat updaten
-    (define (update-power-ups! dt)
+    (define (update-power-ups! dt) 
+      (set! activeerde-tanks (filter (lambda (tank) ((tank 'einde?))) activeerde-tanks)) ;; Haalt alle voorbijgegaande tanken weg
       (for-each (lambda (tank) ((tank 'update!) dt)) activeerde-tanks)
       (for-each (lambda (bom-regen) ((tank 'update!) dt)) activeerde-bommen-regen))      
 

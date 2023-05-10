@@ -1,13 +1,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                               Power-up ADT                                 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (maak-power-up-adt pad type positie)
-  (let ((afkoeling #f)
-        (einde ((pad 'einde)))
+(define (maak-power-up-adt pad type)
+  (let ((einde ((pad 'einde)))
         (inflectie-punten (if bool (pad 'inflectie-punten) (list-ref opt 1)))
         (inflectie-tekens (if bool (pad 'inflectie-tekens) (list-ref opt 2)))
         (beweging-richting-x (if bool #t (list-ref opt 3)))
         (beweging-zin (if bool + (list-ref opt 4))))
+
+    ;; Volgende code gaat na indien de power-up het einde van het pad bereikt heeft
+    (define (einde?)
+      (>= (positie 'x) (einde 'x)))
         
     ;; Volgende code zal de tank op de volgende positie zetten
     (define (volgende-positie!)
@@ -32,25 +35,17 @@
           ((positie 'x!) (+ (positie 'x) *tank-rijd-snelheid*))
           ((positie 'y!) (beweging-zin (positie 'y) *tank-rijd-snelheid*))))
 
-    ;; Volgende code update de status van een power-up
-    (define (update! level dt)
-      (volgende-positie!))               
-
-    (define (begin-afkoeling!)
-      (set! afkoeling #t))
-    
-    (define (stop-afkoeling!)
-      (if afkoeling ;; Is de afkoeling true? dan ??
-          (set! afkoeling #f)))
-
-    (define (afkoeling?) afkoeling)
+    ;; Volgende code update de power-up op een gegeven manier
+    (define (update! dt)
+      (cond
+        ((eq? type 'tank)
+         (volgende-positie!))        
+        ((eq? type 'bommen-regen) #f)))
 
     (define (dispatch msg)
       (cond
-        ((eq? msg 'stop-afkoeling) stop-afkoeling)
+        ((eq? msg 'einde?) einde?)
         ((eq? msg 'update!) update!)
-        ((eq? msg 'activeer!) activeer!)
-        ((eq? msg 'afkoeling?) afkoeling?)
         (else
          "maak-power-up-adt: Ongeldig bericht")))
     dispatch))
