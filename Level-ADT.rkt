@@ -5,6 +5,8 @@
   (let ((pad (maak-pad-adt vector-1))
         (torens (if (not (null? vorige-torens)) (car vorige-torens) vorige-torens))
         (monsters '()) ;; Lijst omdat elk element bewerken gemakkelijk is (for-each)
+        (activeerde-tanks '())
+        (activeerde-bommen-regen '())
         (net-projectielen '())) ;; Alle net-projectielen die op het pad liggen
     
     ;; Abstracties om type, eerste monster en rest uit lijst te krijgen
@@ -112,8 +114,8 @@
           (cond
             ((and ((toren 'in-buurt?) monster) (eq? (toren 'type) 'bomwerp-toren))
              (let ((aantal (length (filter (lambda (monster)
-                                       ((toren 'in-buurt?) monster))
-                                       monsters))))
+                                             ((toren 'in-buurt?) monster))
+                                           monsters))))
                (if (> aantal *meerdere-monsters*)
                    ((toren 'schiet!) monster pad))))
             (((toren 'in-buurt?) monster) ((toren 'schiet!) monster pad))
@@ -126,6 +128,11 @@
              (toren-schiet-y/n toren monsters))
            torens)))
 
+    ;; Volgende zal power-ups hun staat updaten
+    (define (update-power-ups! dt)
+      (for-each (lambda (tank) ((tank 'update!) dt)) activeerde-tanks)
+      (for-each (lambda (bom-regen) ((tank 'update!) dt)) activeerde-bommen-regen))      
+
     ;; Volgende code zoekt het monster die volgt op het gegeven monster
     (define (monster-na-monster monster)
       (define (hulp-procedure monsters)
@@ -137,6 +144,11 @@
            (hulp-procedure (rest monsters)))))
       (hulp-procedure monsters))
 
+    ;; Volgende code voegt een geactiveerde power-up toe aan de lijst van power-ups
+    (define (voeg-power-up-toe! type power-up)
+      (if (eq? type 'tank)
+          (set! activeerde-tanks (cons power-up activeerde-tanks)))) ;; !!! Mogelijks veranderen !!!
+
     ;; Volgende code voegt een net projectiel toe aan de lijst van net projectielen
     (define (voeg-net-projectiel-toe! projectiel)
       (set! net-projectielen (cons projectiel net-projectielen)))
@@ -144,8 +156,8 @@
     ;; Volgende code bomwerpt alle monsters in de buurt
     (define (explodeer-monsters-in-buurt! rand)
       (for-each (lambda (monster)
-                (if (in-rand? (monster 'positie) rand)
-                    ((monster 'actie-monster-levend!) 'verminder 'bomwerp)))
+                  (if (in-rand? (monster 'positie) rand)
+                      ((monster 'actie-monster-levend!) 'verminder 'bomwerp)))
                 monsters))
                          
     ;; Volgende code is om de projectielen van alle torens te verkrijgen (haal weg, maak beter)
@@ -175,6 +187,7 @@
         ((eq? msg 'update-monsters!) update-monsters!)
         ((eq? msg 'update-torens-projectielen-positie!) update-torens-projectielen-positie!)
         ((eq? msg 'update-torens-projectielen-afschieten!) update-torens-projectielen-afschieten!)
+        ((eq? msg 'update-power-ups!) update-power-ups!)
         ((eq? msg 'monster-na-monster) monster-na-monster)
         ((eq? msg 'voeg-net-projectiel-toe!) voeg-net-projectiel-toe!)
         ((eq? msg 'verkrijg-projectielen) verkrijg-projectielen)
