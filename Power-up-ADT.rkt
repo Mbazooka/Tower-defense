@@ -3,9 +3,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (maak-power-up-adt pad type)
   (let ((einde ((pad 'einde)))
-        (activatie #f)
-        (inflectie-punten (if bool (pad 'inflectie-punten) (list-ref opt 1)))
-        (inflectie-tekens (if bool (pad 'inflectie-tekens) (list-ref opt 2)))
+        (keer-punten (if bool (pad 'inflectie-punten) (list-ref opt 1)))
+        (keer-tekens (if bool (pad 'inflectie-tekens) (list-ref opt 2)))
         (beweging-richting-x (if bool #t (list-ref opt 3)))
         (beweging-zin (if bool + (list-ref opt 4))))
 
@@ -24,9 +23,9 @@
           (else
            "Doe niets")))
               
-      (define (richting-verandering!) ;; Zal bij het bereiken van een inflectie punt, veranderen van bewegingsrichting 
+      (define (richting-verandering!) ;; Zal bij het bereiken van een keerpunt, veranderen van bewegingsrichting 
         (if (not (null? inflectie-punten))
-            (if ((((positie 'ceil)) 'gelijk?) (car inflectie-punten)) ;; inflectie punt bereikt?
+            (if ((((positie 'ceil)) 'gelijk?) (car inflectie-punten)) ;; keerpunt bereikt?
                 (begin
                   (set! beweging-richting-x (not beweging-richting-x))
                   (set! inflectie-punten (cdr inflectie-punten))
@@ -42,13 +41,6 @@
         ((eq? type 'tank)
          (volgende-positie!))        
         ((eq? type 'bommen-regen) #f)))
-
-    ;; Volgende code zal de power-up activeren
-    (define (activeer!)
-      (set! activatie #t))
-
-    ;; Volgende code gaat na als een power-up geactiveerd is
-    (define (geactiveerd?) activatie)
 
     (define (dispatch msg)
       (cond

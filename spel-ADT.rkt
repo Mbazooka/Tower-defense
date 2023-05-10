@@ -9,7 +9,9 @@
          (teken-adt (maak-teken-adt (+ *menu-breedte-px* *spel-breedte-px*) *spel/menu-hoogte-px*));; maak de fundamenten van het spel
          (toren-type #f) ;; Om torens te plaatsen veranderen we dit om te weten welk type toren te plaatsen.
          (monster-tijd 0) ;; Tijd afgelopen sinds vorige monster op pad
-         (projectiel-tijd 0)) ;; Tijd afgelopen sinds vorige projectiel die geschoten werd
+         (projectiel-tijd 0) ;; Tijd afgelopen sinds vorige projectiel die geschoten werd
+         (tank-power-up '())
+         (bomregen-power-up '()))
 
     ;; Tekent pad van het spel
     ((teken-adt 'teken-pad!) pad) 
@@ -18,6 +20,10 @@
     (define (start!)
       ((teken-adt 'set-muis-toets!) muis-klik-procedure)
       ((teken-adt 'set-toets-procedure!) toets-procedure))
+
+    ;; Volgende code zijn abstracties
+    (define volgende-power-up car)
+    (define rest-power-ups cdr)
 
     ;; De procedure die het klikken van muis op scherm voorstelt    
     (define (muis-klik-procedure toets toestand x y)
@@ -57,6 +63,7 @@
             (set! projectiel-tijd 0)))
       (set! projectiel-tijd (+ projectiel-tijd dt))
       ((level 'update-torens-projectielen-positie!) dt)
+      ((level 'update-power-ups!) dt)
       ((teken-adt 'teken-projectielen!) ((level 'verkrijg-projectielen)))
       ((teken-adt 'update-tekst-teken!) geld)
       ((teken-adt 'update-tekst-teken!) levens))
@@ -73,8 +80,12 @@
         ((and (eq? toestand 'pressed) (eq? toets #\space))
          ((teken-adt 'set-spel-lus!) spel-lus-procedure))
         ((and (eq? toestand 'pressed) (eq? toets 'escape))
-         ((level 'level-einde!)))))
-            
+         ((level 'level-einde!)))
+        ((and (eq? toestand 'pressed) (eq? toets #\t))
+         (let ((power-up (if (pair? tank-power-up) (volgende-power-up tank-power-up))))
+               (set! tank-power-up (cdr tank-power-up))
+               ((voeg-power-up-toe! 'tank power-up))))))       
+                   
     (define (dispatch msg)
       (cond 
         ((eq? msg 'start!) (start!))
