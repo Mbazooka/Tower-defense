@@ -44,7 +44,7 @@
 (define *toren-4-knop-hoogte-einde* (* 17 *px-hoogte*))
 
 (define *start-data-menu-power-up* (+ *start-data-menu* (* 5 *px-breedte*)))
-(define *power-up-knop-breedte-einde* (+ *spel-breedte-px* (* 5 *px-hoogte*)))
+(define *power-up-knop-breedte-einde* (+ *start-data-menu-power-up* (* 5 *px-hoogte*)))
 
 (define *power-up-1-knop-hoogte-start* (* 2.3 *px-hoogte*))
 (define *power-up-1-knop-hoogte-einde* (* 5 *px-hoogte*))
@@ -83,6 +83,9 @@
 (define *net-projectiel-bitmap&&mask* (cons "Images/Net.png" "Images/Net-mask.png"))
 (define *vuurbal-projectiel-bitmap&&mask*  (cons "Images/Vuurbal.png" "Images/Vuurbal-mask.png"))
 (define *bomwerp-projectiel-bitmap&&mask* (cons "Images/bomwerp.png" "Images/bomwerp-mask.png"))
+
+;; Constanten voor bitmap van power-ups
+(define *tank-power-up-bitmap&&mask* (cons "Images/Tank.png" "Images/tank-mask.png"))
 
 ;; Constanten voor tegel-positie van bitmap van geld en levens
 (define *geld&&levens-tegel-px-hoogte* (- *spel/menu-hoogte-px* 25)) ;; 23 Zo gekozen voor stijlvolle manier

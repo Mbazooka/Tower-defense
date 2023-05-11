@@ -4,8 +4,9 @@
 ;; Doel van dit ADT is om alles gemakkelijk te teken gebruikmakend van de grafische bibliotheek (dit zal gebruikt worden door spel ADT)
 (define (maak-teken-adt horizontale-pixels verticale-pixels)
   (let ((venster (make-window horizontale-pixels verticale-pixels "Tower Defence"))
-        (monster-tiles-dict (cons 'tegels '())) ;; Tagged omdat 1ste conscell veranderd moet worden/ Dit zijn monster-tegel associaties
-        (projectielen-tiles-dict (cons 'tegels '()))) ;; Dit zijn projectiet-tegel associaties
+        (monster-tiles-dict (cons 'tegels '())) ;; Tagged omdat 1ste conscell veranderd moet worden/ Dit zijn monster--tegel associaties
+        (projectielen-tiles-dict (cons 'tegels '())) ;; Dit zijn projectiel--tegel associaties
+        (tank-power-ups-tiles-dict (cons 'tegels '()))) ;; Dit zijn tank-power-up--tegel associaties
 
     ;; Volgende code is om een achtergrond te hebben waarop een pad gemaakt wordt
     (define laag-achtergrond ((venster 'new-layer!)))
@@ -228,6 +229,13 @@
     ;; Volgende code is om projectielen te tekenen
     (define (teken-projectielen! projectielen)
       (teken-dynamisch-object! projectielen projectielen-tiles-dict laag-projectiel))
+
+    ;; Volgende code is een venster om tank-power-ups te plaatsen
+    (define laag-tank-po ((venster 'new-layer!)))
+
+    ;; Volgende code is om tank-power-ups te tekenen
+    (define (teken-tank-power-up! tank-power-ups)
+      (teken-dynamisch-object! tank-power-ups tank-power-ups-tiles-dict laag-tank-po))
            
     ;; Volgende code is om muis klikken te implementeren
     (define (set-muis-toets-procedure! proc)
@@ -263,6 +271,7 @@
           ((eq? msg 'power-up-selectie) power-up-selectie)
           ((eq? msg 'teken-monsters!) teken-monsters!)
           ((eq? msg 'teken-projectielen!) teken-projectielen!)
+          ((eq? msg 'teken-tank-power-up!) teken-tank-power-up!)
           ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)
           ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)
           ((eq? msg 'set-toets-procedure!) set-toets-procedure!)

@@ -32,12 +32,13 @@
         (cond 
           ((and (eq? toets 'left) (eq? toestand 'pressed) geselecteerde-toren) ;; Initialiseert toren type
            (set! toren-type geselecteerde-toren))
-          ((and (eq? toets 'left) (eq? toestand 'pressed) geselecteerde-power-up)
+          ((and (eq? toets 'left) (eq? toestand 'pressed) geselecteerde-power-up)         
            (if ((geld 'voldoende-geld?) geselecteerde-power-up)
                (begin
                 ((geld 'verwijder-geld!) geselecteerde-power-up)
                 (if (eq? geselecteerde-power-up 'tank)
-                    (set! tank-power-up (cons (maak-power-up-adt pad 'tank) tank-power-up))))))                                               
+                    (set! tank-power-up (cons (maak-power-up-adt pad 'tank) tank-power-up)))
+                ((teken-adt 'update-tekst-teken!) geld))))
           ((eq? toren-type #f) "Kies een toren") ;; Indien nog geen toren gekozen is dan moet
           ((and (eq? toets 'left) (eq? toestand 'pressed)
                 ((teken-adt 'buiten-beperking?) x y)
@@ -90,8 +91,8 @@
          ((level 'level-einde!)))
         ((and (eq? toestand 'pressed) (eq? toets #\t))
          (let ((power-up (if (pair? tank-power-up) (volgende-power-up tank-power-up))))
-               (set! tank-power-up (cdr tank-power-up))
-               ((voeg-power-up-toe! 'tank power-up))))))       
+               (if (pair? tank-power-up) (set! tank-power-up (cdr tank-power-up)))
+               ((level 'voeg-power-up-toe!) 'tank power-up)))))       
                    
     (define (dispatch msg)
       (cond 

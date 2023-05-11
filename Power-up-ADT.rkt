@@ -3,10 +3,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (maak-power-up-adt pad type)
   (let ((einde ((pad 'einde)))
-        (keer-punten (if bool (pad 'inflectie-punten) (list-ref opt 1)))
-        (keer-tekens (if bool (pad 'inflectie-tekens) (list-ref opt 2)))
-        (beweging-richting-x (if bool #t (list-ref opt 3)))
-        (beweging-zin (if bool + (list-ref opt 4))))
+        (keer-punten (pad 'inflectie-punten))
+        (keer-tekens (pad 'inflectie-tekens))
+        (beweging-richting-x #t)
+        (beweging-zin +))
 
     ;; Volgende code gaat na indien de power-up het einde van het pad bereikt heeft
     (define (einde?)
