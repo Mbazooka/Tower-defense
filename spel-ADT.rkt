@@ -81,7 +81,7 @@
     (define (toets-procedure toestand toets)
       (cond
         ((and (eq? toestand 'pressed) (eq? toets #\space) ((level 'einde?)))
-         ((geld 'voeg-geld-toe!) 'level)
+         ((geld 'voeg-geld-toe!) 'level #f)
          ((teken-adt 'update-tekst-teken!) geld)
          (set! level (maak-level-adt level-1 geld levens (level 'torens)))
          ((teken-adt 'update-tekst-teken!) level))

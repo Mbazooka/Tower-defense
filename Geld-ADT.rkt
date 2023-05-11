@@ -4,7 +4,7 @@
 (define (maak-geld-adt begin-bedrag)
 
   ;; Volgende code heeft het bedrag terug naargelang het type-object (zijn disjunct)
-  (define (bedrag type . extra)
+  (define (bedrag type extra)
     (let ((kost-winst #f))
       (cond
         ((eq? type 'basis-toren) (set! kost-winst *basis-toren-kost*))
@@ -20,36 +20,40 @@
         (else "Ongeldig type"))
 
       (cond
-        ((and (pair? extra) (eq? (car extra) #t) kost-winst)
-         (+ kost-winst *extra-tank-winst*))
+        ((and extra kost-winst)
+         (let ((nieuwe-kost-winst (+ kost-winst *extra-tank-winst*)))
+           (set! kost-winst #f)
+           nieuwe-kost-winst))
         (kost-winst
-         kost-winst)
+         (let ((nieuwe-kost-winst kost-winst))
+           (set! kost-winst #f)
+           nieuwe-kost-winst))
         (else
          "Ongeldig type"))))
           
 
-      ;; Volgende code gaat na als de speler genoeg geld heeft
-      (define (voldoende-geld? type)
-        (>= begin-bedrag (bedrag type)))
+  ;; Volgende code gaat na als de speler genoeg geld heeft
+  (define (voldoende-geld? type)
+    (>= begin-bedrag (bedrag type #f)))
 
-      ;; Volgende code zal naar gelang de type van object het juiste bedrag aftrekken
-      (define (verwijder-geld! type)
-        (set! begin-bedrag (- begin-bedrag (bedrag type))))
+  ;; Volgende code zal naar gelang de type van object het juiste bedrag aftrekken
+  (define (verwijder-geld! type)
+    (set! begin-bedrag (- begin-bedrag (bedrag type #f))))
 
-      (define (voeg-geld-toe! type)
-        (set! begin-bedrag (+ begin-bedrag (bedrag type))))
+  (define (voeg-geld-toe! type extra)
+    (if (not (eq? type 'groen))
+        (set! begin-bedrag (+ begin-bedrag (bedrag type extra)))))
 
-      (define (reset!)
-        (set! begin-bedrag *geld-bedrag*))
+  (define (reset!)
+    (set! begin-bedrag *geld-bedrag*))
 
-      (define (dispatch msg)
-        (cond
-          ((eq? msg 'voldoende-geld?) voldoende-geld?)
-          ((eq? msg 'verwijder-geld!) verwijder-geld!)
-          ((eq? msg 'voeg-geld-toe!) voeg-geld-toe!)
-          ((eq? msg 'status) begin-bedrag)
-          ((eq? msg 'soort) 'geld)
-          ((eq? msg 'reset!) reset!)
-          (else "maak-geld-adt: ongeldig bericht")))
-      dispatch)
-    
+  (define (dispatch msg)
+    (cond
+      ((eq? msg 'voldoende-geld?) voldoende-geld?)
+      ((eq? msg 'verwijder-geld!) verwijder-geld!)
+      ((eq? msg 'voeg-geld-toe!) voeg-geld-toe!)
+      ((eq? msg 'status) begin-bedrag)
+      ((eq? msg 'soort) 'geld)
+      ((eq? msg 'reset!) reset!)
+      (else "maak-geld-adt: ongeldig bericht")))
+  dispatch)
