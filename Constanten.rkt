@@ -61,6 +61,8 @@
 (define *tekst-geld-px-breedte* (+ *start-data-menu* *px-breedte*))
 (define *tekst-levens-px-breedte* (+ *start-data-menu* (* 5 *px-breedte*)))
 (define *tekst-geld&&levens-px-hoogte* (- *spel/menu-hoogte-px* 23)) ;; 23 Zo gekozen voor stijlvolle manier
+(define *dynamisch-tekst-level-begin* (* 2 *px-breedte*))
+(define *dynamisch-tekst-ronde-begin* (* 3 *px-breedte*))
 
 ;; Abstracties om bitmap en mask te acesseren
 (define bitmap car)

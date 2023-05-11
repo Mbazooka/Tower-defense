@@ -6,6 +6,8 @@
          (geld (maak-geld-adt *geld-begin-bedrag*))
          (levens (maak-leven-adt *levens-hoeveelheid*))
          (level (maak-level-adt level-1 geld levens))
+         (level-teller 1)
+         (ronde-teller 1)
          (pad (level 'pad))
          (teken-adt (maak-teken-adt (+ *menu-breedte-px* *spel-breedte-px*) *spel/menu-hoogte-px*));; maak de fundamenten van het spel
          (toren-type #f) ;; Om torens te plaatsen veranderen we dit om te weten welk type toren te plaatsen.
@@ -38,7 +40,7 @@
                  ((geld 'verwijder-geld!) geselecteerde-power-up)
                  (if (eq? geselecteerde-power-up 'tank)
                      (set! tank-power-up (cons (maak-power-up-adt pad 'tank) tank-power-up)))
-                 ((teken-adt 'update-tekst-teken!) geld))))
+                 ((teken-adt 'update-tekst-teken!) 'geld (geld 'status)))))
           ((eq? toren-type #f) "Kies een toren") ;; Indien nog geen toren gekozen is dan moet
           ((and (eq? toets 'left) (eq? toestand 'pressed)
                 ((teken-adt 'buiten-beperking?) x y)
@@ -51,7 +53,7 @@
                 ((geld 'verwijder-geld!) toren-type)
                 ((level 'voeg-toren-toe!) toren)
                 ((teken-adt 'teken-toren!) toren)
-                ((teken-adt 'update-tekst-teken!) geld))
+                ((teken-adt 'update-tekst-teken!) 'geld (geld 'status)))
                (else "Beweging niet mogelijk")))))))
     
     ;; Volgende code implementeert de spel lus van het pel
@@ -71,19 +73,22 @@
       ((level 'update-torens-projectielen-positie!) dt)        
       ((teken-adt 'teken-projectielen!) ((level 'verkrijg-projectielen)))
       ((teken-adt 'teken-tank-power-up!) (level 'verkrijg-tank-power-ups))
-      ((teken-adt 'update-tekst-teken!) geld)
-      ((teken-adt 'update-tekst-teken!) levens))
+      ((teken-adt 'update-tekst-teken!) 'geld (geld 'status))
+      ((teken-adt 'update-tekst-teken!) 'levens (levens 'status))
+      ((teken-adt 'update-tekst-teken!) 'level level-teller))
       
     ;;Volgende code implementeert een toets om het spel de laten starten
     (define (toets-procedure toestand toets)
       (cond
         ((and (eq? toestand 'pressed) (eq? toets #\space) ((level 'einde?)))
          ((geld 'voeg-geld-toe!) 'level #f)
-         ((teken-adt 'update-tekst-teken!) geld)
+         ((teken-adt 'update-tekst-teken!) 'geld (geld 'status))
          ((level 'initialiseer-toren-tijden!))
          (set! level (maak-level-adt level-1 geld levens (level 'torens)))
+         (set! level-teller (+ level-teller 1))
+         (set! ronde-teller 1)
          (set! spel-lus-gestart? #f)
-         ((teken-adt 'update-tekst-teken!) level))
+         ((teken-adt 'update-tekst-teken!) 'level level-teller))
         ((and (eq? toestand 'pressed) (eq? toets #\space))
          ((teken-adt 'set-spel-lus!) spel-lus-procedure))
         ((and (eq? toestand 'pressed) (eq? toets 'escape))

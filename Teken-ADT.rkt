@@ -62,6 +62,8 @@
 
     (define level-tekst-tegel-statisch (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*))
     (define level-tekst-tegel-dynamisch (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*))
+
+    (define ronde-tekst-tegel-dynamisch (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*))
       
     ((geld-tegel 'set-x!) *start-data-menu*) ;; Bitmap verplaatsen naar juiste plaats
     ((geld-tegel 'set-y!) *geld&&levens-tegel-px-hoogte*) 
@@ -81,28 +83,36 @@
     ((levens-tekst-tegel 'set-y!) *tekst-geld&&levens-px-hoogte*) 
     ((laag-geld&&levens&&level 'add-drawable!) levens-tekst-tegel)
 
-    ((level-tekst-tegel-statisch 'draw-text!) "Level" *tekst-font* 0 0 "white")
-    ((level-tekst-tegel-statisch 'set-y!) (- verticale-pixels *algemeen-tekst-hoogte*)) 
-    ((laag-geld&&levens&&level 'add-drawable!) level-tekst-tegel-statisch)
+    (define level/ronde-tekst-hoogte (- verticale-pixels *algemeen-tekst-hoogte*)) ;; Hoogte voor level-tekst (kan niet globaal)
 
+    ((level-tekst-tegel-statisch 'draw-text!) "Level" *tekst-font* 0 0 "white")
+    ((level-tekst-tegel-statisch 'set-y!) level/ronde-tekst-hoogte) 
+    ((laag-geld&&levens&&level 'add-drawable!) level-tekst-tegel-statisch)
+      
     ((level-tekst-tegel-dynamisch 'draw-text!) "1" *tekst-font* 0 0 "white")
-    ((level-tekst-tegel-dynamisch 'set-x!) *algemeen-tekst-breedte*)
-    ((level-tekst-tegel-dynamisch 'set-y!) (- verticale-pixels *algemeen-tekst-hoogte*))
+    ((level-tekst-tegel-dynamisch 'set-x!) *dynamisch-tekst-level-begin*) 
+    ((level-tekst-tegel-dynamisch 'set-y!) level/ronde-tekst-hoogte)
     ((laag-geld&&levens&&level 'add-drawable!) level-tekst-tegel-dynamisch)
+
+    ((ronde-tekst-tegel-dynamisch 'draw-text!) "1" *tekst-font* 0 0 "white")
+    ((ronde-tekst-tegel-dynamisch 'set-x!) *dynamisch-tekst-ronde-begin*)
+    ((ronde-tekst-tegel-dynamisch 'set-y!) level/ronde-tekst-hoogte)
+    ((laag-geld&&levens&&level 'add-drawable!) ronde-tekst-tegel-dynamisch)   
     
     ;; Laag waarop pad getekent word
     (define laag-pad ((venster 'new-layer!)))
 
     ;; Volgende code is om de tekst delen van het spel up te daten
-    (define (update-tekst-teken! object . level-tal) ;; Dit werd gedaan omdat het level object zijn level niet bijhoud
+    (define (update-tekst-teken! type getal) ;; Dit werd gedaan omdat het level object zijn level niet bijhoud
       (define (update-tekst-hulp! tegel)
         ((tegel 'clear!))
-        ((tegel 'draw-text!) (number->string (object 'status)) *tekst-font* 0 0 "white"))
+        ((tegel 'draw-text!) (number->string getal) *tekst-font* 0 0 "white"))
         
       (cond
-        ((eq? 'geld (object 'soort)) (update-tekst-hulp! geld-tekst-tegel))
-        ((eq? 'levens (object 'soort)) (update-tekst-hulp! levens-tekst-tegel))
-        ;        ((eq? 'level (object 'soort)) (update-tekst-hulp! level-tekst-tegel-dynamisch))
+        ((eq? type 'geld) (update-tekst-hulp! geld-tekst-tegel))
+        ((eq? type 'levens) (update-tekst-hulp! levens-tekst-tegel))
+        ((eq? type 'level) (update-tekst-hulp! level-tekst-tegel-dynamisch))
+        ((eq? type 'ronde) (update-tekst-hulp! ronde-tekst-tegel-dynamisch))
         (else
          "Update-tekst-teken!: Ongeldig object ingegeven")))
 
