@@ -30,9 +30,9 @@
       (let ((geselecteerde-toren ((teken-adt 'toren-selectie) x y))
             (geselecteerde-power-up ((teken-adt 'power-up-selectie) x y)))
         (cond 
-          ((and (eq? toets 'left) (eq? toestand 'pressed) geselecteerde-toren) ;; Initialiseert toren type
+          ((and (eq? toets 'left) (eq? toestand 'pressed) geselecteerde-toren) ;; Initialiseert toren type          
            (set! toren-type geselecteerde-toren))
-          ((and (eq? toets 'left) (eq? toestand 'pressed) geselecteerde-power-up)         
+          ((and (eq? toets 'left) (eq? toestand 'pressed) geselecteerde-power-up) ;; Koopt power-up
            (if ((geld 'voldoende-geld?) geselecteerde-power-up)
                (begin
                  ((geld 'verwijder-geld!) geselecteerde-power-up)

@@ -66,14 +66,14 @@
         (cond
           ((eq? type 'rood) (set! levens (- levens 1)))
           ((eq? type 'groen) (set! levens 0))
-          ((eq? type 'paars) (display levens) (display " : ") (cond                               
-                                                                ((and test (<= levens *bomwerp-projectiel-schade*))
-                                                                 (set! levens 0))
-                                                                ((and test (> levens *bomwerp-projectiel-schade*))
-                                                                 (set! levens (- levens *bomwerp-projectiel-schade*)))
-                                                                (else
-                                                                 (set! levens (- levens 1))))
-                             (display levens) (display " : "))
+          ((eq? type 'paars)  (cond                               
+                                ((and test (<= levens *bomwerp-projectiel-schade*))
+                                 (set! levens 0))
+                                ((and test (> levens *bomwerp-projectiel-schade*))
+                                 (set! levens (- levens *bomwerp-projectiel-schade*)))
+                                (else
+                                 (set! levens (- levens 1)))))
+                              
           ((eq? type 'geel) (cond
                               ((and test (> schild 2))
                                (set! schild 0))

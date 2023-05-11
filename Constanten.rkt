@@ -30,7 +30,7 @@
 ;; Menu constante (stelt de x coordinaat voor die de start van de menu voorstelt, nodig voor torens te plaatsen)
 (define *start-x-pos-menu* (* *spel-breedte* *px-breedte*)) 
 (define *start-data-menu* (+ *spel-breedte-px* *px-breedte*))
-(define *toren-knop-breedte-einde* (+ *spel-breedte* (* 4 *px-breedte*))) ;; zijn keuzes om knopen hier te starten en daar te eindigen
+(define *toren-knop-breedte-einde* (+ *spel-breedte-px* (* 4 *px-breedte*))) ;; zijn keuzes om knopen hier te starten en daar te eindigen
 (define *toren-1-knop-hoogte-start* (* 2 *px-hoogte*))
 (define *toren-1-knop-hoogte-einde* (* 5 *px-hoogte*))
 
