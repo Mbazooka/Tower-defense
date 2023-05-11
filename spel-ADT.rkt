@@ -80,6 +80,7 @@
         ((and (eq? toestand 'pressed) (eq? toets #\space) ((level 'einde?)))
          ((geld 'voeg-geld-toe!) 'level #f)
          ((teken-adt 'update-tekst-teken!) geld)
+         ((level 'initialiseer-toren-tijden!))
          (set! level (maak-level-adt level-1 geld levens (level 'torens)))
          (set! spel-lus-gestart? #f)
          ((teken-adt 'update-tekst-teken!) level))

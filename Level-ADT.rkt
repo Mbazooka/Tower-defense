@@ -132,6 +132,10 @@
                  ((toren 'update-afvuur-tijd!) dt)))
            torens)))
 
+    ;; Volgende code zal de toren-afvuur-tijden op 0 zetten
+    (define (initialiseer-toren-tijden!)
+      (for-each (lambda (toren) ((toren 'initialiseer-tijd!))) torens))
+
     ;; Volgende zal power-ups hun staat updaten
     (define (update-power-ups! dt)
       (tanken-verminder-monster-levens! (filter (lambda (tank) ((tank 'einde?))) activeerde-tanks))
@@ -214,6 +218,7 @@
         ((eq? msg 'update-monsters!) update-monsters!)
         ((eq? msg 'update-torens-projectielen-positie!) update-torens-projectielen-positie!)
         ((eq? msg 'update-torens-projectielen-afschieten!) update-torens-projectielen-afschieten!)
+        ((eq? msg 'initialiseer-toren-tijden!) initialiseer-toren-tijden!)
         ((eq? msg 'update-power-ups!) update-power-ups!)
         ((eq? msg 'monster-na-monster) monster-na-monster)
         ((eq? msg 'voeg-net-projectiel-toe!) voeg-net-projectiel-toe!)

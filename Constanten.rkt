@@ -115,7 +115,7 @@
 
 ;; Monster tijd constanten
 (define *monster-spawn-frequentie* 2000) ;; Monster spawn frequentie (te veranderen)
-(define *rood&&groen&&paars-monster-loop-snelheid* 0.1) ;; Monster beweeg snelheid
+(define *rood&&groen&&paars-monster-loop-snelheid* 0.4) ;; Monster beweeg snelheid
 (define *geel-monster-loop-snelheid* 0.05)
 (define *monster-vetraag-tijd* 5000) ;; Hoelang een monster vertraagd word door een net
 
@@ -124,7 +124,7 @@
 (define *power-afkoel-tijd* 15000)
 
 ;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid
-(define *geld-begin-bedrag* 3000) ;; Verander achteraf
+(define *geld-begin-bedrag* 5000) ;; Verander achteraf
 (define *levens-hoeveelheid* 5)
 
 ;; Constanten die geld van speler doet veranderen

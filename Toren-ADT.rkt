@@ -113,6 +113,10 @@
     ;; Volgende code gaat na als de toren mag schieten
     (define (schieten?)
       (= afvuur-tijd 0))
+
+    ;; Volgende initialiseer afvuur-tijd
+    (define (initialiseer-tijd!)
+      (set! afvuur-tijd 0))
                                           
     (define (dispatch msg)
       (cond
@@ -127,6 +131,7 @@
         ((eq? msg 'niet-bereikt&&afgehandelt?) niet-bereikt&&afgehandelt?)
         ((eq? msg 'update-afvuur-tijd!) update-afvuur-tijd!)
         ((eq? msg 'schieten?) schieten?)
+        ((eq? msg 'initialiseer-tijd!) initialiseer-tijd!)
         ((eq? msg 'soort) 'toren)
         (else "maak-toren-adt: ongeldig bericht")))
     dispatch))
