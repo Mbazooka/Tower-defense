@@ -120,7 +120,7 @@
 (define *monster-vetraag-tijd* 5000) ;; Hoelang een monster vertraagd word door een net
 
 ;; Power-up tijd constanten
-(define *tank-rijd-snelheid* 1)
+(define *tank-rijd-snelheid* 0.25)
 (define *power-afkoel-tijd* 15000)
 
 ;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid

@@ -66,9 +66,9 @@
                                 net-projectielen)))
 
       (define (geld-en-sterven-acties!)
-        (for-each (lambda (monster)
+        (for-each (lambda (monster)                    
                     ((geld 'voeg-geld-toe!) (monster 'type) #f) ;; Zal geld updaten, en indien het een groen monster is, een rood monster spawnen
-                    (cond
+                    (cond                      
                       ((eq? (monster 'type) 'groen) (zet-terug-monster-lijst! monster ((monster 'actie-monster-sterven!)) monsters)) ;; Zal rood monster doen spawnen van groen monster
                       ((eq? (monster 'type) 'paars) (verhoog-levens-paars-monster! ((monster 'actie-monster-sterven!))))))                    
                   (filter (lambda (monster) ((monster 'gestorven?))) monsters)))
@@ -83,7 +83,7 @@
               (set! monsters (cons (maak-monster-adt (type monster-rij) pad) monsters))
               (set! monster-rij (rest monster-rij)))))
 
-      ;; Uitvoeren van alle acties 
+      ;; Uitvoeren van alle acties van update-monsters!
       (levens-verminder!)
       (afhandeling-net-projectielen!)
       (update-vertragings-tijd-monsters!)
@@ -178,8 +178,7 @@
           ((null? monsters) #f)
           ((eq? monster (eerste monsters)) #t)
           (else
-           (in? monster (rest monsters)))))
-          
+           (in? monster (rest monsters)))))        
         
       (for-each (lambda (tank)
                   (if (pair? tank-power-up-monsters)
@@ -189,10 +188,6 @@
                         (if (and ((mons 'gestorven?)) (in? mons monsters))
                             ((geld 'voeg-geld-toe!) (mons 'type) #t)))))
                 tanken)
-      ;                  (for-each (lambda (monster)
-      ;                              ((monster 'actie-monster-levend!) 'verminder)
-      ;                              (if (and ((monster 'gestorven?)) (in? monster monsters))
-      ;                                  ((geld 'voeg-geld-toe!) (monster 'type) #t))) ;; Hier code duplicatie
       (if (not (null? tanken))
           (overblijvende-monsters!)))
                          
