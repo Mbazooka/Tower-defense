@@ -138,7 +138,7 @@
 
     ;; Volgende zal power-ups hun staat updaten
     (define (update-power-ups! dt)
-      (tanken-verminder-monster-levens! (filter (lambda (tank) ((tank 'einde?))) activeerde-tanks))
+      (tanken-verminder-monster-levens! activeerde-tanks)
       (set! activeerde-tanks (filter (lambda (tank) (not ((tank 'einde?)))) activeerde-tanks)) ;; Haalt alle voorbijgegaande tanken weg
       (for-each (lambda (tank) ((tank 'update!) dt)) activeerde-tanks))      
 
@@ -182,12 +182,17 @@
           
         
       (for-each (lambda (tank)
-                  (for-each (lambda (monster)
-                              ((monster 'actie-monster-levend!) 'verminder)
-                              (if (and ((monster 'gestorven?)) (in? monster monsters))
-                                  ((geld 'voeg-geld-toe!) (monster 'type) #t))) ;; Hier code duplicatie
-                            tank-power-up-monsters))
+                  (if (pair? tank-power-up-monsters)
+                      (let ((mons (eerste tank-power-up-monsters)))
+                        ((mons 'actie-monster-levend!) 'verminder)
+                        (set! tank-power-up-monsters (cdr tank-power-up-monsters))
+                        (if (and ((mons 'gestorven?)) (in? mons monsters))
+                            ((geld 'voeg-geld-toe!) (mons 'type) #t)))))
                 tanken)
+      ;                  (for-each (lambda (monster)
+      ;                              ((monster 'actie-monster-levend!) 'verminder)
+      ;                              (if (and ((monster 'gestorven?)) (in? monster monsters))
+      ;                                  ((geld 'voeg-geld-toe!) (monster 'type) #t))) ;; Hier code duplicatie
       (if (not (null? tanken))
           (overblijvende-monsters!)))
                          
