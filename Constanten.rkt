@@ -135,6 +135,7 @@
 (define *geel-monster-winst* 50)
 (define *paars-monster-winst* 30)
 (define *level-winst* 500)
+(define *extra-tank-winst* 30)
 
 ;; Constanten die levens (en ook rand) van monsters voorstellen 
 (define *levens-rood-monster* 1)

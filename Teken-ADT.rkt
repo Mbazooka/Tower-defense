@@ -180,7 +180,7 @@
         (else
          #f)))
 
-    ;; Volgende code gaat na welke power-up geselecteerd werd van de menu
+    ;; Volgende code gaat na welke power-up geselecteerd werd van de menu:
     (define (power-up-selectie x y)
       (cond
         ((and (>= x *start-data-menu-power-up*) (<= x *power-up-knop-breedte-einde*) (>= y *power-up-1-knop-hoogte-start*) (<= y *power-up-1-knop-hoogte-einde*))
