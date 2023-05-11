@@ -19,8 +19,8 @@
             (in-rand? (vector-ref posities 3) toren-rand))))
 
     ;; Gaat na als een monster in een de buurt van een toren zit   
-    (define (in-buurt? monster) 
-      (in-rand? (monster 'positie) buurt-rand))
+    (define (in-buurt? object) 
+      (in-rand? (object 'positie) buurt-rand))
 
     ;; Volgende geeft het type projectiel dat een toren afschiet afhankelijk van het type toren
     (define (projectiel-type-toren)
@@ -67,7 +67,8 @@
       (define (haal-projectielen-weg!)
         (set! projectielen (filter
                             (lambda (projectiel)
-                              (not (and ((projectiel 'bestemming-bereikt?)) ((projectiel 'afgehandelt?)))))
+                              (and (not (and ((projectiel 'bestemming-bereikt?)) ((projectiel 'afgehandelt?))))
+                                  (in-buurt? projectiel))) ;; Gaat na als een projectiel nog in de rand zit
                             projectielen)))
       
       (define (beweeg-projectielen-voort!)
