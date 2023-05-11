@@ -100,7 +100,7 @@
        torens))
 
     ;; Volgende code zal projectielen afschieten naar een monster 
-    (define (update-torens-projectielen-afschieten! pad) 
+    (define (update-torens-projectielen-afschieten! pad dt) 
       (define (eerste-monster mons)
         (if (null? (cdr mons))
             (car mons)
@@ -125,7 +125,11 @@
       (if (not (null? monsters))
           (for-each
            (lambda (toren)
-             (toren-schiet-y/n toren monsters))
+             (if ((toren 'schieten?))
+                 (begin 
+                   (toren-schiet-y/n toren monsters)
+                   ((toren 'update-afvuur-tijd!) dt)) ;; Na het schieten, moet tijd up gedate worden
+                 ((toren 'update-afvuur-tijd!) dt)))
            torens)))
 
     ;; Volgende zal power-ups hun staat updaten
@@ -180,8 +184,8 @@
                                   ((geld 'voeg-geld-toe!) (monster 'type) #t))) ;; Hier code duplicatie
                             tank-power-up-monsters))
                 tanken)
-       (if (not (null? tanken))
-            (overblijvende-monsters!)))
+      (if (not (null? tanken))
+          (overblijvende-monsters!)))
                          
     ;; Volgende code is om de projectielen van alle torens te verkrijgen (haal weg, maak beter)
     (define (verkrijg-projectielen)

@@ -10,7 +10,6 @@
          (teken-adt (maak-teken-adt (+ *menu-breedte-px* *spel-breedte-px*) *spel/menu-hoogte-px*));; maak de fundamenten van het spel
          (toren-type #f) ;; Om torens te plaatsen veranderen we dit om te weten welk type toren te plaatsen.
          (monster-tijd 0) ;; Tijd afgelopen sinds vorige monster op pad
-         (projectiel-tijd 0) ;; Tijd afgelopen sinds vorige projectiel die geschoten werd
          (tank-power-up '())
          (bomregen-power-up '()))
 
@@ -67,11 +66,7 @@
           ((level 'update-monsters!) dt))
       ((teken-adt 'teken-monsters!) (level 'monsters))
       (set! monster-tijd (+ monster-tijd dt))
-      (if (>= projectiel-tijd *toren-afvuur-frequentie*) ;;!!!! Moet veranderd worden (afhankelijk van de toren) !!!!!
-          (begin
-            ((level 'update-torens-projectielen-afschieten!) pad)
-            (set! projectiel-tijd 0)))
-      (set! projectiel-tijd (+ projectiel-tijd dt))
+      ((level 'update-torens-projectielen-afschieten!) pad dt)
       ((level 'update-torens-projectielen-positie!) dt)
       ((level 'update-power-ups!) dt)      
       ((teken-adt 'teken-projectielen!) ((level 'verkrijg-projectielen)))

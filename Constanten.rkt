@@ -96,9 +96,9 @@
 (define *net-toren-buurt-rand-afstand* 12)
 (define *vuurbal-toren-buurt-rand-afstand* 8)
 (define *bomwerp-toren-buurt-rand-afstand* 7)
-(define *toren-afvuur-frequentie* 3000) ;; Toren schiet frequentie (2000)
-(define *net-toren-afvuur-frequentie* 10000) ;; Toren schiet frequentie voor net toren
-(define *vuurbal-toren-afvuur-frequentie 10000)
+(define *basis-toren-afvuur-frequentie* 3000) ;; Toren schiet frequentie (2000)
+(define *net-toren-afvuur-frequentie* 6000) ;; Toren schiet frequentie voor net toren
+(define *vuurbal-toren-afvuur-frequentie 3000)
 (define *bomwerp-toren-afvuur-frequentie* 10000)
 (define *meerdere-monsters* 2)
 
@@ -114,7 +114,7 @@
 (define *bomwerp-projectiel-rand-afstand* 4)
 
 ;; Monster tijd constanten
-(define *monster-spawn-frequentie* 5000) ;; Monster spawn frequentie (te veranderen)
+(define *monster-spawn-frequentie* 2000) ;; Monster spawn frequentie (te veranderen)
 (define *rood&&groen&&paars-monster-loop-snelheid* 0.1) ;; Monster beweeg snelheid
 (define *geel-monster-loop-snelheid* 0.05)
 (define *monster-vetraag-tijd* 5000) ;; Hoelang een monster vertraagd word door een net

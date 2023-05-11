@@ -4,20 +4,26 @@
 (define (maak-toren-adt centraal-positie type) ;; Positie stelt midden van de toren voor, type is het type toren
   (let ((toren-rand (make-vector 4)) ;; Stelt werkelijke posities toren voor (enkel 4 punten van rand, voor geheugenvriendelijkheid)
         (buurt-rand (make-vector 4)) ;; Stelt buurt voor (geheugenvriendelijker om met 4 te werken)
+        (afvuur-frequentie #f)
+        (afvuur-tijd 0) ;; Stelt de verlopen tijd sinds laatste afvuur moment
         (projectielen '()))
 
-    ;; Volgende code gaat de grootte van de rand na afhankelijk van de toren
-    (define (bepaal-buurt-rand)
+    ;; Volgende code gaat de grootte van de rand na afhankelijk van de toren alsook hun afvuur-frequentie
+    (define (bepaal-buurt-rand/afvuur-frequentie!)
       (cond
-        ((eq? type 'basis-toren) *basis-toren-buurt-rand-afstand*)
-        ((eq? type 'net-toren) *net-toren-buurt-rand-afstand*)
-        ((eq? type 'vuurbal-toren) *vuurbal-toren-buurt-rand-afstand*)
-        ((eq? type 'bomwerp-toren) *bomwerp-toren-buurt-rand-afstand*)
+        ((eq? type 'basis-toren) (set! afvuur-frequentie *basis-toren-afvuur-frequentie*)
+                                 *basis-toren-buurt-rand-afstand*)
+        ((eq? type 'net-toren) (set! afvuur-frequentie *net-toren-afvuur-frequentie*)
+                               *net-toren-buurt-rand-afstand*)                             
+        ((eq? type 'vuurbal-toren) (set! afvuur-frequentie *vuurbal-toren-afvuur-frequentie)
+                                   *vuurbal-toren-buurt-rand-afstand*)                                  
+        ((eq? type 'bomwerp-toren) (set! afvuur-frequentie *bomwerp-toren-afvuur-frequentie*)
+                                   *bomwerp-toren-buurt-rand-afstand*)
         (else "Ongeldige type")))
              
     ;; Maakt de werkelijke 4-punt randen aan
     (positie->rand! centraal-positie *toren-rand-afstand* toren-rand)
-    (positie->rand! centraal-positie (bepaal-buurt-rand) buurt-rand)
+    (positie->rand! centraal-positie (bepaal-buurt-rand/afvuur-frequentie!) buurt-rand)
     
     ;; Gaat na als de ingegeven toren op de beshouwde toren staat
     (define (in-toren? toren)
@@ -97,6 +103,16 @@
       (if (memq projectiel projectielen)
           #t
           #f))
+
+    ;; Volgende code updaten toren hun afvuurtijd
+    (define (update-afvuur-tijd! dt)
+      (if (>= afvuur-tijd afvuur-frequentie)
+          (set! afvuur-tijd 0)
+          (set! afvuur-tijd (+ afvuur-tijd dt))))
+
+    ;; Volgende code gaat na als de toren mag schieten
+    (define (schieten?)
+      (= afvuur-tijd 0))
                                           
     (define (dispatch msg)
       (cond
@@ -109,6 +125,8 @@
         ((eq? msg 'projectiel-update!) projectiel-update!)
         ((eq? msg 'projectielen) projectielen)
         ((eq? msg 'niet-bereikt&&afgehandelt?) niet-bereikt&&afgehandelt?)
+        ((eq? msg 'update-afvuur-tijd!) update-afvuur-tijd!)
+        ((eq? msg 'schieten?) schieten?)
         ((eq? msg 'soort) 'toren)
         (else "maak-toren-adt: ongeldig bericht")))
     dispatch))
