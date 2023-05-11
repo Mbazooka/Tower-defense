@@ -6,6 +6,7 @@
         (torens (if (not (null? vorige-torens)) (car vorige-torens) vorige-torens))
         (monsters '()) ;; Lijst omdat elk element bewerken gemakkelijk is (for-each)
         (activeerde-tanks '())
+        (tank-power-up-monsters '()) ;; Dat zijn de monsters waarop de tank een invloed zal hebben 
         (activeerde-bommen-regen '())
         (net-projectielen '())) ;; Alle net-projectielen die op het pad liggen
     
@@ -148,7 +149,9 @@
     ;; Volgende code voegt een geactiveerde power-up toe aan de lijst van power-ups
     (define (voeg-power-up-toe! type power-up)
       (if (eq? type 'tank)
-          (set! activeerde-tanks (cons power-up activeerde-tanks)))) ;; !!! Mogelijks veranderen !!!
+          (begin
+            (set! activeerde-tanks (cons power-up activeerde-tanks))
+            (set! tank-power-up-monsters monsters))))
 
     ;; Volgende code voegt een net projectiel toe aan de lijst van net projectielen
     (define (voeg-net-projectiel-toe! projectiel)
@@ -164,7 +167,7 @@
     ;; Volgende code vermindert alle monster levens met 1
     (define (verminder-monster-levens! tanken)
       (for-each (lambda (tank)
-                  (for-each (lambda (monster) ((monster 'actie-monster-levend!) 'verminder)) monsters))
+                  (for-each (lambda (monster) ((monster 'actie-monster-levend!) 'verminder)) tank-power-up-monsters))
                 tanken))
                          
     ;; Volgende code is om de projectielen van alle torens te verkrijgen (haal weg, maak beter)
