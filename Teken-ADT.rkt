@@ -108,16 +108,18 @@
 
     ;; Procedure die tegel op juiste pixel positie zet (vanaf hiet beginnen de procedures voor de spelelementen)
     ;;met positie gedaan (niet object als formele parameter) want pad geeft meerdere posities, code kan enkel 1 positie per keer doen (zo hebben we maar 1 procedure voor alle px posities te bepalen)
-    (define (bepaal-tegel-px-positie! positie tegel)
-      (let ((scherm-x (* (positie 'x) *px-breedte*))
-            (scherm-y (* (positie 'y) *px-hoogte*)))
+    (define (bepaal-tegel-px-positie! positie tegel tank?) ;; Tank? gaat na als het een tank object is en verschuift het tank bitmap voor mooiheid
+      (let* ((x-pos (positie 'x))
+             (y-pos (if tank? (- (positie 'y) 1) (positie 'y)))
+             (scherm-x (* x-pos *px-breedte*))
+             (scherm-y (* y-pos *px-hoogte*)))
         ((tegel 'set-x!) scherm-x)
         ((tegel 'set-y!) scherm-y)))
 
     ;; Maakt tegel en zet tegel op juiste plaats op laag  
     (define (teken-object-scherm! positie object-bitmap object-mask object-laag) 
       (let ((tegel-van-object (make-bitmap-tile object-bitmap object-mask)))
-        (bepaal-tegel-px-positie! positie tegel-van-object)
+        (bepaal-tegel-px-positie! positie tegel-van-object #f)
         ((object-laag 'add-drawable!) tegel-van-object)
         tegel-van-object)) ;; Tegel teruggeven want later nodig om dictionary van monsters-tegel of projectielen-tegel te maken
     
@@ -211,11 +213,11 @@
                 (voeg-toe-tiles-dict! (cdr huidige-object) diction-toevoegen laag)))))
     
     ;; Volgende code is om dynamische objecten te tekenen (objecten waarvan ze moeten tevoorschijn komen, een positie bereiken en dan verdwijnen)
-    (define (teken-dynamisch-object! objecten tiles laag)
+    (define (teken-dynamisch-object! objecten tiles laag tank?)
       (haal-weg-tiles-dict! objecten (rest-dict tiles) tiles laag) 
       (for-each ;; Gaat elke tile van objecte updaten 
        (lambda (ass) 
-         (bepaal-tegel-px-positie! ((sleutel ass) 'positie) (waarde ass))) 
+         (bepaal-tegel-px-positie! ((sleutel ass) 'positie) (waarde ass) tank?)) 
        (rest-dict tiles))
       (voeg-toe-tiles-dict! objecten tiles laag))
     
@@ -224,21 +226,21 @@
 
     ;; Volgende code is om monsters te tekenen
     (define (teken-monsters! monsters)
-      (teken-dynamisch-object! monsters monster-tiles-dict laag-monster))
+      (teken-dynamisch-object! monsters monster-tiles-dict laag-monster #f))
 
     ;; Volgende code is een venster om projectielen te plaatsen
     (define laag-projectiel ((venster 'new-layer!)))
 
     ;; Volgende code is om projectielen te tekenen
     (define (teken-projectielen! projectielen)
-      (teken-dynamisch-object! projectielen projectielen-tiles-dict laag-projectiel))
+      (teken-dynamisch-object! projectielen projectielen-tiles-dict laag-projectiel #f))
 
     ;; Volgende code is een venster om tank-power-ups te plaatsen
     (define laag-tank-po ((venster 'new-layer!)))
 
     ;; Volgende code is om tank-power-ups te tekenen
     (define (teken-tank-power-up! tank-power-ups)
-      (teken-dynamisch-object! tank-power-ups tank-power-ups-tiles-dict laag-tank-po))
+      (teken-dynamisch-object! tank-power-ups tank-power-ups-tiles-dict laag-tank-po #t))
            
     ;; Volgende code is om muis klikken te implementeren
     (define (set-muis-toets-procedure! proc)
@@ -258,27 +260,27 @@
 
     (define (buiten-lava? x y)
       (and 
-      (not (and (<= x *beperking-1-breedte*) (<= y *beperking-1-hoogte*))) 
-      (not (and (>= x *beperking-1-breedte*) (<= x *beperking-2-breedte*) (<= y *beperking-2-hoogte*)))
-      (not (and (>= x *beperking-2-breedte*) (<= x *beperking-3-breedte*) (<= y *beperking-3-hoogte*)))))
+       (not (and (<= x *beperking-1-breedte*) (<= y *beperking-1-hoogte*))) 
+       (not (and (>= x *beperking-1-breedte*) (<= x *beperking-2-breedte*) (<= y *beperking-2-hoogte*)))
+       (not (and (>= x *beperking-2-breedte*) (<= x *beperking-3-breedte*) (<= y *beperking-3-hoogte*)))))
       
     (define (buiten-beperking? x y)
       (and (buiten-menu? x y)
            (buiten-lava? x y)))
               
-      (define (dispatch msg)
-        (cond
-          ((eq? msg 'teken-pad!) teken-pad!)
-          ((eq? msg 'teken-toren!) teken-toren!)
-          ((eq? msg 'toren-selectie) toren-selectie)
-          ((eq? msg 'power-up-selectie) power-up-selectie)
-          ((eq? msg 'teken-monsters!) teken-monsters!)
-          ((eq? msg 'teken-projectielen!) teken-projectielen!)
-          ((eq? msg 'teken-tank-power-up!) teken-tank-power-up!)
-          ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)
-          ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)
-          ((eq? msg 'set-toets-procedure!) set-toets-procedure!)
-          ((eq? msg 'update-tekst-teken!) update-tekst-teken!)
-          ((eq? msg 'buiten-beperking?) buiten-beperking?)
-          (else "maak-teken-adt: ongeldig bericht")))
-      dispatch))
+    (define (dispatch msg)
+      (cond
+        ((eq? msg 'teken-pad!) teken-pad!)
+        ((eq? msg 'teken-toren!) teken-toren!)
+        ((eq? msg 'toren-selectie) toren-selectie)
+        ((eq? msg 'power-up-selectie) power-up-selectie)
+        ((eq? msg 'teken-monsters!) teken-monsters!)
+        ((eq? msg 'teken-projectielen!) teken-projectielen!)
+        ((eq? msg 'teken-tank-power-up!) teken-tank-power-up!)
+        ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)
+        ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)
+        ((eq? msg 'set-toets-procedure!) set-toets-procedure!)
+        ((eq? msg 'update-tekst-teken!) update-tekst-teken!)
+        ((eq? msg 'buiten-beperking?) buiten-beperking?)
+        (else "maak-teken-adt: ongeldig bericht")))
+    dispatch))

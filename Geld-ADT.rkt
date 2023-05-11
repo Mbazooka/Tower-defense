@@ -4,7 +4,7 @@
 (define (maak-geld-adt begin-bedrag)
 
   ;; Volgende code heeft het bedrag terug naargelang het type-object (zijn disjunct)
-  (define (bedrag type extra)
+  (define (bedrag type extra?)
     (let ((kost-winst #f))
       (cond
         ((eq? type 'basis-toren) (set! kost-winst *basis-toren-kost*))
@@ -20,7 +20,7 @@
         (else "Ongeldig type"))
 
       (cond
-        ((and extra kost-winst)
+        ((and extra? kost-winst)
          (let ((nieuwe-kost-winst (+ kost-winst *extra-tank-winst*)))
            (set! kost-winst #f)
            nieuwe-kost-winst))
@@ -40,9 +40,9 @@
   (define (verwijder-geld! type)
     (set! begin-bedrag (- begin-bedrag (bedrag type #f))))
 
-  (define (voeg-geld-toe! type extra)
+  (define (voeg-geld-toe! type extra?)
     (if (not (eq? type 'groen))       
-        (set! begin-bedrag (+ begin-bedrag (bedrag type extra)))))
+        (set! begin-bedrag (+ begin-bedrag (bedrag type extra?)))))
 
   (define (reset!)
     (set! begin-bedrag *geld-bedrag*))

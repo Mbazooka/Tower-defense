@@ -53,7 +53,11 @@
          lijst-van-posities)
         huidige-dichste))
 
-    ;; Begin van het pad
+    ;; Begin van het pad (eerste pad positie), dit is soms nodig 
+    (define (begin-alternatief)
+      (vector-ref vector-posities inflectie-counter))
+              
+    ;; Begin van het pad (midden pad)
     (define (begin)
       (vector-ref vector-posities (+ inflectie-counter 1)))
     
@@ -67,7 +71,7 @@
         ((eq? msg 'lengte) lengte)
         ((eq? msg 'inflectie-punten) inflectie-punten)
         ((eq? msg 'inflectie-tekens) inflectie-tekens)
-        ((eq? msg 'begin) begin) ;; + 1, begin te zetten in midden van pad
+        ((eq? msg 'begin) begin)
         ((eq? msg 'einde) einde) 
         ((eq? msg 'toren-in-pad?) toren-in-pad?)
         ((eq? msg 'dichste-punt) dichste-punt)
