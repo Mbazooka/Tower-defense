@@ -90,10 +90,12 @@
         ((and (eq? toestand 'pressed) (eq? toets 'escape))
          ((level 'level-einde!)))
         ((and (eq? toestand 'pressed) (eq? toets #\t))
-         (let ((power-up (if (pair? tank-power-up) (volgende-power-up tank-power-up))))
+         (let ((power-up (if (pair? tank-power-up) (volgende-power-up tank-power-up) #f)))
            (if (pair? tank-power-up) (set! tank-power-up (cdr tank-power-up)))
-           ((level 'voeg-power-up-toe!) 'tank power-up)
-           ((teken-adt 'teken-tank-power-up!) (level 'verkrijg-tank-power-ups))))))
+           (if power-up
+               (begin
+                 ((level 'voeg-power-up-toe!) 'tank power-up)
+                 ((teken-adt 'teken-tank-power-up!) (level 'verkrijg-tank-power-ups))))))))
                    
     (define (dispatch msg)
       (cond 
