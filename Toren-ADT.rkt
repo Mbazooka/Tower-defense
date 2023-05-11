@@ -6,9 +6,18 @@
         (buurt-rand (make-vector 4)) ;; Stelt buurt voor (geheugenvriendelijker om met 4 te werken)
         (projectielen '()))
 
+    ;; Volgende code gaat de grootte van de rand na afhankelijk van de toren
+    (define (bepaal-buurt-rand)
+      (cond
+        ((eq? type 'basis-toren) *basis-toren-buurt-rand-afstand*)
+        ((eq? type 'net-toren) *net-toren-buurt-rand-afstand*)
+        ((eq? type 'vuurbal-toren) *vuurbal-toren-buurt-rand-afstand*)
+        ((eq? type 'bomwerp-toren) *bomwerp-toren-buurt-rand-afstand*)
+        (else "Ongeldige type")))
+             
     ;; Maakt de werkelijke 4-punt randen aan
-    (positie->rand! centraal-positie *toren-rand-afstand* toren-rand) 
-    (positie->rand! centraal-positie *buurt-rand-afstand* buurt-rand)
+    (positie->rand! centraal-positie *toren-rand-afstand* toren-rand)
+    (positie->rand! centraal-positie (bepaal-buurt-rand) buurt-rand)
     
     ;; Gaat na als de ingegeven toren op de beshouwde toren staat
     (define (in-toren? toren)
