@@ -5,6 +5,8 @@
   (let ((pad (maak-pad-adt vector-1))
         (torens (if (not (null? vorige-torens)) (car vorige-torens) vorige-torens))
         (monsters '()) ;; Lijst omdat elk element bewerken gemakkelijk is (for-each)
+        (activeerde-tanks '())
+        (activeerde-bommen-regen '())
         (net-projectielen '())) ;; Alle net-projectielen die op het pad liggen
     
     ;; Abstracties om type, eerste monster en rest uit lijst te krijgen
@@ -16,7 +18,7 @@
     (define (voeg-toren-toe! toren)
       (set! torens (cons toren torens)))
     
-    ;; voglende code update de monsters die op het pad lopen
+    ;; Volgende code update de monsters die op het pad lopen
     (define (update-monsters! dt . update-teken) ;; !!!! Kijk naar volgerde voor efficientie
       (define (zet-terug-monster-lijst! zoeken-monster nieuw-monster monsters) ;; Hulp procedure om monsters te verwisselen (nodig om groen monster te switchen met rood monster zodat torens in juiste volgorde schieten)
         (cond
@@ -44,10 +46,10 @@
       (define (afhandeling-net-projectielen!)
         (for-each (lambda (projectiel) ;;Vertraagd de monster in de rand van het net-projectiel
                     (for-each (lambda (monster)
-                                (if (and ((projectiel 'in-rand?) monster) (not ((monster 'net-al-vetraagd?) projectiel)))
+                                (if (and ((projectiel 'binnen-rand?) monster) (not ((monster 'net-al-vetraagd?) projectiel)))
                                     (begin
                                       ((monster 'voeg-net-projectiel-toe!) projectiel)
-                                      ((monster 'actie-monster-levend!) 'vertraag)))) 
+                                      ((monster 'actie-monster-levend!) 'vertraag projectiel)))) 
                               monsters))
                   net-projectielen)
         (set! net-projectielen (filter ;; Nodig anders zal een bepaald net, tot het eind van het spel blijven vertragen
@@ -86,8 +88,9 @@
       (afhandeling-net-projectielen!)
       (update-vertragings-tijd-monsters!)
       (geld-en-sterven-acties!)
+      (overblijvende-monsters!)
       (monsters-voort-bewegen!)
-      (volgende-monster-vrijlaten!))
+      (volgend-monster-vrijlaten!))
     
     ;; Volgende code update de projectielen die door torens werden afgeschoten
     (define (update-torens-projectielen-positie! dt)
@@ -97,7 +100,7 @@
        torens))
 
     ;; Volgende code zal projectielen afschieten naar een monster 
-    (define (update-torens-projectielen-afschieten!) 
+    (define (update-torens-projectielen-afschieten! pad) 
       (define (eerste-monster mons)
         (if (null? (cdr mons))
             (car mons)
@@ -108,15 +111,29 @@
       
       (define (toren-schiet-y/n toren monsters) ;; Procedure die monster zal vinden waarnaar de toren kan schieten (indien monsters in buurt)
         (let ((monster (eerste-monster monsters)))
-          (if ((toren 'in-buurt?) monster)
-              ((toren 'schiet!) monster)
-              (if (not (null? (cdr monsters)))
-                  (toren-schiet-y/n toren (laatste-monster-weglaten monsters))))))    
+          (cond
+            ((and ((toren 'in-buurt?) monster) (eq? (toren 'type) 'bomwerp-toren))
+             (let ((aantal (length (filter (lambda (monster)
+                                             ((toren 'in-buurt?) monster))
+                                           monsters))))
+               (if (> aantal *meerdere-monsters*)
+                   ((toren 'schiet!) monster pad))))
+            (((toren 'in-buurt?) monster) ((toren 'schiet!) monster pad))
+            (else
+             (if (not (null? (cdr monsters)))
+                 (toren-schiet-y/n toren (laatste-monster-weglaten monsters)))))))    
       (if (not (null? monsters))
           (for-each
            (lambda (toren)
              (toren-schiet-y/n toren monsters))
            torens)))
+
+    ;; Volgende zal power-ups hun staat updaten
+    (define (update-power-ups! dt)
+      (verminder-monster-levens! (filter (lambda (tank) ((tank 'einde?))) activeerde-tanks))
+      (set! activeerde-tanks (filter (lambda (tank) (not ((tank 'einde?)))) activeerde-tanks)) ;; Haalt alle voorbijgegaande tanken weg
+      (for-each (lambda (tank) ((tank 'update!) dt)) activeerde-tanks)
+      (for-each (lambda (bom-regen) ((tank 'update!) dt)) activeerde-bommen-regen))      
 
     ;; Volgende code zoekt het monster die volgt op het gegeven monster
     (define (monster-na-monster monster)
@@ -129,19 +146,28 @@
            (hulp-procedure (rest monsters)))))
       (hulp-procedure monsters))
 
+    ;; Volgende code voegt een geactiveerde power-up toe aan de lijst van power-ups
+    (define (voeg-power-up-toe! type power-up)
+      (if (eq? type 'tank)
+          (set! activeerde-tanks (cons power-up activeerde-tanks)))) ;; !!! Mogelijks veranderen !!!
+
     ;; Volgende code voegt een net projectiel toe aan de lijst van net projectielen
     (define (voeg-net-projectiel-toe! projectiel)
       (set! net-projectielen (cons projectiel net-projectielen)))
 
-    ;; Volgende code verminder de levens van alle monsters
-    ;;
-    ;;
-    ;;
-    ;;
-    ;;
-    ;;
-    
-      
+    ;; Volgende code bomwerpt alle monsters in de buurt
+    (define (explodeer-monsters-in-buurt! rand)
+      (for-each (lambda (monster)
+                  (if (in-rand? (monster 'positie) rand)
+                      ((monster 'actie-monster-levend!) 'verminder 'bomwerp)))
+                monsters))
+
+    ;; Volgende code vermindert alle monster levens met 1
+    (define (verminder-monster-levens! tanken)
+      (for-each (lambda (tank)
+                  (for-each (lambda (monster) ((monster 'verminder-levens!))) mons))
+                tanken))
+                         
     ;; Volgende code is om de projectielen van alle torens te verkrijgen (haal weg, maak beter)
     (define (verkrijg-projectielen)
       (flatten
@@ -169,9 +195,13 @@
         ((eq? msg 'update-monsters!) update-monsters!)
         ((eq? msg 'update-torens-projectielen-positie!) update-torens-projectielen-positie!)
         ((eq? msg 'update-torens-projectielen-afschieten!) update-torens-projectielen-afschieten!)
+        ((eq? msg 'update-power-ups!) update-power-ups!)
         ((eq? msg 'monster-na-monster) monster-na-monster)
         ((eq? msg 'voeg-net-projectiel-toe!) voeg-net-projectiel-toe!)
+        ((eq? msg 'voeg-power-up-toe!) voeg-power-up-toe!)
         ((eq? msg 'verkrijg-projectielen) verkrijg-projectielen)
+        ((eq? msg 'verkrijg-tank-power-ups) activeerde-tanks)
+        ((eq? msg 'explodeer-monsters-in-buurt!) explodeer-monsters-in-buurt!)
         ((eq? msg 'einde?) einde?)
         ((eq? msg 'level-einde!) level-einde!)
         ((eq? msg 'soort) 'level)

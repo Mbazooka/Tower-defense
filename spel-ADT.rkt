@@ -35,10 +35,10 @@
           ((and (eq? toets 'left) (eq? toestand 'pressed) geselecteerde-power-up)         
            (if ((geld 'voldoende-geld?) geselecteerde-power-up)
                (begin
-                ((geld 'verwijder-geld!) geselecteerde-power-up)
-                (if (eq? geselecteerde-power-up 'tank)
-                    (set! tank-power-up (cons (maak-power-up-adt pad 'tank) tank-power-up)))
-                ((teken-adt 'update-tekst-teken!) geld))))
+                 ((geld 'verwijder-geld!) geselecteerde-power-up)
+                 (if (eq? geselecteerde-power-up 'tank)
+                     (set! tank-power-up (cons (maak-power-up-adt pad 'tank) tank-power-up)))
+                 ((teken-adt 'update-tekst-teken!) geld))))
           ((eq? toren-type #f) "Kies een toren") ;; Indien nog geen toren gekozen is dan moet
           ((and (eq? toets 'left) (eq? toestand 'pressed)
                 ((teken-adt 'buiten-beperking?) x y)
@@ -71,13 +71,13 @@
             (set! projectiel-tijd 0)))
       (set! projectiel-tijd (+ projectiel-tijd dt))
       ((level 'update-torens-projectielen-positie!) dt)
-      ((level 'update-power-ups!) dt)
+      ((level 'update-power-ups!) dt)      
       ((teken-adt 'teken-projectielen!) ((level 'verkrijg-projectielen)))
+      ((teken-adt 'teken-tank-power-up!) (level 'verkrijg-tank-power-ups))
       ((teken-adt 'update-tekst-teken!) geld)
       ((teken-adt 'update-tekst-teken!) levens))
       
     ;;Volgende code implementeert een toets om het spel de laten starten
-    ;; !!!! Te veranderen, naar betere vorm van next-level! !!!!!
     (define (toets-procedure toestand toets)
       (cond
         ((and (eq? toestand 'pressed) (eq? toets #\space) ((level 'einde?)))
@@ -91,8 +91,9 @@
          ((level 'level-einde!)))
         ((and (eq? toestand 'pressed) (eq? toets #\t))
          (let ((power-up (if (pair? tank-power-up) (volgende-power-up tank-power-up))))
-               (if (pair? tank-power-up) (set! tank-power-up (cdr tank-power-up)))
-               ((level 'voeg-power-up-toe!) 'tank power-up)))))       
+           (if (pair? tank-power-up) (set! tank-power-up (cdr tank-power-up)))
+           ((level 'voeg-power-up-toe!) 'tank power-up)
+           ((teken-adt 'teken-tank-power-up!) (level 'verkrijg-tank-power-ups))))))
                    
     (define (dispatch msg)
       (cond 

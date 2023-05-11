@@ -33,21 +33,8 @@
               (or (in-pad? (vector-ref toren-rand ctr))
                   (overlopen-torens (+ ctr 1)))))
         (overlopen-torens 0)))
-
-    ;; Dichtsbijzijnde punt op pad relatief tot een rand en een andere positie
-    ;    (define (dichtse-punt rand centraal-positie)  ;; Aan te passen
-    ;      (let ((huidige-dichste #f))
-    ;        (for-each (lambda (positie) ;; Beter om tweemalig de afstand te berekenen voor een positie dan voor elke positie die mogelijks niet in de rand zit
-    ;                    (cond
-    ;                      ((and (in-rand? positie rand) (eq? huidige-dichste #f))
-    ;                       (set! huidige-dichste positie))
-    ;                      ((and (in-rand? positie rand))
-    ;                       (if (> ((huidige-dichste 'afstand) centraal-positie)
-    ;                              ((positie 'afstand) centraal-positie))
-    ;                           (set! huidige-dichste positie)))))
-    ;                  lijst-van-posities)
-    ;        huidige-dichste))
-
+    
+    ;; Volgende code vind het dichtsbijzijnd punt op het pad relatief tot een andere positie 
     (define (dichste-punt centraal-positie)  ;; Aan te passen
       (let ((huidige-dichste #f)
             (huidige-dichste-afstand #f))

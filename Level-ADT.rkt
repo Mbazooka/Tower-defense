@@ -132,8 +132,7 @@
     (define (update-power-ups! dt)
       (verminder-monster-levens! (filter (lambda (tank) ((tank 'einde?))) activeerde-tanks))
       (set! activeerde-tanks (filter (lambda (tank) (not ((tank 'einde?)))) activeerde-tanks)) ;; Haalt alle voorbijgegaande tanken weg
-      (for-each (lambda (tank) ((tank 'update!) dt)) activeerde-tanks)
-      (for-each (lambda (bom-regen) ((tank 'update!) dt)) activeerde-bommen-regen))      
+      (for-each (lambda (tank) ((tank 'update!) dt)) activeerde-tanks))      
 
     ;; Volgende code zoekt het monster die volgt op het gegeven monster
     (define (monster-na-monster monster)
@@ -165,7 +164,7 @@
     ;; Volgende code vermindert alle monster levens met 1
     (define (verminder-monster-levens! tanken)
       (for-each (lambda (tank)
-                  (for-each (lambda (monster) ((monster 'verminder-levens!))) mons))
+                  (for-each (lambda (monster) ((monster 'actie-monster-levend!) 'verminder)) monsters))
                 tanken))
                          
     ;; Volgende code is om de projectielen van alle torens te verkrijgen (haal weg, maak beter)

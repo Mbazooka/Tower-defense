@@ -2,7 +2,8 @@
 ;;                               Power-up ADT                                 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (maak-power-up-adt pad type)
-  (let ((einde ((pad 'einde)))
+  (let ((positie ((((pad 'begin)) 'positie-copieer)))
+        (einde ((pad 'einde)))
         (keer-punten (pad 'inflectie-punten))
         (keer-tekens (pad 'inflectie-tekens))
         (beweging-richting-x #t)
@@ -16,19 +17,19 @@
     (define (volgende-positie!)
       (define (teken-bepaling!) ;; Zal nagaan bij het veranderen van bewegingsdimensie in welke zin verandert moet worden.
         (cond
-          ((and (null? inflectie-tekens) (eq? beweging-zin +)) (set! beweging-zin -))
-          ((and (null? inflectie-tekens) (eq? beweging-zin -)) (set! beweging-zin +))
-          ((eq? (car inflectie-tekens) '-) (set! beweging-zin -) (set! inflectie-tekens (cdr inflectie-tekens)))
-          ((eq? (car inflectie-tekens) '+) (set! beweging-zin +) (set! inflectie-tekens (cdr inflectie-tekens)))
+          ((and (null? keer-tekens) (eq? beweging-zin +)) (set! beweging-zin -))
+          ((and (null? keer-tekens) (eq? beweging-zin -)) (set! beweging-zin +))
+          ((eq? (car keer-tekens) '-) (set! beweging-zin -) (set! keer-tekens (cdr keer-tekens)))
+          ((eq? (car keer-tekens) '+) (set! beweging-zin +) (set! keer-tekens (cdr keer-tekens)))
           (else
            "Doe niets")))
               
       (define (richting-verandering!) ;; Zal bij het bereiken van een keerpunt, veranderen van bewegingsrichting 
-        (if (not (null? inflectie-punten))
-            (if ((((positie 'ceil)) 'gelijk?) (car inflectie-punten)) ;; keerpunt bereikt?
+        (if (not (null? keer-punten))
+            (if ((((positie 'ceil)) 'gelijk?) (car keer-punten)) ;; keerpunt bereikt?
                 (begin
                   (set! beweging-richting-x (not beweging-richting-x))
-                  (set! inflectie-punten (cdr inflectie-punten))
+                  (set! keer-punten (cdr keer-punten))
                   (teken-bepaling!)))))     
       (richting-verandering!)      
       (if beweging-richting-x
@@ -44,10 +45,13 @@
 
     (define (dispatch msg)
       (cond
+        ((eq? msg 'positie) positie)
         ((eq? msg 'einde?) einde?)
         ((eq? msg 'update!) update!)
         ((eq? msg 'activeer!) activeer!)
         ((eq? msg 'geactiveerd?) geactiveerd?)
+        ((eq? msg 'type) type)
+        ((eq? msg 'soort) 'power-up)
         (else
          "maak-power-up-adt: Ongeldig bericht")))
     dispatch))

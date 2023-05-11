@@ -152,7 +152,10 @@
            ((eq? object-type 'steen) *steen-projectiel-bitmap&&mask*)
            ((eq? object-type 'net) *net-projectiel-bitmap&&mask*)
            ((eq? object-type 'vuurbal) *vuurbal-projectiel-bitmap&&mask*)
-           ((eq? object-type 'bomwerp) *bomwerp-projectiel-bitmap&&mask*)))))
+           ((eq? object-type 'bomwerp) *bomwerp-projectiel-bitmap&&mask*)))
+        ((eq? object 'power-up)
+         (cond
+           ((eq? object-type 'tank) *tank-power-up-bitmap&&mask*)))))
 
     ;; Volgende code is een venster om torens op te plaatsen
     (define laag-toren ((venster 'new-layer!)))
@@ -210,7 +213,7 @@
     ;; Volgende code is om dynamische objecten te tekenen (objecten waarvan ze moeten tevoorschijn komen, een positie bereiken en dan verdwijnen)
     (define (teken-dynamisch-object! objecten tiles laag)
       (haal-weg-tiles-dict! objecten (rest-dict tiles) tiles laag) 
-      (for-each ;; Gaat elke tile van objecte  updaten 
+      (for-each ;; Gaat elke tile van objecte updaten 
        (lambda (ass) 
          (bepaal-tegel-px-positie! ((sleutel ass) 'positie) (waarde ass))) 
        (rest-dict tiles))
