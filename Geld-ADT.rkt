@@ -41,7 +41,7 @@
     (set! begin-bedrag (- begin-bedrag (bedrag type #f))))
 
   (define (voeg-geld-toe! type extra)
-    (if (not (eq? type 'groen))
+    (if (not (eq? type 'groen))       
         (set! begin-bedrag (+ begin-bedrag (bedrag type extra)))))
 
   (define (reset!)

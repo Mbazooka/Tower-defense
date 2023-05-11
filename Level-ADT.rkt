@@ -165,52 +165,61 @@
 
     ;; Volgende code vermindert alle monster levens met 1
     (define (tanken-verminder-monster-levens! tanken)
+      (define (in? monster monsters) ;; Hulpprocedure om na te gaan als men het monster al vermoord heeft door een toren 
+        (cond
+          ((null? monsters) #f)
+          ((eq? monster (eerste monsters)) #t)
+          (else
+           (in? monster (rest monsters)))))
+          
+        
       (for-each (lambda (tank)
                   (for-each (lambda (monster)
                               ((monster 'actie-monster-levend!) 'verminder)
-                              (if ((monster 'gestorven?))
+                              (if (and ((monster 'gestorven?)) (in? monster monsters))
                                   ((geld 'voeg-geld-toe!) (monster 'type) #t))) ;; Hier code duplicatie
                             tank-power-up-monsters))
                 tanken)
-      (overblijvende-monsters!))
+       (if (not (null? tanken))
+            (overblijvende-monsters!)))
                          
-                  ;; Volgende code is om de projectielen van alle torens te verkrijgen (haal weg, maak beter)
-                  (define (verkrijg-projectielen)
-                    (flatten
-                     (map (lambda (toren)
-                            (toren 'projectielen))
-                          torens)))
+    ;; Volgende code is om de projectielen van alle torens te verkrijgen (haal weg, maak beter)
+    (define (verkrijg-projectielen)
+      (flatten
+       (map (lambda (toren)
+              (toren 'projectielen))
+            torens)))
 
-                  ;; Volgende code is om te zien als het level aan het einde gekomen is
-                  (define (einde?)
-                    (and (null? monster-rij) (null? monsters)))
+    ;; Volgende code is om te zien als het level aan het einde gekomen is
+    (define (einde?)
+      (and (null? monster-rij) (null? monsters)))
           
-                  ;; Volgende code is om de level te skippen naar het einde
-                  (define (level-einde!)
-                    (if (not (einde?))
-                        (begin
-                          (set! monster-rij '())
-                          (set! monsters '()))))
+    ;; Volgende code is om de level te skippen naar het einde
+    (define (level-einde!)
+      (if (not (einde?))
+          (begin
+            (set! monster-rij '())
+            (set! monsters '()))))
                                    
-                  (define (dispatch msg)
-                    (cond
-                      ((eq? msg 'pad) pad)
-                      ((eq? msg 'monsters) monsters)
-                      ((eq? msg 'torens) torens)        
-                      ((eq? msg 'voeg-toren-toe!) voeg-toren-toe!)
-                      ((eq? msg 'update-monsters!) update-monsters!)
-                      ((eq? msg 'update-torens-projectielen-positie!) update-torens-projectielen-positie!)
-                      ((eq? msg 'update-torens-projectielen-afschieten!) update-torens-projectielen-afschieten!)
-                      ((eq? msg 'update-power-ups!) update-power-ups!)
-                      ((eq? msg 'monster-na-monster) monster-na-monster)
-                      ((eq? msg 'voeg-net-projectiel-toe!) voeg-net-projectiel-toe!)
-                      ((eq? msg 'voeg-power-up-toe!) voeg-power-up-toe!)
-                      ((eq? msg 'verkrijg-projectielen) verkrijg-projectielen)
-                      ((eq? msg 'verkrijg-tank-power-ups) activeerde-tanks)
-                      ((eq? msg 'explodeer-monsters-in-buurt!) explodeer-monsters-in-buurt!)
-                      ((eq? msg 'einde?) einde?)
-                      ((eq? msg 'level-einde!) level-einde!)
-                      ((eq? msg 'soort) 'level)
-                      (else
-                       "maak-level-adt: ongeldig bericht")))
-                  dispatch))
+    (define (dispatch msg)
+      (cond
+        ((eq? msg 'pad) pad)
+        ((eq? msg 'monsters) monsters)
+        ((eq? msg 'torens) torens)        
+        ((eq? msg 'voeg-toren-toe!) voeg-toren-toe!)
+        ((eq? msg 'update-monsters!) update-monsters!)
+        ((eq? msg 'update-torens-projectielen-positie!) update-torens-projectielen-positie!)
+        ((eq? msg 'update-torens-projectielen-afschieten!) update-torens-projectielen-afschieten!)
+        ((eq? msg 'update-power-ups!) update-power-ups!)
+        ((eq? msg 'monster-na-monster) monster-na-monster)
+        ((eq? msg 'voeg-net-projectiel-toe!) voeg-net-projectiel-toe!)
+        ((eq? msg 'voeg-power-up-toe!) voeg-power-up-toe!)
+        ((eq? msg 'verkrijg-projectielen) verkrijg-projectielen)
+        ((eq? msg 'verkrijg-tank-power-ups) activeerde-tanks)
+        ((eq? msg 'explodeer-monsters-in-buurt!) explodeer-monsters-in-buurt!)
+        ((eq? msg 'einde?) einde?)
+        ((eq? msg 'level-einde!) level-einde!)
+        ((eq? msg 'soort) 'level)
+        (else
+         "maak-level-adt: ongeldig bericht")))
+    dispatch))
