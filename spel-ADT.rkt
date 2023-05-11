@@ -2,7 +2,8 @@
 ;;                                  Spel ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (maak-spel-adt)
-  (let* ((geld (maak-geld-adt *geld-begin-bedrag*))
+  (let* ((spel-lus-gestart? #f) ;; Nuttig voor bepaalde elementen beter te doen functioneren
+         (geld (maak-geld-adt *geld-begin-bedrag*))
          (levens (maak-leven-adt *levens-hoeveelheid*))
          (level (maak-level-adt level-1 geld levens))
          (pad (level 'pad))
@@ -56,6 +57,7 @@
     
     ;; Volgende code implementeert de spel lus van het pel
     (define (spel-lus-procedure dt)
+      (set! spel-lus-gestart? #t)
       (if ((levens 'dood?))
           ((level 'level-einde!)))
       (if (>= monster-tijd *monster-spawn-frequentie*) ;; Zal monsters op scherm updaten na ongeveer 2 seconden
@@ -84,12 +86,13 @@
          ((geld 'voeg-geld-toe!) 'level #f)
          ((teken-adt 'update-tekst-teken!) geld)
          (set! level (maak-level-adt level-1 geld levens (level 'torens)))
+         (set! spel-lus-gestart? #f)
          ((teken-adt 'update-tekst-teken!) level))
         ((and (eq? toestand 'pressed) (eq? toets #\space))
          ((teken-adt 'set-spel-lus!) spel-lus-procedure))
         ((and (eq? toestand 'pressed) (eq? toets 'escape))
          ((level 'level-einde!)))
-        ((and (eq? toestand 'pressed) (eq? toets #\t))
+        ((and (eq? toestand 'pressed) (eq? toets #\t) spel-lus-gestart?)
          (let ((power-up (if (pair? tank-power-up) (volgende-power-up tank-power-up) #f)))
            (if (pair? tank-power-up) (set! tank-power-up (cdr tank-power-up)))
            (if power-up
