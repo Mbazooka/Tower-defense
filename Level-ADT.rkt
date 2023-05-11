@@ -5,7 +5,7 @@
   (let ((pad (maak-pad-adt vector-1))
         (torens (if (not (null? vorige-torens)) (car vorige-torens) vorige-torens))
         (monsters '()) ;; Lijst omdat elk element bewerken gemakkelijk is (for-each)
-        (activeerde-tanks '())
+        (activeerde-tank '()) ;; Lijst om extra proceduredefinities uit te sparen
         (tank-power-up-monsters '()) ;; Dat zijn de monsters waarop de tank een invloed zal hebben 
         (activeerde-bommen-regen '())
         (net-projectielen '())) ;; Alle net-projectielen die op het pad liggen
@@ -138,9 +138,9 @@
 
     ;; Volgende zal power-ups hun staat updaten
     (define (update-power-ups! dt)
-      (tanken-verminder-monster-levens! activeerde-tanks)
-      (set! activeerde-tanks (filter (lambda (tank) (not ((tank 'einde?)))) activeerde-tanks)) ;; Haalt alle voorbijgegaande tanken weg
-      (for-each (lambda (tank) ((tank 'update!) dt)) activeerde-tanks))      
+      (tanken-verminder-monster-levens! activeerde-tank)
+      (set! activeerde-tank (filter (lambda (tank) (not ((tank 'einde?)))) activeerde-tank)) ;; Haalt alle voorbijgegaande tanken weg
+      (for-each (lambda (tank) ((tank 'update!) dt)) activeerde-tank))      
 
     ;; Volgende code zoekt het monster die volgt op het gegeven monster
     (define (monster-na-monster monster)
@@ -157,7 +157,7 @@
     (define (voeg-power-up-toe! type power-up)
       (if (eq? type 'tank)
           (begin
-            (set! activeerde-tanks (cons power-up activeerde-tanks))
+            (set! activeerde-tank (cons power-up activeerde-tank))
             (set! tank-power-up-monsters monsters))))
 
     ;; Volgende code voegt een net projectiel toe aan de lijst van net projectielen
@@ -224,7 +224,7 @@
         ((eq? msg 'voeg-net-projectiel-toe!) voeg-net-projectiel-toe!)
         ((eq? msg 'voeg-power-up-toe!) voeg-power-up-toe!)
         ((eq? msg 'verkrijg-projectielen) verkrijg-projectielen)
-        ((eq? msg 'verkrijg-tank-power-ups) activeerde-tanks)
+        ((eq? msg 'verkrijg-tank-power-ups) activeerde-tank)
         ((eq? msg 'explodeer-monsters-in-buurt!) explodeer-monsters-in-buurt!)
         ((eq? msg 'einde?) einde?)
         ((eq? msg 'level-einde!) level-einde!)
