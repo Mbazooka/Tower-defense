@@ -5,15 +5,17 @@
   (let* ((spel-lus-gestart? #f) ;; Nuttig voor bepaalde elementen beter te doen functioneren
          (geld (maak-geld-adt *geld-begin-bedrag*))
          (levens (maak-leven-adt *levens-hoeveelheid*))
-         (level (maak-level-adt level-1 geld levens))
-         (level-teller 1)
-         (ronde-teller 1)
+         (level (maak-level-adt level-1 geld levens))                  
          (pad (level 'pad))
          (teken-adt (maak-teken-adt (+ *menu-breedte-px* *spel-breedte-px*) *spel/menu-hoogte-px*));; maak de fundamenten van het spel
          (toren-type #f) ;; Om torens te plaatsen veranderen we dit om te weten welk type toren te plaatsen.
          (monster-tijd 0) ;; Tijd afgelopen sinds vorige monster op pad
          (tank-power-up '())
-         (bomregen-power-up '()))
+         (bomregen-power-up '())
+         (level-teller 1)
+         (ronde-teller 1)
+         (tank-teller 0)
+         (bomregen-teller 0))
 
     ;; Tekent pad van het spel
     ((teken-adt 'teken-pad!) pad) 

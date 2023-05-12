@@ -60,6 +60,8 @@
     (define levens-tegel (make-bitmap-tile "Images/levens.png" "Images/levens-mask.png"))
     (define levens-tekst-tegel (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*))
 
+    ;; !!!!!! maak hier bitmap tiles !!!!!!!!!!!
+
     (define level-tekst-tegel-statisch (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*))
     (define level-tekst-tegel-dynamisch (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*))
 

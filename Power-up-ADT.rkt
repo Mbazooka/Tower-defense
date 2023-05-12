@@ -4,8 +4,8 @@
 (define (maak-power-up-adt pad type)
   (let ((positie ((((pad 'begin)) 'positie-copieer)))
         (einde ((pad 'einde)))
-        (keer-punten (pad 'inflectie-punten))
-        (keer-tekens (pad 'inflectie-tekens))
+        (keer-punten (pad 'keer-punten))
+        (keer-tekens (pad 'keer-tekens))
         (beweging-richting-x #t)
         (beweging-zin +))
 

@@ -5,19 +5,19 @@
   (let* ((vector-posities (neem-vector lijst))
          (lengte (vector-length vector-posities))
          (lijst-van-posities (vector->list vector-posities))
-         (inflectie-counter (neem-inflectie-counter lijst))
-         (inflectie-tekens (neem-inflectie-tekens lijst)) ;; Verander naam
-         (inflectie-punten '())) 
+         (keer-counter (neem-keer-counter lijst))
+         (keer-tekens (neem-keer-tekens lijst)) 
+         (keer-punten '())) 
 
-    ;; Maakt de inflectie punten lijst van het pad
-    (define (maak-inflectie-lijst)
+    ;; Maakt de keer punten lijst van het pad
+    (define (maak-keer-lijst)
       (define (iter ctr res)
-        (if (< ctr inflectie-counter)               
+        (if (< ctr keer-counter)               
             (iter (+ ctr 1) (cons (vector-ref vector-posities ctr) res))
             (reverse res)))
-      (iter 0 inflectie-punten))
+      (iter 0 keer-punten))
 
-    (set! inflectie-punten (maak-inflectie-lijst))
+    (set! keer-punten (maak-keer-lijst))
           
     ;; Gaat na als toren in pad zit 
     (define (toren-in-pad? toren)
@@ -55,11 +55,11 @@
 
     ;; Begin van het pad (eerste pad positie), dit is soms nodig 
     (define (begin-alternatief)
-      (vector-ref vector-posities inflectie-counter))
+      (vector-ref vector-posities keer-counter))
               
     ;; Begin van het pad (midden pad)
     (define (begin)
-      (vector-ref vector-posities (+ inflectie-counter 1)))
+      (vector-ref vector-posities (+ keer-counter 1)))
     
     ;; Einde van het pad
     (define (einde)
@@ -69,8 +69,8 @@
       (cond
         ((eq? msg 'posities) vector-posities)
         ((eq? msg 'lengte) lengte)
-        ((eq? msg 'inflectie-punten) inflectie-punten)
-        ((eq? msg 'inflectie-tekens) inflectie-tekens)
+        ((eq? msg 'keer-punten) keer-punten)
+        ((eq? msg 'keer-tekens) keer-tekens)
         ((eq? msg 'begin) begin)
         ((eq? msg 'einde) einde) 
         ((eq? msg 'toren-in-pad?) toren-in-pad?)

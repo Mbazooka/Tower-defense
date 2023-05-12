@@ -2,7 +2,7 @@
 ;;                               Monster ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Optionele parameters zijn nodig om huidige stand van zaken over te zetten van groen monster naar rood monster
-;; Zoals de Inflectie-punten, tekens, enzo.
+;; Zoals de keer-punten, tekens, enzo.
 (define (maak-monster-adt type pad . opt) 
   (let* ((bool (null? opt)) ;; Gedaan vermits dit vaak nodig is (efficientie)
          (positie (if bool ((((pad 'begin)) 'positie-copieer)) (list-ref opt 0)))
@@ -10,8 +10,8 @@
          (monster-loop-snelheid *rood&&groen&&paars-monster-loop-snelheid*)
          (schild #f)
          (einde ((pad 'einde)))
-         (inflectie-punten (if bool (pad 'inflectie-punten) (list-ref opt 1)))
-         (inflectie-tekens (if bool (pad 'inflectie-tekens) (list-ref opt 2)))
+         (keer-punten (if bool (pad 'keer-punten) (list-ref opt 1)))
+         (keer-tekens (if bool (pad 'keer-tekens) (list-ref opt 2)))
          (beweging-richting-x (if bool #t (list-ref opt 3)))
          (beweging-zin (if bool + (list-ref opt 4))) ;; #t beweeg x-richting, #f betekent beweeg y richting
          (net-projectielen (cons 'projectiel '()))) ;; Lijst van van net-projectielen die het monster vertraagt hebben
@@ -33,19 +33,19 @@
     (define (volgende-positie!)
       (define (teken-bepaling!) ;; Zal nagaan bij het veranderen van bewegingsdimensie in welke zin verandert moet worden.
         (cond
-          ((and (null? inflectie-tekens) (eq? beweging-zin +)) (set! beweging-zin -))
-          ((and (null? inflectie-tekens) (eq? beweging-zin -)) (set! beweging-zin +))
-          ((eq? (car inflectie-tekens) '-) (set! beweging-zin -) (set! inflectie-tekens (cdr inflectie-tekens)))
-          ((eq? (car inflectie-tekens) '+) (set! beweging-zin +) (set! inflectie-tekens (cdr inflectie-tekens)))
+          ((and (null? keer-tekens) (eq? beweging-zin +)) (set! beweging-zin -))
+          ((and (null? keer-tekens) (eq? beweging-zin -)) (set! beweging-zin +))
+          ((eq? (car keer-tekens) '-) (set! beweging-zin -) (set! keer-tekens (cdr keer-tekens)))
+          ((eq? (car keer-tekens) '+) (set! beweging-zin +) (set! keer-tekens (cdr keer-tekens)))
           (else
            "Doe niets")))
 
-      (define (richting-verandering!) ;; Zal bij het bereiken van een inflectie punt, veranderen van bewegingsrichting 
-        (if (not (null? inflectie-punten))
-            (if ((((positie 'ceil)) 'gelijk?) (car inflectie-punten)) ;; inflectie punt bereikt?
+      (define (richting-verandering!) ;; Zal bij het bereiken van een keerpunt, veranderen van bewegingsrichting 
+        (if (not (null? keer-punten))
+            (if ((((positie 'ceil)) 'gelijk?) (car keer-punten)) ;; keerpunt bereikt?
                 (begin
                   (set! beweging-richting-x (not beweging-richting-x))
-                  (set! inflectie-punten (cdr inflectie-punten))
+                  (set! keer-punten (cdr keer-punten))
                   (teken-bepaling!)))))     
       (richting-verandering!)      
       (if beweging-richting-x
@@ -106,7 +106,7 @@
     ;; Volgende code zal een actie uitvoeren als een monster gestorven is (als die een actie hoeft te doen)
     (define (actie-monster-sterven!)
       (cond
-        ((eq? type 'groen) (maak-monster-adt 'rood pad positie inflectie-punten inflectie-tekens beweging-richting-x beweging-zin))
+        ((eq? type 'groen) (maak-monster-adt 'rood pad positie keer-punten keer-tekens beweging-richting-x beweging-zin))
         ((eq? type 'paars)
          (let ((rand-paars-monster (make-vector 4)))
            (positie->rand! positie *paars-monster-rand-afstand* rand-paars-monster) ;; Maakt rand dat level kan gebruiken om alle monster in de buurt met levens te verhogen

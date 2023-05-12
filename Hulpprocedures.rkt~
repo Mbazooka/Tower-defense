@@ -75,3 +75,7 @@
       (else
        (delete-hulp (rest-dict huidige) huidige))))
   (delete-hulp (cdr dict) dict))
+
+;; Volgende code gaat na als een object een positie is
+(define (monster? obj)
+  (eq? (obj 'soort) 'monster))

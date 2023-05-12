@@ -34,14 +34,14 @@
 (define *toren-1-knop-hoogte-start* (* 2 *px-hoogte*))
 (define *toren-1-knop-hoogte-einde* (* 5 *px-hoogte*))
 
-(define *toren-2-knop-hoogte-start* (* 6 *px-hoogte*))
-(define *toren-2-knop-hoogte-einde* (* 9 *px-hoogte*))
+(define *toren-2-knop-hoogte-start* (* 7 *px-hoogte*))
+(define *toren-2-knop-hoogte-einde* (* 10 *px-hoogte*))
 
-(define *toren-3-knop-hoogte-start* (* 10 *px-hoogte*))
-(define *toren-3-knop-hoogte-einde* (* 13 *px-hoogte*))
+(define *toren-3-knop-hoogte-start* (* 12 *px-hoogte*))
+(define *toren-3-knop-hoogte-einde* (* 15 *px-hoogte*))
 
-(define *toren-4-knop-hoogte-start* (* 14 *px-hoogte*))
-(define *toren-4-knop-hoogte-einde* (* 17 *px-hoogte*))
+(define *toren-4-knop-hoogte-start* (* 17 *px-hoogte*))
+(define *toren-4-knop-hoogte-einde* (* 20 *px-hoogte*))
 
 (define *start-data-menu-power-up* (+ *start-data-menu* (* 5 *px-breedte*)))
 (define *power-up-knop-breedte-einde* (+ *start-data-menu-power-up* (* 5 *px-hoogte*)))
@@ -49,13 +49,13 @@
 (define *power-up-1-knop-hoogte-start* (* 2.3 *px-hoogte*))
 (define *power-up-1-knop-hoogte-einde* (* 5 *px-hoogte*))
 
-(define *power-up-2-knop-hoogte-start* (* 6.3 *px-hoogte*))
+(define *power-up-2-knop-hoogte-start* (* 7.3 *px-hoogte*))
 (define *power-up-2-knop-hoogte-einde* (* 9 *px-hoogte*))
 
 ;; Tekst constanten voor op menu
 (define *tekst-toren-breedte* (+ *px-breedte* 10)) ;; + 5 want oranje rand centreert de tekst niet
 (define *tekst-toren-hoogte* *px-hoogte*)
-(define *tekst-font* 15)
+(define *tekst-font* 13)
 (define *algemeen-tekst-breedte* (* 2 *px-breedte*))
 (define *algemeen-tekst-hoogte* *px-hoogte*)
 (define *tekst-geld-px-breedte* (+ *start-data-menu* *px-breedte*))
