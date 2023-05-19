@@ -36,6 +36,7 @@
 (load "Level-ADT.rkt")
 (load "Geld-ADT.rkt")
 (load "Levens-adt.rkt")
+(load "power-up-adt.rkt")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                               Teken en spel ADTs                           ;;
