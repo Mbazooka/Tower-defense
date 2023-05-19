@@ -140,7 +140,8 @@
     (define (update-power-ups! dt)
       (tanken-verminder-monster-levens! activeerde-tank)
       (set! activeerde-tank (filter (lambda (tank) (not ((tank 'einde?)))) activeerde-tank)) ;; Haalt alle voorbijgegaande tanken weg
-      (for-each (lambda (tank) ((tank 'update!) dt)) activeerde-tank))      
+      (for-each (lambda (tank) ((tank 'update!) dt)) activeerde-tank)
+      (for-each (lambda (bom) ((bom 'update!) dt)) activeerde-bommen-regen))
 
     ;; Volgende code zoekt het monster die volgt op het gegeven monster
     (define (monster-na-monster monster)
@@ -158,17 +159,18 @@
       (if (eq? type 'tank)
           (begin
             (set! activeerde-tank (cons power-up activeerde-tank))
-            (set! tank-power-up-monsters monsters))))
+            (set! tank-power-up-monsters monsters))
+          (set! activeerde-bommen-regen (cons power-up activeerde-bommen-regen))))
 
     ;; Volgende code voegt een net projectiel toe aan de lijst van net projectielen
     (define (voeg-net-projectiel-toe! projectiel)
       (set! net-projectielen (cons projectiel net-projectielen)))
 
-    ;; Volgende code bomwerpt alle monsters in de buurt
-    (define (explodeer-monsters-in-buurt! rand)
+    ;; Volgende code bomwerpt/bomt alle monsters in de buurt
+    (define (explodeer-monsters-in-buurt! rand type-vermindering)
       (for-each (lambda (monster)
                   (if (in-rand? (monster 'positie) rand)
-                      ((monster 'actie-monster-levend!) 'verminder 'bomwerp)))
+                      ((monster 'actie-monster-levend!) 'verminder type-vermindering)))
                 monsters))
 
     ;; Volgende code vermindert alle monster levens met 1

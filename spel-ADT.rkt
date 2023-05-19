@@ -11,11 +11,11 @@
          (toren-type #f) ;; Om torens te plaatsen veranderen we dit om te weten welk type toren te plaatsen.
          (monster-tijd 0) ;; Tijd afgelopen sinds vorige monster op pad
          (tank-power-up '())
-         (bomregen-power-up '())
+         (bommen-regen-power-up '())
          (level-teller 1)
          (ronde-teller 1)
          (tank-teller 0)
-         (bomregen-teller 0))
+         (bommen-regen-teller 0))
 
     ;; Tekent pad van het spel
     ((teken-adt 'teken-pad!) pad) 
@@ -41,7 +41,8 @@
                (begin
                  ((geld 'verwijder-geld!) geselecteerde-power-up)
                  (if (eq? geselecteerde-power-up 'tank)
-                     (set! tank-power-up (cons (maak-power-up-adt pad 'tank) tank-power-up)))
+                     (set! tank-power-up (cons (maak-power-up-adt pad 'tank) tank-power-up))
+                     (set! bommen-regen-power-up (cons (maak-power-up-adt pad 'bommen-regen) bommen-regen-power-up)))
                  ((teken-adt 'update-tekst-teken!) 'geld (geld 'status)))))
           ((eq? toren-type #f) "Kies een toren") ;; Indien nog geen toren gekozen is dan moet
           ((and (eq? toets 'left) (eq? toestand 'pressed)

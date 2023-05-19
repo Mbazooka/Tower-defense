@@ -2,14 +2,20 @@
 ;;                                  Spel ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (maak-spel-adt)
-  (let* ((geld (maak-geld-adt *geld-begin-bedrag*))
+  (let* ((spel-lus-gestart? #f) ;; Nuttig voor bepaalde elementen beter te doen functioneren
+         (geld (maak-geld-adt *geld-begin-bedrag*))
          (levens (maak-leven-adt *levens-hoeveelheid*))
-         (level (maak-level-adt level-1 geld levens))
+         (level (maak-level-adt level-1 geld levens))                  
          (pad (level 'pad))
          (teken-adt (maak-teken-adt (+ *menu-breedte-px* *spel-breedte-px*) *spel/menu-hoogte-px*));; maak de fundamenten van het spel
          (toren-type #f) ;; Om torens te plaatsen veranderen we dit om te weten welk type toren te plaatsen.
          (monster-tijd 0) ;; Tijd afgelopen sinds vorige monster op pad
-         (projectiel-tijd 0)) ;; Tijd afgelopen sinds vorige projectiel die geschoten werd
+         (tank-power-up '())
+         (bomregen-power-up '())
+         (level-teller 1)
+         (ronde-teller 1)
+         (tank-teller 0)
+         (bomregen-teller 0))
 
     ;; Tekent pad van het spel
     ((teken-adt 'teken-pad!) pad) 
@@ -19,12 +25,24 @@
       ((teken-adt 'set-muis-toets!) muis-klik-procedure)
       ((teken-adt 'set-toets-procedure!) toets-procedure))
 
+    ;; Volgende code zijn abstracties
+    (define volgende-power-up car)
+    (define rest-power-ups cdr)
+
     ;; De procedure die het klikken van muis op scherm voorstelt    
     (define (muis-klik-procedure toets toestand x y)
-      (let ((geselecteerde-toren ((teken-adt 'toren-selectie) x y)))
+      (let ((geselecteerde-toren ((teken-adt 'toren-selectie) x y))
+            (geselecteerde-power-up ((teken-adt 'power-up-selectie) x y)))
         (cond 
-          ((and (eq? toets 'left) (eq? toestand 'pressed) geselecteerde-toren) ;; Initialiseert toren type
+          ((and (eq? toets 'left) (eq? toestand 'pressed) geselecteerde-toren) ;; Initialiseert toren type          
            (set! toren-type geselecteerde-toren))
+          ((and (eq? toets 'left) (eq? toestand 'pressed) geselecteerde-power-up) ;; Koopt power-up
+           (if ((geld 'voldoende-geld?) geselecteerde-power-up)
+               (begin
+                 ((geld 'verwijder-geld!) geselecteerde-power-up)
+                 (if (eq? geselecteerde-power-up 'tank)
+                     (set! tank-power-up (cons (maak-power-up-adt pad 'tank) tank-power-up)))
+                 ((teken-adt 'update-tekst-teken!) 'geld (geld 'status)))))
           ((eq? toren-type #f) "Kies een toren") ;; Indien nog geen toren gekozen is dan moet
           ((and (eq? toets 'left) (eq? toestand 'pressed)
                 ((teken-adt 'buiten-beperking?) x y)
@@ -37,11 +55,12 @@
                 ((geld 'verwijder-geld!) toren-type)
                 ((level 'voeg-toren-toe!) toren)
                 ((teken-adt 'teken-toren!) toren)
-                ((teken-adt 'update-tekst-teken!) geld))
+                ((teken-adt 'update-tekst-teken!) 'geld (geld 'status)))
                (else "Beweging niet mogelijk")))))))
     
     ;; Volgende code implementeert de spel lus van het pel
     (define (spel-lus-procedure dt)
+      (set! spel-lus-gestart? #t)
       (if ((levens 'dood?))
           ((level 'level-einde!)))
       (if (>= monster-tijd *monster-spawn-frequentie*) ;; Zal monsters op scherm updaten na ongeveer 2 seconden
@@ -51,30 +70,39 @@
           ((level 'update-monsters!) dt))
       ((teken-adt 'teken-monsters!) (level 'monsters))
       (set! monster-tijd (+ monster-tijd dt))
-      (if (>= projectiel-tijd *toren-afvuur-frequentie*) ;; Moet veranderd worden
-          (begin
-            ((level 'update-torens-projectielen-afschieten!))
-            (set! projectiel-tijd 0)))
-      (set! projectiel-tijd (+ projectiel-tijd dt))
-      ((level 'update-torens-projectielen-positie!) dt)
+      ((level 'update-power-ups!) dt)    
+      ((level 'update-torens-projectielen-afschieten!) pad dt)
+      ((level 'update-torens-projectielen-positie!) dt)        
       ((teken-adt 'teken-projectielen!) ((level 'verkrijg-projectielen)))
-      ((teken-adt 'update-tekst-teken!) geld)
-      ((teken-adt 'update-tekst-teken!) levens))
+      ((teken-adt 'teken-tank-power-up!) (level 'verkrijg-tank-power-ups))
+      ((teken-adt 'update-tekst-teken!) 'geld (geld 'status))
+      ((teken-adt 'update-tekst-teken!) 'levens (levens 'status))
+      ((teken-adt 'update-tekst-teken!) 'level level-teller))
       
     ;;Volgende code implementeert een toets om het spel de laten starten
-    ;; !!!! Te veranderen, naar betere vorm van next-level! !!!!!
     (define (toets-procedure toestand toets)
       (cond
         ((and (eq? toestand 'pressed) (eq? toets #\space) ((level 'einde?)))
-         ((geld 'voeg-geld-toe!) 'level)
-         ((teken-adt 'update-tekst-teken!) geld)
+         ((geld 'voeg-geld-toe!) 'level #f)
+         ((teken-adt 'update-tekst-teken!) 'geld (geld 'status))
+         ((level 'initialiseer-toren-tijden!))
          (set! level (maak-level-adt level-1 geld levens (level 'torens)))
-         ((teken-adt 'update-tekst-teken!) level))
+         (set! level-teller (+ level-teller 1))
+         (set! ronde-teller 1)
+         (set! spel-lus-gestart? #f)
+         ((teken-adt 'update-tekst-teken!) 'level level-teller))
         ((and (eq? toestand 'pressed) (eq? toets #\space))
          ((teken-adt 'set-spel-lus!) spel-lus-procedure))
         ((and (eq? toestand 'pressed) (eq? toets 'escape))
-         ((level 'level-einde!)))))
-            
+         ((level 'level-einde!)))
+        ((and (eq? toestand 'pressed) (eq? toets #\t) spel-lus-gestart?)
+         (let ((power-up (if (pair? tank-power-up) (volgende-power-up tank-power-up) #f)))
+           (if (pair? tank-power-up) (set! tank-power-up (cdr tank-power-up)))
+           (if power-up
+               (begin
+                 ((level 'voeg-power-up-toe!) 'tank power-up)
+                 ((teken-adt 'teken-tank-power-up!) (level 'verkrijg-tank-power-ups))))))))
+                   
     (define (dispatch msg)
       (cond 
         ((eq? msg 'start!) (start!))

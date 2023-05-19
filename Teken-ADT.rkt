@@ -200,7 +200,7 @@
         ((and (>= x *start-data-menu-power-up*) (<= x *power-up-knop-breedte-einde*) (>= y *power-up-1-knop-hoogte-start*) (<= y *power-up-1-knop-hoogte-einde*))
          'tank)
         ((and (>= x *start-data-menu-power-up*) (<= x *power-up-knop-breedte-einde*) (>= y *power-up-2-knop-hoogte-start*) (<= y *power-up-2-knop-hoogte-einde*))
-         'bom-regen)
+         'bommen-regen)
         (else #f)))
         
     ;; Volgende code is om tiles weg te halen van het scherm die niet meer nodig zijn

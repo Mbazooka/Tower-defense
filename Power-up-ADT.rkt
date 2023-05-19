@@ -4,7 +4,7 @@
 (define (maak-power-up-adt pad type)
   (let ((positie ((((pad 'begin)) 'positie-copieer)))
         (einde ((pad 'einde)))
-        (pad-lengte ((pad 'lengte)))
+        (pad-lengte (pad 'lengte))
         (keer-punten (pad 'keer-punten))
         (keer-tekens (pad 'keer-tekens))
         (beweging-richting-x #t)
@@ -20,7 +20,7 @@
                    (pad-pos ((pad 'pad-positie) num)) ;; Geeft bepaalde positie in pad terug
                    (bom (make-vector 4)))
               (positie->rand! pad-pos *bomregen-rand-afstand* bom) 
-              (set! bommen (cons vec bommen)))))
+              (set! bommen (cons bom bommen)))))
       (maak-hulp 0))
 
     ;; Initialiseert de bommen (indien het een bommen-regen power-up is)
@@ -60,6 +60,14 @@
         ((eq? type 'tank)
          (volgende-positie!))        
         ((eq? type 'bommen-regen) (set! tijd (+ tijd dt)))))
+
+    ;; Volgende code gaat na als de tijd afgelopen is
+    (define (tijd-afgelopen?)
+      (>= tijd *bomregen-aftel-tijd))
+
+    ;; Volgende code zal voor elke bom iets doen
+    (define (bom-explosie! explosie)
+      (for-each explosie bommen))
    
     (define (dispatch msg)
       (cond
@@ -69,6 +77,8 @@
         ((eq? msg 'geactiveerd?) geactiveerd?)
         ((eq? msg 'tijd) tijd)
         ((eq? msg 'bommen) bommen)
+        ((eq? msg 'tijd-afgelopen?) tijd-afgelopen)
+        ((eq? msg 'bom-explosie!) bom-explosie!)
         ((eq? msg 'type) type)
         ((eq? msg 'soort) 'power-up)
         (else

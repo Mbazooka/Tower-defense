@@ -99,7 +99,7 @@
 
     ;; Volgende code explodeert de bom
     (define (explodeer! level rand)
-      ((level 'explodeer-monsters-in-buurt!) rand))
+      ((level 'explodeer-monsters-in-buurt!) rand 'bomwerp))
     
     ;; Volgende code gaat na als een projectiel niet bereikt of afgehandelt is
     (define (niet-bereikt&&afgehandelt?)

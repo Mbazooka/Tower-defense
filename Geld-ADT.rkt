@@ -31,7 +31,6 @@
         (else
          "Ongeldig type"))))
           
-
   ;; Volgende code gaat na als de speler genoeg geld heeft
   (define (voldoende-geld? type)
     (>= begin-bedrag (bedrag type #f)))

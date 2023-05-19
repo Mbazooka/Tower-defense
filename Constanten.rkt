@@ -138,7 +138,7 @@
 (define *vuurbal-toren-kost* 1000)
 (define *bomwerp-toren-kost* 1500)
 (define *tank-kost* 700)
-(define *bommen-regen-kost* 800)
+(define *bommen-regen-kost* 1000)
 (define *rood-groen-monster-winst* 20)
 (define *geel-monster-winst* 50)
 (define *paars-monster-winst* 30)
