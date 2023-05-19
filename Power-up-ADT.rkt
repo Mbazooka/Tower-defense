@@ -79,7 +79,7 @@
         ((eq? msg 'geactiveerd?) geactiveerd?)
         ((eq? msg 'tijd) tijd)
         ((eq? msg 'bommen) bommen)
-        ((eq? msg 'tijd-afgelopen?) tijd-afgelopen)
+        ((eq? msg 'tijd-afgelopen?) tijd-afgelopen?)
         ((eq? msg 'bom-explosie!) bom-explosie!)
         ((eq? msg 'type) type)
         ((eq? msg 'soort) 'power-up)

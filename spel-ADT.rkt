@@ -14,8 +14,8 @@
          (bommen-regen-power-up '())
          (level-teller 1)
          (ronde-teller 1)
-         (tank-teller 0)
-         (bommen-regen-teller 0))
+         (tank-cooldown-teller 0)
+         (bommen-regen-cooldown-teller 0))
 
     ;; Tekent pad van het spel
     ((teken-adt 'teken-pad!) pad) 
