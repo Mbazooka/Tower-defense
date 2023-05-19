@@ -12,6 +12,21 @@
         (bommen '())
         (tijd 0))
 
+    ;; Volgende code maakt het gegeven aantal bommen
+    (define (maak-bommen!)
+      (define (maak-hulp ctr)
+        (if (not (= ctr *bomregen-aantal-bommen*))
+            (let* ((num (random pad-lengte))
+                   (pad-pos ((pad 'pad-positie) num)) ;; Geeft bepaalde positie in pad terug
+                   (bom (make-vector 4)))
+              (positie->rand! pad-pos *bomregen-rand-afstand* bom) 
+              (set! bommen (cons vec bommen)))))
+      (maak-hulp 0))
+
+    ;; Initialiseert de bommen (indien het een bommen-regen power-up is)
+    (if (eq? type 'bommen-regen)
+        (maak-bommen!))
+
     ;; Volgende code gaat na indien de power-up het einde van het pad bereikt heeft
     (define (einde?)
       (>= (positie 'x) (einde 'x)))
@@ -45,19 +60,7 @@
         ((eq? type 'tank)
          (volgende-positie!))        
         ((eq? type 'bommen-regen) (set! tijd (+ tijd dt)))))
-
-    ;; Volgende code maakt het gegeven aantal bommen
-    (define (maak-bommen! aantal)
-        (define (maak-hulp ctr)
-          (if (not (= ctr aantal))
-              (let* ((num (random pad-lengte))
-                     (pad-pos ((pad 'pad-positie) num)) ;; Geeft bepaalde positie in pad terug
-                     (bom (make-vector 4)))
-                (positie->rand! pad-pos *bomregen-rand-afstand* bom) 
-                (set! bommen (cons vec bommen)))))
-        (maak-hulp 0))
-
-    
+   
     (define (dispatch msg)
       (cond
         ((eq? msg 'positie) positie)
@@ -66,7 +69,6 @@
         ((eq? msg 'geactiveerd?) geactiveerd?)
         ((eq? msg 'tijd) tijd)
         ((eq? msg 'bommen) bommen)
-        ((eq? msg 'maak-bommen!) maak-bommen!)
         ((eq? msg 'type) type)
         ((eq? msg 'soort) 'power-up)
         (else
