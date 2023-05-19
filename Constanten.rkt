@@ -126,6 +126,7 @@
 (define *power-afkoel-tijd* 15000)
 (define *bomregen-aftel-tijd 3000)
 (define *bomregen-aantal-bommen* 5)
+(define *bomregen-rand-afstand* 2.5)
 
 ;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid
 (define *geld-begin-bedrag* 5000) ;; Verander achteraf

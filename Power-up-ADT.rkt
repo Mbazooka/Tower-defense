@@ -48,7 +48,7 @@
 
     (define (maak-bommen! aantal)
       (define (maak-hulp ctr)
-        (let ((num (random 
+        (let ((num (random pad-lengte)))
     
     (define (dispatch msg)
       (cond
