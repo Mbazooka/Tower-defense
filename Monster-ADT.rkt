@@ -129,7 +129,7 @@
       (cond
         ((eq? actie 'vertraag) (vertraag-monster!)
                                (voeg-net-projectiel-toe! (car projectiel/levens)))
-        ((eq? actie 'verminder) (if (and (pair? projectiel/levens) (eq? (car projectiel/levens) 'bomwerp))                                    
+        ((eq? actie 'verminder) (if (and (pair? projectiel/levens) (or (eq? (car projectiel/levens) 'bomwerp) (eq? (car projectiel/levens) 'bom)))                                    
                                     (verminder-levens! (car projectiel/levens))
                                     (verminder-levens!)))
         (else "Ongeldige actie")))

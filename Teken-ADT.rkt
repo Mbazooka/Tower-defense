@@ -7,7 +7,7 @@
         (monster-tiles-dict (cons 'tegels '())) ;; Tagged omdat 1ste conscell veranderd moet worden/ Dit zijn monster--tegel associaties
         (projectielen-tiles-dict (cons 'tegels '())) ;; Dit zijn projectiel--tegel associaties
         (tank-power-ups-tiles-dict (cons 'tegels '())) ;; Dit zijn tank-power-up--tegel associaties
-        (bommen-regen-power-ups-tiles-dict (cons 'tegels '())) ;; Dit zijn bom-regen-power-up--tegel associaties
+        (bommen-regen-power-ups-tiles-dict (cons 'tegels '()))) ;; Dit zijn bom-regen-power-up--tegel associaties
 
     ;; Volgende code is om een achtergrond te hebben waarop een pad gemaakt wordt
     (define laag-achtergrond ((venster 'new-layer!)))
@@ -263,7 +263,7 @@
 
     ;; Volgende code is om bomregen-power-ups te tekenen
     (define (teken-bommen-regen-power-up! bommen-regen-power-ups)
-      (teken-dynamisch-boject! bommen-regen-power-ups bommen-regen-power-ups-tiles-dict laag-bommen-regen-pu #f))
+      (teken-dynamisch-object! bommen-regen-power-ups bommen-regen-power-ups-tiles-dict laag-bommen-regen-pu #f))
            
     ;; Volgende code is om muis klikken te implementeren
     (define (set-muis-toets-procedure! proc)

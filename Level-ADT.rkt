@@ -234,6 +234,7 @@
         ((eq? msg 'voeg-power-up-toe!) voeg-power-up-toe!)
         ((eq? msg 'verkrijg-projectielen) verkrijg-projectielen)
         ((eq? msg 'verkrijg-tank-power-ups) activeerde-tank)
+        ((eq? msg 'verkrijg-bommen-regen-power-ups) activeerde-bommen-regen)
         ((eq? msg 'explodeer-monsters-in-buurt!) explodeer-monsters-in-buurt!)
         ((eq? msg 'einde?) einde?)
         ((eq? msg 'level-einde!) level-einde!)

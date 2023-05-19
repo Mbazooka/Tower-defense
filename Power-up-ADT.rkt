@@ -20,7 +20,8 @@
                    (pad-pos ((pad 'pad-positie) num)) ;; Geeft bepaalde positie in pad terug
                    (bom (make-vector 4)))
               (positie->rand! pad-pos *bomregen-rand-afstand* bom) 
-              (set! bommen (cons bom bommen)))))
+              (set! bommen (cons bom bommen))
+              (maak-hulp (+ ctr 1)))))
       (maak-hulp 0))
 
     ;; Initialiseert de bommen (indien het een bommen-regen power-up is)
@@ -68,7 +69,7 @@
     ;; Volgende code zal voor elke bom iets doen
     (define (bom-explosie! explosie-procedure)
       (for-each (lambda (bom)
-                  (explosie-procedure bom type))
+                  (explosie-procedure bom 'bom))
                 bommen))
    
     (define (dispatch msg)
