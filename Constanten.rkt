@@ -88,6 +88,7 @@
 
 ;; Constanten voor bitmap van power-ups
 (define *tank-power-up-bitmap&&mask* (cons "Images/Tank.png" "Images/tank-mask.png"))
+(define *bommen-regen-bitmap&&mask* (cons "Images/bomwerp.png" "Images/bomwerp-mask.png"))
 
 ;; Constanten voor tegel-positie van bitmap van geld en levens
 (define *geld&&levens-tegel-px-hoogte* (- *spel/menu-hoogte-px* 25)) ;; 23 Zo gekozen voor stijlvolle manier

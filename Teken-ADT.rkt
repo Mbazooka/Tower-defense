@@ -6,7 +6,8 @@
   (let ((venster (make-window horizontale-pixels verticale-pixels "Tower Defence"))
         (monster-tiles-dict (cons 'tegels '())) ;; Tagged omdat 1ste conscell veranderd moet worden/ Dit zijn monster--tegel associaties
         (projectielen-tiles-dict (cons 'tegels '())) ;; Dit zijn projectiel--tegel associaties
-        (tank-power-ups-tiles-dict (cons 'tegels '()))) ;; Dit zijn tank-power-up--tegel associaties
+        (tank-power-ups-tiles-dict (cons 'tegels '())) ;; Dit zijn tank-power-up--tegel associaties
+        (bommen-regen-power-ups-tiles-dict (cons 'tegels '())) ;; Dit zijn bom-regen-power-up--tegel associaties
 
     ;; Volgende code is om een achtergrond te hebben waarop een pad gemaakt wordt
     (define laag-achtergrond ((venster 'new-layer!)))
@@ -122,7 +123,7 @@
     ;;met positie gedaan (niet object als formele parameter) want pad geeft meerdere posities, code kan enkel 1 positie per keer doen (zo hebben we maar 1 procedure voor alle px posities te bepalen)
     (define (bepaal-tegel-px-positie! positie tegel tank?) ;; Tank? gaat na als het een tank object is en verschuift het tank bitmap voor mooiheid
       (let* ((x-pos (positie 'x))
-             (y-pos (if tank? (- (positie 'y) 1) (positie 'y)))
+             (y-pos (if tank? (- (positie 'y) 1) (positie 'y))) ;; Om netter op scherm te zetten
              (scherm-x (* x-pos *px-breedte*))
              (scherm-y (* y-pos *px-hoogte*)))
         ((tegel 'set-x!) scherm-x)
@@ -169,7 +170,10 @@
            ((eq? object-type 'bomwerp) *bomwerp-projectiel-bitmap&&mask*)))
         ((eq? object 'power-up)
          (cond
-           ((eq? object-type 'tank) *tank-power-up-bitmap&&mask*)))))
+           ((eq? object-type 'tank) *tank-power-up-bitmap&&mask*)
+           ((eq? object-type 'bommen-regen) *bommen-regen-bitmap&&mask*)))
+        (else
+         "Ongeldig object")))
 
     ;; Volgende code is een venster om torens op te plaatsen
     (define laag-toren ((venster 'new-layer!)))
@@ -248,11 +252,18 @@
       (teken-dynamisch-object! projectielen projectielen-tiles-dict laag-projectiel #f))
 
     ;; Volgende code is een venster om tank-power-ups te plaatsen
-    (define laag-tank-po ((venster 'new-layer!)))
+    (define laag-tank-pu ((venster 'new-layer!)))
 
     ;; Volgende code is om tank-power-ups te tekenen
     (define (teken-tank-power-up! tank-power-ups)
-      (teken-dynamisch-object! tank-power-ups tank-power-ups-tiles-dict laag-tank-po #t))
+      (teken-dynamisch-object! tank-power-ups tank-power-ups-tiles-dict laag-tank-pu #t))
+
+    ;; Volgende code is een venster om bommen-regen-power-ups te plaatsen
+    (define laag-bommen-regen-pu ((venster 'new-layer!)))
+
+    ;; Volgende code is om bomregen-power-ups te tekenen
+    (define (teken-bommen-regen-power-up! bommen-regen-power-ups)
+      (teken-dynamisch-boject! bommen-regen-power-ups bommen-regen-power-ups-tiles-dict laag-bommen-regen-pu #f))
            
     ;; Volgende code is om muis klikken te implementeren
     (define (set-muis-toets-procedure! proc)
@@ -289,6 +300,7 @@
         ((eq? msg 'teken-monsters!) teken-monsters!)
         ((eq? msg 'teken-projectielen!) teken-projectielen!)
         ((eq? msg 'teken-tank-power-up!) teken-tank-power-up!)
+        ((eq? msg 'teken-bommen-regen-power-up!) teken-bommen-regen-power-up!)
         ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)
         ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)
         ((eq? msg 'set-toets-procedure!) set-toets-procedure!)
