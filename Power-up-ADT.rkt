@@ -9,8 +9,8 @@
         (keer-tekens (pad 'keer-tekens))
         (beweging-richting-x #t)
         (beweging-zin +)
-        (tijd 0)
-        (bommen '()))
+        (bommen '())
+        (tijd 0))
 
     ;; Volgende code gaat na indien de power-up het einde van het pad bereikt heeft
     (define (einde?)
@@ -48,14 +48,15 @@
 
     ;; Volgende code maakt het gegeven aantal bommen
     (define (maak-bommen! aantal)
-      (define (maak-hulp ctr)
-        (if (not (= ctr aantal))
-            (let* ((num (random pad-lengte))
-                   (pad-pos ((pad 'pad-positie) num)) ;; Geeft bepaalde positie in pad terug
-                   (bom (make-vector 4)))
-              (positie->rand! pad-pos *bomregen-rand-afstand* bom) 
-              (set! bommen (cons vec bommen)))))
-      (maak-hulp 0))
+        (define (maak-hulp ctr)
+          (if (not (= ctr aantal))
+              (let* ((num (random pad-lengte))
+                     (pad-pos ((pad 'pad-positie) num)) ;; Geeft bepaalde positie in pad terug
+                     (bom (make-vector 4)))
+                (positie->rand! pad-pos *bomregen-rand-afstand* bom) 
+                (set! bommen (cons vec bommen)))))
+        (maak-hulp 0))
+
     
     (define (dispatch msg)
       (cond
@@ -65,6 +66,7 @@
         ((eq? msg 'geactiveerd?) geactiveerd?)
         ((eq? msg 'tijd) tijd)
         ((eq? msg 'bommen) bommen)
+        ((eq? msg 'maak-bommen!) maak-bommen!)
         ((eq? msg 'type) type)
         ((eq? msg 'soort) 'power-up)
         (else
