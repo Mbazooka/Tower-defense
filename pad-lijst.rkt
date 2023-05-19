@@ -363,8 +363,7 @@
 
          (maak-positie-adt 39 20)         
          (maak-positie-adt 39 21) ;; Einde
-         (maak-positie-adt 39 22)
-         
-         
-         )))
+         (maak-positie-adt 39 22))
+                  
+         ))
   

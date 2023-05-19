@@ -4,24 +4,24 @@
 (define (maak-pad-adt lijst) 
   (let* ((vector-posities (neem-vector lijst))
          (lengte (vector-length vector-posities))
-         (inflectie-counter (neem-inflectie-counter lijst))
-         (inflectie-tekens (neem-inflectie-tekens lijst))
-         (inflectie-punten '())) 
+         (lijst-van-posities (vector->list vector-posities))
+         (keer-counter (neem-keer-counter lijst))
+         (keer-tekens (neem-keer-tekens lijst)) 
+         (keer-punten '())) 
 
-    ;; Maakt de inflectie punten lijst van de pad
-    (define (maak-inflectie-lijst)
+    ;; Maakt de keer punten lijst van het pad
+    (define (maak-keer-lijst)
       (define (iter ctr res)
-        (if (< ctr inflectie-counter)               
+        (if (< ctr keer-counter)               
             (iter (+ ctr 1) (cons (vector-ref vector-posities ctr) res))
             (reverse res)))
-      (iter 0 inflectie-punten))
+      (iter 0 keer-punten))
 
-    (set! inflectie-punten (maak-inflectie-lijst))
+    (set! keer-punten (maak-keer-lijst))
           
     ;; Gaat na als toren in pad zit 
     (define (toren-in-pad? toren)
-      (let ((lijst-van-posities (vector->list vector-posities))
-            (toren-rand (toren 'toren-posities)))
+      (let ((toren-rand (toren 'toren-posities)))
         
         (define (in-pad? positie)
           (let ((afgeronde-pos ((positie 'ceil)))) ;; nodig want pad posities zijn discreet
@@ -33,15 +33,47 @@
               (or (in-pad? (vector-ref toren-rand ctr))
                   (overlopen-torens (+ ctr 1)))))
         (overlopen-torens 0)))
+    
+    ;; Volgende code vind het dichtsbijzijnd punt op het pad relatief tot een andere positie 
+    (define (dichste-punt centraal-positie)  ;; Aan te passen
+      (let ((huidige-dichste #f)
+            (huidige-dichste-afstand #f))
+        (for-each
+         (lambda (positie)
+           (cond
+             ((eq? huidige-dichste #f)
+              (set! huidige-dichste positie)
+              (set! huidige-dichste-afstand ((huidige-dichste 'afstand) centraal-positie)))
+             (else
+              (let ((afstand ((positie 'afstand) centraal-positie)))
+                (cond
+                  ((< afstand huidige-dichste-afstand)
+                   (set! huidige-dichste positie)
+                   (set! huidige-dichste-afstand afstand)))))))
+         lijst-van-posities)
+        huidige-dichste))
+
+    ;; Begin van het pad (eerste pad positie), dit is soms nodig 
+    (define (begin-alternatief)
+      (vector-ref vector-posities keer-counter))
+              
+    ;; Begin van het pad (midden pad)
+    (define (begin)
+      (vector-ref vector-posities (+ keer-counter 1)))
+    
+    ;; Einde van het pad
+    (define (einde)
+      (vector-ref vector-posities (- lengte 2)))     
                    
     (define (dispatch msg)
       (cond
         ((eq? msg 'posities) vector-posities)
         ((eq? msg 'lengte) lengte)
-        ((eq? msg 'inflectie-punten) inflectie-punten)
-        ((eq? msg 'inflectie-tekens) inflectie-tekens)
-        ((eq? msg 'begin) (vector-ref vector-posities (+ inflectie-counter 1))) ;; + 1, begin te zetten in midden van pad
-        ((eq? msg 'einde) (vector-ref vector-posities (- lengte 2))) 
+        ((eq? msg 'keer-punten) keer-punten)
+        ((eq? msg 'keer-tekens) keer-tekens)
+        ((eq? msg 'begin) begin)
+        ((eq? msg 'einde) einde) 
         ((eq? msg 'toren-in-pad?) toren-in-pad?)
+        ((eq? msg 'dichste-punt) dichste-punt)
         (else "maak-pad-adt: ongeldig bericht")))
     dispatch))

@@ -63,7 +63,11 @@
     
     ;; Einde van het pad
     (define (einde)
-      (vector-ref vector-posities (- lengte 2)))     
+      (vector-ref vector-posities (- lengte 2)))
+
+    ;; Bepaalde positie in pad
+    (define (pad-positie index)
+      (vector-ref vector-posities index))
                    
     (define (dispatch msg)
       (cond
@@ -72,7 +76,8 @@
         ((eq? msg 'keer-punten) keer-punten)
         ((eq? msg 'keer-tekens) keer-tekens)
         ((eq? msg 'begin) begin)
-        ((eq? msg 'einde) einde) 
+        ((eq? msg 'einde) einde)
+        ((eq? msg 'pad-positie) pad-positie)
         ((eq? msg 'toren-in-pad?) toren-in-pad?)
         ((eq? msg 'dichste-punt) dichste-punt)
         (else "maak-pad-adt: ongeldig bericht")))

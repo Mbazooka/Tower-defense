@@ -4,10 +4,13 @@
 (define (maak-power-up-adt pad type)
   (let ((positie ((((pad 'begin)) 'positie-copieer)))
         (einde ((pad 'einde)))
+        (pad-lengte ((pad 'lengte)))
         (keer-punten (pad 'keer-punten))
         (keer-tekens (pad 'keer-tekens))
         (beweging-richting-x #t)
-        (beweging-zin +))
+        (beweging-zin +)
+        (tijd 0)
+        (bommen '()))
 
     ;; Volgende code gaat na indien de power-up het einde van het pad bereikt heeft
     (define (einde?)
@@ -41,8 +44,12 @@
       (cond
         ((eq? type 'tank)
          (volgende-positie!))        
-        ((eq? type 'bommen-regen) #f)))
+        ((eq? type 'bommen-regen) (set! tijd (+ tijd dt)))))
 
+    (define (maak-bommen! aantal)
+      (define (maak-hulp ctr)
+        (let ((num (random 
+    
     (define (dispatch msg)
       (cond
         ((eq? msg 'positie) positie)
@@ -50,6 +57,8 @@
         ((eq? msg 'update!) update!)
         ((eq? msg 'activeer!) activeer!)
         ((eq? msg 'geactiveerd?) geactiveerd?)
+        ((eq? msg 'tijd) tijd)
+        ((eq? msg 'bommen) bommen)
         ((eq? msg 'type) type)
         ((eq? msg 'soort) 'power-up)
         (else
