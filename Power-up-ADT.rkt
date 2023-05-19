@@ -46,16 +46,22 @@
          (volgende-positie!))        
         ((eq? type 'bommen-regen) (set! tijd (+ tijd dt)))))
 
+    ;; Volgende code maakt het gegeven aantal bommen
     (define (maak-bommen! aantal)
       (define (maak-hulp ctr)
-        (let ((num (random pad-lengte)))
+        (if (not (= ctr aantal))
+            (let* ((num (random pad-lengte))
+                   (pad-pos ((pad 'pad-positie) num)) ;; Geeft bepaalde positie in pad terug
+                   (bom (make-vector 4)))
+              (positie->rand! pad-pos *bomregen-rand-afstand* bom) 
+              (set! bommen (cons vec bommen)))))
+      (maak-hulp 0))
     
     (define (dispatch msg)
       (cond
         ((eq? msg 'positie) positie)
         ((eq? msg 'einde?) einde?)
         ((eq? msg 'update!) update!)
-        ((eq? msg 'activeer!) activeer!)
         ((eq? msg 'geactiveerd?) geactiveerd?)
         ((eq? msg 'tijd) tijd)
         ((eq? msg 'bommen) bommen)
