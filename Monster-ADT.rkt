@@ -59,36 +59,46 @@
     ;; Volgende code gaat na indien monster gestorven is of niet
     (define (gestorven?)
       (<= levens 0))
+
+    ;; Volgende code is abstractie en een hulpprocedure
+    (define type-vermindering car)
+    
+    (define (verminder-levens-hoeveelheid type)
+      (cond
+        ((eq? type 'bomwerp) *bomwerp-levens-verminder*)
+        ((eq? type 'bom) (random *bom-levens-verminder-min* *bom-levens-verminder-max*))
+        (else
+         *standaard-levens-verminder*)))
       
-    ;; Volgende code zal het leven van het monstertje aanpassen afhankelijk van het soort
-    (define (verminder-levens! . bomwerp)
-      (let ((test (and (pair? bomwerp) (eq? (car bomwerp) 'bomwerp)))) ;; Ga na indien bomwerp-projectiel de levens zal verminderen
+    ;; Volgende code zal het leven van het monstertje aanpassen afhankelijk van het soort    
+    (define (verminder-levens! . object)                               
+      (let* ((test (and (pair? object) (or (eq? (type-vermindering object) 'bomwerp)
+                                            (eq? (type-vermindering object) 'bom)))) ;; Ga na indien bomwerp-projectiel/bom de levens zal verminderen
+             (levens-vermindering (if test
+                                      (verminder-levens-hoeveelheid (type-vermindering object))
+                                      (verminder-levens-hoeveelheid 'standaard-vermindering))))
+                        
         (cond
-          ((eq? type 'rood) (set! levens (- levens 1)))
-          ((eq? type 'groen) (set! levens 0))
-          ((eq? type 'paars)  (cond                               
-                                ((and test (<= levens *bomwerp-projectiel-schade*))
-                                 (set! levens 0))
-                                ((and test (> levens *bomwerp-projectiel-schade*))
-                                 (set! levens (- levens *bomwerp-projectiel-schade*)))
-                                (else
-                                 (set! levens (- levens 1)))))
+          ((eq? type 'rood) (set! levens (- levens *standaard-levens-verminder*)))
+          ((eq? type 'groen) (set! levens *dood*))
+          ((eq? type 'paars)  (if (<= levens levens-vermindering)
+                                  (set! levens *dood*)
+                                  (set! levens (- levens levens-vermindering))))
                               
-          ((eq? type 'geel) (cond
-                              ((and test (> schild 2))
-                               (set! schild 0))
-                              ((and test (= schild 0))
-                               (set! levens 0))
-                              (test 
-                               (let ((rest (- *bomwerp-projectiel-schade* schild)))
-                                 (set! schild 0)
-                                 (if (<= levens rest)
-                                     (set! levens 0)
-                                     (set! levens (- levens 1)))))
-                              (else
-                               (if (= schild 0)
-                                   (set! levens (- levens 1))
-                                   (set! schild (- schild 1))))))                                                       
+          ((eq? type 'geel)
+           (cond
+             ((>= schild levens-vermindering)
+              (set! schild (- schild levens-vermindering)))
+             ((= schild 0)
+              (if (<= levens levens-vermindering)
+                  (set! levens *dood*)
+                  (set! levens (- levens levens-vermindering))))
+             (else 
+              (let ((rest (- levens-vermindering schild)))
+                (set! schild 0)
+                (if (<= levens rest)
+                    (set! levens *dood*)
+                    (set! levens (- levens rest)))))))                                                      
           (else
            "monster-type: ongeldig type"))))
 

@@ -66,8 +66,10 @@
       (>= tijd *bomregen-aftel-tijd))
 
     ;; Volgende code zal voor elke bom iets doen
-    (define (bom-explosie! explosie)
-      (for-each explosie bommen))
+    (define (bom-explosie! explosie-procedure)
+      (for-each (lambda (bom)
+                  (explosie-procedure bom type))
+                bommen))
    
     (define (dispatch msg)
       (cond

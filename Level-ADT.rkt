@@ -141,7 +141,11 @@
       (tanken-verminder-monster-levens! activeerde-tank)
       (set! activeerde-tank (filter (lambda (tank) (not ((tank 'einde?)))) activeerde-tank)) ;; Haalt alle voorbijgegaande tanken weg
       (for-each (lambda (tank) ((tank 'update!) dt)) activeerde-tank)
-      (for-each (lambda (bom) ((bom 'update!) dt)) activeerde-bommen-regen))
+      (for-each (lambda (bom) ((bom 'update!) dt)) activeerde-bommen-regen)
+      (for-each (lambda (bom)
+                  (if (bom 'tijd-afgelopen?)
+                      ((bom 'bom-explosie!) explodeer-monsters-in-buurt!)))
+                  activeerde-bommen-regen))                      
 
     ;; Volgende code zoekt het monster die volgt op het gegeven monster
     (define (monster-na-monster monster)
@@ -209,7 +213,7 @@
       (if (not (einde?))
           (begin
             (set! monster-rij '())
-            (set! monsters '()))))
+            (set! monsters '()))))                 
                                    
     (define (dispatch msg)
       (cond

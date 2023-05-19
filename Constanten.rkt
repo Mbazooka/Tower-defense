@@ -110,7 +110,6 @@
 (define *net-blijf-liggen-tijd* 5000)
 (define *net-vertraag-tijd* 5000)
 (define *vuurbal-hits-snelheid-verander* 0.025) ;; Vertraging vuurbal-hits
-(define *bomwerp-projectiel-schade* 3)
 (define *bomwerp-projectiel-ligtijd* 3000)
 (define *net-projectiel-rand-afstand* 2)
 (define *bomwerp-projectiel-rand-afstand* 4)
@@ -152,3 +151,8 @@
 (define *schild-geel-monster* 3)
 (define *levens-paars-monster* 4)
 (define *paars-monster-rand-afstand* 4)
+(define *dood* 0)
+(define *standaard-levens-verminder* 1)
+(define *bomwerp-levens-verminder* 3)
+(define *bom-levens-verminder-min* 1)
+(define *bom-levens-verminder-max* 3) ;; Dit is 3 vermits het maar tot de waarde 2 gaat bekijken in random functie
