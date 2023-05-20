@@ -14,7 +14,7 @@
         ((eq? type 'tank) (set! kost-winst *tank-kost*))
         ((eq? type 'bommen-regen) (set! kost-winst *bommen-regen-kost*))
         ((eq? type 'rood) (set! kost-winst *rood-groen-monster-winst*))
-        ((eq? type 'geel) (set! kost-winstst *geel-monster-winst*))
+        ((eq? type 'geel) (set! kost-winst *geel-monster-winst*))
         ((eq? type 'paars) (set! kost-winst *paars-monster-winst*))
         ((eq? type 'level) (set! kost-winst *level-winst*))  
         (else "Ongeldig type"))

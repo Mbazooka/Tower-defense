@@ -69,7 +69,7 @@
         (for-each (lambda (monster)                    
                     ((geld 'voeg-geld-toe!) (monster 'type) #f) ;; Zal geld updaten, en indien het een groen monster is, een rood monster spawnen
                     (cond                      
-                      ((eq? (monster 'type) 'groen) (zet-terug-monster-lijst! monster ((monster 'actie-monster-sterven!)) monsters)) ;; Zal rood monster doen spawnen van groen monster
+                      ((eq? (monster 'type) 'groen) (if (not ((monster 'geen-actie-groen-monster?))) (zet-terug-monster-lijst! monster ((monster 'actie-monster-sterven!)) monsters))) ;; Zal rood monster doen spawnen van groen monster
                       ((eq? (monster 'type) 'paars) (verhoog-levens-paars-monster! ((monster 'actie-monster-sterven!))))))                    
                   (filter (lambda (monster) ((monster 'gestorven?))) monsters)))
 
@@ -117,8 +117,10 @@
                                              ((toren 'in-buurt?) monster))
                                            monsters))))
                (if (> aantal *meerdere-monsters*)
-                   ((toren 'schiet!) monster pad))))
-            (((toren 'in-buurt?) monster) ((toren 'schiet!) monster pad))
+                   (begin
+                     ((toren 'schiet!) monster pad)
+                     ((toren 'update-afvuur-tijd!) dt))))) ;; Na het schieten, moet tijd up gedate worden
+            (((toren 'in-buurt?) monster) ((toren 'schiet!) monster pad) ((toren 'update-afvuur-tijd!) dt)) ;; Na het schieten, moet tijd up gedate worden
             (else
              (if (not (null? (cdr monsters)))
                  (toren-schiet-y/n toren (laatste-monster-weglaten monsters)))))))    
@@ -126,9 +128,7 @@
           (for-each
            (lambda (toren)
              (if ((toren 'schieten?))
-                 (begin 
-                   (toren-schiet-y/n toren monsters)
-                   ((toren 'update-afvuur-tijd!) dt)) ;; Na het schieten, moet tijd up gedate worden
+                 (toren-schiet-y/n toren monsters)
                  ((toren 'update-afvuur-tijd!) dt)))
            torens)))
 
@@ -145,10 +145,10 @@
       (for-each (lambda (bom-regen)
                   (if ((bom-regen 'tijd-afgelopen?))
                       ((bom-regen 'bom-explosie!) explodeer-monsters-in-buurt!)))
-                  activeerde-bommen-regen)
+                activeerde-bommen-regen)
       (set! activeerde-bommen-regen (filter (lambda (bom-regen)
                                               (not ((bom-regen 'tijd-afgelopen?)))) ;; Haalt alle afgehandelte bom-regens
-                                              activeerde-bommen-regen)))
+                                            activeerde-bommen-regen)))
 
     ;; Volgende code zoekt het monster die volgt op het gegeven monster
     (define (monster-na-monster monster)

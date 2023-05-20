@@ -20,9 +20,9 @@
     (define (bepaal-initieel!)
       (cond
         ((eq? type 'rood) (set! levens *levens-rood-monster*))
-        ((eq? type 'groen) (set! levens *levens-groen-monster*))
+        ((eq? type 'groen) (set! levens (- *levens-groen-monster* 1))) ;; - 1 door special handeling van groen monster
         ((eq? type 'geel) (set! levens *levens-geel-monster*)
-                          (set! monster-loop-snelheid *geel-monster-loop-snelheid*) ;; Enkel hier geassigned voor efficiente
+                          (set! monster-loop-snelheid *geel-monster-loop-snelheid*) 
                           (set! schild *schild-geel-monster*))        
         ((eq? type 'paars) (set! levens *levens-paars-monster*))
         (else
@@ -60,6 +60,10 @@
     (define (gestorven?)
       (<= levens 0))
 
+    ;; Volgende code gaat na indien groen-monster een actie moet doen (indien levens verminderen > 1)
+    (define (geen-actie-groen-monster?)
+      (< levens 0))
+
     ;; Volgende code is abstractie en een hulpprocedure
     (define type-vermindering car)
     
@@ -80,7 +84,7 @@
                         
         (cond
           ((eq? type 'rood) (set! levens (- levens *standaard-levens-verminder*)))
-          ((eq? type 'groen) (set! levens *dood*))
+          ((eq? type 'groen) (set! levens (- levens levens-vermindering)))
           ((eq? type 'paars)  (if (<= levens levens-vermindering)
                                   (set! levens *dood*)
                                   (set! levens (- levens levens-vermindering))))
@@ -170,12 +174,13 @@
         ((eq? msg 'volgende-positie!) volgende-positie!)
         ((eq? msg 'einde?) einde?)
         ((eq? msg 'gestorven?) gestorven?)
+        ((eq? msg 'geen-actie-groen-monster?) geen-actie-groen-monster?)
         ((eq? msg 'actie-monster-sterven!) actie-monster-sterven!)
         ((eq? msg 'actie-monster-levend!) actie-monster-levend!)
         ((eq? msg 'voeg-net-projectiel-toe!) voeg-net-projectiel-toe!)
         ((eq? msg 'update-tijd-net-projectielen!) update-tijd-net-projectielen!)
         ((eq? msg 'net-al-vetraagd?) net-al-vetraagd?)
         ((eq? msg 'haal-weg-verlopen-net-projectielen!) haal-weg-verlopen-net-projectielen!) 
-        ((eq? msg 'soort) 'monster) ;; Toegevoegd om code duplicatie bij teken-adt te vermijden
+        ((eq? msg 'soort) 'monster)
         (else "maak-monster-adt: ongeldig bericht")))
     dispatch))
