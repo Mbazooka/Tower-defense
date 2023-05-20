@@ -60,13 +60,16 @@
       (set! spel-lus-gestart? #t)
       (if ((levens 'dood?))
           ((level 'level-einde!)))
-      (if (>= monster-tijd *monster-spawn-frequentie*) ;; Zal monsters op scherm updaten na ongeveer 2 seconden
+      (if (= monster-tijd 0) ;; Zal monsters op scherm updaten na ongeveer 2 seconden
           (begin
             ((level 'update-monsters!) dt 'toevoegen)
-            (set! monster-tijd 0))
-          ((level 'update-monsters!) dt))
+            (set! monster-tijd (+ monster-tijd dt)))
+          (begin
+            ((level 'update-monsters!) dt)
+            (if (>= monster-tijd *monster-spawn-frequentie*)
+                (set! monster-tijd 0)
+                (set! monster-tijd (+ monster-tijd dt)))))
       ((teken-adt 'teken-monsters!) (level 'monsters))
-      (set! monster-tijd (+ monster-tijd dt))
       ((level 'update-power-ups!) dt)
       ((level 'update-torens-projectielen-afschieten!) pad dt)
       ((level 'update-torens-projectielen-positie!) dt)        
