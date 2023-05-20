@@ -152,19 +152,14 @@
 
     ;; Volgende code is abstractie
     (define neem-power-up car)
+    (define (neem-positie-lbh bom) (vector-ref bom 2)) ;; Positie linker boven hoek
 
     ;; Volgende code is om bomregen-power-ups te tekenen
     (define (teken-bommen-regen-power-up! bommen-regen-power-up)
       (let ((bommen-lijst ((neem-power-up bommen-regen-power-up) 'bommen)))
         (for-each (lambda (bom)
-                    (let* ((aan-te-passen-positie (vector-ref bom 2))
+                    (let* ((aan-te-passen-positie (neem-positie-lbh bom))
                           (teken-positie (maak-positie-adt (+ (aan-te-passen-positie 'x) 2) (+ (aan-te-passen-positie 'y) 2)))) ;; Om mooier te tekenen op het scherm
-                      (display "x-positie: ")
-                      (display (aan-te-passen-positie 'x))
-                      (display " /// ")
-                      (display "y-positie: ")
-                      (display (aan-te-passen-positie 'y))
-                      (newline)
                       (set! bommen-regen-power-ups-tiles-dict (cons (teken-object-scherm! teken-positie "Images/bomwerp.png" "Images/bomwerp-mask.png" laag-bommen-regen-pu #f)
                                                                     bommen-regen-power-ups-tiles-dict))))
                     bommen-lijst)))
