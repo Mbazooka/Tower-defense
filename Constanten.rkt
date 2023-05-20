@@ -50,7 +50,7 @@
 (define *tank-knop-hoogte-einde* (* 5 *px-hoogte*))
 
 (define *bommen-regen-knop-hoogte-start* (* 7.3 *px-hoogte*))
-(define *bommen-regen-knop-hoogte-einde* (* 9 *px-hoogte*))
+(define *bommen-regen-knop-hoogte-einde* (* 10 *px-hoogte*))
 
 ;; Tekst constanten voor op menu
 (define *tekst-toren-breedte* (+ *px-breedte* 10)) ;; + 5 want oranje rand centreert de tekst niet
@@ -101,7 +101,7 @@
 (define *bomwerp-toren-buurt-rand-afstand* 7)
 (define *basis-toren-afvuur-frequentie* 3000) ;; Toren schiet frequentie (2000)
 (define *net-toren-afvuur-frequentie* 6000) ;; Toren schiet frequentie voor net toren
-(define *vuurbal-toren-afvuur-frequentie 5000) 
+(define *vuurbal-toren-afvuur-frequentie* 5000) 
 (define *bomwerp-toren-afvuur-frequentie* 10000)
 (define *meerdere-monsters* 2)
 

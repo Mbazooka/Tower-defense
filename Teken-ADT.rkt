@@ -58,7 +58,44 @@
     ((laag-user-interface 'add-drawable!) tank-tegel)
     ((laag-user-interface 'add-drawable!) bommen-regen-tegel)
 
-    ;; Volgende code is om tekst op user interface te plaatsen om  
+    ;; Volgende code is om tekst op user interface te plaatsen om
+    (define toren-1-naam&&prijs-tegel (make-tile *toren-benaming/prijs-tekst-breedte* *algemeen-tekst-hoogte*))
+    (define toren-2-naam&&prijs-tegel (make-tile *toren-benaming/prijs-tekst-breedte* *algemeen-tekst-hoogte*))
+    (define toren-3-naam&&prijs-tegel (make-tile *toren-benaming/prijs-tekst-breedte* *algemeen-tekst-hoogte*))
+    (define toren-4-naam&&prijs-tegel (make-tile *toren-benaming/prijs-tekst-breedte* *algemeen-tekst-hoogte*))
+    (define tank-pu-naam&&prijs-tegel (make-tile *toren-benaming/prijs-tekst-breedte* *algemeen-tekst-hoogte*))
+    (define bommen-regen-pu-naam&&prijs-tegel (make-tile *toren-benaming/prijs-tekst-breedte* *algemeen-tekst-hoogte*))
+
+    ((toren-1-naam&&prijs-tegel 'draw-text!) (string-append "Basis (" (number->string *basis-toren-kost*) ")")  *tekst-font* 0 0 "orange") ;; Algemeen vandaar met append
+    ((toren-1-naam&&prijs-tegel 'set-x!) *start-data-menu*)
+    ((toren-1-naam&&prijs-tegel 'set-y!) *toren-1-knop-hoogte-einde*)
+    ((laag-user-interface 'add-drawable!) toren-1-naam&&prijs-tegel)
+    
+    
+    ((toren-2-naam&&prijs-tegel 'draw-text!) (string-append "Net (" (number->string *net-toren-kost*) ")")  *tekst-font* 0 0 "orange")
+    ((toren-2-naam&&prijs-tegel 'set-x!) *start-data-menu*)
+    ((toren-2-naam&&prijs-tegel 'set-y!) *toren-2-knop-hoogte-einde*)
+    ((laag-user-interface 'add-drawable!) toren-2-naam&&prijs-tegel)
+    
+    ((toren-3-naam&&prijs-tegel 'draw-text!) (string-append "Vuurbal (" (number->string *vuurbal-toren-kost*) ")")  *tekst-font* 0 0 "orange")
+    ((toren-3-naam&&prijs-tegel 'set-x!) *start-data-menu*)
+    ((toren-3-naam&&prijs-tegel 'set-y!) *toren-3-knop-hoogte-einde*)
+    ((laag-user-interface 'add-drawable!) toren-3-naam&&prijs-tegel)
+    
+    ((toren-4-naam&&prijs-tegel 'draw-text!) (string-append "Bomwerp (" (number->string *bomwerp-toren-kost*) ")")  *tekst-font* 0 0 "orange")
+    ((toren-4-naam&&prijs-tegel 'set-x!) *start-data-menu*)
+    ((toren-4-naam&&prijs-tegel 'set-y!) *toren-4-knop-hoogte-einde*)
+    ((laag-user-interface 'add-drawable!) toren-4-naam&&prijs-tegel)
+
+    ((tank-pu-naam&&prijs-tegel 'draw-text!) (string-append "Tank (" (number->string *tank-kost*) ")")  *tekst-font* 0 0 "orange") ;; Algemeen vandaar met append
+    ((tank-pu-naam&&prijs-tegel 'set-x!) *start-data-menu-power-up*)
+    ((tank-pu-naam&&prijs-tegel 'set-y!) *tank-knop-hoogte-einde*)
+    ((laag-user-interface 'add-drawable!) tank-pu-naam&&prijs-tegel)
+    
+    ((bommen-regen-pu-naam&&prijs-tegel 'draw-text!) (string-append "Bom (" (number->string *bommen-regen-kost*) ")")  *tekst-font* 0 0 "orange") ;; Algemeen vandaar met append
+    ((bommen-regen-pu-naam&&prijs-tegel 'set-x!) *start-data-menu-power-up*)
+    ((bommen-regen-pu-naam&&prijs-tegel 'set-y!) *bommen-regen-knop-hoogte-einde*)
+    ((laag-user-interface 'add-drawable!) bommen-regen-pu-naam&&prijs-tegel)
 
     ;; Volgende is om het geld en de levens van de speler voor te stellen.
     (define laag-geld&&levens&&level ((venster 'new-layer!)))

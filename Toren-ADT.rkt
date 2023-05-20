@@ -15,7 +15,7 @@
                                  *basis-toren-buurt-rand-afstand*)
         ((eq? type 'net-toren) (set! afvuur-frequentie *net-toren-afvuur-frequentie*)
                                *net-toren-buurt-rand-afstand*)                             
-        ((eq? type 'vuurbal-toren) (set! afvuur-frequentie *vuurbal-toren-afvuur-frequentie)
+        ((eq? type 'vuurbal-toren) (set! afvuur-frequentie *vuurbal-toren-afvuur-frequentie*)
                                    *vuurbal-toren-buurt-rand-afstand*)                                  
         ((eq? type 'bomwerp-toren) (set! afvuur-frequentie *bomwerp-toren-afvuur-frequentie*)
                                    *bomwerp-toren-buurt-rand-afstand*)
