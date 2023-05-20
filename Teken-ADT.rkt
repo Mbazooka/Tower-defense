@@ -7,7 +7,7 @@
         (monster-tiles-dict (cons 'tegels '())) ;; Tagged omdat 1ste conscell veranderd moet worden/ Dit zijn monster--tegel associaties
         (projectielen-tiles-dict (cons 'tegels '())) ;; Dit zijn projectiel--tegel associaties
         (tank-power-ups-tiles-dict (cons 'tegels '())) ;; Dit zijn tank-power-up--tegel associaties
-        (bommen-regen-power-ups-tiles-dict (cons 'tegels '()))) ;; Dit zijn bom-regen-power-up--tegel associaties
+        (bommen-regen-power-ups-tiles-dict '())) 
 
     ;; Volgende code is om een achtergrond te hebben waarop een pad gemaakt wordt
     (define laag-achtergrond ((venster 'new-layer!)))
@@ -130,9 +130,9 @@
         ((tegel 'set-y!) scherm-y)))
 
     ;; Maakt tegel en zet tegel op juiste plaats op laag  
-    (define (teken-object-scherm! positie object-bitmap object-mask object-laag) 
+    (define (teken-object-scherm! positie object-bitmap object-mask object-laag tank?) 
       (let ((tegel-van-object (make-bitmap-tile object-bitmap object-mask)))
-        (bepaal-tegel-px-positie! positie tegel-van-object #f)
+        (bepaal-tegel-px-positie! positie tegel-van-object tank?)
         ((object-laag 'add-drawable!) tegel-van-object)
         tegel-van-object)) ;; Tegel teruggeven want later nodig om dictionary van monsters-tegel of projectielen-tegel te maken
     
@@ -143,9 +143,31 @@
         (define (hulp-teken-pad! ctr)
           (if (not (= ctr lengte-pad))
               (begin
-                (teken-object-scherm! (vector-ref pad-posities ctr) "Images/lava.jpeg" "Images/Lava-mask.png" laag-pad)
+                (teken-object-scherm! (vector-ref pad-posities ctr) "Images/lava.jpeg" "Images/Lava-mask.png" laag-pad #f)
                 (hulp-teken-pad! (+ ctr 1)))))
         (hulp-teken-pad! 0)))
+
+    ;; Volgende code is een venster om bommen-regen-power-ups te plaatsen
+    (define laag-bommen-regen-pu ((venster 'new-layer!)))
+
+    ;; Volgende code is abstractie
+    (define neem-power-up car)
+
+    ;; Volgende code is om bomregen-power-ups te tekenen
+    (define (teken-bommen-regen-power-up! bommen-regen-power-up)
+      (let ((bommen-lijst ((neem-power-up bommen-regen-power-up) 'bommen)))
+        (for-each (lambda (bom)
+                    (let* ((aan-te-passen-positie (vector-ref bom 2))
+                          (teken-positie (maak-positie-adt (+ (aan-te-passen-positie 'x) 2) (+ (aan-te-passen-positie 'y) 2)))) ;; Om mooier te tekenen op het scherm
+                      (display "x-positie: ")
+                      (display (aan-te-passen-positie 'x))
+                      (display " /// ")
+                      (display "y-positie: ")
+                      (display (aan-te-passen-positie 'y))
+                      (newline)
+                      (set! bommen-regen-power-ups-tiles-dict (cons (teken-object-scherm! teken-positie "Images/bomwerp.png" "Images/bomwerp-mask.png" laag-bommen-regen-pu #f)
+                                                                    bommen-regen-power-ups-tiles-dict))))
+                    bommen-lijst)))
 
     ;; Volgende code is om de correctie bitmap te verkrijgen afhankelijk van het type van het object (voor algemeenheid van sommige code)
     (define (bitmap-type object object-type)
@@ -170,8 +192,7 @@
            ((eq? object-type 'bomwerp) *bomwerp-projectiel-bitmap&&mask*)))
         ((eq? object 'power-up)
          (cond
-           ((eq? object-type 'tank) *tank-power-up-bitmap&&mask*)
-           ((eq? object-type 'bommen-regen) *bommen-regen-bitmap&&mask*)))
+           ((eq? object-type 'tank) *tank-power-up-bitmap&&mask*)))
         (else
          "Ongeldig object")))
 
@@ -182,7 +203,7 @@
     (define (teken-toren! toren)
       (let ((toren-positie (toren 'positie)))
         (let ((bitmap-adressen (bitmap-type (toren 'soort) (toren 'type))))
-          (teken-object-scherm! (maak-positie-adt (- (toren-positie 'x) 1) (- (toren-positie 'y) 1)) (bitmap bitmap-adressen) (mask bitmap-adressen) laag-toren)))) ;; nieuwe positie om toren te centreren
+          (teken-object-scherm! (maak-positie-adt (- (toren-positie 'x) 1) (- (toren-positie 'y) 1)) (bitmap bitmap-adressen) (mask bitmap-adressen) laag-toren #f)))) ;; nieuwe positie om toren te centreren
 
     ;; Volgende code gaat na welke toren geselecteerd werd van de menu
     (define (toren-selectie x y)
@@ -219,14 +240,14 @@
                 (haal-weg-tiles-dict! objecten (rest-dict diction) diction-te-verwijderen laag)))))
 
     ;; Volgende code is om tiles op het scherm te voegen die er nog niet op stonden
-    (define (voeg-toe-tiles-dict! huidige-object diction-toevoegen laag) ;; Zit het in de lijst van objecten maar niet in de dictionary dan moet je tiles bijvoegen
+    (define (voeg-toe-tiles-dict! huidige-object diction-toevoegen laag tank?) ;; Zit het in de lijst van objecten maar niet in de dictionary dan moet je tiles bijvoegen
       (if (null? huidige-object)
           #f
           (let ((object (car huidige-object)))
             (if (not (assq object (rest-dict diction-toevoegen)))
                 (let ((bitmap-adressen (bitmap-type (object 'soort) (object 'type))))
-                  (insert! object (teken-object-scherm! (object 'positie) (bitmap bitmap-adressen) (mask bitmap-adressen) laag) diction-toevoegen))
-                (voeg-toe-tiles-dict! (cdr huidige-object) diction-toevoegen laag)))))
+                  (insert! object (teken-object-scherm! (object 'positie) (bitmap bitmap-adressen) (mask bitmap-adressen) laag tank?) diction-toevoegen))
+                (voeg-toe-tiles-dict! (cdr huidige-object) diction-toevoegen laag tank?)))))
     
     ;; Volgende code is om dynamische objecten te tekenen (objecten waarvan ze moeten tevoorschijn komen, een positie bereiken en dan verdwijnen)
     (define (teken-dynamisch-object! objecten tiles laag tank?)
@@ -235,7 +256,7 @@
        (lambda (ass) 
          (bepaal-tegel-px-positie! ((sleutel ass) 'positie) (waarde ass) tank?)) 
        (rest-dict tiles))
-      (voeg-toe-tiles-dict! objecten tiles laag))
+      (voeg-toe-tiles-dict! objecten tiles laag tank?)) 
     
     ;; Volgende code is een venster om monsters te plaatsen
     (define laag-monster ((venster 'new-layer!)))
@@ -257,13 +278,6 @@
     ;; Volgende code is om tank-power-ups te tekenen
     (define (teken-tank-power-up! tank-power-ups)
       (teken-dynamisch-object! tank-power-ups tank-power-ups-tiles-dict laag-tank-pu #t))
-
-    ;; Volgende code is een venster om bommen-regen-power-ups te plaatsen
-    (define laag-bommen-regen-pu ((venster 'new-layer!)))
-
-    ;; Volgende code is om bomregen-power-ups te tekenen
-    (define (teken-bommen-regen-power-up! bommen-regen-power-ups)
-      (teken-dynamisch-object! bommen-regen-power-ups bommen-regen-power-ups-tiles-dict laag-bommen-regen-pu #f))
            
     ;; Volgende code is om muis klikken te implementeren
     (define (set-muis-toets-procedure! proc)

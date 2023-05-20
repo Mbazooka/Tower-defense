@@ -67,7 +67,7 @@
           ((level 'update-monsters!) dt))
       ((teken-adt 'teken-monsters!) (level 'monsters))
       (set! monster-tijd (+ monster-tijd dt))
-      ((level 'update-power-ups!) dt)    
+      ((level 'update-power-ups!) dt)
       ((level 'update-torens-projectielen-afschieten!) pad dt)
       ((level 'update-torens-projectielen-positie!) dt)        
       ((teken-adt 'teken-projectielen!) ((level 'verkrijg-projectielen)))
@@ -97,17 +97,17 @@
         ((and (eq? toestand 'pressed) (eq? toets #\b) spel-lus-gestart?)
          (power-up-handelingen! 'bommen-regen bommen-regen-power-up))))
 
-     ;; Volgende code zijn abstracties
+    ;; Volgende code zijn abstracties
     (define volgende-power-up car)
     (define rest-power-ups cdr)
     
     ;; Volgende code is algemene code om power-up te activeren en te tekenen
     (define (power-up-handelingen! power-up-type power-up-lijst)
-      (let*  ((bool-1 (pair? power-up-lijst))
-              (bool-2 (eq? power-up-type 'tank))
+      (let*  ((bool-1 (pair? power-up-lijst)) ; #t
+              (bool-2 (eq? power-up-type 'tank)) ; #f
               (power-up (if bool-1
-                              (volgende-power-up power-up-lijst)
-                              #f))
+                            (volgende-power-up power-up-lijst)
+                            #f))
               (teken-bericht (if bool-2 'teken-tank-power-up! 'teken-bommen-regen-power-up!))
               (verkrijg-objecten-bericht (if bool-2 'verkrijg-tank-power-ups 'verkrijg-bommen-regen-power-ups)))
         

@@ -19,6 +19,13 @@
             (let* ((num (random pad-lengte))
                    (pad-pos ((pad 'pad-positie) num)) ;; Geeft bepaalde positie in pad terug
                    (bom (make-vector 4)))
+;              (display "num: ")
+;              (display num)
+;              (display " / ")
+;              (display (pad-pos 'x))
+;              (display " / ")
+;              (display (pad-pos 'y))
+;              (newline)
               (positie->rand! pad-pos *bomregen-rand-afstand* bom) 
               (set! bommen (cons bom bommen))
               (maak-hulp (+ ctr 1)))))
@@ -71,6 +78,16 @@
       (for-each (lambda (bom)
                   (explosie-procedure bom 'bom))
                 bommen))
+
+    (define (display-vec)
+      (for-each
+       (lambda (bom)
+         (display ((vector-ref bom 0) 'x))
+         (display " / ")
+         (display ((vector-ref bom 0) 'y))
+         (newline))
+       bommen)
+      (newline))
    
     (define (dispatch msg)
       (cond
@@ -82,6 +99,7 @@
         ((eq? msg 'bommen) bommen)
         ((eq? msg 'tijd-afgelopen?) tijd-afgelopen?)
         ((eq? msg 'bom-explosie!) bom-explosie!)
+        ((eq? msg 'display) display-vec)
         ((eq? msg 'type) type)
         ((eq? msg 'soort) 'power-up)
         (else
