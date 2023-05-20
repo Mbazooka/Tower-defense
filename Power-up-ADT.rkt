@@ -15,7 +15,7 @@
     ;; Volgende code maakt het gegeven aantal bommen
     (define (maak-bommen!)
       (define (maak-hulp ctr)
-        (if (not (= ctr *bomregen-aantal-bommen*))
+        (if (not (= ctr *bommen-regen-aantal-bommen*))
             (let* ((num (random pad-lengte))
                    (pad-pos ((pad 'pad-positie) num)) ;; Geeft bepaalde positie in pad terug
                    (bom (make-vector 4)))
@@ -26,7 +26,7 @@
 ;              (display " / ")
 ;              (display (pad-pos 'y))
 ;              (newline)
-              (positie->rand! pad-pos *bomregen-rand-afstand* bom) 
+              (positie->rand! pad-pos *bommen-regen-rand-afstand* bom) 
               (set! bommen (cons bom bommen))
               (maak-hulp (+ ctr 1)))))
       (maak-hulp 0))
@@ -71,7 +71,7 @@
 
     ;; Volgende code gaat na als de tijd afgelopen is
     (define (tijd-afgelopen?)
-      (>= tijd *bomregen-aftel-tijd))
+      (>= tijd *bommen-regen-aftel-tijd))
 
     ;; Volgende code zal voor elke bom iets doen
     (define (bom-explosie! explosie-procedure)

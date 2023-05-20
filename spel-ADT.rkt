@@ -14,8 +14,8 @@
          (bommen-regen-power-up '())
          (level-teller 1)
          (ronde-teller 1)
-         (tank-cooldown-teller 0)
-         (bommen-regen-cooldown-teller 0))
+         (power-up-tijd-actief 0)
+         (power-up-afkoeling 0))
 
     ;; Tekent pad van het spel
     ((teken-adt 'teken-pad!) pad) 
@@ -72,7 +72,14 @@
       ((teken-adt 'teken-monsters!) (level 'monsters))
       ((level 'update-power-ups!) dt)
       ((level 'update-torens-projectielen-afschieten!) pad dt)
-      ((level 'update-torens-projectielen-positie!) dt)        
+      ((level 'update-torens-projectielen-positie!) dt)
+      (if (afkoeling?)
+          (begin
+            (set! power-up-afkoeling (+ power-up-afkoeling dt))
+            (if (>= power-up-afkoeling *power-up-afkoel-tijd*)
+                (set! power-up-afkoeling 0))))
+      (display power-up-afkoeling)
+      (display " // ")
       ((teken-adt 'teken-projectielen!) ((level 'verkrijg-projectielen)))
       ((teken-adt 'teken-tank-power-up!) (level 'verkrijg-tank-power-ups))
       ((teken-adt 'update-tekst-teken!) 'geld (geld 'status))
@@ -95,16 +102,16 @@
          ((teken-adt 'set-spel-lus!) spel-lus-procedure))
         ((and (eq? toestand 'pressed) (eq? toets 'escape))
          ((level 'level-einde!)))
-        ((and (eq? toestand 'pressed) (eq? toets #\t) spel-lus-gestart?)
+        ((and (eq? toestand 'pressed) (eq? toets #\t) spel-lus-gestart?  (not (afkoeling?)))
          (power-up-handelingen! 'tank tank-power-up))
-        ((and (eq? toestand 'pressed) (eq? toets #\b) spel-lus-gestart?)
+        ((and (eq? toestand 'pressed) (eq? toets #\b) spel-lus-gestart? (not (afkoeling?)))
          (power-up-handelingen! 'bommen-regen bommen-regen-power-up))))
 
     ;; Volgende code zijn abstracties
     (define volgende-power-up car)
     (define rest-power-ups cdr)
     
-    ;; Volgende code is algemene code om power-up te activeren en te tekenen
+    ;; Volgende code is algemene code om power-ups te activeren en te tekenen
     (define (power-up-handelingen! power-up-type power-up-lijst)
       (let*  ((bool-1 (pair? power-up-lijst)) ; #t
               (bool-2 (eq? power-up-type 'tank)) ; #f
@@ -121,9 +128,13 @@
         (if power-up
             (begin
               ((level 'voeg-power-up-toe!) power-up-type power-up)
-              ((teken-adt teken-bericht) (level verkrijg-objecten-bericht))))))
-       
-                   
+              ((teken-adt teken-bericht) (level verkrijg-objecten-bericht))
+              (set! power-up-afkoeling (+ power-up-afkoeling 1)))))) ;; Trucje om power-up-afkoeling verschillend van 0 te maken (voor in afkoeling staat te komen-
+
+    ;; Volgende code gaat na als de power-ups in cool-down zijn
+    (define (afkoeling?)
+      (not (= power-up-afkoeling 0)))
+                                    
     (define (dispatch msg)
       (cond 
         ((eq? msg 'start!) (start!))

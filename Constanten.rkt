@@ -122,10 +122,11 @@
 
 ;; Power-up tijd en andere constanten
 (define *tank-rijd-snelheid* 1)
-(define *power-afkoel-tijd* 15000)
-(define *bomregen-aftel-tijd 3000)
-(define *bomregen-aantal-bommen* 5)
-(define *bomregen-rand-afstand* 2)
+(define *power-up-afkoel-tijd* 20000)
+(define *bommen-regen-aftel-tijd 3000)
+(define *bommen-regen-aantal-bommen* 5)
+(define *bommen-regen-rand-afstand* 2)
+(define *bommen-regen-actief-tijd* 3000) ;; Kan niet zeggen hoe lang tank actief-blijft, varieert van pad
 
 ;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid
 (define *geld-begin-bedrag* 5000) ;; Verander achteraf
