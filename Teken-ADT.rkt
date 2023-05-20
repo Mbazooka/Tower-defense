@@ -7,7 +7,7 @@
         (monster-tiles-dict (cons 'tegels '())) ;; Tagged omdat 1ste conscell veranderd moet worden/ Dit zijn monster--tegel associaties
         (projectielen-tiles-dict (cons 'tegels '())) ;; Dit zijn projectiel--tegel associaties
         (tank-power-ups-tiles-dict (cons 'tegels '())) ;; Dit zijn tank-power-up--tegel associaties
-        (bommen-regen-power-ups-tiles-dict '())) 
+        (bommen-regen-power-ups-tiles '())) 
 
     ;; Volgende code is om een achtergrond te hebben waarop een pad gemaakt wordt
     (define laag-achtergrond ((venster 'new-layer!)))
@@ -31,10 +31,10 @@
     (define toren-2-tegel (make-bitmap-tile "Images/Toren-2-Game.png" "Images/Toren-2-game-mask.png"))
     (define toren-3-tegel (make-bitmap-tile "Images/Toren-3-Game.png" "Images/Toren-3-game-mask.png"))
     (define toren-4-tegel (make-bitmap-tile "Images/Toren-4-Game.png" "Images/Toren-4-game-mask.png"))
-    (define power-up-1-tegel (make-bitmap-tile "Images/Tank-knop.png"))
-    (define power-up-2-tegel (make-bitmap-tile "Images/Bomregen-knop.png"))
-    (define power-up-1-afkoel-tegel (make-bitmap-tile "Images/Cooldown.png"))
-    (define power-up-2-afkoel-tegel (make-bitmap-tile "Images/Cooldown.png"))
+    (define tank-tegel (make-bitmap-tile "Images/Tank-knop.png"))
+    (define bommen-regen-tegel (make-bitmap-tile "Images/Bommen-regen-knop.png"))
+    (define tank-afkoel-tegel (make-bitmap-tile "Images/afkoeling.png"))
+    (define bommen-regen-afkoel-tegel (make-bitmap-tile "Images/afkoeling.png"))
     ((toren-1-tegel 'set-x!) *start-data-menu*) 
     ((toren-1-tegel 'set-y!) *toren-1-knop-hoogte-start*)
     ((toren-2-tegel 'set-x!) *start-data-menu*) 
@@ -43,20 +43,22 @@
     ((toren-3-tegel 'set-y!) *toren-3-knop-hoogte-start*)
     ((toren-4-tegel 'set-x!) *start-data-menu*) 
     ((toren-4-tegel 'set-y!) *toren-4-knop-hoogte-start*)
-    ((power-up-1-tegel 'set-x!) *start-data-menu-power-up*)
-    ((power-up-1-tegel 'set-y!) *power-up-1-knop-hoogte-start*)
-    ((power-up-1-afkoel-tegel 'set-x!) *start-data-menu-power-up*)
-    ((power-up-1-afkoel-tegel 'set-y!) *power-up-1-knop-hoogte-start*)
-    ((power-up-2-tegel 'set-x!) *start-data-menu-power-up*)
-    ((power-up-2-tegel 'set-y!) *power-up-2-knop-hoogte-start*)
-    ((power-up-2-afkoel-tegel 'set-x!) *start-data-menu-power-up*)
-    ((power-up-2-afkoel-tegel 'set-y!) *power-up-2-knop-hoogte-start*)
+    ((tank-tegel 'set-x!) *start-data-menu-power-up*)
+    ((tank-tegel 'set-y!) *tank-knop-hoogte-start*)
+    ((tank-afkoel-tegel 'set-x!) *start-data-menu-power-up*)
+    ((tank-afkoel-tegel 'set-y!) *tank-knop-hoogte-start*)
+    ((bommen-regen-tegel 'set-x!) *start-data-menu-power-up*)
+    ((bommen-regen-tegel 'set-y!) *bommen-regen-knop-hoogte-start*)
+    ((bommen-regen-afkoel-tegel 'set-x!) *start-data-menu-power-up*)
+    ((bommen-regen-afkoel-tegel 'set-y!) *bommen-regen-knop-hoogte-start*)
     ((laag-user-interface 'add-drawable!) toren-1-tegel)
     ((laag-user-interface 'add-drawable!) toren-2-tegel)
     ((laag-user-interface 'add-drawable!) toren-3-tegel)
     ((laag-user-interface 'add-drawable!) toren-4-tegel)
-    ((laag-user-interface 'add-drawable!) power-up-1-tegel)
-    ((laag-user-interface 'add-drawable!) power-up-2-tegel)    
+    ((laag-user-interface 'add-drawable!) tank-tegel)
+    ((laag-user-interface 'add-drawable!) bommen-regen-tegel)
+
+    ;; Volgende code is om tekst op user interface te plaatsen om  
 
     ;; Volgende is om het geld en de levens van de speler voor te stellen.
     (define laag-geld&&levens&&level ((venster 'new-layer!)))
@@ -212,16 +214,23 @@
     (define neem-power-up car)
     (define (neem-positie-lbh bom) (vector-ref bom 2)) ;; Positie linker boven hoek
 
-    ;; Volgende code is om bomregen-power-ups te tekenen
+    ;; Volgende code is om bommen-regen-power-ups te tekenen
     (define (teken-bommen-regen-power-up! bommen-regen-power-up)
       (let ((bommen-lijst ((neem-power-up bommen-regen-power-up) 'bommen)))
         (for-each (lambda (bom)
                     (let* ((aan-te-passen-positie (neem-positie-lbh bom))
                            (teken-positie (maak-positie-adt (+ (aan-te-passen-positie 'x) 2) (+ (aan-te-passen-positie 'y) 2)))) ;; Om mooier te tekenen op het scherm
-                      (set! bommen-regen-power-ups-tiles-dict (cons (teken-object-scherm! teken-positie "Images/bomwerp.png" "Images/bomwerp-mask.png" laag-bommen-regen-pu #f)
-                                                                    bommen-regen-power-ups-tiles-dict))))
+                      (set! bommen-regen-power-ups-tiles (cons (teken-object-scherm! teken-positie "Images/bomwerp.png" "Images/bomwerp-mask.png" laag-bommen-regen-pu #f)
+                                                                    bommen-regen-power-ups-tiles))))
                   bommen-lijst)))
 
+    ;; Volgende code haalt de bommen weg van het scherm
+    (define (verwijder-bommen!)
+      (for-each (lambda (tile)
+                  ((laag-bommen-regen-pu 'remove-drawable!) tile))
+                  bommen-regen-power-ups-tiles)
+      (set! bommen-regen-power-ups-tiles '()))
+                      
     ;; Volgende code is om de correctie bitmap te verkrijgen afhankelijk van het type van het object (voor algemeenheid van sommige code)
     (define (bitmap-type object object-type)
       (cond
@@ -275,9 +284,9 @@
     ;; Volgende code gaat na welke power-up geselecteerd werd van de menu:
     (define (power-up-selectie x y)
       (cond
-        ((and (>= x *start-data-menu-power-up*) (<= x *power-up-knop-breedte-einde*) (>= y *power-up-1-knop-hoogte-start*) (<= y *power-up-1-knop-hoogte-einde*))
+        ((and (>= x *start-data-menu-power-up*) (<= x *power-up-knop-breedte-einde*) (>= y *tank-knop-hoogte-start*) (<= y *tank-knop-hoogte-einde*))
          'tank)
-        ((and (>= x *start-data-menu-power-up*) (<= x *power-up-knop-breedte-einde*) (>= y *power-up-2-knop-hoogte-start*) (<= y *power-up-2-knop-hoogte-einde*))
+        ((and (>= x *start-data-menu-power-up*) (<= x *power-up-knop-breedte-einde*) (>= y *bommen-regen-knop-hoogte-start*) (<= y *bommen-regen-knop-hoogte-einde*))
          'bommen-regen)
         (else #f)))
         
@@ -336,15 +345,15 @@
     (define (teken-afkoeling-acties! actie)
       (cond
         ((eq? actie 'toevoegen)
-         ((laag-user-interface 'add-drawable!) power-up-1-afkoel-tegel)
-         ((laag-user-interface 'add-drawable!) power-up-2-afkoel-tegel)
-         ((laag-user-interface 'remove-drawable!) power-up-1-tegel)
-         ((laag-user-interface 'remove-drawable!) power-up-2-tegel))
+         ((laag-user-interface 'add-drawable!) tank-afkoel-tegel)
+         ((laag-user-interface 'add-drawable!) bommen-regen-afkoel-tegel)
+         ((laag-user-interface 'remove-drawable!) tank-tegel)
+         ((laag-user-interface 'remove-drawable!) bommen-regen-tegel))
         ((eq? actie 'verwijderen)
-         ((laag-user-interface 'remove-drawable!) power-up-1-afkoel-tegel)
-         ((laag-user-interface 'remove-drawable!) power-up-2-afkoel-tegel)
-         ((laag-user-interface 'add-drawable!) power-up-1-tegel)
-         ((laag-user-interface 'add-drawable!) power-up-2-tegel))
+         ((laag-user-interface 'remove-drawable!) tank-afkoel-tegel)
+         ((laag-user-interface 'remove-drawable!) bommen-regen-afkoel-tegel)
+         ((laag-user-interface 'add-drawable!) tank-tegel)
+         ((laag-user-interface 'add-drawable!) bommen-regen-tegel))
         (else
          "Ongeldige actie")))
       
@@ -385,6 +394,7 @@
         ((eq? msg 'teken-projectielen!) teken-projectielen!)
         ((eq? msg 'teken-tank-power-up!) teken-tank-power-up!)
         ((eq? msg 'teken-bommen-regen-power-up!) teken-bommen-regen-power-up!)
+        ((eq? msg 'verwijder-bommen!) verwijder-bommen!)
         ((eq? msg 'teken-afkoeling-acties!) teken-afkoeling-acties!)
         ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)
         ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)

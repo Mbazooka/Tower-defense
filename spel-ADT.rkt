@@ -87,7 +87,9 @@
       (if (not (<= power-up-tijd-actief 0))
           (if (> power-up-tijd-actief dt)            
               (set! power-up-tijd-actief (- power-up-tijd-actief dt))
-              (set! power-up-tijd-actief 0)))
+              (begin
+                (set! power-up-tijd-actief 0)
+                ((teken-adt 'verwijder-bommen!)))))
       ((teken-adt 'teken-projectielen!) ((level 'verkrijg-projectielen)))
       ((teken-adt 'teken-tank-power-up!) (level 'verkrijg-tank-power-ups))
       ((teken-adt 'update-tekst-teken!) 'geld (geld 'status))

@@ -46,17 +46,18 @@
 (define *start-data-menu-power-up* (+ *start-data-menu* (* 5 *px-breedte*)))
 (define *power-up-knop-breedte-einde* (+ *start-data-menu-power-up* (* 5 *px-hoogte*)))
 
-(define *power-up-1-knop-hoogte-start* (* 2.3 *px-hoogte*))
-(define *power-up-1-knop-hoogte-einde* (* 5 *px-hoogte*))
+(define *tank-knop-hoogte-start* (* 2.3 *px-hoogte*))
+(define *tank-knop-hoogte-einde* (* 5 *px-hoogte*))
 
-(define *power-up-2-knop-hoogte-start* (* 7.3 *px-hoogte*))
-(define *power-up-2-knop-hoogte-einde* (* 9 *px-hoogte*))
+(define *bommen-regen-knop-hoogte-start* (* 7.3 *px-hoogte*))
+(define *bommen-regen-knop-hoogte-einde* (* 9 *px-hoogte*))
 
 ;; Tekst constanten voor op menu
 (define *tekst-toren-breedte* (+ *px-breedte* 10)) ;; + 5 want oranje rand centreert de tekst niet
 (define *tekst-toren-hoogte* *px-hoogte*)
 (define *tekst-font* 13)
 (define *algemeen-tekst-breedte* (* 2 *px-breedte*))
+(define *toren-benaming/prijs-tekst-breedte* (* 5 *px-breedte*))
 (define *algemeen-tekst-hoogte* *px-hoogte*)
 (define *tekst-geld-px-breedte* (+ *start-data-menu* *px-breedte*))
 (define *tekst-levens-px-breedte* (+ *start-data-menu* (* 5 *px-breedte*)))
