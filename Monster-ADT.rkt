@@ -5,15 +5,15 @@
 ;; Zoals de keer-punten, tekens, enzo.
 (define (maak-monster-adt type pad . opt) 
   (let* ((bool (null? opt)) ;; Gedaan vermits dit vaak nodig is (efficientie)
-         (positie (if bool ((((pad 'begin)) 'positie-copieer)) (list-ref opt 0)))
+         (positie (if bool ((((pad 'begin)) 'positie-copieer)) (bereikte-positie opt)))
          (levens #f)
          (monster-loop-snelheid *rood&&groen&&paars-monster-loop-snelheid*)
          (schild #f)
          (einde ((pad 'einde)))
-         (keer-punten (if bool (pad 'keer-punten) (list-ref opt 1)))
-         (keer-tekens (if bool (pad 'keer-tekens) (list-ref opt 2)))
-         (beweging-richting-x (if bool #t (list-ref opt 3)))
-         (beweging-zin (if bool + (list-ref opt 4))) ;; #t beweeg x-richting, #f betekent beweeg y richting
+         (keer-punten (if bool (pad 'keer-punten) (bereikte-keer-punten opt)))
+         (keer-tekens (if bool (pad 'keer-tekens) (bereikte-keer-tekens opt)))
+         (beweging-richting-x (if bool #t (bereikte-beweging-richting-x opt)))
+         (beweging-zin (if bool + (bereikte-beweging-zin opt))) ;; #t beweeg x-richting, #f betekent beweeg y richting
          (net-projectielen (cons 'projectiel '()))) ;; Lijst van van net-projectielen die het monster vertraagt hebben
 
     ;; Voglende code zet de initiele dingen klaar  

@@ -33,6 +33,8 @@
     (define toren-4-tegel (make-bitmap-tile "Images/Toren-4-Game.png" "Images/Toren-4-game-mask.png"))
     (define power-up-1-tegel (make-bitmap-tile "Images/Tank-knop.png"))
     (define power-up-2-tegel (make-bitmap-tile "Images/Bomregen-knop.png"))
+    (define power-up-1-afkoel-tegel (make-bitmap-tile "Images/Cooldown.png"))
+    (define power-up-2-afkoel-tegel (make-bitmap-tile "Images/Cooldown.png"))
     ((toren-1-tegel 'set-x!) *start-data-menu*) 
     ((toren-1-tegel 'set-y!) *toren-1-knop-hoogte-start*)
     ((toren-2-tegel 'set-x!) *start-data-menu*) 
@@ -43,8 +45,12 @@
     ((toren-4-tegel 'set-y!) *toren-4-knop-hoogte-start*)
     ((power-up-1-tegel 'set-x!) *start-data-menu-power-up*)
     ((power-up-1-tegel 'set-y!) *power-up-1-knop-hoogte-start*)
+    ((power-up-1-afkoel-tegel 'set-x!) *start-data-menu-power-up*)
+    ((power-up-1-afkoel-tegel 'set-y!) *power-up-1-knop-hoogte-start*)
     ((power-up-2-tegel 'set-x!) *start-data-menu-power-up*)
     ((power-up-2-tegel 'set-y!) *power-up-2-knop-hoogte-start*)
+    ((power-up-2-afkoel-tegel 'set-x!) *start-data-menu-power-up*)
+    ((power-up-2-afkoel-tegel 'set-y!) *power-up-2-knop-hoogte-start*)
     ((laag-user-interface 'add-drawable!) toren-1-tegel)
     ((laag-user-interface 'add-drawable!) toren-2-tegel)
     ((laag-user-interface 'add-drawable!) toren-3-tegel)
@@ -61,8 +67,18 @@
     (define levens-tegel (make-bitmap-tile "Images/levens.png" "Images/levens-mask.png"))
     (define levens-tekst-tegel (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*))
 
-    ;; !!!!!! maak hier bitmap tiles !!!!!!!!!!!
+    (define tank-tegel-data (make-bitmap-tile "Images/Tank-mini.png"))
+    (define tank-tekst-data-tegel (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*))
 
+    (define bommen-regen-tegel-data (make-bitmap-tile "Images/Bommen-regen-mini.png"))
+    (define bommen-regen-tekst-data-tegel (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*))
+
+    (define afkoeling-tegel-statisch (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*))
+    (define afkoeling-tegel-dynamisch (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*))
+
+    (define tijd-actief-tegel-statisch (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*))
+    (define tijd-actief-tegel-dynamisch (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*))
+   
     (define level-tekst-tegel-statisch (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*))
     (define level-tekst-tegel-dynamisch (make-tile *algemeen-tekst-breedte* *algemeen-tekst-hoogte*))
 
@@ -72,7 +88,7 @@
     ((geld-tegel 'set-y!) *geld&&levens-tegel-px-hoogte*) 
     ((laag-geld&&levens&&level 'add-drawable!) geld-tegel)
     
-    ((geld-tekst-tegel 'draw-text!) (number->string *geld-begin-bedrag*) *tekst-font* 0 0 "white") ;; Tekst naast bitmap
+    ((geld-tekst-tegel 'draw-text!) (number->string *geld-begin-bedrag*) *tekst-font* 0 0 "orange") ;; Tekst naast bitmap
     ((geld-tekst-tegel 'set-x!) (+ *start-data-menu* *px-breedte*)) 
     ((geld-tekst-tegel 'set-y!) *tekst-geld&&levens-px-hoogte*) 
     ((laag-geld&&levens&&level 'add-drawable!) geld-tekst-tegel)
@@ -81,23 +97,61 @@
     ((levens-tegel 'set-y!) *geld&&levens-tegel-px-hoogte*) 
     ((laag-geld&&levens&&level 'add-drawable!) levens-tegel)
 
-    ((levens-tekst-tegel 'draw-text!) (number->string *levens-hoeveelheid*) *tekst-font* 0 0 "white") ;; Tekst naast bitmap
+    ((levens-tekst-tegel 'draw-text!) (number->string *levens-hoeveelheid*) *tekst-font* 0 0 "orange") ;; Tekst naast bitmap
     ((levens-tekst-tegel 'set-x!) *tekst-levens-px-breedte*)
     ((levens-tekst-tegel 'set-y!) *tekst-geld&&levens-px-hoogte*) 
     ((laag-geld&&levens&&level 'add-drawable!) levens-tekst-tegel)
 
+    ((tank-tegel-data 'set-x!) *start-data-menu*)
+    ((tank-tegel-data 'set-y!) (- *geld&&levens-tegel-px-hoogte* (* *px-hoogte* 2)))
+    ((laag-geld&&levens&&level 'add-drawable!) tank-tegel-data)
+
+    ((tank-tekst-data-tegel 'draw-text!) "0" *tekst-font* 0 0 "orange") ;; Tekst naast bitmap
+    ((tank-tekst-data-tegel 'set-x!) (+ *start-data-menu* (* 1.2 *px-breedte*)))
+    ((tank-tekst-data-tegel 'set-y!) (- *geld&&levens-tegel-px-hoogte* (* *px-hoogte* 2))) 
+    ((laag-geld&&levens&&level 'add-drawable!) tank-tekst-data-tegel)    
+
+    ((bommen-regen-tegel-data 'set-x!) (+ *start-data-menu* (* 4 *px-breedte*)))
+    ((bommen-regen-tegel-data 'set-y!) (- *geld&&levens-tegel-px-hoogte* (* *px-hoogte* 2)))
+    ((laag-geld&&levens&&level 'add-drawable!) bommen-regen-tegel-data)
+
+    ((bommen-regen-tekst-data-tegel 'draw-text!) "0" *tekst-font* 0 0 "orange") ;; Tekst naast bitmap
+    ((bommen-regen-tekst-data-tegel 'set-x!) (+ *start-data-menu* (* 5.2 *px-breedte*)))
+    ((bommen-regen-tekst-data-tegel 'set-y!) (- *geld&&levens-tegel-px-hoogte* (* *px-hoogte* 2))) 
+    ((laag-geld&&levens&&level 'add-drawable!) bommen-regen-tekst-data-tegel)
+
+    ((afkoeling-tegel-statisch 'draw-text!) "Afkoel" *tekst-font* 0 0 "orange")
+    ((afkoeling-tegel-statisch 'set-x!) *start-data-menu*)
+    ((afkoeling-tegel-statisch 'set-y!) (- *geld&&levens-tegel-px-hoogte* (* *px-hoogte* 3.2))) 
+    ((laag-geld&&levens&&level 'add-drawable!) afkoeling-tegel-statisch)
+
+    ((afkoeling-tegel-dynamisch 'draw-text!) "0" *tekst-font* 0 0 "orange")
+    ((afkoeling-tegel-dynamisch 'set-x!) (- 1000 100))
+    ((afkoeling-tegel-dynamisch 'set-y!) (- *geld&&levens-tegel-px-hoogte* (* *px-hoogte* 3.2))) 
+    ((laag-geld&&levens&&level 'add-drawable!) afkoeling-tegel-dynamisch)
+
+    ((tijd-actief-tegel-statisch 'draw-text!) "Tijd" *tekst-font* 0 0 "orange")
+    ((tijd-actief-tegel-statisch 'set-x!) *start-data-menu*)
+    ((tijd-actief-tegel-statisch 'set-y!) (- *geld&&levens-tegel-px-hoogte* (* *px-hoogte* 4.2))) 
+    ((laag-geld&&levens&&level 'add-drawable!) tijd-actief-tegel-statisch)
+
+    ((tijd-actief-tegel-dynamisch 'draw-text!) "0" *tekst-font* 0 0 "orange")
+    ((tijd-actief-tegel-dynamisch 'set-x!) (- 1000 100))
+    ((tijd-actief-tegel-dynamisch 'set-y!) (- *geld&&levens-tegel-px-hoogte* (* *px-hoogte* 4.2))) 
+    ((laag-geld&&levens&&level 'add-drawable!) tijd-actief-tegel-dynamisch)
+
     (define level/ronde-tekst-hoogte (- verticale-pixels *algemeen-tekst-hoogte*)) ;; Hoogte voor level-tekst (kan niet globaal)
 
-    ((level-tekst-tegel-statisch 'draw-text!) "Level" *tekst-font* 0 0 "white")
+    ((level-tekst-tegel-statisch 'draw-text!) "Level" *tekst-font* 0 0 "orange")
     ((level-tekst-tegel-statisch 'set-y!) level/ronde-tekst-hoogte) 
     ((laag-geld&&levens&&level 'add-drawable!) level-tekst-tegel-statisch)
       
-    ((level-tekst-tegel-dynamisch 'draw-text!) "1" *tekst-font* 0 0 "white")
+    ((level-tekst-tegel-dynamisch 'draw-text!) "1" *tekst-font* 0 0 "orange")
     ((level-tekst-tegel-dynamisch 'set-x!) *dynamisch-tekst-level-begin*) 
     ((level-tekst-tegel-dynamisch 'set-y!) level/ronde-tekst-hoogte)
     ((laag-geld&&levens&&level 'add-drawable!) level-tekst-tegel-dynamisch)
 
-    ((ronde-tekst-tegel-dynamisch 'draw-text!) "1" *tekst-font* 0 0 "white")
+    ((ronde-tekst-tegel-dynamisch 'draw-text!) "1" *tekst-font* 0 0 "orange")
     ((ronde-tekst-tegel-dynamisch 'set-x!) *dynamisch-tekst-ronde-begin*)
     ((ronde-tekst-tegel-dynamisch 'set-y!) level/ronde-tekst-hoogte)
     ((laag-geld&&levens&&level 'add-drawable!) ronde-tekst-tegel-dynamisch)   
@@ -109,13 +163,17 @@
     (define (update-tekst-teken! type getal) ;; Dit werd gedaan omdat het level object zijn level niet bijhoud
       (define (update-tekst-hulp! tegel)
         ((tegel 'clear!))
-        ((tegel 'draw-text!) (number->string getal) *tekst-font* 0 0 "white"))
+        ((tegel 'draw-text!) (number->string getal) *tekst-font* 0 0 "orange"))
         
       (cond
         ((eq? type 'geld) (update-tekst-hulp! geld-tekst-tegel))
         ((eq? type 'levens) (update-tekst-hulp! levens-tekst-tegel))
+        ((eq? type 'tank) (update-tekst-hulp! tank-tekst-data-tegel))
+        ((eq? type 'bommen-regen) (update-tekst-hulp! bommen-regen-tekst-data-tegel))
         ((eq? type 'level) (update-tekst-hulp! level-tekst-tegel-dynamisch))
         ((eq? type 'ronde) (update-tekst-hulp! ronde-tekst-tegel-dynamisch))
+        ((eq? type 'afkoel) (update-tekst-hulp! afkoeling-tegel-dynamisch))
+        ((eq? type 'actief-tijd) (update-tekst-hulp! tijd-actief-tegel-dynamisch))
         (else
          "Update-tekst-teken!: Ongeldig object ingegeven")))
 
@@ -159,10 +217,10 @@
       (let ((bommen-lijst ((neem-power-up bommen-regen-power-up) 'bommen)))
         (for-each (lambda (bom)
                     (let* ((aan-te-passen-positie (neem-positie-lbh bom))
-                          (teken-positie (maak-positie-adt (+ (aan-te-passen-positie 'x) 2) (+ (aan-te-passen-positie 'y) 2)))) ;; Om mooier te tekenen op het scherm
+                           (teken-positie (maak-positie-adt (+ (aan-te-passen-positie 'x) 2) (+ (aan-te-passen-positie 'y) 2)))) ;; Om mooier te tekenen op het scherm
                       (set! bommen-regen-power-ups-tiles-dict (cons (teken-object-scherm! teken-positie "Images/bomwerp.png" "Images/bomwerp-mask.png" laag-bommen-regen-pu #f)
                                                                     bommen-regen-power-ups-tiles-dict))))
-                    bommen-lijst)))
+                  bommen-lijst)))
 
     ;; Volgende code is om de correctie bitmap te verkrijgen afhankelijk van het type van het object (voor algemeenheid van sommige code)
     (define (bitmap-type object object-type)
@@ -273,6 +331,23 @@
     ;; Volgende code is om tank-power-ups te tekenen
     (define (teken-tank-power-up! tank-power-ups)
       (teken-dynamisch-object! tank-power-ups tank-power-ups-tiles-dict laag-tank-pu #t))
+
+    ;; Volgende code is om een afkoeling te tekenen
+    (define (teken-afkoeling-acties! actie)
+      (cond
+        ((eq? actie 'toevoegen)
+         ((laag-user-interface 'add-drawable!) power-up-1-afkoel-tegel)
+         ((laag-user-interface 'add-drawable!) power-up-2-afkoel-tegel)
+         ((laag-user-interface 'remove-drawable!) power-up-1-tegel)
+         ((laag-user-interface 'remove-drawable!) power-up-2-tegel))
+        ((eq? actie 'verwijderen)
+         ((laag-user-interface 'remove-drawable!) power-up-1-afkoel-tegel)
+         ((laag-user-interface 'remove-drawable!) power-up-2-afkoel-tegel)
+         ((laag-user-interface 'add-drawable!) power-up-1-tegel)
+         ((laag-user-interface 'add-drawable!) power-up-2-tegel))
+        (else
+         "Ongeldige actie")))
+      
            
     ;; Volgende code is om muis klikken te implementeren
     (define (set-muis-toets-procedure! proc)
@@ -310,6 +385,7 @@
         ((eq? msg 'teken-projectielen!) teken-projectielen!)
         ((eq? msg 'teken-tank-power-up!) teken-tank-power-up!)
         ((eq? msg 'teken-bommen-regen-power-up!) teken-bommen-regen-power-up!)
+        ((eq? msg 'teken-afkoeling-acties!) teken-afkoeling-acties!)
         ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)
         ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)
         ((eq? msg 'set-toets-procedure!) set-toets-procedure!)

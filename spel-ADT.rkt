@@ -37,8 +37,12 @@
                (begin
                  ((geld 'verwijder-geld!) geselecteerde-power-up)
                  (if (eq? geselecteerde-power-up 'tank)
-                     (set! tank-power-up (cons (maak-power-up-adt pad 'tank) tank-power-up))
-                     (set! bommen-regen-power-up (cons (maak-power-up-adt pad 'bommen-regen) bommen-regen-power-up)))
+                     (begin
+                       (set! tank-power-up (cons (maak-power-up-adt pad 'tank) tank-power-up))
+                       ((teken-adt 'update-tekst-teken!) 'tank (length tank-power-up)))
+                     (begin
+                       (set! bommen-regen-power-up (cons (maak-power-up-adt pad 'bommen-regen) bommen-regen-power-up))
+                       ((teken-adt 'update-tekst-teken!) 'bommen-regen (length bommen-regen-power-up))))
                  ((teken-adt 'update-tekst-teken!) 'geld (geld 'status)))))
           ((eq? toren-type #f) "Kies een toren") ;; Indien nog geen toren gekozen is dan moet
           ((and (eq? toets 'left) (eq? toestand 'pressed)
@@ -77,14 +81,24 @@
           (begin
             (set! power-up-afkoeling (+ power-up-afkoeling dt))
             (if (>= power-up-afkoeling *power-up-afkoel-tijd*)
-                (set! power-up-afkoeling 0))))
-      (display power-up-afkoeling)
-      (display " // ")
+                (begin
+                  (set! power-up-afkoeling 0)
+                  ((teken-adt 'teken-afkoeling-acties!) 'verwijderen)))))
+      (if (not (<= power-up-tijd-actief 0))
+          (if (> power-up-tijd-actief dt)            
+              (set! power-up-tijd-actief (- power-up-tijd-actief dt))
+              (set! power-up-tijd-actief 0)))
       ((teken-adt 'teken-projectielen!) ((level 'verkrijg-projectielen)))
       ((teken-adt 'teken-tank-power-up!) (level 'verkrijg-tank-power-ups))
       ((teken-adt 'update-tekst-teken!) 'geld (geld 'status))
       ((teken-adt 'update-tekst-teken!) 'levens (levens 'status))
-      ((teken-adt 'update-tekst-teken!) 'level level-teller))
+      ((teken-adt 'update-tekst-teken!) 'level level-teller)
+      ((teken-adt 'update-tekst-teken!) 'tank (length tank-power-up))
+      ((teken-adt 'update-tekst-teken!) 'bommen-regen (length bommen-regen-power-up))
+      (if (afkoeling?)
+          ((teken-adt 'update-tekst-teken!) 'afkoel  (ms->s (- *power-up-afkoel-tijd* power-up-afkoeling)))
+          ((teken-adt 'update-tekst-teken!) 'afkoel  (ms->s *geen-afkoel-tijd*)))
+      ((teken-adt 'update-tekst-teken!) 'actief-tijd  (ms->s power-up-tijd-actief)))
       
     ;;Volgende code implementeert een toets om het spel de laten starten
     (define (toets-procedure toestand toets)
@@ -103,9 +117,11 @@
         ((and (eq? toestand 'pressed) (eq? toets 'escape))
          ((level 'level-einde!)))
         ((and (eq? toestand 'pressed) (eq? toets #\t) spel-lus-gestart?  (not (afkoeling?)))
-         (power-up-handelingen! 'tank tank-power-up))
+         (power-up-handelingen! 'tank tank-power-up)         
+         (set! power-up-tijd-actief *tank-actief-tijd*))
         ((and (eq? toestand 'pressed) (eq? toets #\b) spel-lus-gestart? (not (afkoeling?)))
-         (power-up-handelingen! 'bommen-regen bommen-regen-power-up))))
+         (power-up-handelingen! 'bommen-regen bommen-regen-power-up)
+         (set! power-up-tijd-actief *bommen-regen-actief-tijd*))))
 
     ;; Volgende code zijn abstracties
     (define volgende-power-up car)
@@ -129,11 +145,16 @@
             (begin
               ((level 'voeg-power-up-toe!) power-up-type power-up)
               ((teken-adt teken-bericht) (level verkrijg-objecten-bericht))
+              ((teken-adt 'teken-afkoeling-acties!) 'toevoegen)
               (set! power-up-afkoeling (+ power-up-afkoeling 1)))))) ;; Trucje om power-up-afkoeling verschillend van 0 te maken (voor in afkoeling staat te komen-
 
     ;; Volgende code gaat na als de power-ups in cool-down zijn
     (define (afkoeling?)
       (not (= power-up-afkoeling 0)))
+
+    ;; Volgende code zal microseconden omvormen naar seconden
+    (define (ms->s getal)
+      (quotient getal *seconde*))
                                     
     (define (dispatch msg)
       (cond 

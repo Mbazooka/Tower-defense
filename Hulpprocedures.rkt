@@ -24,6 +24,13 @@
 (define neem-keer-tekens cadr)
 (define neem-vector caddr)
 
+;; Volgende code zijn abstracties om mooi data uit optionele lijst in monster-adt te accesseren
+(define (bereikte-positie lijst) (list-ref lijst 0))
+(define (bereikte-keer-punten lijst) (list-ref lijst 1))
+(define (bereikte-keer-tekens lijst) (list-ref lijst 2))
+(define (bereikte-beweging-richting-x lijst) (list-ref lijst 3))
+(define (bereikte-beweging-zin lijst) (list-ref lijst 4))
+
 ;; Volgende code is globaal gemaakt, vermits die gebruikt word door 2 ADTs (vermijdt dus code duplicatie)
 ;; Geeft de rand van een bepaald abstract object a.d.h.v 4 posities (bv toren-rand monster-rand)
 (define (positie->rand! centraal-positie afstand vector)

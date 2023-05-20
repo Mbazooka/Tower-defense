@@ -20,8 +20,8 @@
 
 ;; Volgende code zijn abstracties om vectoren-van-posities af te handelen
 ;;(kan niet in PAD ADT gezet worden vermits de data genomen word onmiddelijke bij de aanmaak (in let* expressie))
-(define neem-inflectie-counter car)
-(define neem-inflectie-tekens cadr)
+(define neem-keer-counter car)
+(define neem-keer-tekens cadr)
 (define neem-vector caddr)
 
 ;; Volgende code is globaal gemaakt, vermits die gebruikt word door 2 ADTs (vermijdt dus code duplicatie)

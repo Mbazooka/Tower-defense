@@ -100,7 +100,7 @@
 (define *bomwerp-toren-buurt-rand-afstand* 7)
 (define *basis-toren-afvuur-frequentie* 3000) ;; Toren schiet frequentie (2000)
 (define *net-toren-afvuur-frequentie* 6000) ;; Toren schiet frequentie voor net toren
-(define *vuurbal-toren-afvuur-frequentie 10000) ;; !!!!!!!
+(define *vuurbal-toren-afvuur-frequentie 5000) 
 (define *bomwerp-toren-afvuur-frequentie* 10000)
 (define *meerdere-monsters* 2)
 
@@ -123,10 +123,12 @@
 ;; Power-up tijd en andere constanten
 (define *tank-rijd-snelheid* 1)
 (define *power-up-afkoel-tijd* 20000)
+(define *geen-afkoel-tijd* 0)
 (define *bommen-regen-aftel-tijd 3000)
 (define *bommen-regen-aantal-bommen* 5)
 (define *bommen-regen-rand-afstand* 2)
-(define *bommen-regen-actief-tijd* 3000) ;; Kan niet zeggen hoe lang tank actief-blijft, varieert van pad
+(define *tank-actief-tijd* 2000)
+(define *bommen-regen-actief-tijd* 3000)
 
 ;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid
 (define *geld-begin-bedrag* 5000) ;; Verander achteraf
@@ -157,3 +159,6 @@
 (define *bomwerp-levens-verminder* 3)
 (define *bom-levens-verminder-min* 1)
 (define *bom-levens-verminder-max* 3) ;; Dit is 3 vermits het maar tot de waarde 2 gaat bekijken in random functie
+
+;; Algemene constanten
+(define *seconde* 1000)
