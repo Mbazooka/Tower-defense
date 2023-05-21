@@ -8,6 +8,7 @@
         (activeerde-tank '()) ;; Lijst om extra proceduredefinities uit te sparen
         (tank-power-up-monsters '()) ;; Dat zijn de monsters waarop de tank een invloed zal hebben 
         (activeerde-bommen-regen '())
+        (op-te-rapen-power-ups '())
         (net-projectielen '())) ;; Alle net-projectielen die op het pad liggen
     
     ;; Abstracties om type, eerste monster en rest uit lijst te krijgen
@@ -65,12 +66,24 @@
                                   ((projectiel 'niet-bereikt&&afgehandelt?)))
                                 net-projectielen)))
 
+      (define (mogelijke-drop!) ;; Is een procedure om een power-up drop mogelijk te maken
+        (let ((num (random *drop-rate*))
+              (pu-type (random *aantal-power-ups*)))
+          (if (= num 0)
+              (if (= pu-type *getal-voorstelling-tank*)
+                  (voeg-gedropte-power-up-toe! (maak-power-up-adt pad 'tank))
+                  (voeg-gedropte-power-up-toe! (maak-power-up-adt pad 'bommen-regen))))))
+
+      (define (voeg-gedropte-power-up-toe! power-up)
+        (set! op-te-rapen-power-ups (cons power-up op-te-rapen-power-ups)))
+
       (define (geld-en-sterven-acties!)
         (for-each (lambda (monster)                    
                     ((geld 'voeg-geld-toe!) (monster 'type) #f) ;; Zal geld updaten, en indien het een groen monster is, een rood monster spawnen
                     (cond                      
                       ((eq? (monster 'type) 'groen) (if (not ((monster 'geen-actie-groen-monster?))) (zet-terug-monster-lijst! monster ((monster 'actie-monster-sterven!)) monsters))) ;; Zal rood monster doen spawnen van groen monster
-                      ((eq? (monster 'type) 'paars) (verhoog-levens-paars-monster! ((monster 'actie-monster-sterven!))))))                    
+                      ((eq? (monster 'type) 'paars) (verhoog-levens-paars-monster! ((monster 'actie-monster-sterven!)))))
+                    (mogelijke-drop!))
                   (filter (lambda (monster) ((monster 'gestorven?))) monsters)))
 
       (define (monsters-voort-bewegen!)
