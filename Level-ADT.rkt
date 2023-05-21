@@ -66,13 +66,13 @@
                                   ((projectiel 'niet-bereikt&&afgehandelt?)))
                                 net-projectielen)))
 
-      (define (mogelijke-drop!) ;; Is een procedure om een power-up drop mogelijk te maken
+      (define (mogelijke-drop! positie) ;; Is een procedure om een power-up drop mogelijk te maken
         (let ((num (random *drop-rate*))
               (pu-type (random *aantal-power-ups*)))
           (if (= num *drop-getal*)
               (if (= pu-type *getal-voorstelling-tank*)
-                  (voeg-gedropte-power-up-toe! (maak-power-up-adt pad 'tank))
-                  (voeg-gedropte-power-up-toe! (maak-power-up-adt pad 'bommen-regen))))))
+                  (voeg-gedropte-power-up-toe! (maak-power-up-adt pad 'tank positie))
+                  (voeg-gedropte-power-up-toe! (maak-power-up-adt pad 'bommen-regen positie))))))
 
       (define (voeg-gedropte-power-up-toe! power-up)
         (set! op-te-rapen-power-ups (cons power-up op-te-rapen-power-ups)))
@@ -82,7 +82,7 @@
                     (let ((monster-type (monster 'type)))
                       ((geld 'voeg-geld-toe!) monster-type #f) ;; Zal geld updaten, en indien het een groen monster is, een rood monster spawnen
                       (if (or (not (eq? monster-type 'groen)) ((monster 'geen-actie-groen-monster?)))
-                            (mogelijke-drop!))
+                            (mogelijke-drop! (((monster 'positie) 'positie-copieer))))
                       (cond                      
                         ((eq? monster-type 'groen) (if (not ((monster 'geen-actie-groen-monster?))) (zet-terug-monster-lijst! monster ((monster 'actie-monster-sterven!)) monsters))) ;; Zal rood monster doen spawnen van groen monster
                         ((eq? monster-type 'paars) (verhoog-levens-paars-monster! ((monster 'actie-monster-sterven!)))))))

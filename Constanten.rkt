@@ -90,6 +90,10 @@
 ;; Constanten voor bitmap van power-ups
 (define *tank-power-up-bitmap&&mask* (cons "Images/Tank.png" "Images/tank-mask.png"))
 
+;; Constanten voor bitmap van drop power-ups
+(define *drop-tank-bitmap&&mask* (cons "Images/Tank-drop.png" "Images/tank-drop-mask.png"))
+(define *drop-bommen-regen-bitmap&&mask* (cons "Images/Bommen-regen-drop.png" "Images/Bommen-regen-drop-mask.png"))
+
 ;; Constanten voor tegel-positie van bitmap van geld en levens
 (define *geld&&levens-tegel-px-hoogte* (- *spel/menu-hoogte-px* 25)) ;; 23 Zo gekozen voor stijlvolle manier
 
@@ -130,7 +134,7 @@
 (define *bommen-regen-rand-afstand* 2)
 (define *tank-actief-tijd* 2000)
 (define *bommen-regen-actief-tijd* 3000)
-(define *drop-rate* 10) ;; Stelt de kans van een drop voor (1/10)
+(define *drop-rate* 2) ;; Stelt de kans van een drop voor (1/10)
 (define *drop-getal* 0) ;; Als dit getal uit de random-number generator komt dan droppen we een power-up
 (define *aantal-power-ups* 2)
 (define *getal-voorstelling-tank* 0) ;; Volgende 2 constanten worden gebruikt om te bepalen wat er gedropt moet worden

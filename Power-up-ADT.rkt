@@ -1,8 +1,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                               Power-up ADT                                 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (maak-power-up-adt pad type)
-  (let ((positie ((((pad 'begin)) 'positie-copieer)))
+(define (maak-power-up-adt pad type . drop-positie)
+  (let* ((positie ((((pad 'begin)) 'positie-copieer)))
         (einde ((pad 'einde)))
         (pad-lengte (pad 'lengte))
         (keer-punten (pad 'keer-punten))
@@ -10,9 +10,11 @@
         (beweging-richting-x #t)
         (beweging-zin +)
         (bommen '())
+        (bool (pair? drop-positie))
         (tijd 0)
-        (rand #f)) ;; Rand voor wanneer de power-up gedropt word
-
+        (drop-positie (if bool (neem-power-up-drop-positie drop-positie) #f)) ;; Positie waar gedropt
+        (drop? bool))    
+    
     ;; Volgende code maakt het gegeven aantal bommen
     (define (maak-bommen!)
       (define (maak-hulp ctr)
@@ -72,8 +74,6 @@
       (for-each (lambda (bom)
                   (explosie-procedure bom 'bom))
                 bommen))
-
-    ;;  Volgende code zal een power-up rand maken om de drops te kunnen oprapen
    
     (define (dispatch msg)
       (cond
@@ -85,8 +85,10 @@
         ((eq? msg 'bommen) bommen)
         ((eq? msg 'tijd-afgelopen?) tijd-afgelopen?)
         ((eq? msg 'bom-explosie!) bom-explosie!)
+        ((eq? msg 'drop-positie) drop-positie)
+        ((eq? msg 'drop?) drop?)
         ((eq? msg 'type) type)
-        ((eq? msg 'soort) 'power-up)
+        ((eq? msg 'soort) (if drop? 'drop-power-up 'power-up))
         (else
          "maak-power-up-adt: Ongeldig bericht")))
     dispatch))

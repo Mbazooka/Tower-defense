@@ -7,7 +7,8 @@
         (monster-tiles-dict (cons 'tegels '())) ;; Tagged omdat 1ste conscell veranderd moet worden/ Dit zijn monster--tegel associaties
         (projectielen-tiles-dict (cons 'tegels '())) ;; Dit zijn projectiel--tegel associaties
         (tank-power-ups-tiles-dict (cons 'tegels '())) ;; Dit zijn tank-power-up--tegel associaties
-        (bommen-regen-power-ups-tiles '())) 
+        (bommen-regen-power-ups-tiles '())
+        (gedropte-power-ups-tiles-dict (cons 'tegel '()))) ;; Dit zijn gedropte-power-up--tegel associaties
 
     ;; Volgende code is om een achtergrond te hebben waarop een pad gemaakt wordt
     (define laag-achtergrond ((venster 'new-layer!)))
@@ -292,6 +293,10 @@
         ((eq? object 'power-up)
          (cond
            ((eq? object-type 'tank) *tank-power-up-bitmap&&mask*)))
+        ((eq? object 'drop-power-up)
+         (cond
+           ((eq? object-type 'tank) *drop-tank-bitmap&&mask*)
+           ((eq? object-type 'bommen-regen) *drop-bommen-regen-bitmap&&mask*)))
         (else
          "Ongeldig object")))
 
@@ -344,16 +349,18 @@
           #f
           (let ((object (car huidige-object)))
             (if (not (assq object (rest-dict diction-toevoegen)))
-                (let ((bitmap-adressen (bitmap-type (object 'soort) (object 'type))))
-                  (insert! object (teken-object-scherm! (object 'positie) (bitmap bitmap-adressen) (mask bitmap-adressen) laag tank?) diction-toevoegen))
+                (let* ((obj-soort (object 'soort))
+                       (bitmap-adressen (bitmap-type obj-soort (object 'type))))
+                  (insert! object (teken-object-scherm! (if (eq? obj-soort 'drop-power-up) (object 'drop-positie) (object 'positie)) (bitmap bitmap-adressen) (mask bitmap-adressen) laag tank?) diction-toevoegen))
                 (voeg-toe-tiles-dict! (cdr huidige-object) diction-toevoegen laag tank?)))))
     
     ;; Volgende code is om dynamische objecten te tekenen (objecten waarvan ze moeten tevoorschijn komen, een positie bereiken en dan verdwijnen)
     (define (teken-dynamisch-object! objecten tiles laag tank?)
       (haal-weg-tiles-dict! objecten (rest-dict tiles) tiles laag) 
       (for-each ;; Gaat elke tile van objecte updaten 
-       (lambda (ass) 
-         (bepaal-tegel-px-positie! ((sleutel ass) 'positie) (waarde ass) tank?)) 
+       (lambda (ass)
+         (let ((sleut (sleutel ass)))
+         (bepaal-tegel-px-positie! (if (eq? (sleut 'soort) 'drop-power-up) (sleut 'drop-positie) (sleut 'positie)) (waarde ass) tank?))) 
        (rest-dict tiles))
       (voeg-toe-tiles-dict! objecten tiles laag tank?)) 
     
@@ -378,6 +385,13 @@
     (define (teken-tank-power-up! tank-power-ups)
       (teken-dynamisch-object! tank-power-ups tank-power-ups-tiles-dict laag-tank-pu #t))
 
+    ;; Volgende code is om gedropte power-ups te tekenen
+    (define laag-drops ((venster 'new-layer!)))
+
+    ;; Volgende code is om de gredopte power-ups te tekenen
+    (define (teken-gedropte-power-ups! gedropte-power-ups)
+      (teken-dynamisch-object! gedropte-power-ups gedropte-power-ups-tiles-dict laag-drops #f))    
+
     ;; Volgende code is om een afkoeling te tekenen
     (define (teken-afkoeling-acties! actie)
       (cond
@@ -393,8 +407,7 @@
          ((laag-user-interface 'add-drawable!) bommen-regen-tegel))
         (else
          "Ongeldige actie")))
-      
-           
+                 
     ;; Volgende code is om muis klikken te implementeren
     (define (set-muis-toets-procedure! proc)
       ((venster 'set-mouse-click-callback!) proc))
@@ -431,6 +444,7 @@
         ((eq? msg 'teken-projectielen!) teken-projectielen!)
         ((eq? msg 'teken-tank-power-up!) teken-tank-power-up!)
         ((eq? msg 'teken-bommen-regen-power-up!) teken-bommen-regen-power-up!)
+        ((eq? msg 'teken-gedropte-power-ups!) teken-gedropte-power-ups!)
         ((eq? msg 'verwijder-bommen!) verwijder-bommen!)
         ((eq? msg 'teken-afkoeling-acties!) teken-afkoeling-acties!)
         ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)

@@ -100,7 +100,8 @@
       (if (afkoeling?)
           ((teken-adt 'update-tekst-teken!) 'afkoel  (ms->s (- *power-up-afkoel-tijd* power-up-afkoeling)))
           ((teken-adt 'update-tekst-teken!) 'afkoel  (ms->s *geen-afkoel-tijd*)))
-      ((teken-adt 'update-tekst-teken!) 'actief-tijd  (ms->s power-up-tijd-actief)))
+      ((teken-adt 'update-tekst-teken!) 'actief-tijd  (ms->s power-up-tijd-actief))
+      ((teken-adt 'teken-gedropte-power-ups!) (level 'verkrijg-gedropte-power-ups)))
       
     ;;Volgende code implementeert een toets om het spel de laten starten
     (define (toets-procedure toestand toets)
