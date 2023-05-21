@@ -3,17 +3,30 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (maak-power-up-adt pad type . drop-positie)
   (let* ((positie ((((pad 'begin)) 'positie-copieer)))
-        (einde ((pad 'einde)))
-        (pad-lengte (pad 'lengte))
-        (keer-punten (pad 'keer-punten))
-        (keer-tekens (pad 'keer-tekens))
-        (beweging-richting-x #t)
-        (beweging-zin +)
-        (bommen '())
-        (bool (pair? drop-positie))
-        (tijd 0)
-        (drop-positie (if bool (neem-power-up-drop-positie drop-positie) #f)) ;; Positie waar gedropt
-        (drop? bool))    
+         (einde ((pad 'einde)))
+         (pad-lengte (pad 'lengte))
+         (keer-punten (pad 'keer-punten))
+         (keer-tekens (pad 'keer-tekens))
+         (beweging-richting-x #t)
+         (beweging-zin +)
+         (bommen '())
+         (tijd 0)
+         (drop? (pair? drop-positie))
+         (drop-positie (if drop? (neem-power-up-drop-positie drop-positie) #f)) ;; Positie waar gedropt        
+         (drop-rand #f))
+
+    ;; Volgende code maakt een drop-rand indien het een drop is
+    (define (drop-rand!)
+      (if drop?
+          (let ((vec (make-vector 4)))
+            (positie->rand! drop-positie *drop-rand-afstand* vec)
+            (set! drop-rand vec))))
+    
+    (drop-rand!)
+
+    ;; Volgende code gaat na als een positie in een drop-rand zit
+    (define (in-drop-rand? positie)
+      (in-rand? positie drop-rand))
     
     ;; Volgende code maakt het gegeven aantal bommen
     (define (maak-bommen!)
@@ -74,6 +87,11 @@
       (for-each (lambda (bom)
                   (explosie-procedure bom 'bom))
                 bommen))
+
+    ;; Volgende code zal drop status veranderen naar #f
+    (define (verander-drop-status!)
+      (if drop?
+          (set! drop? #f)))
    
     (define (dispatch msg)
       (cond
@@ -87,6 +105,8 @@
         ((eq? msg 'bom-explosie!) bom-explosie!)
         ((eq? msg 'drop-positie) drop-positie)
         ((eq? msg 'drop?) drop?)
+        ((eq? msg 'in-drop-rand?) in-drop-rand?)
+        ((eq? msg 'verander-drop-status!) verander-drop-status!)
         ((eq? msg 'type) type)
         ((eq? msg 'soort) (if drop? 'drop-power-up 'power-up))
         (else

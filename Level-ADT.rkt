@@ -8,7 +8,7 @@
         (activeerde-tank '()) ;; Lijst om extra proceduredefinities uit te sparen
         (tank-power-up-monsters '()) ;; Dat zijn de monsters waarop de tank een invloed zal hebben 
         (activeerde-bommen-regen '())
-        (op-te-rapen-power-ups '())
+        (op-te-rapen-power-ups (cons 'dummy '()))
         (net-projectielen '())) ;; Alle net-projectielen die op het pad liggen
     
     ;; Abstracties om type, eerste monster en rest uit lijst te krijgen
@@ -71,18 +71,15 @@
               (pu-type (random *aantal-power-ups*)))
           (if (= num *drop-getal*)
               (if (= pu-type *getal-voorstelling-tank*)
-                  (voeg-gedropte-power-up-toe! (maak-power-up-adt pad 'tank positie))
-                  (voeg-gedropte-power-up-toe! (maak-power-up-adt pad 'bommen-regen positie))))))
-
-      (define (voeg-gedropte-power-up-toe! power-up)
-        (set! op-te-rapen-power-ups (cons power-up op-te-rapen-power-ups)))
+                  (insert-power-up! (maak-power-up-adt pad 'tank positie) op-te-rapen-power-ups)
+                  (insert-power-up! (maak-power-up-adt pad 'bommen-regen positie) op-te-rapen-power-ups)))))
 
       (define (geld-en-sterven-acties!)
         (for-each (lambda (monster)
                     (let ((monster-type (monster 'type)))
                       ((geld 'voeg-geld-toe!) monster-type #f) ;; Zal geld updaten, en indien het een groen monster is, een rood monster spawnen
                       (if (or (not (eq? monster-type 'groen)) ((monster 'geen-actie-groen-monster?)))
-                            (mogelijke-drop! (((monster 'positie) 'positie-copieer))))
+                          (mogelijke-drop! (((monster 'positie) 'positie-copieer))))
                       (cond                      
                         ((eq? monster-type 'groen) (if (not ((monster 'geen-actie-groen-monster?))) (zet-terug-monster-lijst! monster ((monster 'actie-monster-sterven!)) monsters))) ;; Zal rood monster doen spawnen van groen monster
                         ((eq? monster-type 'paars) (verhoog-levens-paars-monster! ((monster 'actie-monster-sterven!)))))))
@@ -222,6 +219,39 @@
               (toren 'projectielen))
             torens)))
 
+    ;; Volgende code zijn hulpprocedures
+    (define (insert-power-up! pu pu-lijst)
+      (let ((rest-lijst (cdr pu-lijst))
+            (in-te-voegen (cons pu '())))
+        (set-cdr! in-te-voegen rest-lijst)
+        (set-cdr! pu-lijst in-te-voegen)))
+
+    (define (delete-power-up! pu pu-lijst)
+      (define (delete-hulp vorig-element lijst)
+        (cond
+          ((null? pu-lijst) #f)
+          ((null? (cdr lijst)) (if (eq? (car lijst) pu) (set-cdr! vorig-element '())))
+          ((eq? (car lijst) pu) (set-cdr! vorig-element (cdr lijst)))
+          (else
+           (delete-hulp lijst (cdr lijst)))))
+      (delete-hulp pu-lijst (cdr pu-lijst)))
+
+    ;; Volgende neemt een gedropte-power-up op basis van een positie
+    (define (drop-opraap! x y)
+      (let ((positie-obj (maak-positie-adt (round (/ x *px-breedte*)) (round (/ y *px-hoogte*)))) ;; Verander !!!!!!!
+            (geselecteerde-tanks '())
+            (geselecteerde-bommen-regen '()))
+        (for-each (lambda (drop-pu)
+                    (if ((drop-pu 'in-drop-rand?) positie-obj)
+                        (begin
+                          (if (eq? (drop-pu 'type) 'tank)                     
+                              (set! geselecteerde-tanks (cons drop-pu geselecteerde-tanks))
+                              (set! geselecteerde-bommen-regen (cons drop-pu geselecteerde-bommen-regen)))
+                          ((drop-pu 'verander-drop-status!))
+                          (delete-power-up! drop-pu op-te-rapen-power-ups))))
+                  (zonder-dummy op-te-rapen-power-ups))
+        (cons geselecteerde-tanks geselecteerde-bommen-regen)))
+
     ;; Volgende code is om te zien als het level aan het einde gekomen is
     (define (einde?)
       (and (null? monster-rij) (null? monsters)))
@@ -231,7 +261,10 @@
       (if (not (einde?))
           (begin
             (set! monster-rij '())
-            (set! monsters '()))))                 
+            (set! monsters '()))))
+
+    ;; Volgende code zijn abstracties
+    (define zonder-dummy cdr)
                                    
     (define (dispatch msg)
       (cond
@@ -250,7 +283,8 @@
         ((eq? msg 'verkrijg-projectielen) verkrijg-projectielen)
         ((eq? msg 'verkrijg-tank-power-ups) activeerde-tank)
         ((eq? msg 'verkrijg-bommen-regen-power-ups) activeerde-bommen-regen)
-        ((eq? msg 'verkrijg-gedropte-power-ups) op-te-rapen-power-ups)
+        ((eq? msg 'verkrijg-gedropte-power-ups) (zonder-dummy op-te-rapen-power-ups))
+        ((eq? msg 'drop-opraap!) drop-opraap!)
         ((eq? msg 'explodeer-monsters-in-buurt!) explodeer-monsters-in-buurt!)
         ((eq? msg 'einde?) einde?)
         ((eq? msg 'level-einde!) level-einde!)

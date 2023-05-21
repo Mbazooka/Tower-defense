@@ -132,6 +132,7 @@
 (define *bommen-regen-aftel-tijd 3000)
 (define *bommen-regen-aantal-bommen* 5)
 (define *bommen-regen-rand-afstand* 2)
+(define *drop-rand-afstand* 2)
 (define *tank-actief-tijd* 2000)
 (define *bommen-regen-actief-tijd* 3000)
 (define *drop-rate* 2) ;; Stelt de kans van een drop voor (1/10)

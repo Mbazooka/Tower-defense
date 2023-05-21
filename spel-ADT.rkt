@@ -25,6 +25,10 @@
       ((teken-adt 'set-muis-toets!) muis-klik-procedure)
       ((teken-adt 'set-toets-procedure!) toets-procedure))
 
+    ;; Volgende code zijn abstracties
+    (define tank car)
+    (define bommen-regen cdr)
+
     ;; De procedure die het klikken van muis op scherm voorstelt    
     (define (muis-klik-procedure toets toestand x y)
       (let ((geselecteerde-toren ((teken-adt 'toren-selectie) x y))
@@ -57,7 +61,16 @@
                 ((level 'voeg-toren-toe!) toren)
                 ((teken-adt 'teken-toren!) toren)
                 ((teken-adt 'update-tekst-teken!) 'geld (geld 'status)))
-               (else "Beweging niet mogelijk")))))))
+               (else "Beweging niet mogelijk"))))
+          (else
+           (let* ((opgenomen-power-ups ((level 'drop-opraap!) x y))
+                 (opgenomen-tanks (tank opgenomen-power-ups))
+                 (opgenomen-bommen-regen (bommen-regen opgenomen-power-ups)))
+             (if (not (null? opgenomen-tanks))
+                 (set! tank-power-up (append opgenomen-tanks tank-power-up)))
+             (if (not (null? opgenomen-bommen-regen))
+                 (set! bommen-regen-power-up (append opgenomen-bommen-regen bommen-regen-power-up)))))                                                   
+          )))
     
     ;; Volgende code implementeert de spel lus van het spel
     (define (spel-lus-procedure dt)
