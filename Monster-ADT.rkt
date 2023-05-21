@@ -29,6 +29,7 @@
          "Geen correcte type")))
     (bepaal-initieel!)
 
+
     ;; Volgende code zal het monstertje op de volgende positie zetten
     (define (volgende-positie!)
       (define (teken-bepaling!) ;; Zal nagaan bij het veranderen van bewegingsdimensie in welke zin verandert moet worden.

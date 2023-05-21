@@ -130,6 +130,11 @@
 (define *bommen-regen-rand-afstand* 2)
 (define *tank-actief-tijd* 2000)
 (define *bommen-regen-actief-tijd* 3000)
+(define *drop-rate* 10) ;; Stelt de kans van een drop voor (1/10)
+(define *drop-getal* 0) ;; Als dit getal uit de random-number generator komt dan droppen we een power-up
+(define *aantal-power-ups* 2)
+(define *getal-voorstelling-tank* 0) ;; Volgende 2 constanten worden gebruikt om te bepalen wat er gedropt moet worden
+(define *getal-voorstelling-bommen-regen* 1)
 
 ;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid
 (define *geld-begin-bedrag* 5000) ;; Verander achteraf
