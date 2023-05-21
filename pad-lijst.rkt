@@ -201,10 +201,10 @@
         '(- -) 
         (vector
          
-         (maak-positie-adt 12 21)
-         (maak-positie-adt 12 17)
-         (maak-positie-adt 21 17)
-         (maak-positie-adt 21 23)
+         (maak-positie-adt 11 21)
+         (maak-positie-adt 11 17)
+         (maak-positie-adt 20 17)
+         (maak-positie-adt 20 23)
          
          
          (maak-positie-adt 0 20)
@@ -252,10 +252,10 @@
          (maak-positie-adt 10 22)
 
          (maak-positie-adt 11 20)
-         (maak-positie-adt 11 21)
          (maak-positie-adt 11 22)
 
-         (maak-positie-adt 12 20)          
+         (maak-positie-adt 12 20)
+         (maak-positie-adt 12 21)
          (maak-positie-adt 12 22)
 
          (maak-positie-adt 10 19)
@@ -271,7 +271,8 @@
          (maak-positie-adt 12 18)
 
          (maak-positie-adt 10 17)
-         (maak-positie-adt 11 17)         
+         (maak-positie-adt 11 17)
+         (maak-positie-adt 12 17)
 
          (maak-positie-adt 10 16)
          (maak-positie-adt 11 16)
@@ -305,8 +306,7 @@
          (maak-positie-adt 19 17) 
          (maak-positie-adt 19 18)
 
-         (maak-positie-adt 20 16)
-         (maak-positie-adt 20 17)
+         (maak-positie-adt 20 16)         
          (maak-positie-adt 20 18)
 
          (maak-positie-adt 21 16)
@@ -330,7 +330,8 @@
          (maak-positie-adt 21 22)
 
          (maak-positie-adt 19 23)
-         (maak-positie-adt 20 23)         
+         (maak-positie-adt 20 23)
+         (maak-positie-adt 21 23)
 
          (maak-positie-adt 19 24)
          (maak-positie-adt 20 24) 

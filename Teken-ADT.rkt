@@ -15,7 +15,7 @@
     (define achtergrond-tegel (make-bitmap-tile "Images/Lava-Achtergrond.png"))
     ((laag-achtergrond 'add-drawable!) achtergrond-tegel)
 
-    ;; Volgende code is om een menu te maken !!!!(Proberen geld layer hier toe te voegen)!!!!
+    ;; Volgende code is om een menu te maken 
     (define laag-menu ((venster 'new-layer!)))
     (define menu-tegel (make-tile *menu-breedte-px* *spel/menu-hoogte-px*))
     ((menu-tegel 'draw-rectangle!) 0 0 *menu-breedte-px* *spel/menu-hoogte-px* "black")
