@@ -1,7 +1,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                Pad-lijst                                   ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Hieronder vind je vectoren waarmee we paden maken
+;; Hieronder vind je de lijst van lijsten om een (en volgende) pad te verkrijgen
+(define pad-lijst (list vector-1 vector-2 vector-3))
+
+;; Hieronder vind je de lijsten waarmee we paden maken
 (define vector-2
   (list 2 ;; Aantal keerepunten
         '(-) ;; Dit zijn tekens om te zien hoe y moet veranderen eenmaal het inflectie punt bereikt is
