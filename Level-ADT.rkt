@@ -82,10 +82,7 @@
                     (let ((monster-type (monster 'type)))
                       ((geld 'voeg-geld-toe!) monster-type #f) ;; Zal geld updaten, en indien het een groen monster is, een rood monster spawnen
                       (if (or (not (eq? monster-type 'groen)) ((monster 'geen-actie-groen-monster?)))
-                          (begin
-                            (mogelijke-drop!)
-                            (display op-te-rapen-power-ups)
-                            (display " / ")))
+                            (mogelijke-drop!))
                       (cond                      
                         ((eq? monster-type 'groen) (if (not ((monster 'geen-actie-groen-monster?))) (zet-terug-monster-lijst! monster ((monster 'actie-monster-sterven!)) monsters))) ;; Zal rood monster doen spawnen van groen monster
                         ((eq? monster-type 'paars) (verhoog-levens-paars-monster! ((monster 'actie-monster-sterven!)))))))
@@ -253,6 +250,7 @@
         ((eq? msg 'verkrijg-projectielen) verkrijg-projectielen)
         ((eq? msg 'verkrijg-tank-power-ups) activeerde-tank)
         ((eq? msg 'verkrijg-bommen-regen-power-ups) activeerde-bommen-regen)
+        ((eq? msg 'verkrijg-gedropte-power-ups) op-te-rapen-power-ups)
         ((eq? msg 'explodeer-monsters-in-buurt!) explodeer-monsters-in-buurt!)
         ((eq? msg 'einde?) einde?)
         ((eq? msg 'level-einde!) level-einde!)
