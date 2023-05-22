@@ -57,43 +57,43 @@
                          obj)))
         (set! projectielen (cons projectiel projectielen))))
 
-    ;; Volgende code laat toe om de projectielen hun posities up te daten
-    (define (projectiel-update! level dt) ;; Verander zodat overzichtelijker wordt
-      (define (acties-bestemming-bereikt!)
-        (for-each
-         (lambda (projectiel)
-           (let ((type-var (projectiel 'type)))
-             (if (not (eq? type-var 'bomwerp))
-                 ((projectiel 'actie-te-raken-monster!))) 
-             (cond ;; Volgende actie na monster geraakt is
-               ((eq? 'vuurbal type-var)
-                (let ((actie ((projectiel 'actie-na-monster-raak!) level dt)))
-                  (if actie ;; Gaat na als er een actie gedaan moet worden of niet
-                      (set! projectielen (cons actie projectielen)))))
-               ((eq? 'net type-var)
-                ((projectiel 'maak-rand!) *net-projectiel-rand-afstand* level)
-                ((projectiel 'actie-na-monster-raak!) level dt))
-               ((eq? 'bomwerp type-var)
-                ((projectiel 'actie-na-monster-raak!) level dt)))))
-         (filter
-          (lambda (project) ((project 'bestemming-bereikt?)))
-          projectielen)))
+    ;; Volgende code zijn hulpprocedures foor projectiel-update!
+    (define (acties-bestemming-bereikt! level dt)
+      (for-each
+       (lambda (projectiel)
+         (let ((type-var (projectiel 'type)))
+           (if (not (eq? type-var 'bomwerp))
+               ((projectiel 'actie-te-raken-monster!))) 
+           (cond ;; Volgende actie na monster geraakt is
+             ((eq? 'vuurbal type-var)
+              (let ((actie ((projectiel 'actie-na-monster-raak!) level dt)))
+                (if actie ;; Gaat na als er een actie gedaan moet worden of niet
+                    (set! projectielen (cons actie projectielen)))))
+             ((eq? 'net type-var)
+              ((projectiel 'maak-rand!) *net-projectiel-rand-afstand* level)
+              ((projectiel 'actie-na-monster-raak!) level dt))
+             ((eq? 'bomwerp type-var)
+              ((projectiel 'actie-na-monster-raak!) level dt)))))
+       (filter
+        (lambda (project) ((project 'bestemming-bereikt?)))
+        projectielen)))
 
-      (define (haal-projectielen-weg!)
-        (set! projectielen (filter
-                            (lambda (projectiel)
-                              (and (not (and ((projectiel 'bestemming-bereikt?)) ((projectiel 'afgehandelt?))))
-                                  (in-buurt? projectiel))) ;; Gaat na als een projectiel nog in de rand zit
-                            projectielen)))
+    (define (haal-projectielen-weg!)
+      (set! projectielen (filter
+                          (lambda (projectiel)
+                            (and (not (and ((projectiel 'bestemming-bereikt?)) ((projectiel 'afgehandelt?))))
+                                 (in-buurt? projectiel))) ;; Gaat na als een projectiel nog in de rand zit
+                          projectielen)))
       
-      (define (beweeg-projectielen-voort!)
-        (for-each (lambda (projectiel)
-                    (if (not ((projectiel 'bestemming-bereikt?))) ;; Nodig want soms bestemming bereikt en dus wil je niet dat je ze verder bewegen (vb. net)
-                        ((projectiel 'volgende-positie!))))
-                  projectielen))
+    (define (beweeg-projectielen-voort!)
+      (for-each (lambda (projectiel)
+                  (if (not ((projectiel 'bestemming-bereikt?))) ;; Nodig want soms bestemming bereikt en dus wil je niet dat je ze verder bewegen (vb. net)
+                      ((projectiel 'volgende-positie!))))
+                projectielen))
 
-      ;; Uitvoeren van alle acties
-      (acties-bestemming-bereikt!)
+    ;; Volgende code laat toe om de projectielen hun posities up te daten
+    (define (projectiel-update! level dt) ;; Uitvoeren van alle acties
+      (acties-bestemming-bereikt! level dt)
       (haal-projectielen-weg!)
       (beweeg-projectielen-voort!))
 
