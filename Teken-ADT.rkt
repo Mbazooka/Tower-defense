@@ -261,14 +261,14 @@
                     (let* ((aan-te-passen-positie (neem-positie-lbh bom))
                            (teken-positie (maak-positie-adt (+ (aan-te-passen-positie 'x) 2) (+ (aan-te-passen-positie 'y) 2)))) ;; Om mooier te tekenen op het scherm
                       (set! bommen-regen-power-ups-tiles (cons (teken-object-scherm! teken-positie "Images/bomwerp.png" "Images/bomwerp-mask.png" laag-bommen-regen-pu #f)
-                                                                    bommen-regen-power-ups-tiles))))
+                                                               bommen-regen-power-ups-tiles))))
                   bommen-lijst)))
 
     ;; Volgende code haalt de bommen weg van het scherm
     (define (verwijder-bommen!)
       (for-each (lambda (tile)
                   ((laag-bommen-regen-pu 'remove-drawable!) tile))
-                  bommen-regen-power-ups-tiles)
+                bommen-regen-power-ups-tiles)
       (set! bommen-regen-power-ups-tiles '()))
                       
     ;; Volgende code is om de correctie bitmap te verkrijgen afhankelijk van het type van het object (voor algemeenheid van sommige code)
@@ -362,7 +362,7 @@
       (for-each ;; Gaat elke tile van objecte updaten 
        (lambda (ass)
          (let ((sleut (sleutel ass)))
-         (bepaal-tegel-px-positie! (if (eq? (sleut 'soort) 'drop-power-up) (sleut 'drop-positie) (sleut 'positie)) (waarde ass) tank?))) 
+           (bepaal-tegel-px-positie! (if (eq? (sleut 'soort) 'drop-power-up) (sleut 'drop-positie) (sleut 'positie)) (waarde ass) tank?))) 
        (rest-dict tiles))
       (voeg-toe-tiles-dict! objecten tiles laag tank?)) 
     
@@ -409,6 +409,20 @@
          ((laag-user-interface 'add-drawable!) bommen-regen-tegel))
         (else
          "Ongeldige actie")))
+
+    ;; Vogende code stelt startscherm en eindeschermen voor (game over, en win)
+    (define laag-schermen ((venster 'new-layer!)))
+    (define game-over-tegel (make-bitmap-tile "Images/game-over.jpeg"))
+    (define start-tegel #f)
+    (define win-tegel #f)
+
+    ;; Volgende code is om het game-over scherm te plaatsen
+    (define (teken-game-over!)
+      ((laag-schermen 'add-drawable!) game-over-tegel))
+
+    ;; Volgende code is om het game-over scherm te verwijderen
+    (define (verwijder-game-over!)
+      ((laag-schermen 'remove-drawable!) game-over-tegel))
                  
     ;; Volgende code is om muis klikken te implementeren
     (define (set-muis-toets-procedure! proc)
@@ -449,6 +463,8 @@
         ((eq? msg 'teken-gedropte-power-ups!) teken-gedropte-power-ups!)
         ((eq? msg 'verwijder-bommen!) verwijder-bommen!)
         ((eq? msg 'teken-afkoeling-acties!) teken-afkoeling-acties!)
+        ((eq? msg 'teken-game-over!) teken-game-over!)
+        ((eq? msg 'verwijder-game-over!) verwijder-game-over!)
         ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)
         ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)
         ((eq? msg 'set-toets-procedure!) set-toets-procedure!)

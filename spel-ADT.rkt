@@ -15,7 +15,8 @@
          (level-teller 1)
          (ronde-teller 1)
          (power-up-tijd-actief 0)
-         (power-up-afkoeling 0))
+         (power-up-afkoeling 0)
+         (game-over? #f))
 
     ;; Tekent pad van het spel
     ((teken-adt 'teken-pad!) pad) 
@@ -64,8 +65,8 @@
                (else "Beweging niet mogelijk"))))
           (else
            (let* ((opgenomen-power-ups ((level 'drop-opraap!) x y))
-                 (opgenomen-tanks (tank opgenomen-power-ups))
-                 (opgenomen-bommen-regen (bommen-regen opgenomen-power-ups)))
+                  (opgenomen-tanks (tank opgenomen-power-ups))
+                  (opgenomen-bommen-regen (bommen-regen opgenomen-power-ups)))
              (if (not (null? opgenomen-tanks))
                  (set! tank-power-up (append opgenomen-tanks tank-power-up)))
              (if (not (null? opgenomen-bommen-regen))
@@ -76,7 +77,10 @@
     (define (spel-lus-procedure dt)
       (set! spel-lus-gestart? #t)
       (if ((levens 'dood?))
-          ((level 'level-einde!)))
+          (begin
+            ((level 'level-einde!))
+            (set! game-over? #t)
+            ((teken-adt 'teken-game-over!))))
       (if (= monster-tijd 0) ;; Zal monsters op scherm updaten na ongeveer 2 seconden
           (begin
             ((level 'update-monsters!) dt 'toevoegen)
