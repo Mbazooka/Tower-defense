@@ -104,7 +104,7 @@
 (define *vuurbal-toren-buurt-rand-afstand* 8)
 (define *bomwerp-toren-buurt-rand-afstand* 7)
 (define *basis-toren-afvuur-frequentie* 3000) ;; Toren schiet frequentie (2000)
-(define *net-toren-afvuur-frequentie* 6000) ;; Toren schiet frequentie voor net toren
+(define *net-toren-afvuur-frequentie* 10000) ;; Toren schiet frequentie voor net toren
 (define *vuurbal-toren-afvuur-frequentie* 5000) 
 (define *bomwerp-toren-afvuur-frequentie* 10000)
 (define *meerdere-monsters* 2)
