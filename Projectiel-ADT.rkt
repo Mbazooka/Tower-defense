@@ -20,14 +20,16 @@
          (toegevoegd #f) ;; Is om na te gaan als het net-projectiel toegevoegd is aan het level-adt (om te zien als monster over netten lopen)
          (vertraagd #f) ;; Is om na te gaan indien een projectiel een monster al vertraagd heeft (zodat niet in elke loop het monster vertraag)
          (projectiel-rand #f)) ;; Is de rand van een projectiel (indien nodig bv bij een net-projectiel of bomwerp)
+
+    ;; Volgende code is een hulpprocedure voor bestemming-bereikt?
+    (define (positie-bereikt bestemming-positie)
+      (or ((((positie 'ceil)) 'gelijk?)  ((bestemming-positie 'ceil)))
+          ((((positie 'flo)) 'gelijk?) ((bestemming-positie 'flo)))
+          ((((positie 'ceil)) 'gelijk?)  ((bestemming-positie 'flo)))
+          ((((positie 'flo)) 'gelijk?)  ((bestemming-positie 'ceil)))))
          
     ;; Volgende code gaat na als het projectiel de bestemming of de extra bestemming posities bereikt heeft.    
     (define (bestemming-bereikt?)
-      (define (positie-bereikt bestemming-positie)
-        (or ((((positie 'ceil)) 'gelijk?)  ((bestemming-positie 'ceil)))
-            ((((positie 'flo)) 'gelijk?) ((bestemming-positie 'flo)))
-            ((((positie 'ceil)) 'gelijk?)  ((bestemming-positie 'flo)))
-            ((((positie 'flo)) 'gelijk?)  ((bestemming-positie 'ceil)))))
       (accumulate (lambda (x y) (or x y)) #f (map positie-bereikt bestemming-lijst)))
 
     ;; Volgende code zal na gaan indien alle acties afgehandelt zijn van een projectiel
@@ -72,7 +74,7 @@
         ((eq? type 'net) (set! lig-tijd (+ lig-tijd dt)))
         ((eq? type 'bomwerp) (set! lig-tijd (+ lig-tijd dt))
                              (if (>= lig-tijd *bomwerp-projectiel-ligtijd*)
-                                   (explodeer! level (maak-rand! *bomwerp-projectiel-rand-afstand* level))))
+                                 (explodeer! level (maak-rand! *bomwerp-projectiel-rand-afstand* level))))
         (else
          "Heeft geen actie na het raken van monsters")))
 
