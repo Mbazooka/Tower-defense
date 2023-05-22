@@ -437,16 +437,14 @@
     ;; Vogende code stelt startscherm en eindeschermen voor (game over, en win)
     (define laag-schermen ((venster 'new-layer!)))
     (define game-over-tegel (make-bitmap-tile "Images/game-over.jpeg"))
-    (define start-tegel #f)
-    (define win-tegel #f)
 
     ;; Volgende code is om het game-over scherm te plaatsen
     (define (teken-game-over!)
       ((laag-schermen 'add-drawable!) game-over-tegel))
 
     ;; Volgende code is om het game-over scherm te verwijderen
-    (define (verwijder-game-over!)
-      ((laag-schermen 'remove-drawable!) game-over-tegel))
+    (define (verwijder-scherm!)
+      ((laag-schermen 'empty!)))
                  
     ;; Volgende code is om muis klikken te implementeren
     (define (set-muis-toets-procedure! proc)
@@ -491,7 +489,7 @@
         ((eq? msg 'verwijder-bommen!) verwijder-bommen!)
         ((eq? msg 'teken-afkoeling-acties!) teken-afkoeling-acties!)
         ((eq? msg 'teken-game-over!) teken-game-over!)
-        ((eq? msg 'verwijder-game-over!) verwijder-game-over!)
+        ((eq? msg 'verwijder-scherm!) verwijder-scherm!)
         ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)
         ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)
         ((eq? msg 'set-toets-procedure!) set-toets-procedure!)

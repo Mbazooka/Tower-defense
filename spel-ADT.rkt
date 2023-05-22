@@ -81,8 +81,8 @@
       (if ((levens 'dood?))
           (begin
             ((level 'ronde-einde!))
+            ((teken-adt 'teken-game-over!))
             (set! game-over? #t)))
-;            ((teken-adt 'teken-game-over!))))
       (if (= monster-tijd 0) ;; Zal monsters op scherm updaten na ongeveer 2 seconden
           (begin
             ((level 'update-monsters!) dt 'toevoegen)
@@ -125,10 +125,9 @@
     ;;Volgende code implementeert een toets om het spel de laten starten
     (define (toets-procedure toestand toets)
       (cond
-;        ((and (eq? toestand 'pressed) (eq? toets #\r) game-over?)
-;         (display "Triggered: ")
-;;         ((teken-adt 'verwijder-game-over!))
-;         (reset-game!))
+        ((and (eq? toestand 'pressed) (eq? toets #\return) game-over?)
+         (reset-game!)
+         ((teken-adt 'verwijder-scherm!)))
         ((and (eq? toestand 'pressed) (eq? toets #\space) (level-einde?))
          (next-level!))
         ((and (eq? toestand 'pressed) (eq? toets #\space) ((level 'ronde-einde?)))
@@ -209,7 +208,7 @@
       ((teken-adt 'update-tekst-teken!) 'ronde ronde-teller))
 
     ;; Volgende zal het spel restarten
-    (define (reset-game!)
+    (define (reset-game!)      
       ((levens 'reset!))
       ((teken-adt 'update-tekst-teken!) 'levens (levens 'status))
       ((geld 'reset!))
