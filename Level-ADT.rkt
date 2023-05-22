@@ -153,7 +153,7 @@
           (((toren 'in-buurt?) monster) ((toren 'schiet!) monster pad) ((toren 'update-afvuur-tijd!) dt)) ;; Na het schieten, moet tijd up gedate worden
           (else
            (if (not (null? (cdr monsters)))
-               (toren-schiet-y/n pad toren dt (laatste-monster-weglaten monsters)))))))  
+               (toren-schiet-y/n pad dt toren (laatste-monster-weglaten monsters)))))))  
 
     ;; Volgende code zal projectielen afschieten naar een monster 
     (define (update-torens-projectielen-afschieten! pad dt)     

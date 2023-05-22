@@ -179,6 +179,7 @@
         ((eq? msg 'geen-actie-groen-monster?) geen-actie-groen-monster?)
         ((eq? msg 'actie-monster-sterven!) actie-monster-sterven!)
         ((eq? msg 'actie-monster-levend!) actie-monster-levend!)
+        ((eq? msg 'verhoog-levens!) verhoog-levens!)
         ((eq? msg 'voeg-net-projectiel-toe!) voeg-net-projectiel-toe!)
         ((eq? msg 'update-tijd-net-projectielen!) update-tijd-net-projectielen!)
         ((eq? msg 'net-al-vetraagd?) net-al-vetraagd?)
