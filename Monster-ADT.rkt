@@ -29,25 +29,26 @@
          "Geen correcte type")))
     (bepaal-initieel!)
 
+    ;; Volgende zijn hulpprocedures voor volgende-positie!
+    (define (teken-bepaling!) ;; Zal nagaan bij het veranderen van bewegingsdimensie in welke zin verandert moet worden.
+      (cond
+        ((and (null? keer-tekens) (eq? beweging-zin +)) (set! beweging-zin -))
+        ((and (null? keer-tekens) (eq? beweging-zin -)) (set! beweging-zin +))
+        ((eq? (car keer-tekens) '-) (set! beweging-zin -) (set! keer-tekens (cdr keer-tekens)))
+        ((eq? (car keer-tekens) '+) (set! beweging-zin +) (set! keer-tekens (cdr keer-tekens)))
+        (else
+         "Doe niets")))
+
+    (define (richting-verandering!) ;; Zal bij het bereiken van een keerpunt, veranderen van bewegingsrichting 
+      (if (not (null? keer-punten))
+          (if ((((positie 'ceil)) 'gelijk?) (car keer-punten)) ;; keerpunt bereikt?
+              (begin
+                (set! beweging-richting-x (not beweging-richting-x))
+                (set! keer-punten (cdr keer-punten))
+                (teken-bepaling!))))) 
 
     ;; Volgende code zal het monstertje op de volgende positie zetten
-    (define (volgende-positie!)
-      (define (teken-bepaling!) ;; Zal nagaan bij het veranderen van bewegingsdimensie in welke zin verandert moet worden.
-        (cond
-          ((and (null? keer-tekens) (eq? beweging-zin +)) (set! beweging-zin -))
-          ((and (null? keer-tekens) (eq? beweging-zin -)) (set! beweging-zin +))
-          ((eq? (car keer-tekens) '-) (set! beweging-zin -) (set! keer-tekens (cdr keer-tekens)))
-          ((eq? (car keer-tekens) '+) (set! beweging-zin +) (set! keer-tekens (cdr keer-tekens)))
-          (else
-           "Doe niets")))
-
-      (define (richting-verandering!) ;; Zal bij het bereiken van een keerpunt, veranderen van bewegingsrichting 
-        (if (not (null? keer-punten))
-            (if ((((positie 'ceil)) 'gelijk?) (car keer-punten)) ;; keerpunt bereikt?
-                (begin
-                  (set! beweging-richting-x (not beweging-richting-x))
-                  (set! keer-punten (cdr keer-punten))
-                  (teken-bepaling!)))))     
+    (define (volgende-positie!)    
       (richting-verandering!)      
       (if beweging-richting-x
           ((positie 'x!) (+ (positie 'x) monster-loop-snelheid))
@@ -78,7 +79,7 @@
     ;; Volgende code zal het leven van het monstertje aanpassen afhankelijk van het soort    
     (define (verminder-levens! . object)                               
       (let* ((test (and (pair? object) (or (eq? (type-vermindering object) 'bomwerp)
-                                            (eq? (type-vermindering object) 'bom)))) ;; Ga na indien bomwerp-projectiel/bom de levens zal verminderen
+                                           (eq? (type-vermindering object) 'bom)))) ;; Ga na indien bomwerp-projectiel/bom de levens zal verminderen
              (levens-vermindering (if test
                                       (verminder-levens-hoeveelheid (type-vermindering object))
                                       (verminder-levens-hoeveelheid 'standaard-vermindering))))
