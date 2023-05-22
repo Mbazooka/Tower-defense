@@ -18,12 +18,14 @@
     ;; Volgende code is om een menu te maken 
     (define laag-menu ((venster 'new-layer!)))
     (define menu-tegel (make-tile *menu-breedte-px* *spel/menu-hoogte-px*))
+    (define boord-tegel (make-bitmap-tile "Images/boord.png")) ;; Voor stijlvoller Menu
     ((menu-tegel 'draw-rectangle!) 0 0 *menu-breedte-px* *spel/menu-hoogte-px* "black")
-    ((menu-tegel 'draw-rectangle!) 0 0 (/ *px-breedte* 2) *spel/menu-hoogte-px* "darkorange") ;; Voegt lijntje van om stijlvoller te maken
     (define GUI (make-bitmap-tile "Images/Text.png"))
     ((menu-tegel 'set-x!) *spel-breedte-px*)
     ((GUI 'set-x!) (+ *spel-breedte-px* 10))
+    ((boord-tegel 'set-x!) *spel-breedte-px*)
     ((laag-menu 'add-drawable!) GUI)
+    ((laag-menu 'add-drawable!) boord-tegel)
     ((laag-menu 'add-drawable!) menu-tegel)
 
     ;; Volgende code is om de user-interface van de menu te maken
