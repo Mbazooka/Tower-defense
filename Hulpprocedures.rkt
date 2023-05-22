@@ -87,3 +87,7 @@
 ;; Volgende code gaat na als een object een positie is
 (define (monster? obj)
   (eq? (obj 'soort) 'monster))
+
+;; volgende code zijn abstracties om met 'monster-vector' en 'pad-vector' te werken
+(define (monster-vector-verkrijg level ronde)
+  (vector-ref (vector-ref monster-vector (- level 1)) (- ronde 1)))
