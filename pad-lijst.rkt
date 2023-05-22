@@ -584,5 +584,5 @@
                   
          ))
 
-;; Hieronder vind je de lijst van lijsten om een (en volgende) pad te verkrijgen
-(define pad-lijst (list vector-1 vector-2 vector-3))
+;; Hieronder vind je de vector van lijsten om een (en volgende) pad te verkrijgen
+(define pad-vector (vector vector-1 vector-2 vector-3))

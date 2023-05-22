@@ -5,7 +5,7 @@
   (let* ((spel-lus-gestart? #f) ;; Nuttig voor bepaalde elementen beter te doen functioneren
          (geld (maak-geld-adt *geld-begin-bedrag*))
          (levens (maak-leven-adt *levens-hoeveelheid*))
-         (level (maak-level-adt level-1 geld levens))                  
+         (level (maak-level-adt ronde-1 geld levens))                  
          (pad (level 'pad))
          (teken-adt (maak-teken-adt (+ *menu-breedte-px* *spel-breedte-px*) *spel/menu-hoogte-px*));; maak de fundamenten van het spel
          (toren-type #f) ;; Om torens te plaatsen veranderen we dit om te weten welk type toren te plaatsen.
@@ -123,6 +123,9 @@
     ;;Volgende code implementeert een toets om het spel de laten starten
     (define (toets-procedure toestand toets)
       (cond
+;        ((and (eq? toestand 'pressed) (eq? toets #\return) game-over?)
+;         (set! game-over? #f)
+;         (reset!)) ;; TOE TE VOEGEN!!!!!!
         ((and (eq? toestand 'pressed) (eq? toets #\space) ((level 'einde?)))
          ((geld 'voeg-geld-toe!) 'level #f)
          ((teken-adt 'update-tekst-teken!) 'geld (geld 'status))
@@ -171,6 +174,20 @@
     ;; Volgende code gaat na als de power-ups in cool-down zijn
     (define (afkoeling?)
       (not (= power-up-afkoeling 0)))
+
+    ;; Volgende zal het spel restarten
+;    (define (reset!)
+;      ((levens 'reset!))
+;      ((geld 'reset!))
+;      (set! toren-type #f)
+;      (set! monster-tijd 0)
+;      (set! tank-power-up '())
+;      (set! bommen-regen-power-up '())
+;      (set! level-teller 1)
+;      (set! ronde-teller 1)
+;      (set! power-up-tijd-actief 0)
+;      (set! power-up-afkoeling 0)
+;      (set! pad-count 0)
 
     ;; Volgende code zal microseconden omvormen naar seconden
     (define (ms->s getal)
