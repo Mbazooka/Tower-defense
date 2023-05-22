@@ -437,10 +437,20 @@
     ;; Vogende code stelt startscherm en eindeschermen voor (game over, en win)
     (define laag-schermen ((venster 'new-layer!)))
     (define game-over-tegel (make-bitmap-tile "Images/game-over.jpeg"))
+    (define begin-scherm-tegel (make-bitmap-tile "Images/begin-scherm.jpeg"))
+    (define eind-scherm-tegel (make-bitmap-tile "Images/eind-scherm.jpg"))
 
     ;; Volgende code is om het game-over scherm te plaatsen
     (define (teken-game-over!)
       ((laag-schermen 'add-drawable!) game-over-tegel))
+
+    ;; Volgende code is om het begin van het scherm te tekenen
+    (define (teken-begin-scherm!)
+      ((laag-schermen 'add-drawable!) begin-scherm-tegel))
+
+    ;; Volgende code is om het eind van het scherm te tekenen
+    (define (teken-eind-scherm!)
+      ((laag-schermen 'add-drawable!) eind-scherm-tegel))
 
     ;; Volgende code is om het game-over scherm te verwijderen
     (define (verwijder-scherm!)
@@ -488,6 +498,8 @@
         ((eq? msg 'verwijder-gedropte-power-ups!) verwijder-gedropte-power-ups!)
         ((eq? msg 'verwijder-bommen!) verwijder-bommen!)
         ((eq? msg 'teken-afkoeling-acties!) teken-afkoeling-acties!)
+        ((eq? msg 'teken-begin-scherm!) teken-begin-scherm!)
+        ((eq? msg 'teken-eind-scherm!) teken-eind-scherm!)
         ((eq? msg 'teken-game-over!) teken-game-over!)
         ((eq? msg 'verwijder-scherm!) verwijder-scherm!)
         ((eq? msg 'set-muis-toets!) set-muis-toets-procedure!)

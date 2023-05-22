@@ -17,11 +17,13 @@
          (bommen-regen-power-up '())
          (power-up-tijd-actief 0)
          (power-up-afkoeling 0)
+         (start? #t)
          (game-over? #f)
          (game-gewonnen? #f))
 
-    ;; Tekent initieel pad van het spel
-    ((teken-adt 'teken-pad!) pad) 
+    ;; Tekent initiele zaken van het spel
+    ((teken-adt 'teken-pad!) pad)
+    ((teken-adt 'teken-begin-scherm!))
 
     ;; Start het van het spel door toetsen te initialiseren
     (define (start!)
@@ -125,6 +127,9 @@
     ;;Volgende code implementeert een toets om het spel de laten starten
     (define (toets-procedure toestand toets)
       (cond
+        ((and (eq? toestand 'pressed) (eq? toets #\return) start?)
+         (set! start? #f)
+         ((teken-adt 'verwijder-scherm!)))
         ((and (eq? toestand 'pressed) (eq? toets #\return) game-over?)
          (reset-game!)
          ((teken-adt 'verwijder-scherm!)))
