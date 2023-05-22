@@ -17,7 +17,8 @@
         ((eq? type 'groen) (set! kost-winst *groen-monster-winst*))
         ((eq? type 'geel) (set! kost-winst *geel-monster-winst*))
         ((eq? type 'paars) (set! kost-winst *paars-monster-winst*))
-        ((eq? type 'level) (set! kost-winst *level-winst*))  
+        ((eq? type 'level) (set! kost-winst *level-winst*))
+        ((eq? type 'ronde) (set! kost-winst *ronde-winst*))
         (else "Ongeldig type"))
 
       (cond
@@ -48,7 +49,7 @@
 
   ;; Volgende code reset het begin-bedrag 
   (define (reset!)
-    (set! begin-bedrag *geld-bedrag*))
+    (set! begin-bedrag *geld-begin-bedrag*))
 
   (define (dispatch msg)
     (cond

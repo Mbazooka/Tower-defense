@@ -4,6 +4,8 @@
 ;; Doel van dit ADT is om alles gemakkelijk te teken gebruikmakend van de grafische bibliotheek (dit zal gebruikt worden door spel ADT)
 (define (maak-teken-adt horizontale-pixels verticale-pixels)
   (let ((venster (make-window horizontale-pixels verticale-pixels "Tower Defence"))
+        (pad-tegels '())
+        (toren-tegels '())
         (monster-tiles-dict (cons 'tegels '())) ;; Tagged omdat 1ste conscell veranderd moet worden/ Dit zijn monster--tegel associaties
         (projectielen-tiles-dict (cons 'tegels '())) ;; Dit zijn projectiel--tegel associaties
         (tank-power-ups-tiles-dict (cons 'tegels '())) ;; Dit zijn tank-power-up--tegel associaties
@@ -242,10 +244,17 @@
             (lengte-pad (pad 'lengte)))
         (define (hulp-teken-pad! ctr)
           (if (not (= ctr lengte-pad))
-              (begin
-                (teken-object-scherm! (vector-ref pad-posities ctr) "Images/lava.jpeg" "Images/Lava-mask.png" laag-pad #f)
+              (let ((tegel (teken-object-scherm! (vector-ref pad-posities ctr) "Images/lava.jpeg" "Images/Lava-mask.png" laag-pad #f)))
+                (set! pad-tegels (cons tegel pad-tegels))
                 (hulp-teken-pad! (+ ctr 1)))))
         (hulp-teken-pad! 0)))
+
+    ;; Volgende code zal een pad weghalen van het scherm
+    (define (verwijder-pad!)
+      (for-each (lambda (tegel)
+                  ((laag-pad 'remove-drawable!) tegel))
+                pad-tegels)
+      (set! toren-tegels '()))
 
     ;; Volgende code is een venster om bommen-regen-power-ups te plaatsen
     (define laag-bommen-regen-pu ((venster 'new-layer!)))
@@ -308,8 +317,16 @@
     ;; Tekent toren op het scherm gegeven een toren
     (define (teken-toren! toren)
       (let ((toren-positie (toren 'positie)))
-        (let ((bitmap-adressen (bitmap-type (toren 'soort) (toren 'type))))
-          (teken-object-scherm! (maak-positie-adt (- (toren-positie 'x) 1) (- (toren-positie 'y) 1)) (bitmap bitmap-adressen) (mask bitmap-adressen) laag-toren #f)))) ;; nieuwe positie om toren te centreren
+        (let* ((bitmap-adressen (bitmap-type (toren 'soort) (toren 'type)))
+               (tegel (teken-object-scherm! (maak-positie-adt (- (toren-positie 'x) 1) (- (toren-positie 'y) 1)) (bitmap bitmap-adressen) (mask bitmap-adressen) laag-toren #f))) ;; nieuwe positie om toren te centreren
+          (set! toren-tegels (cons tegel toren-tegels)))))
+
+    ;; volgende neemt de torens weg van het scherm
+    (define (verwijder-torens!)
+      (for-each (lambda (tegel)
+                  ((laag-toren 'remove-drawable!) tegel))
+                toren-tegels)
+      (set! toren-tegels '()))
 
     ;; Volgende code gaat na welke toren geselecteerd werd van de menu
     (define (toren-selectie x y)
@@ -392,7 +409,14 @@
 
     ;; Volgende code is om de gredopte power-ups te tekenen
     (define (teken-gedropte-power-ups! gedropte-power-ups)
-      (teken-dynamisch-object! gedropte-power-ups gedropte-power-ups-tiles-dict laag-drops #f))    
+      (teken-dynamisch-object! gedropte-power-ups gedropte-power-ups-tiles-dict laag-drops #f))
+
+    ;; Volgende code verwijdert gedropte-power-ups van het scherm
+    (define (verwijder-gedropte-power-ups!)
+      (for-each (lambda (ass)
+                  ((laag-drops 'remove-drawable!) (waarde ass)))
+                (rest-dict gedropte-power-ups-tiles-dict))
+      (set-cdr! gedropte-power-ups-tiles-dict '()))
 
     ;; Volgende code is om een afkoeling te tekenen
     (define (teken-afkoeling-acties! actie)
@@ -453,14 +477,17 @@
     (define (dispatch msg)
       (cond
         ((eq? msg 'teken-pad!) teken-pad!)
+        ((eq? msg 'verwijder-pad!) verwijder-pad!)
         ((eq? msg 'teken-toren!) teken-toren!)
         ((eq? msg 'toren-selectie) toren-selectie)
+        ((eq? msg 'verwijder-torens!) verwijder-torens!)
         ((eq? msg 'power-up-selectie) power-up-selectie)
         ((eq? msg 'teken-monsters!) teken-monsters!)
         ((eq? msg 'teken-projectielen!) teken-projectielen!)
         ((eq? msg 'teken-tank-power-up!) teken-tank-power-up!)
         ((eq? msg 'teken-bommen-regen-power-up!) teken-bommen-regen-power-up!)
         ((eq? msg 'teken-gedropte-power-ups!) teken-gedropte-power-ups!)
+        ((eq? msg 'verwijder-gedropte-power-ups!) verwijder-gedropte-power-ups!)
         ((eq? msg 'verwijder-bommen!) verwijder-bommen!)
         ((eq? msg 'teken-afkoeling-acties!) teken-afkoeling-acties!)
         ((eq? msg 'teken-game-over!) teken-game-over!)

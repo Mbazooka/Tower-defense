@@ -1,9 +1,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                 Level ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (maak-level-adt pad-teller monster-rij geld levens . vorige-torens) ;; Neemt een rij van monster in die gereleased zullen zijn op het pad, (alsook geld en levens) optionele parameter torens om torens vorige level mee te nemen
+(define (maak-level-adt pad-teller monster-rij geld levens) ;; Neemt een rij van monster in die gereleased zullen zijn op het pad, (alsook geld en levens) 
   (let ((pad (maak-pad-adt (pad-verkrijg pad-teller)))
-        (torens (if (not (null? vorige-torens)) (car vorige-torens) vorige-torens))
+        (torens '())
         (monsters '()) ;; Lijst omdat elk element bewerken gemakkelijk is (for-each)
         (activeerde-tank '()) ;; Lijst om extra proceduredefinities uit te sparen
         (tank-power-up-monsters '()) ;; Dat zijn de monsters waarop de tank een invloed zal hebben 

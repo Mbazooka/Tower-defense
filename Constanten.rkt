@@ -143,7 +143,7 @@
 
 ;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid
 (define *geld-begin-bedrag* 5000) ;; Verander achteraf !!!!!!
-(define *levens-hoeveelheid* 3)
+(define *levens-hoeveelheid* 1)
 (define *rood&&groen-monster-levens-verlies* 1)
 (define *geel-monster-levens-verlies* 3)
 (define *paars-monster-levens-verlies* 2)
@@ -159,7 +159,8 @@
 (define *groen-monster-winst* 30)
 (define *geel-monster-winst* 50)
 (define *paars-monster-winst* 30)
-(define *level-winst* 500)
+(define *level-winst* 2000)
+(define *ronde-winst* 500)
 (define *extra-tank-winst* 30)
 
 ;; Constanten die levens (en ook rand) van monsters voorstellen 
