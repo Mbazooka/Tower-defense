@@ -91,3 +91,6 @@
 ;; volgende code zijn abstracties om met 'monster-vector' en 'pad-vector' te werken
 (define (monster-vector-verkrijg level ronde)
   (vector-ref (vector-ref monster-vector (- level 1)) (- ronde 1)))
+
+(define (pad-verkrijg index)
+  (vector-ref pad-vector (- index 1)))

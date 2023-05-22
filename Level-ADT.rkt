@@ -1,8 +1,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                 Level ADT                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (maak-level-adt monster-rij geld levens . vorige-torens) ;; Neemt een rij van monster in die gereleased zullen zijn op het pad, (alsook geld en levens) optionele parameter torens om torens vorige level mee te nemen
-  (let ((pad (maak-pad-adt vector-1))
+(define (maak-level-adt pad-teller monster-rij geld levens . vorige-torens) ;; Neemt een rij van monster in die gereleased zullen zijn op het pad, (alsook geld en levens) optionele parameter torens om torens vorige level mee te nemen
+  (let ((pad (maak-pad-adt (pad-verkrijg pad-teller)))
         (torens (if (not (null? vorige-torens)) (car vorige-torens) vorige-torens))
         (monsters '()) ;; Lijst omdat elk element bewerken gemakkelijk is (for-each)
         (activeerde-tank '()) ;; Lijst om extra proceduredefinities uit te sparen
@@ -261,15 +261,19 @@
         (cons geselecteerde-tanks geselecteerde-bommen-regen)))
 
     ;; Volgende code is om te zien als het level aan het einde gekomen is
-    (define (einde?)
+    (define (ronde-einde?)
       (and (null? monster-rij) (null? monsters)))
           
     ;; Volgende code is om de level te skippen naar het einde
-    (define (level-einde!)
-      (if (not (einde?))
+    (define (ronde-einde!)
+      (if (not (ronde-einde?))
           (begin
             (set! monster-rij '())
             (set! monsters '()))))
+
+    ;; Volgende code is om een nieuw monster-lijst te installeren
+    (define (zet-monster-lijst! monster-lijst)
+      (set! monster-rij monster-lijst))
 
     ;; Volgende code zijn abstracties
     (define zonder-dummy cdr)
@@ -294,8 +298,9 @@
         ((eq? msg 'verkrijg-gedropte-power-ups) (zonder-dummy op-te-rapen-power-ups))
         ((eq? msg 'drop-opraap!) drop-opraap!)
         ((eq? msg 'explodeer-monsters-in-buurt!) explodeer-monsters-in-buurt!)
-        ((eq? msg 'einde?) einde?)
-        ((eq? msg 'level-einde!) level-einde!)
+        ((eq? msg 'ronde-einde?) ronde-einde?)
+        ((eq? msg 'ronde-einde!) ronde-einde!)
+        ((eq? msg 'zet-monster-lijst!) zet-monster-lijst!)
         ((eq? msg 'soort) 'level)
         (else
          "maak-level-adt: ongeldig bericht")))

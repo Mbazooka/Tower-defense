@@ -3,17 +3,18 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (maak-spel-adt)
   (let* ((spel-lus-gestart? #f) ;; Nuttig voor bepaalde elementen beter te doen functioneren
+         (level-teller 1)
+         (ronde-teller 1)
+         (pad-teller 1)
          (geld (maak-geld-adt *geld-begin-bedrag*))
          (levens (maak-leven-adt *levens-hoeveelheid*))
-         (level (maak-level-adt ronde-1 geld levens))                  
+         (level (maak-level-adt pad-teller (monster-vector-verkrijg level-teller ronde-teller) geld levens))                 
          (pad (level 'pad))
          (teken-adt (maak-teken-adt (+ *menu-breedte-px* *spel-breedte-px*) *spel/menu-hoogte-px*));; maak de fundamenten van het spel
          (toren-type #f) ;; Om torens te plaatsen veranderen we dit om te weten welk type toren te plaatsen.
          (monster-tijd 0) ;; Tijd afgelopen sinds vorige monster op pad
          (tank-power-up '())
          (bommen-regen-power-up '())
-         (level-teller 1)
-         (ronde-teller 1)
          (power-up-tijd-actief 0)
          (power-up-afkoeling 0)
          (game-over? #f))
@@ -78,7 +79,7 @@
       (set! spel-lus-gestart? #t)
       (if ((levens 'dood?))
           (begin
-            ((level 'level-einde!))
+            ((level 'ronde-einde!))
             (set! game-over? #t)
             ((teken-adt 'teken-game-over!))))
       (if (= monster-tijd 0) ;; Zal monsters op scherm updaten na ongeveer 2 seconden
@@ -123,22 +124,31 @@
     ;;Volgende code implementeert een toets om het spel de laten starten
     (define (toets-procedure toestand toets)
       (cond
-;        ((and (eq? toestand 'pressed) (eq? toets #\return) game-over?)
-;         (set! game-over? #f)
-;         (reset!)) ;; TOE TE VOEGEN!!!!!!
-        ((and (eq? toestand 'pressed) (eq? toets #\space) ((level 'einde?)))
+        ;        ((and (eq? toestand 'pressed) (eq? toets #\return) game-over?)
+        ;         (set! game-over? #f)
+        ;         (reset!)) ;; TOE TE VOEGEN!!!!!!        
+        ((and (eq? toestand 'pressed) (eq? toets #\space) (level-einde?)) ;; !!!! aanpassen
          ((geld 'voeg-geld-toe!) 'level #f)
          ((teken-adt 'update-tekst-teken!) 'geld (geld 'status))
          ((level 'initialiseer-toren-tijden!))
-         (set! level (maak-level-adt level-1 geld levens (level 'torens)))
-         (set! level-teller (+ level-teller 1))
          (set! ronde-teller 1)
+         (set! level-teller (+ level-teller 1))
+         (set! pad-teller (+ pad-teller 1))         
+         (set! level (maak-level-adt (pad-verkrijg pad-teller) (monster-vector-verkrijg level-teller ronde-teller) geld levens (level 'torens)))
          (set! spel-lus-gestart? #f)
-         ((teken-adt 'update-tekst-teken!) 'level level-teller))
+         ((teken-adt 'update-tekst-teken!) 'level level-teller)
+         ((teken-adt 'update-tekst-teken!) 'ronde ronde-teller))
+        ((and (eq? toestand 'pressed) (eq? toets #\space) ((level 'ronde-einde?)))
+         (set! ronde-teller (+ ronde-teller 1))
+         (display ronde-teller)
+         (display " / ")
+         ((teken-adt 'update-tekst-teken!) 'level level-teller)
+         ((teken-adt 'update-tekst-teken!) 'ronde ronde-teller)
+         ((level 'zet-monster-lijst!) (monster-vector-verkrijg level-teller ronde-teller)))        
         ((and (eq? toestand 'pressed) (eq? toets #\space))
          ((teken-adt 'set-spel-lus!) spel-lus-procedure))
         ((and (eq? toestand 'pressed) (eq? toets 'escape))
-         ((level 'level-einde!)))
+         ((level 'ronde-einde!)))
         ((and (eq? toestand 'pressed) (eq? toets #\t) spel-lus-gestart?  (not (afkoeling?)))
          (power-up-handelingen! 'tank tank-power-up)         
          (set! power-up-tijd-actief *tank-actief-tijd*))
@@ -175,19 +185,23 @@
     (define (afkoeling?)
       (not (= power-up-afkoeling 0)))
 
+    ;; Volgende code bepaalt als een level tot zijn einde gekomen is
+    (define (level-einde?)
+      (and ((level 'ronde-einde?)) (>= ronde-teller *aantal-ronden*)))
+
     ;; Volgende zal het spel restarten
-;    (define (reset!)
-;      ((levens 'reset!))
-;      ((geld 'reset!))
-;      (set! toren-type #f)
-;      (set! monster-tijd 0)
-;      (set! tank-power-up '())
-;      (set! bommen-regen-power-up '())
-;      (set! level-teller 1)
-;      (set! ronde-teller 1)
-;      (set! power-up-tijd-actief 0)
-;      (set! power-up-afkoeling 0)
-;      (set! pad-count 0)
+    ;    (define (reset!)
+    ;      ((levens 'reset!))
+    ;      ((geld 'reset!))
+    ;      (set! toren-type #f)
+    ;      (set! monster-tijd 0)
+    ;      (set! tank-power-up '())
+    ;      (set! bommen-regen-power-up '())
+    ;      (set! level-teller 1)
+    ;      (set! ronde-teller 1)
+    ;      (set! power-up-tijd-actief 0)
+    ;      (set! power-up-afkoeling 0)
+    ;      (set! pad-count 0)
 
     ;; Volgende code zal microseconden omvormen naar seconden
     (define (ms->s getal)

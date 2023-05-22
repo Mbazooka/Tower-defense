@@ -143,7 +143,7 @@
 
 ;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid
 (define *geld-begin-bedrag* 5000) ;; Verander achteraf !!!!!!
-(define *levens-hoeveelheid* 1)
+(define *levens-hoeveelheid* 3)
 (define *rood&&groen-monster-levens-verlies* 1)
 (define *geel-monster-levens-verlies* 3)
 (define *paars-monster-levens-verlies* 2)
@@ -177,3 +177,5 @@
 
 ;; Algemene constanten
 (define *seconde* 1000)
+(define *aantal-ronden* 3)
+(define *aantal-levels* 3)
