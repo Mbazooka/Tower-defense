@@ -216,15 +216,16 @@
                             ((geld 'voeg-geld-toe!) 'groen #f #t)))))
                 monsters))
 
+    ;; Volgende code is een hulp procedure voor tanken-verminder-monster-levens!
+    (define (in? monster monsters) ;; Hulpprocedure om na te gaan als men het monster al vermoord heeft door een toren 
+      (cond
+        ((null? monsters) #f)
+        ((eq? monster (eerste monsters)) #t)
+        (else
+         (in? monster (rest monsters))))) 
+
     ;; Volgende code vermindert alle monster levens met 1
-    (define (tanken-verminder-monster-levens! tanken)
-      (define (in? monster monsters) ;; Hulpprocedure om na te gaan als men het monster al vermoord heeft door een toren 
-        (cond
-          ((null? monsters) #f)
-          ((eq? monster (eerste monsters)) #t)
-          (else
-           (in? monster (rest monsters)))))        
-        
+    (define (tanken-verminder-monster-levens! tanken)               
       (for-each (lambda (tank)
                   (if (pair? tank-power-up-monsters)
                       (let ((mons (eerste tank-power-up-monsters)))
