@@ -26,83 +26,102 @@
                         (and (not ((monster 'einde?)))
                              (not ((monster 'gestorven?)))))
                       monsters))) ;; Overblijvende monsters te vermoorden
+
+    ;; Volgende code zijn hulpprocedures voor update-monsters
+    ;;(geen blockstructuur gebruikt wegens herdefinieren door interpeter bij elke oproep)
+    (define (insert-power-up! pu pu-lijst)
+      (let ((rest-lijst (cdr pu-lijst))
+            (in-te-voegen (cons pu '())))
+        (set-cdr! in-te-voegen rest-lijst)
+        (set-cdr! pu-lijst in-te-voegen)))
+
+    (define (delete-power-up! pu pu-lijst)
+      (define (delete-hulp vorig-element lijst)
+        (cond
+          ((null? pu-lijst) #f)
+          ((null? (cdr lijst)) (if (eq? (car lijst) pu) (set-cdr! vorig-element '())))
+          ((eq? (car lijst) pu) (set-cdr! vorig-element (cdr lijst)))
+          (else
+           (delete-hulp lijst (cdr lijst)))))
+      (delete-hulp pu-lijst (cdr pu-lijst)))
+    
+    (define (zet-terug-monster-lijst! zoeken-monster nieuw-monster monsters) ;; Hulp procedure om monsters te verwisselen (nodig om groen monster te switchen met rood monster zodat torens in juiste volgorde schieten)
+      (cond
+        ((null? monsters) "Error: Iets misgegaan")
+        ((eq? (eerste monsters) zoeken-monster)
+         (set-car! monsters nieuw-monster))
+        (else
+         (zet-terug-monster-lijst! zoeken-monster nieuw-monster (rest monsters)))))
+
+    
+    (define (verhoog-levens-paars-monster! rand-paars-monster) ;; Hulp procedure om alle monsters in buurt van dode paarse monster, hun levens te verhogen
+      (for-each (lambda (monster)
+                  (if (and (not (eq? (monster 'type) 'paars)) (in-rand? (monster 'positie) rand-paars-monster))
+                      ((monster 'verhoog-levens!))))
+                monsters))
+
+    (define (update-vertragings-tijd-monsters! dt)
+      (for-each (lambda (monster)
+                  ((monster 'update-tijd-net-projectielen!) dt)
+                  ((monster 'haal-weg-verlopen-net-projectielen!)))
+                monsters))
+
+    (define (levens-verminder!) ;; Vermindert de levens afhankelijk van de monsters
+      ((levens 'levens-verminder!)  (filter (lambda (monster) ((monster 'einde?))) monsters)))
+
+    (define (afhandeling-net-projectielen!)
+      (for-each (lambda (projectiel) ;;Vertraagd de monster in de rand van het net-projectiel
+                  (for-each (lambda (monster)
+                              (if (and ((projectiel 'binnen-rand?) monster) (not ((monster 'net-al-vetraagd?) projectiel)))
+                                  (begin
+                                    ((monster 'voeg-net-projectiel-toe!) projectiel)
+                                    ((monster 'actie-monster-levend!) 'vertraag projectiel)))) 
+                            monsters))
+                net-projectielen)
+      (set! net-projectielen (filter ;; Nodig anders zal een bepaald net, tot het eind van het spel blijven vertragen
+                              (lambda (projectiel)
+                                ((projectiel 'niet-bereikt&&afgehandelt?)))
+                              net-projectielen)))
+
+    (define (mogelijke-drop! positie) ;; Is een procedure om een power-up drop mogelijk te maken
+      (let ((num (random *drop-rate*))
+            (pu-type (random *aantal-power-ups*)))
+        (if (= num *drop-getal*)
+            (if (= pu-type *getal-voorstelling-tank*)
+                (insert-power-up! (maak-power-up-adt pad 'tank positie) op-te-rapen-power-ups)
+                (insert-power-up! (maak-power-up-adt pad 'bommen-regen positie) op-te-rapen-power-ups)))))
+
+    (define (geld-en-sterven-acties!)
+      (for-each (lambda (monster)
+                  (let ((monster-type (monster 'type)))
+                    ((geld 'voeg-geld-toe!) monster-type #f) ;; Zal geld updaten, en indien het een groen monster is, een rood monster spawnen
+                    (if (or (not (eq? monster-type 'groen)) ((monster 'geen-actie-groen-monster?)))
+                        (mogelijke-drop! (((monster 'positie) 'positie-copieer))))
+                    (cond                      
+                      ((eq? monster-type 'groen) (if (not ((monster 'geen-actie-groen-monster?))) (zet-terug-monster-lijst! monster ((monster 'actie-monster-sterven!)) monsters))) ;; Zal rood monster doen spawnen van groen monster
+                      ((eq? monster-type 'paars) (verhoog-levens-paars-monster! ((monster 'actie-monster-sterven!)))))))
+                (filter (lambda (monster) ((monster 'gestorven?))) monsters)))
+
+    (define (monsters-voort-bewegen!)
+      (for-each (lambda (monster) ((monster 'volgende-positie!))) monsters)) ;; Overblijvende monster verder laten wandelen
+    (monsters-voort-bewegen!)
+
+    (define (volgend-monster-vrijlaten! . update-teken)
+      (if (and (not (null? update-teken)) (eq? (car update-teken) 'toevoegen) (not (null? monster-rij))) ;; Het toevoegen van monsters gedeelte van de procedure
+          (begin
+            (set! monsters (cons (maak-monster-adt (type monster-rij) pad) monsters))
+            (set! monster-rij (rest monster-rij)))))
+      
     
     ;; Volgende code update de monsters die op het pad lopen
-    (define (update-monsters! dt . update-teken) ;; !!!! Kijk naar volgerde voor efficientie
-      (define (zet-terug-monster-lijst! zoeken-monster nieuw-monster monsters) ;; Hulp procedure om monsters te verwisselen (nodig om groen monster te switchen met rood monster zodat torens in juiste volgorde schieten)
-        (cond
-          ((null? monsters) "Error: Iets misgegaan")
-          ((eq? (eerste monsters) zoeken-monster)
-           (set-car! monsters nieuw-monster))
-          (else
-           (zet-terug-monster-lijst! zoeken-monster nieuw-monster (rest monsters)))))
-
-      (define (verhoog-levens-paars-monster! rand-paars-monster) ;; Hulp procedure om alle monsters in buurt van dode paarse monster, hun levens te verhogen
-        (for-each (lambda (monster)
-                    (if (and (not (eq? (monster 'type) 'paars)) (in-rand? (monster 'positie) rand-paars-monster))
-                        ((monster 'verhoog-levens!))))
-                  monsters))  
-      
-      (define (update-vertragings-tijd-monsters!)
-        (for-each (lambda (monster)
-                    ((monster 'update-tijd-net-projectielen!) dt)
-                    ((monster 'haal-weg-verlopen-net-projectielen!)))
-                  monsters))
-      
-      (define (levens-verminder!) ;; Telt aantal monsters aan het einde en vermindert levens
-        ((levens 'levens-verminder!) (length (filter (lambda (monster) ((monster 'einde?))) monsters))))
-
-      (define (afhandeling-net-projectielen!)
-        (for-each (lambda (projectiel) ;;Vertraagd de monster in de rand van het net-projectiel
-                    (for-each (lambda (monster)
-                                (if (and ((projectiel 'binnen-rand?) monster) (not ((monster 'net-al-vetraagd?) projectiel)))
-                                    (begin
-                                      ((monster 'voeg-net-projectiel-toe!) projectiel)
-                                      ((monster 'actie-monster-levend!) 'vertraag projectiel)))) 
-                              monsters))
-                  net-projectielen)
-        (set! net-projectielen (filter ;; Nodig anders zal een bepaald net, tot het eind van het spel blijven vertragen
-                                (lambda (projectiel)
-                                  ((projectiel 'niet-bereikt&&afgehandelt?)))
-                                net-projectielen)))
-
-      (define (mogelijke-drop! positie) ;; Is een procedure om een power-up drop mogelijk te maken
-        (let ((num (random *drop-rate*))
-              (pu-type (random *aantal-power-ups*)))
-          (if (= num *drop-getal*)
-              (if (= pu-type *getal-voorstelling-tank*)
-                  (insert-power-up! (maak-power-up-adt pad 'tank positie) op-te-rapen-power-ups)
-                  (insert-power-up! (maak-power-up-adt pad 'bommen-regen positie) op-te-rapen-power-ups)))))
-
-      (define (geld-en-sterven-acties!)
-        (for-each (lambda (monster)
-                    (let ((monster-type (monster 'type)))
-                      ((geld 'voeg-geld-toe!) monster-type #f) ;; Zal geld updaten, en indien het een groen monster is, een rood monster spawnen
-                      (if (or (not (eq? monster-type 'groen)) ((monster 'geen-actie-groen-monster?)))
-                          (mogelijke-drop! (((monster 'positie) 'positie-copieer))))
-                      (cond                      
-                        ((eq? monster-type 'groen) (if (not ((monster 'geen-actie-groen-monster?))) (zet-terug-monster-lijst! monster ((monster 'actie-monster-sterven!)) monsters))) ;; Zal rood monster doen spawnen van groen monster
-                        ((eq? monster-type 'paars) (verhoog-levens-paars-monster! ((monster 'actie-monster-sterven!)))))))
-                  (filter (lambda (monster) ((monster 'gestorven?))) monsters)))
-
-      (define (monsters-voort-bewegen!)
-        (for-each (lambda (monster) ((monster 'volgende-positie!))) monsters)) ;; Overblijvende monster verder laten wandelen
-      (monsters-voort-bewegen!)
-
-      (define (volgend-monster-vrijlaten!)
-        (if (and (not (null? update-teken)) (eq? (car update-teken) 'toevoegen) (not (null? monster-rij))) ;; Het toevoegen van monsters gedeelte van de procedure
-            (begin
-              (set! monsters (cons (maak-monster-adt (type monster-rij) pad) monsters))
-              (set! monster-rij (rest monster-rij)))))
-
-      ;; Uitvoeren van alle acties van update-monsters!
+    (define (update-monsters! dt . update-teken)  ;; Uitvoeren van alle acties van update-monsters!
       (levens-verminder!)
       (afhandeling-net-projectielen!)
-      (update-vertragings-tijd-monsters!)
+      (update-vertragings-tijd-monsters! dt)
       (geld-en-sterven-acties!)
       (overblijvende-monsters!)
       (monsters-voort-bewegen!)
-      (volgend-monster-vrijlaten!))
+      (volgend-monster-vrijlaten! (if (not (null? update-teken)) (car update-teken))))
     
     ;; Volgende code update de projectielen die door torens werden afgeschoten
     (define (update-torens-projectielen-positie! dt)
@@ -111,36 +130,38 @@
          ((toren 'projectiel-update!) dispatch dt))        
        torens))
 
-    ;; Volgende code zal projectielen afschieten naar een monster 
-    (define (update-torens-projectielen-afschieten! pad dt) 
-      (define (eerste-monster mons)
-        (if (null? (cdr mons))
-            (car mons)
-            (eerste-monster (cdr mons))))
+    ;; Volgende code zijn hulpprocedures voor update-torens-projectielen-afschieten!
+    (define (eerste-monster mons)
+      (if (null? (cdr mons))
+          (car mons)
+          (eerste-monster (cdr mons))))
 
-      (define (laatste-monster-weglaten mons)
-        (reverse (cdr (reverse mons)))) 
-      
-      (define (toren-schiet-y/n toren monsters) ;; Procedure die monster zal vinden waarnaar de toren kan schieten (indien monsters in buurt)
-        (let ((monster (eerste-monster monsters)))
-          (cond
-            ((and ((toren 'in-buurt?) monster) (eq? (toren 'type) 'bomwerp-toren))
-             (let ((aantal (length (filter (lambda (monster)
-                                             ((toren 'in-buurt?) monster))
-                                           monsters))))
-               (if (> aantal *meerdere-monsters*)
-                   (begin
-                     ((toren 'schiet!) monster pad)
-                     ((toren 'update-afvuur-tijd!) dt))))) ;; Na het schieten, moet tijd up gedate worden
-            (((toren 'in-buurt?) monster) ((toren 'schiet!) monster pad) ((toren 'update-afvuur-tijd!) dt)) ;; Na het schieten, moet tijd up gedate worden
-            (else
-             (if (not (null? (cdr monsters)))
-                 (toren-schiet-y/n toren (laatste-monster-weglaten monsters)))))))    
+    (define (laatste-monster-weglaten mons)
+      (reverse (cdr (reverse mons))))
+
+    (define (toren-schiet-y/n pad dt toren monsters) ;; Procedure die monster zal vinden waarnaar de toren kan schieten (indien monsters in buurt)
+      (let ((monster (eerste-monster monsters)))
+        (cond
+          ((and ((toren 'in-buurt?) monster) (eq? (toren 'type) 'bomwerp-toren))
+           (let ((aantal (length (filter (lambda (monster)
+                                           ((toren 'in-buurt?) monster))
+                                         monsters))))
+             (if (> aantal *meerdere-monsters*)
+                 (begin
+                   ((toren 'schiet!) monster pad)
+                   ((toren 'update-afvuur-tijd!) dt))))) ;; Na het schieten, moet tijd up gedate worden
+          (((toren 'in-buurt?) monster) ((toren 'schiet!) monster pad) ((toren 'update-afvuur-tijd!) dt)) ;; Na het schieten, moet tijd up gedate worden
+          (else
+           (if (not (null? (cdr monsters)))
+               (toren-schiet-y/n pad toren dt (laatste-monster-weglaten monsters)))))))  
+
+    ;; Volgende code zal projectielen afschieten naar een monster 
+    (define (update-torens-projectielen-afschieten! pad dt)     
       (if (not (null? monsters))
           (for-each
            (lambda (toren)
              (if ((toren 'schieten?))
-                 (toren-schiet-y/n toren monsters)
+                 (toren-schiet-y/n pad dt toren monsters)
                  ((toren 'update-afvuur-tijd!) dt)))
            torens)))
 
@@ -189,7 +210,10 @@
     (define (explodeer-monsters-in-buurt! rand type-vermindering)
       (for-each (lambda (monster)
                   (if (in-rand? (monster 'positie) rand)
-                      ((monster 'actie-monster-levend!) 'verminder type-vermindering)))
+                      (begin
+                        ((monster 'actie-monster-levend!) 'verminder type-vermindering)
+                        (if ((monster 'geen-actie-groen-monster?))
+                            ((geld 'voeg-geld-toe!) 'groen #f #t)))))
                 monsters))
 
     ;; Volgende code vermindert alle monster levens met 1
@@ -218,23 +242,6 @@
        (map (lambda (toren)
               (toren 'projectielen))
             torens)))
-
-    ;; Volgende code zijn hulpprocedures
-    (define (insert-power-up! pu pu-lijst)
-      (let ((rest-lijst (cdr pu-lijst))
-            (in-te-voegen (cons pu '())))
-        (set-cdr! in-te-voegen rest-lijst)
-        (set-cdr! pu-lijst in-te-voegen)))
-
-    (define (delete-power-up! pu pu-lijst)
-      (define (delete-hulp vorig-element lijst)
-        (cond
-          ((null? pu-lijst) #f)
-          ((null? (cdr lijst)) (if (eq? (car lijst) pu) (set-cdr! vorig-element '())))
-          ((eq? (car lijst) pu) (set-cdr! vorig-element (cdr lijst)))
-          (else
-           (delete-hulp lijst (cdr lijst)))))
-      (delete-hulp pu-lijst (cdr pu-lijst)))
 
     ;; Volgende neemt een gedropte-power-up op basis van een positie
     (define (drop-opraap! x y)

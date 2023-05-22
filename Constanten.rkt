@@ -120,7 +120,7 @@
 (define *bomwerp-projectiel-rand-afstand* 4)
 
 ;; Monster tijd constanten
-(define *monster-spawn-frequentie* 5000) ;; Monster spawn frequentie (te veranderen)
+(define *monster-spawn-frequentie* 8000) ;; Monster spawn frequentie (te veranderen)
 (define *rood&&groen&&paars-monster-loop-snelheid* 0.1) ;; Monster beweeg snelheid
 (define *geel-monster-loop-snelheid* 0.05)
 (define *monster-vetraag-tijd* 5000) ;; Hoelang een monster vertraagd word door een net
@@ -135,15 +135,18 @@
 (define *drop-rand-afstand* 2)
 (define *tank-actief-tijd* 2000)
 (define *bommen-regen-actief-tijd* 3000)
-(define *drop-rate* 2) ;; Stelt de kans van een drop voor (1/10)
+(define *drop-rate* 10) ;; Stelt de kans van een drop voor (1/10)
 (define *drop-getal* 0) ;; Als dit getal uit de random-number generator komt dan droppen we een power-up
 (define *aantal-power-ups* 2)
 (define *getal-voorstelling-tank* 0) ;; Volgende 2 constanten worden gebruikt om te bepalen wat er gedropt moet worden
 (define *getal-voorstelling-bommen-regen* 1)
 
 ;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid
-(define *geld-begin-bedrag* 5000) ;; Verander achteraf
-(define *levens-hoeveelheid* 5)
+(define *geld-begin-bedrag* 5000) ;; Verander achteraf !!!!!!
+(define *levens-hoeveelheid* 10)
+(define *rood&&groen-monster-levens-verlies* 1)
+(define *geel-monster-levens-verlies* 3)
+(define *paars-monster-levens-verlies* 2)
 
 ;; Constanten die geld van speler doet veranderen
 (define *basis-toren-kost* 500)
@@ -153,6 +156,7 @@
 (define *tank-kost* 700)
 (define *bommen-regen-kost* 1000)
 (define *rood-groen-monster-winst* 20)
+(define *groen-monster-winst* 30)
 (define *geel-monster-winst* 50)
 (define *paars-monster-winst* 30)
 (define *level-winst* 500)
