@@ -62,7 +62,7 @@
     (define (gestorven?)
       (<= levens 0))
 
-    ;; Volgende code gaat na indien groen-monster een actie moet doen (indien levens verminderen > 1)
+    ;; Volgende code gaat na indien groen-monster een actie moet doen (indien levens verminderen met > 1)
     (define (geen-actie-groen-monster?)
       (< levens 0))
 
@@ -77,11 +77,11 @@
          *standaard-levens-verminder*)))
       
     ;; Volgende code zal het leven van het monstertje aanpassen afhankelijk van het soort    
-    (define (verminder-levens! . object)                               
-      (let* ((test (and (pair? object) (or (eq? (type-vermindering object) 'bomwerp)
-                                           (eq? (type-vermindering object) 'bom)))) ;; Ga na indien bomwerp-projectiel/bom de levens zal verminderen
+    (define (verminder-levens! . object-type)                               
+      (let* ((test (and (pair? object-type) (or (eq? (type-vermindering object-type) 'bomwerp)
+                                           (eq? (type-vermindering object-type) 'bom)))) ;; Ga na indien bomwerp-projectiel/bom de levens zal verminderen
              (levens-vermindering (if test
-                                      (verminder-levens-hoeveelheid (type-vermindering object))
+                                      (verminder-levens-hoeveelheid (type-vermindering object-type))
                                       (verminder-levens-hoeveelheid 'standaard-vermindering))))
                         
         (cond
