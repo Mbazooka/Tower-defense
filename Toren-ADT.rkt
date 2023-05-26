@@ -78,6 +78,7 @@
         (lambda (project) ((project 'bestemming-bereikt?)))
         projectielen)))
 
+    ;; Volgende cpde zijn hulpprocedures voor projectiel-update!
     (define (haal-projectielen-weg!)
       (set! projectielen (filter
                           (lambda (projectiel)
