@@ -52,10 +52,6 @@
                    (set! huidige-dichste-afstand afstand)))))))
          lijst-van-posities)
         huidige-dichste))
-
-    ;; Begin van het pad (eerste pad positie), dit is soms nodig 
-    (define (begin-alternatief)
-      (vector-ref vector-posities keer-counter))
               
     ;; Begin van het pad (midden pad)
     (define (begin)
