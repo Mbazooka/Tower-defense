@@ -8,7 +8,7 @@
          (bestemming-x (bestemming 'x)) ;; Vaak nodig dus 1 maal berekent
          (bestemming-y (bestemming 'y))
          (initiele-positie ((positie 'positie-copieer)))
-         (bestemming-extra-1 (maak-positie-adt (+ bestemming-x 1) (+ bestemming-y 1))) ;; Dit zijn extras omdat projectiel soms besteming voor bij gaat
+         (bestemming-extra-1 (maak-positie-adt (+ bestemming-x 1) (+ bestemming-y 1))) ;; Dit zijn extras omdat projectiel soms bestemming voor bij gaat
          (bestemming-extra-2 (maak-positie-adt (+ bestemming-x 1) (- bestemming-y 1)))
          (bestemming-extra-3 (maak-positie-adt (- bestemming-x 1) (+ bestemming-y 1)))
          (bestemming-extra-4 (maak-positie-adt (- bestemming-x 1) (- bestemming-y 1)))
@@ -16,7 +16,7 @@
          (positie-update-hoeveelheid-x (- bestemming-x (initiele-positie 'x))) ;; Dit zijn positie update constanten om gewicht te introduceren en ze zo smooth naar hun eindbestemming te brengen
          (positie-update-hoeveelheid-y (- bestemming-y (initiele-positie 'y)))
          (projectiel-afvuur-snelheid (if (pair? afvuur-snelheid) (car afvuur-snelheid) *projectiel-afvuur-snelheid-steen-net-vuurbal*)) ;; Verander voor algemeenheid
-         (lig-tijd 0) ;; Is de tijd dat een projectiel al blijft liggen (voor net)         
+         (lig-tijd 0) ;; Is de tijd dat een projectiel al blijven liggen is (voor net)         
          (vertraagd #f) ;; Is om na te gaan indien een projectiel een monster al vertraagd heeft (zodat niet in elke loop het monster vertraag)
          (projectiel-rand #f)) ;; Is de rand van een projectiel (indien nodig bv bij een net-projectiel of bomwerp)
 
@@ -36,9 +36,7 @@
       (cond
         ((or (eq? type 'steen) (eq? type 'vuurbal)) #t)
         ((eq? type 'net) (>= lig-tijd *net-blijf-liggen-tijd*)) ;; Maak constanten
-        ((eq? type 'bomwerp) (>= lig-tijd *bomwerp-projectiel-ligtijd*))
-        (else
-         "Projectiel: Ongeldig type projectiel")))                             
+        ((eq? type 'bomwerp) (>= lig-tijd *bomwerp-projectiel-ligtijd*))))                            
 
     ;; Volgende code zal de positie van het projectiel updaten
     (define (volgende-positie!)
@@ -56,8 +54,7 @@
         ((eq? type 'net) (if (not vertraagd) ;; Gaat na als het te raken monster al vertraagd is geweest
                              (begin
                                ((te-raken 'actie-monster-levend!) 'vertraag dispatch)
-                               (set! vertraagd #t))))
-        (else "Projectiel: ongeldig type")))
+                               (set! vertraagd #t))))))
 
     ;; Volgende code zal een projectiel een actie doen uitvoeren na dat hij een monster heeft geraakt
     (define (actie-na-positie-bereik! level dt) 
@@ -73,9 +70,7 @@
         ((eq? type 'net) (maak-rand! *net-projectiel-rand-afstand* level) (set! lig-tijd (+ lig-tijd dt)))
         ((eq? type 'bomwerp) (set! lig-tijd (+ lig-tijd dt))
                              (if (>= lig-tijd *bomwerp-projectiel-ligtijd*)
-                                 (explodeer! level (maak-rand! *bomwerp-projectiel-rand-afstand* level))))
-        (else
-         "Projectiel: heeft geen actie na het raken van monsters")))
+                                 (explodeer! level (maak-rand! *bomwerp-projectiel-rand-afstand* level))))))
 
     ;; Volgende code maakt een rand voor een net-projectiel
     (define (maak-rand! afstand level)
