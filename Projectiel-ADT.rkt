@@ -61,7 +61,7 @@
         (else "Projectiel: ongeldig type")))
 
     ;; Volgende code zal een projectiel een actie doen uitvoeren na dat hij een monster heeft geraakt
-    (define (actie-na-monster-raak! level dt) 
+    (define (actie-na-positie-bereik! level dt) 
       (cond
         ((eq? type 'vuurbal)
          (let ((snelheid (- projectiel-afvuur-snelheid *vuurbal-hits-snelheid-verander*))
@@ -115,7 +115,7 @@
         ((eq? msg 'afgehandelt?) afgehandelt?)
         ((eq? msg 'volgende-positie!) volgende-positie!)
         ((eq? msg 'actie-te-raken-monster!) actie-te-raken-monster!)
-        ((eq? msg 'actie-na-monster-raak!) actie-na-monster-raak!)
+        ((eq? msg 'actie-na-positie-bereik!) actie-na-positie-bereik!)
         ((eq? msg 'toegevoegd!) toegevoegd!)
         ((eq? msg 'toegevoegd?) toegevoegd?)
         ((eq? msg 'maak-rand!) maak-rand!)

@@ -66,14 +66,14 @@
                ((projectiel 'actie-te-raken-monster!))) 
            (cond ;; Volgende actie na monster geraakt is
              ((eq? 'vuurbal type-var)
-              (let ((actie ((projectiel 'actie-na-monster-raak!) level dt)))
+              (let ((actie ((projectiel 'actie-na-positie-bereik!) level dt)))
                 (if actie ;; Gaat na als er een actie gedaan moet worden of niet
                     (set! projectielen (cons actie projectielen)))))
              ((eq? 'net type-var)
               ((projectiel 'maak-rand!) *net-projectiel-rand-afstand* level)
-              ((projectiel 'actie-na-monster-raak!) level dt))
+              ((projectiel 'actie-na-positie-bereik!) level dt))
              ((eq? 'bomwerp type-var)
-              ((projectiel 'actie-na-monster-raak!) level dt)))))
+              ((projectiel 'actie-na-positie-bereik!) level dt)))))
        (filter
         (lambda (project) ((project 'bestemming-bereikt?)))
         projectielen)))
@@ -97,7 +97,7 @@
       (haal-projectielen-weg!)
       (beweeg-projectielen-voort!))
 
-    ;; Volgende code updaten toren hun afvuurtijd
+    ;; Volgende code de toren zijn afvuurtijd
     (define (update-afvuur-tijd! dt)
       (if (>= afvuur-tijd afvuur-frequentie)
           (set! afvuur-tijd 0)
