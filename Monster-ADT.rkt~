@@ -5,48 +5,50 @@
 ;; Zoals de keer-punten, tekens, enzo.
 (define (maak-monster-adt type pad . opt) 
   (let* ((bool (null? opt)) ;; Gedaan vermits dit vaak nodig is (efficientie)
-         (positie (if bool ((((pad 'begin)) 'positie-copieer)) (list-ref opt 0)))
+         (positie (if bool ((((pad 'begin)) 'positie-copieer)) (bereikte-positie opt)))
          (levens #f)
          (monster-loop-snelheid *rood&&groen&&paars-monster-loop-snelheid*)
          (schild #f)
          (einde ((pad 'einde)))
-         (keer-punten (if bool (pad 'keer-punten) (list-ref opt 1)))
-         (keer-tekens (if bool (pad 'keer-tekens) (list-ref opt 2)))
-         (beweging-richting-x (if bool #t (list-ref opt 3)))
-         (beweging-zin (if bool + (list-ref opt 4))) ;; #t beweeg x-richting, #f betekent beweeg y richting
+         (keer-punten (if bool (pad 'keer-punten) (bereikte-keer-punten opt)))
+         (keer-tekens (if bool (pad 'keer-tekens) (bereikte-keer-tekens opt)))
+         (beweging-richting-x (if bool #t (bereikte-beweging-richting-x opt)))
+         (beweging-zin (if bool + (bereikte-beweging-zin opt))) ;; #t beweeg x-richting, #f betekent beweeg y richting
          (net-projectielen (cons 'projectiel '()))) ;; Lijst van van net-projectielen die het monster vertraagt hebben
 
-    ;; Voglende code zet de initiele dingen klaar  
+    ;; Voglende code zet de initiele levens en snelheid klaar  
     (define (bepaal-initieel!)
       (cond
         ((eq? type 'rood) (set! levens *levens-rood-monster*))
-        ((eq? type 'groen) (set! levens *levens-groen-monster*))
+        ((eq? type 'groen) (set! levens (- *levens-groen-monster* 1))) ;; - 1 door special handeling van groen monster
         ((eq? type 'geel) (set! levens *levens-geel-monster*)
-                          (set! monster-loop-snelheid *geel-monster-loop-snelheid*) ;; Enkel hier geassigned voor efficiente
+                          (set! monster-loop-snelheid *geel-monster-loop-snelheid*) 
                           (set! schild *schild-geel-monster*))        
         ((eq? type 'paars) (set! levens *levens-paars-monster*))
         (else
          "Geen correcte type")))
     (bepaal-initieel!)
 
-    ;; Volgende code zal het monstertje op de volgende positie zetten
-    (define (volgende-positie!)
-      (define (teken-bepaling!) ;; Zal nagaan bij het veranderen van bewegingsdimensie in welke zin verandert moet worden.
-        (cond
-          ((and (null? keer-tekens) (eq? beweging-zin +)) (set! beweging-zin -))
-          ((and (null? keer-tekens) (eq? beweging-zin -)) (set! beweging-zin +))
-          ((eq? (car keer-tekens) '-) (set! beweging-zin -) (set! keer-tekens (cdr keer-tekens)))
-          ((eq? (car keer-tekens) '+) (set! beweging-zin +) (set! keer-tekens (cdr keer-tekens)))
-          (else
-           "Doe niets")))
+    ;; Volgende code zijn hulpprocedures voor volgende-positie!
+    (define (teken-bepaling!) ;; Zal nagaan bij het veranderen van bewegingsdimensie in welke zin verandert moet worden.
+      (cond
+        ((and (null? keer-tekens) (eq? beweging-zin +)) (set! beweging-zin -))
+        ((and (null? keer-tekens) (eq? beweging-zin -)) (set! beweging-zin +))
+        ((eq? (car keer-tekens) '-) (set! beweging-zin -) (set! keer-tekens (cdr keer-tekens)))
+        ((eq? (car keer-tekens) '+) (set! beweging-zin +) (set! keer-tekens (cdr keer-tekens)))
+        (else
+         "Doe niets")))
 
-      (define (richting-verandering!) ;; Zal bij het bereiken van een keerpunt, veranderen van bewegingsrichting 
-        (if (not (null? keer-punten))
-            (if ((((positie 'ceil)) 'gelijk?) (car keer-punten)) ;; keerpunt bereikt?
-                (begin
-                  (set! beweging-richting-x (not beweging-richting-x))
-                  (set! keer-punten (cdr keer-punten))
-                  (teken-bepaling!)))))     
+    (define (richting-verandering!) ;; Zal bij het bereiken van een keerpunt, veranderen van bewegingsrichting (en ook bewegingszin wegens oproep)
+      (if (not (null? keer-punten))
+          (if ((((positie 'ceil)) 'gelijk?) (car keer-punten)) ;; keerpunt bereikt?
+              (begin
+                (set! beweging-richting-x (not beweging-richting-x))
+                (set! keer-punten (cdr keer-punten))
+                (teken-bepaling!))))) 
+
+    ;; Volgende code zal het monstertje op de volgende positie zetten
+    (define (volgende-positie!)    
       (richting-verandering!)      
       (if beweging-richting-x
           ((positie 'x!) (+ (positie 'x) monster-loop-snelheid))
@@ -59,36 +61,51 @@
     ;; Volgende code gaat na indien monster gestorven is of niet
     (define (gestorven?)
       (<= levens 0))
+
+    ;; Volgende code gaat na indien groen-monster een actie moet doen (indien levens verminderen met > 1)
+    (define (geen-actie-groen-monster?)
+      (< levens 0))
+
+    ;; Volgende code is abstractie en een hulpprocedure
+    (define type-vermindering car)
+
+    ;; Volgende code zal op basis van het type het aantal geven waarmee de levens moeten vermindert worden
+    (define (verminder-levens-hoeveelheid type)
+      (cond
+        ((eq? type 'bomwerp) *bomwerp-levens-verminder*)
+        ((eq? type 'bom) (random *bom-levens-verminder-min* *bom-levens-verminder-max*))
+        (else
+         *standaard-levens-verminder*)))
       
-    ;; Volgende code zal het leven van het monstertje aanpassen afhankelijk van het soort
-    (define (verminder-levens! . bomwerp)
-      (let ((test (and (pair? bomwerp) (eq? (car bomwerp) 'bomwerp)))) ;; Ga na indien bomwerp-projectiel de levens zal verminderen
+    ;; Volgende code zal het leven van het monstertje aanpassen afhankelijk van het soort    
+    (define (verminder-levens! . object-type)                               
+      (let* ((test (and (pair? object-type) (or (eq? (type-vermindering object-type) 'bomwerp)
+                                           (eq? (type-vermindering object-type) 'bom)))) ;; Gaat na indien bomwerp-projectiel/bom de levens zal verminderen
+             (levens-vermindering (if test
+                                      (verminder-levens-hoeveelheid (type-vermindering object-type))
+                                      (verminder-levens-hoeveelheid 'standaard-vermindering))))
+                        
         (cond
-          ((eq? type 'rood) (set! levens (- levens 1)))
-          ((eq? type 'groen) (set! levens 0))
-          ((eq? type 'paars)  (cond                               
-                                ((and test (<= levens *bomwerp-projectiel-schade*))
-                                 (set! levens 0))
-                                ((and test (> levens *bomwerp-projectiel-schade*))
-                                 (set! levens (- levens *bomwerp-projectiel-schade*)))
-                                (else
-                                 (set! levens (- levens 1)))))
+          ((eq? type 'rood) (set! levens (- levens *standaard-levens-verminder*)))
+          ((eq? type 'groen) (set! levens (- levens levens-vermindering)))
+          ((eq? type 'paars)  (if (<= levens levens-vermindering)
+                                  (set! levens *dood*)
+                                  (set! levens (- levens levens-vermindering))))
                               
-          ((eq? type 'geel) (cond
-                              ((and test (> schild 2))
-                               (set! schild 0))
-                              ((and test (= schild 0))
-                               (set! levens 0))
-                              (test 
-                               (let ((rest (- *bomwerp-projectiel-schade* schild)))
-                                 (set! schild 0)
-                                 (if (<= levens rest)
-                                     (set! levens 0)
-                                     (set! levens (- levens 1)))))
-                              (else
-                               (if (= schild 0)
-                                   (set! levens (- levens 1))
-                                   (set! schild (- schild 1))))))                                                       
+          ((eq? type 'geel)
+           (cond
+             ((>= schild levens-vermindering)
+              (set! schild (- schild levens-vermindering)))
+             ((= schild 0)
+              (if (<= levens levens-vermindering)
+                  (set! levens *dood*)
+                  (set! levens (- levens levens-vermindering))))
+             (else 
+              (let ((rest (- levens-vermindering schild)))
+                (set! schild 0)
+                (if (<= levens rest)
+                    (set! levens *dood*)
+                    (set! levens (- levens rest)))))))                                                      
           (else
            "monster-type: ongeldig type"))))
 
@@ -119,7 +136,7 @@
       (cond
         ((eq? actie 'vertraag) (vertraag-monster!)
                                (voeg-net-projectiel-toe! (car projectiel/levens)))
-        ((eq? actie 'verminder) (if (and (pair? projectiel/levens) (eq? (car projectiel/levens) 'bomwerp))                                    
+        ((eq? actie 'verminder) (if (and (pair? projectiel/levens) (or (eq? (car projectiel/levens) 'bomwerp) (eq? (car projectiel/levens) 'bom)))                                    
                                     (verminder-levens! (car projectiel/levens))
                                     (verminder-levens!)))
         (else "Ongeldige actie")))
@@ -136,14 +153,14 @@
     (define proj car)
     (define tijd cdr)
 
-    ;; Volgende code zal de net-projectielen hun vertragings actie tijd update
+    ;; Volgende code zal de net-projectielen hun vertragings actie tijd updaten
     (define (update-tijd-net-projectielen! dt)
       (if (not (null? net-projectielen))
           (for-each (lambda (projectiel)              
                       (set-cdr! projectiel (+ (tijd projectiel) dt)))
                     (rest-dict net-projectielen)))) ;; rest-dict gedaan vermits het een getagde associate lijst is
 
-    ;; Volgende code zal de net-projectielen waarvan hun vertragingstijd verlopen is weghalen (garbage collection)
+    ;; Volgende code zal de net-projectielen waarvan hun vertragingstijd verlopen is weghalen ("garbage collection")
     (define (haal-weg-verlopen-net-projectielen!)
       (for-each (lambda (projectiel)
                   (if (>= (tijd projectiel) *net-vertraag-tijd*)
@@ -154,18 +171,19 @@
                  
     (define (dispatch msg)
       (cond
-        ((eq? msg 'snelheid) monster-loop-snelheid)
         ((eq? msg 'positie) positie)
         ((eq? msg 'type) type)
         ((eq? msg 'volgende-positie!) volgende-positie!)
         ((eq? msg 'einde?) einde?)
         ((eq? msg 'gestorven?) gestorven?)
+        ((eq? msg 'geen-actie-groen-monster?) geen-actie-groen-monster?)
         ((eq? msg 'actie-monster-sterven!) actie-monster-sterven!)
         ((eq? msg 'actie-monster-levend!) actie-monster-levend!)
+        ((eq? msg 'verhoog-levens!) verhoog-levens!)
         ((eq? msg 'voeg-net-projectiel-toe!) voeg-net-projectiel-toe!)
         ((eq? msg 'update-tijd-net-projectielen!) update-tijd-net-projectielen!)
         ((eq? msg 'net-al-vetraagd?) net-al-vetraagd?)
         ((eq? msg 'haal-weg-verlopen-net-projectielen!) haal-weg-verlopen-net-projectielen!) 
-        ((eq? msg 'soort) 'monster) ;; Toegevoegd om code duplicatie bij teken-adt te vermijden
+        ((eq? msg 'soort) 'monster)
         (else "maak-monster-adt: ongeldig bericht")))
     dispatch))

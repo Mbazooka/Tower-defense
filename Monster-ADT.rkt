@@ -127,9 +127,7 @@
         ((eq? type 'paars)
          (let ((rand-paars-monster (make-vector 4)))
            (positie->rand! positie *paars-monster-rand-afstand* rand-paars-monster) ;; Maakt rand dat level kan gebruiken om alle monster in de buurt met levens te verhogen
-           rand-paars-monster))
-        (else
-         "monster-type: ongeldig type")))
+           rand-paars-monster))))
 
     ;; Volgende code zal een monster een actie laten doen wanneer de projectiel de bestemming bereikt heeft maar nog niks heeft gedaan
     (define (actie-monster-levend! actie . projectiel/levens) ;; Neemt optionele projectiel of levens variabele mee
@@ -138,8 +136,7 @@
                                (voeg-net-projectiel-toe! (car projectiel/levens)))
         ((eq? actie 'verminder) (if (and (pair? projectiel/levens) (or (eq? (car projectiel/levens) 'bomwerp) (eq? (car projectiel/levens) 'bom)))                                    
                                     (verminder-levens! (car projectiel/levens))
-                                    (verminder-levens!)))
-        (else "Ongeldige actie")))
+                                    (verminder-levens!)))))
 
     ;; Volgende code zal een net-projectiel toevoegen aan de lijst (neemt constante 0 binnen die tijd voorstelt)
     (define (voeg-net-projectiel-toe! net-projectiel)
