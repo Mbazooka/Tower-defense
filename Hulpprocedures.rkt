@@ -94,3 +94,6 @@
 
 (define (pad-verkrijg index)
   (vector-ref pad-vector (- index 1)))
+
+;; volgende code is een abstractie om een optionele variabelen te kunnen vast krijgen
+(define neem-optioneel car)

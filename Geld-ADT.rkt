@@ -33,18 +33,19 @@
         (else
          "Ongeldig type"))))
           
-  ;; Volgende code gaat na als de speler genoeg geld heeft
+  ;; Volgende code gaat na als de speler genoeg geld heeft om iets te kopen (op basis van type)
   (define (voldoende-geld? type)
     (>= begin-bedrag (bedrag type #f)))
 
-  ;; Volgende code zal naar gelang de type van object het juiste bedrag aftrekken
+  ;; Volgende code zal naar gelang het type van object het juiste bedrag aftrekken
   (define (verwijder-geld! type)
     (set! begin-bedrag (- begin-bedrag (bedrag type #f))))
 
+  ;; Volgende code zal naar gelang het type van object het juiste bedrag erbij optellen
   (define (voeg-geld-toe! type extra? . laat-groen-toe)
     (if (not (eq? type 'groen))       
         (set! begin-bedrag (+ begin-bedrag (bedrag type extra?)))
-        (if (and (pair? laat-groen-toe) (eq? (car laat-groen-toe) #t))
+        (if (and (pair? laat-groen-toe) (eq? (neem-optioneel laat-groen-toe) #t))
             (set! begin-bedrag (+ begin-bedrag (bedrag type #f))))))
 
   ;; Volgende code reset het begin-bedrag 
