@@ -46,17 +46,18 @@
 (define *start-data-menu-power-up* (+ *start-data-menu* (* 5 *px-breedte*)))
 (define *power-up-knop-breedte-einde* (+ *start-data-menu-power-up* (* 5 *px-hoogte*)))
 
-(define *power-up-1-knop-hoogte-start* (* 2.3 *px-hoogte*))
-(define *power-up-1-knop-hoogte-einde* (* 5 *px-hoogte*))
+(define *tank-knop-hoogte-start* (* 2.3 *px-hoogte*))
+(define *tank-knop-hoogte-einde* (* 5 *px-hoogte*))
 
-(define *power-up-2-knop-hoogte-start* (* 7.3 *px-hoogte*))
-(define *power-up-2-knop-hoogte-einde* (* 9 *px-hoogte*))
+(define *bommen-regen-knop-hoogte-start* (* 7.3 *px-hoogte*))
+(define *bommen-regen-knop-hoogte-einde* (* 10 *px-hoogte*))
 
 ;; Tekst constanten voor op menu
 (define *tekst-toren-breedte* (+ *px-breedte* 10)) ;; + 5 want oranje rand centreert de tekst niet
 (define *tekst-toren-hoogte* *px-hoogte*)
 (define *tekst-font* 13)
 (define *algemeen-tekst-breedte* (* 2 *px-breedte*))
+(define *toren-benaming/prijs-tekst-breedte* (* 5 *px-breedte*))
 (define *algemeen-tekst-hoogte* *px-hoogte*)
 (define *tekst-geld-px-breedte* (+ *start-data-menu* *px-breedte*))
 (define *tekst-levens-px-breedte* (+ *start-data-menu* (* 5 *px-breedte*)))
@@ -89,6 +90,10 @@
 ;; Constanten voor bitmap van power-ups
 (define *tank-power-up-bitmap&&mask* (cons "Images/Tank.png" "Images/tank-mask.png"))
 
+;; Constanten voor bitmap van drop power-ups
+(define *drop-tank-bitmap&&mask* (cons "Images/Tank-drop.png" "Images/tank-drop-mask.png"))
+(define *drop-bommen-regen-bitmap&&mask* (cons "Images/Bommen-regen-drop.png" "Images/Bommen-regen-drop-mask.png"))
+
 ;; Constanten voor tegel-positie van bitmap van geld en levens
 (define *geld&&levens-tegel-px-hoogte* (- *spel/menu-hoogte-px* 25)) ;; 23 Zo gekozen voor stijlvolle manier
 
@@ -99,8 +104,8 @@
 (define *vuurbal-toren-buurt-rand-afstand* 8)
 (define *bomwerp-toren-buurt-rand-afstand* 7)
 (define *basis-toren-afvuur-frequentie* 3000) ;; Toren schiet frequentie (2000)
-(define *net-toren-afvuur-frequentie* 6000) ;; Toren schiet frequentie voor net toren
-(define *vuurbal-toren-afvuur-frequentie 3000)
+(define *net-toren-afvuur-frequentie* 10000) ;; Toren schiet frequentie voor net toren
+(define *vuurbal-toren-afvuur-frequentie* 5000) 
 (define *bomwerp-toren-afvuur-frequentie* 10000)
 (define *meerdere-monsters* 2)
 
@@ -110,24 +115,38 @@
 (define *net-blijf-liggen-tijd* 5000)
 (define *net-vertraag-tijd* 5000)
 (define *vuurbal-hits-snelheid-verander* 0.025) ;; Vertraging vuurbal-hits
-(define *bomwerp-projectiel-schade* 3)
 (define *bomwerp-projectiel-ligtijd* 3000)
 (define *net-projectiel-rand-afstand* 2)
 (define *bomwerp-projectiel-rand-afstand* 4)
 
 ;; Monster tijd constanten
-(define *monster-spawn-frequentie* 3000) ;; Monster spawn frequentie (te veranderen)
+(define *monster-spawn-frequentie* 8000) ;; Monster spawn frequentie (te veranderen)
 (define *rood&&groen&&paars-monster-loop-snelheid* 0.1) ;; Monster beweeg snelheid
 (define *geel-monster-loop-snelheid* 0.05)
 (define *monster-vetraag-tijd* 5000) ;; Hoelang een monster vertraagd word door een net
 
-;; Power-up tijd constanten
+;; Power-up tijd en andere constanten
 (define *tank-rijd-snelheid* 1)
-(define *power-afkoel-tijd* 15000)
+(define *power-up-afkoel-tijd* 20000)
+(define *geen-afkoel-tijd* 0)
+(define *bommen-regen-aftel-tijd 3000)
+(define *bommen-regen-aantal-bommen* 5)
+(define *bommen-regen-rand-afstand* 2)
+(define *drop-rand-afstand* 2)
+(define *tank-actief-tijd* 2000)
+(define *bommen-regen-actief-tijd* 3000)
+(define *drop-rate* 10) ;; Stelt de kans van een drop voor (1/10)
+(define *drop-getal* 0) ;; Als dit getal uit de random-number generator komt dan droppen we een power-up
+(define *aantal-power-ups* 2)
+(define *getal-voorstelling-tank* 0) ;; Volgende 2 constanten worden gebruikt om te bepalen wat er gedropt moet worden
+(define *getal-voorstelling-bommen-regen* 1)
 
 ;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid
-(define *geld-begin-bedrag* 5000) ;; Verander achteraf
-(define *levens-hoeveelheid* 5)
+(define *geld-begin-bedrag* 1000) 
+(define *levens-hoeveelheid* 10)
+(define *rood&&groen-monster-levens-verlies* 1)
+(define *geel-monster-levens-verlies* 3)
+(define *paars-monster-levens-verlies* 2)
 
 ;; Constanten die geld van speler doet veranderen
 (define *basis-toren-kost* 500)
@@ -135,11 +154,13 @@
 (define *vuurbal-toren-kost* 1000)
 (define *bomwerp-toren-kost* 1500)
 (define *tank-kost* 700)
-(define *bommen-regen-kost* 800)
+(define *bommen-regen-kost* 1000)
 (define *rood-groen-monster-winst* 20)
+(define *groen-monster-winst* 30)
 (define *geel-monster-winst* 50)
 (define *paars-monster-winst* 30)
-(define *level-winst* 500)
+(define *level-winst* 2000)
+(define *ronde-winst* 500)
 (define *extra-tank-winst* 30)
 
 ;; Constanten die levens (en ook rand) van monsters voorstellen 
@@ -149,3 +170,13 @@
 (define *schild-geel-monster* 3)
 (define *levens-paars-monster* 4)
 (define *paars-monster-rand-afstand* 4)
+(define *dood* 0)
+(define *standaard-levens-verminder* 1)
+(define *bomwerp-levens-verminder* 3)
+(define *bom-levens-verminder-min* 1)
+(define *bom-levens-verminder-max* 3) ;; Dit is 3 vermits het maar tot de waarde 2 gaat bekijken in random functie
+
+;; Algemene constanten
+(define *seconde* 1000)
+(define *aantal-ronden* 3)
+(define *aantal-levels* 3)

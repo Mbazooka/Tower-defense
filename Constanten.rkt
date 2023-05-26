@@ -142,7 +142,7 @@
 (define *getal-voorstelling-bommen-regen* 1)
 
 ;; Constanten voor het begin geld bedrag en het begin levens hoeveelheid
-(define *geld-begin-bedrag* 1000) 
+(define *geld-begin-bedrag* 10000) 
 (define *levens-hoeveelheid* 10)
 (define *rood&&groen-monster-levens-verlies* 1)
 (define *geel-monster-levens-verlies* 3)
