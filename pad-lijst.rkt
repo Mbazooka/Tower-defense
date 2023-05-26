@@ -198,7 +198,7 @@
 (define vector-1
   (list 4
         
-        '(- -) 
+        '(- + +) 
         (vector
          
          (maak-positie-adt 11 21)
