@@ -16,7 +16,7 @@
          (beweging-zin (if bool + (bereikte-beweging-zin opt))) ;; #t beweeg x-richting, #f betekent beweeg y richting
          (net-projectielen (cons 'projectiel '()))) ;; Lijst van van net-projectielen die het monster vertraagt hebben
 
-    ;; Voglende code zet de initiele dingen klaar  
+    ;; Voglende code zet de initiele levens en snelheid klaar  
     (define (bepaal-initieel!)
       (cond
         ((eq? type 'rood) (set! levens *levens-rood-monster*))
@@ -29,7 +29,7 @@
          "Geen correcte type")))
     (bepaal-initieel!)
 
-    ;; Volgende zijn hulpprocedures voor volgende-positie!
+    ;; Volgende code zijn hulpprocedures voor volgende-positie!
     (define (teken-bepaling!) ;; Zal nagaan bij het veranderen van bewegingsdimensie in welke zin verandert moet worden.
       (cond
         ((and (null? keer-tekens) (eq? beweging-zin +)) (set! beweging-zin -))
@@ -39,7 +39,7 @@
         (else
          "Doe niets")))
 
-    (define (richting-verandering!) ;; Zal bij het bereiken van een keerpunt, veranderen van bewegingsrichting 
+    (define (richting-verandering!) ;; Zal bij het bereiken van een keerpunt, veranderen van bewegingsrichting (en ook bewegingszin wegens oproep)
       (if (not (null? keer-punten))
           (if ((((positie 'ceil)) 'gelijk?) (car keer-punten)) ;; keerpunt bereikt?
               (begin
@@ -68,7 +68,8 @@
 
     ;; Volgende code is abstractie en een hulpprocedure
     (define type-vermindering car)
-    
+
+    ;; Volgende code zal op basis van het type het aantal geven waarmee de levens moeten vermindert worden
     (define (verminder-levens-hoeveelheid type)
       (cond
         ((eq? type 'bomwerp) *bomwerp-levens-verminder*)
@@ -79,7 +80,7 @@
     ;; Volgende code zal het leven van het monstertje aanpassen afhankelijk van het soort    
     (define (verminder-levens! . object-type)                               
       (let* ((test (and (pair? object-type) (or (eq? (type-vermindering object-type) 'bomwerp)
-                                           (eq? (type-vermindering object-type) 'bom)))) ;; Ga na indien bomwerp-projectiel/bom de levens zal verminderen
+                                           (eq? (type-vermindering object-type) 'bom)))) ;; Gaat na indien bomwerp-projectiel/bom de levens zal verminderen
              (levens-vermindering (if test
                                       (verminder-levens-hoeveelheid (type-vermindering object-type))
                                       (verminder-levens-hoeveelheid 'standaard-vermindering))))
@@ -152,14 +153,14 @@
     (define proj car)
     (define tijd cdr)
 
-    ;; Volgende code zal de net-projectielen hun vertragings actie tijd update
+    ;; Volgende code zal de net-projectielen hun vertragings actie tijd updaten
     (define (update-tijd-net-projectielen! dt)
       (if (not (null? net-projectielen))
           (for-each (lambda (projectiel)              
                       (set-cdr! projectiel (+ (tijd projectiel) dt)))
                     (rest-dict net-projectielen)))) ;; rest-dict gedaan vermits het een getagde associate lijst is
 
-    ;; Volgende code zal de net-projectielen waarvan hun vertragingstijd verlopen is weghalen (garbage collection)
+    ;; Volgende code zal de net-projectielen waarvan hun vertragingstijd verlopen is weghalen ("garbage collection")
     (define (haal-weg-verlopen-net-projectielen!)
       (for-each (lambda (projectiel)
                   (if (>= (tijd projectiel) *net-vertraag-tijd*)
