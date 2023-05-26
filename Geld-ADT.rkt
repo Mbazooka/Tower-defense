@@ -59,6 +59,5 @@
       ((eq? msg 'voeg-geld-toe!) voeg-geld-toe!)
       ((eq? msg 'status) begin-bedrag)      
       ((eq? msg 'reset!) reset!)
-      ((eq? msg 'soort) 'geld)
       (else "maak-geld-adt: ongeldig bericht")))
   dispatch)
