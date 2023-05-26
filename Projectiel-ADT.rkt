@@ -16,8 +16,7 @@
          (positie-update-hoeveelheid-x (- bestemming-x (initiele-positie 'x))) ;; Dit zijn positie update constanten om gewicht te introduceren en ze zo smooth naar hun eindbestemming te brengen
          (positie-update-hoeveelheid-y (- bestemming-y (initiele-positie 'y)))
          (projectiel-afvuur-snelheid (if (pair? afvuur-snelheid) (car afvuur-snelheid) *projectiel-afvuur-snelheid-steen-net-vuurbal*)) ;; Verander voor algemeenheid
-         (lig-tijd 0) ;; Is de tijd dat een projectiel al blijft liggen (voor net)
-         (toegevoegd #f) ;; Is om na te gaan als het net-projectiel toegevoegd is aan het level-adt (om te zien als monster over netten lopen)
+         (lig-tijd 0) ;; Is de tijd dat een projectiel al blijft liggen (voor net)         
          (vertraagd #f) ;; Is om na te gaan indien een projectiel een monster al vertraagd heeft (zodat niet in elke loop het monster vertraag)
          (projectiel-rand #f)) ;; Is de rand van een projectiel (indien nodig bv bij een net-projectiel of bomwerp)
 
@@ -39,7 +38,7 @@
         ((eq? type 'net) (>= lig-tijd *net-blijf-liggen-tijd*)) ;; Maak constanten
         ((eq? type 'bomwerp) (>= lig-tijd *bomwerp-projectiel-ligtijd*))
         (else
-         "Ongeldig type projectiel")))                             
+         "Projectiel: Ongeldig type projectiel")))                             
 
     ;; Volgende code zal de positie van het projectiel updaten
     (define (volgende-positie!)
@@ -54,7 +53,7 @@
       (cond
         ((or (eq? type 'steen) (eq? type 'vuurbal))
          ((te-raken 'actie-monster-levend!) 'verminder))
-        ((eq? type 'net) (if (not vertraagd)
+        ((eq? type 'net) (if (not vertraagd) ;; Gaat na als het te raken monster al vertraagd is geweest
                              (begin
                                ((te-raken 'actie-monster-levend!) 'vertraag dispatch)
                                (set! vertraagd #t))))
@@ -76,15 +75,8 @@
                              (if (>= lig-tijd *bomwerp-projectiel-ligtijd*)
                                  (explodeer! level (maak-rand! *bomwerp-projectiel-rand-afstand* level))))
         (else
-         "Heeft geen actie na het raken van monsters")))
+         "Projectiel: heeft geen actie na het raken van monsters")))
 
-    ;; Volgende code zal het toegevoegd Lokale Variabele aanpassen naar #t
-    (define (toegevoegd!)
-      (set! toegevoegd #t))
-
-    ;; Volgende code gaat na als het projectiel toegevoegd is aan het level-adt
-    (define (toegevoegd?) toegevoegd)
- 
     ;; Volgende code maakt een rand voor een net-projectiel
     (define (maak-rand! afstand level)
       (if (not projectiel-rand)
@@ -116,8 +108,6 @@
         ((eq? msg 'volgende-positie!) volgende-positie!)
         ((eq? msg 'actie-te-raken-monster!) actie-te-raken-monster!)
         ((eq? msg 'actie-na-positie-bereik!) actie-na-positie-bereik!)
-        ((eq? msg 'toegevoegd!) toegevoegd!)
-        ((eq? msg 'toegevoegd?) toegevoegd?)
         ((eq? msg 'binnen-rand?) binnen-rand?)
         ((eq? msg 'niet-bereikt&&afgehandelt?) niet-bereikt&&afgehandelt?)
         ((eq? msg 'explodeer!) explodeer!)
