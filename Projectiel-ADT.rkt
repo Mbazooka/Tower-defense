@@ -95,7 +95,7 @@
     (define (explodeer! level rand)
       ((level 'explodeer-monsters-in-buurt!) rand 'bomwerp))
     
-    ;; Volgende code gaat na als een projectiel niet bereikt of afgehandelt is
+    ;; Volgende code gaat na als een projectiel niet bereikt en afgehandelt is
     (define (niet-bereikt&&afgehandelt?)
       (not (and (bestemming-bereikt?) (afgehandelt?))))
               
@@ -110,7 +110,6 @@
         ((eq? msg 'actie-na-positie-bereik!) actie-na-positie-bereik!)
         ((eq? msg 'binnen-rand?) binnen-rand?)
         ((eq? msg 'niet-bereikt&&afgehandelt?) niet-bereikt&&afgehandelt?)
-        ((eq? msg 'explodeer!) explodeer!)
         ((eq? msg 'soort) 'projectiel)
         (else "maak-projectiel-adt: ongeldig bericht")))
     dispatch))
