@@ -71,7 +71,7 @@
                                     volgend-monster
                                     snelheid)
                #f)))
-        ((eq? type 'net) (set! lig-tijd (+ lig-tijd dt)))
+        ((eq? type 'net) (maak-rand! *net-projectiel-rand-afstand* level) (set! lig-tijd (+ lig-tijd dt)))
         ((eq? type 'bomwerp) (set! lig-tijd (+ lig-tijd dt))
                              (if (>= lig-tijd *bomwerp-projectiel-ligtijd*)
                                  (explodeer! level (maak-rand! *bomwerp-projectiel-rand-afstand* level))))
@@ -118,7 +118,7 @@
         ((eq? msg 'actie-na-positie-bereik!) actie-na-positie-bereik!)
         ((eq? msg 'toegevoegd!) toegevoegd!)
         ((eq? msg 'toegevoegd?) toegevoegd?)
-        ((eq? msg 'maak-rand!) maak-rand!)
+        ((eq? msg 'maak-rand!) maak-rand!) ;; Mogelijks weg
         ((eq? msg 'binnen-rand?) binnen-rand?)
         ((eq? msg 'niet-bereikt&&afgehandelt?) niet-bereikt&&afgehandelt?)
         ((eq? msg 'explodeer!) explodeer!)

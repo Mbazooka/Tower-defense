@@ -72,7 +72,6 @@
                 (if actie ;; Gaat na als er een actie gedaan moet worden of niet
                     (set! projectielen (cons actie projectielen)))))
              ((eq? 'net type-var)
-              ((projectiel 'maak-rand!) *net-projectiel-rand-afstand* level)
               ((projectiel 'actie-na-positie-bereik!) level dt))
              ((eq? 'bomwerp type-var)
               ((projectiel 'actie-na-positie-bereik!) level dt)))))
