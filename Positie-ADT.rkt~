@@ -24,7 +24,7 @@
     (maak-positie-adt x y))
 
   (define (afstand positie2)
-    (round (sqrt (+ (expt (- (positie2 'x) x) 2) (expt (- (positie2 'y) y) 2)))))
+    (sqrt (+ (expt (- (positie2 'x) x) 2) (expt (- (positie2 'y) y) 2))))
 
   (define (dispatch msg)
     (cond

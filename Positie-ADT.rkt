@@ -20,9 +20,11 @@
   (define (flo)
     (maak-positie-adt (floor x) (floor y)))
 
+  ;; Volgende code is om de positie te copieren naar een andere positie object
   (define (positie-copieer)
     (maak-positie-adt x y))
 
+  ;; Volgende code is om de afstand tussen deze positie en de gegeven positie te berekenen
   (define (afstand positie2)
     (sqrt (+ (expt (- (positie2 'x) x) 2) (expt (- (positie2 'y) y) 2))))
 
@@ -36,6 +38,6 @@
       ((eq? msg 'ceil) ceil)
       ((eq? msg 'flo) flo)
       ((eq? msg 'positie-copieer) positie-copieer)
-      ((eq? msg 'afstand) afstand) ;; Nieuw
+      ((eq? msg 'afstand) afstand) 
       (else "maak-positie-adt: ongeldig bericht")))
   dispatch)
