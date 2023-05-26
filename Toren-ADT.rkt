@@ -6,6 +6,7 @@
         (buurt-rand (make-vector 4)) ;; Stelt buurt voor (geheugenvriendelijker om met 4 te werken)
         (afvuur-frequentie #f)
         (afvuur-tijd 0) ;; Stelt de verlopen tijd sinds laatste afvuur moment
+        (projectiel-type #f) ;; Stelt het type projectiel dat de toren afvuurt voor
         (projectielen '()))
 
     ;; Volgende code gaat de grootte van de rand na afhankelijk van de toren alsook hun afvuur-frequentie
@@ -20,10 +21,21 @@
         ((eq? type 'bomwerp-toren) (set! afvuur-frequentie *bomwerp-toren-afvuur-frequentie*)
                                    *bomwerp-toren-buurt-rand-afstand*)
         (else "Ongeldige type")))
+
+        ;; Volgende bepaalt het type projectiel dat een toren afschiet afhankelijk van het type toren
+    (define (bepaal-projectiel-type-toren!)
+      (cond
+        ((eq? type 'basis-toren) (set! projectiel-type 'steen))
+        ((eq? type 'net-toren) (set! projectiel-type 'net))
+        ((eq? type 'vuurbal-toren) (set! projectiel-type 'vuurbal))
+        ((eq? type 'bomwerp-toren) (set! projectiel-type 'bomwerp))
+        (else
+         "Ongeldig toren type")))
              
-    ;; Maakt de werkelijke 4-punt randen aan
+    ;; Maakt de werkelijke 4-punt randen aan en zet het type juist
     (positie->rand! centraal-positie *toren-rand-afstand* toren-rand)
     (positie->rand! centraal-positie (bepaal-buurt-rand/afvuur-frequentie!) buurt-rand)
+    (bepaal-projectiel-type-toren!)
     
     ;; Gaat na als de ingegeven toren op de beshouwde toren staat
     (define (in-toren? toren)
@@ -37,23 +49,13 @@
     (define (in-buurt? object) 
       (in-rand? (object 'positie) buurt-rand))
 
-    ;; Volgende geeft het type projectiel dat een toren afschiet afhankelijk van het type toren
-    (define (projectiel-type-toren)
-      (cond
-        ((eq? type 'basis-toren) 'steen)
-        ((eq? type 'net-toren) 'net)
-        ((eq? type 'vuurbal-toren) 'vuurbal)
-        ((eq? type 'bomwerp-toren) 'bomwerp)
-        (else
-         "Ongeldig toren type")))
-
     ;; Volgende code laat toe om projectielen te schieten naar een bepaald monster
     (define (schiet! obj pad)
       (if (eq? type 'bomwerp-toren)
           (set! obj ((pad 'dichste-punt) centraal-positie))) 
       (let ((projectiel (maak-projectiel-adt
                          ((centraal-positie 'positie-copieer))
-                         (projectiel-type-toren)
+                         projectiel-type
                          obj)))
         (set! projectielen (cons projectiel projectielen))))
 
