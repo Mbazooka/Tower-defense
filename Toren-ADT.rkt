@@ -99,7 +99,7 @@
       (haal-projectielen-weg!)
       (beweeg-projectielen-voort!))
 
-    ;; Volgende code de toren zijn afvuurtijd
+    ;; Volgende code update de toren zijn afvuurtijd
     (define (update-afvuur-tijd! dt)
       (if (>= afvuur-tijd afvuur-frequentie)
           (set! afvuur-tijd 0)

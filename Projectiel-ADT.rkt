@@ -52,7 +52,7 @@
     ;; Volgende code voert actie uit op monster (afhankelijk van het type projectiel)
     (define (actie-te-raken-monster!)
       (cond
-        ((or (eq? type 'steen) (eq? type 'vuurbal) (eq? type 'bom))
+        ((or (eq? type 'steen) (eq? type 'vuurbal))
          ((te-raken 'actie-monster-levend!) 'verminder))
         ((eq? type 'net) (if (not vertraagd)
                              (begin
@@ -118,7 +118,6 @@
         ((eq? msg 'actie-na-positie-bereik!) actie-na-positie-bereik!)
         ((eq? msg 'toegevoegd!) toegevoegd!)
         ((eq? msg 'toegevoegd?) toegevoegd?)
-        ((eq? msg 'maak-rand!) maak-rand!) ;; Mogelijks weg
         ((eq? msg 'binnen-rand?) binnen-rand?)
         ((eq? msg 'niet-bereikt&&afgehandelt?) niet-bereikt&&afgehandelt?)
         ((eq? msg 'explodeer!) explodeer!)
