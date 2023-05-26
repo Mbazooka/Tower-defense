@@ -170,7 +170,6 @@
                  
     (define (dispatch msg)
       (cond
-        ((eq? msg 'snelheid) monster-loop-snelheid)
         ((eq? msg 'positie) positie)
         ((eq? msg 'type) type)
         ((eq? msg 'volgende-positie!) volgende-positie!)
