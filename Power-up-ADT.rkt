@@ -104,7 +104,6 @@
         ((eq? msg 'tijd-afgelopen?) tijd-afgelopen?)
         ((eq? msg 'bom-explosie!) bom-explosie!)
         ((eq? msg 'drop-positie) drop-positie)
-        ((eq? msg 'drop?) drop?)
         ((eq? msg 'in-drop-rand?) in-drop-rand?)
         ((eq? msg 'verander-drop-status!) verander-drop-status!)
         ((eq? msg 'type) type)
