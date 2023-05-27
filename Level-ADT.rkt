@@ -82,15 +82,19 @@
                 (insert-power-up! (maak-power-up-adt pad 'tank positie) op-te-rapen-power-ups)
                 (insert-power-up! (maak-power-up-adt pad 'bommen-regen positie) op-te-rapen-power-ups)))))
 
+    ;; volgende code is een hulpprocedure voor geld-en-sterven-acties!
+    (define (acties! monster monster-type)
+      (cond                      
+        ((eq? monster-type 'groen) (if (not ((monster 'geen-actie-groen-monster?))) (zet-terug-monster-lijst! monster ((monster 'actie-monster-sterven!)) monsters))) ;; Zal rood monster doen spawnen van groen monster
+        ((eq? monster-type 'paars) (verhoog-levens-paars-monster! ((monster 'actie-monster-sterven!))))))
+
     (define (geld-en-sterven-acties!)
       (for-each (lambda (monster)
                   (let ((monster-type (monster 'type)))
                     ((geld 'voeg-geld-toe!) monster-type #f) ;; Zal geld updaten, en indien het een groen monster is, een rood monster spawnen
                     (if (or (not (eq? monster-type 'groen)) ((monster 'geen-actie-groen-monster?)))
                         (mogelijke-drop! (((monster 'positie) 'positie-copieer))))
-                    (cond                      
-                      ((eq? monster-type 'groen) (if (not ((monster 'geen-actie-groen-monster?))) (zet-terug-monster-lijst! monster ((monster 'actie-monster-sterven!)) monsters))) ;; Zal rood monster doen spawnen van groen monster
-                      ((eq? monster-type 'paars) (verhoog-levens-paars-monster! ((monster 'actie-monster-sterven!)))))))
+                    (acties! monster monster-type)))
                 (filter (lambda (monster) ((monster 'gestorven?))) monsters)))
 
     (define (overblijvende-monsters!)
@@ -231,7 +235,9 @@
                         ((mons 'actie-monster-levend!) 'verminder)
                         (set! tank-power-up-monsters (cdr tank-power-up-monsters))
                         (if (and ((mons 'gestorven?)) (in? mons monsters))
-                            ((geld 'voeg-geld-toe!) (mons 'type) #t)))))
+                            (begin
+                              ((geld 'voeg-geld-toe!) (mons 'type) #t)
+                              (acties! mons (mons 'type)))))))
                 tanken)
       (if (not (null? tanken))
           (overblijvende-monsters!)))
