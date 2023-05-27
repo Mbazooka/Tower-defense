@@ -176,7 +176,8 @@
       (for-each (lambda (bom-regen)
                   ((bom-regen 'update!) dt)
                   (if ((bom-regen 'tijd-afgelopen?))
-                      ((bom-regen 'bom-explosie!) explodeer-monsters-in-buurt!))) activeerde-bommen-regen)
+                      ((bom-regen 'bom-explosie!) explodeer-monsters-in-buurt!)))
+                activeerde-bommen-regen)
       (set! activeerde-bommen-regen (filter (lambda (bom-regen)
                                               (not ((bom-regen 'tijd-afgelopen?)))) ;; Haalt alle afgehandelte bom-regens
                                             activeerde-bommen-regen)))
@@ -215,7 +216,7 @@
                 monsters))
 
     ;; Volgende code is een hulp procedure voor tanken-verminder-monster-levens!
-    (define (in? monster monsters) ;; Hulpprocedure om na te gaan als men het monster al vermoord heeft door een toren 
+    (define (in? monster monsters) ;; Hulpprocedure om na te gaan als men het monster al vermoord heeft door een toren (voor geld redenen)
       (cond
         ((null? monsters) #f)
         ((eq? monster (eerste monsters)) #t)
@@ -244,7 +245,7 @@
 
     ;; Volgende neemt een gedropte-power-up op basis van een positie
     (define (drop-opraap! x y)
-      (let ((positie-obj (maak-positie-adt (round (/ x *px-breedte*)) (round (/ y *px-hoogte*)))) ;; Verander !!!!!!!
+      (let ((positie-obj (maak-positie-adt x y)) 
             (geselecteerde-tanks '())
             (geselecteerde-bommen-regen '()))
         (for-each (lambda (drop-pu)

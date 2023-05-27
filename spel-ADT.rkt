@@ -33,6 +33,8 @@
     ;; Volgende code zijn abstracties
     (define tank car)
     (define bommen-regen cdr)
+    (define krijg-x car)
+    (define krijg-y cdr)
 
     ;; De procedure die het klikken van muis op scherm voorstelt    
     (define (muis-klik-procedure toets toestand x y)
@@ -68,7 +70,8 @@
                 ((teken-adt 'update-tekst-teken!) 'geld (geld 'status)))
                (else "Beweging niet mogelijk"))))
           (else
-           (let* ((opgenomen-power-ups ((level 'drop-opraap!) x y))
+           (let* ((aangepaste-punten ((teken-adt 'pas-aan) x y))
+                  (opgenomen-power-ups ((level 'drop-opraap!) (krijg-x aangepaste-punten) (krijg-y aangepaste-punten)))
                   (opgenomen-tanks (tank opgenomen-power-ups))
                   (opgenomen-bommen-regen (bommen-regen opgenomen-power-ups)))
              (if (not (null? opgenomen-tanks))

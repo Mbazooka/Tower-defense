@@ -468,6 +468,10 @@
     (define (set-toets-procedure! proc)
       ((venster 'set-key-callback!) proc))
 
+    ;; volgende code is om een positie in pixels om te zetten in echte posities
+    (define (pas-aan x y)
+      (cons (round (/ x *px-breedte*)) (round (/ y *px-hoogte*))))
+
     ;; Volgende code is om na te gaan als object geplaatst worden bij een beperking
     (define (buiten-menu? x y)
       (<= x (- *start-x-pos-menu* (* 2 *px-breedte*))))
@@ -506,6 +510,7 @@
         ((eq? msg 'set-spel-lus!) set-spel-lus-procedure!)
         ((eq? msg 'set-toets-procedure!) set-toets-procedure!)
         ((eq? msg 'update-tekst-teken!) update-tekst-teken!)
+        ((eq? msg 'pas-aan) pas-aan)
         ((eq? msg 'buiten-beperking?) buiten-beperking?)
         (else "maak-teken-adt: ongeldig bericht")))
     dispatch))
