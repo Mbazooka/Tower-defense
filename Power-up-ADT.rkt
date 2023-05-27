@@ -11,7 +11,7 @@
          (beweging-zin +)
          (bommen '())
          (tijd 0) ;; Bommenregen tijd verloop
-         (drop? (pair? drop-positie)) ;; Is het een power-up drop?
+         (drop? (pair? drop-positie))
          (drop-positie (if drop? (neem-power-up-drop-positie drop-positie) #f)) ;; Positie waar gedropt        
          (drop-rand #f))
 
@@ -28,7 +28,7 @@
     (define (in-drop-rand? positie)
       (in-rand? positie drop-rand))
     
-    ;; Volgende code maakt het gegeven aantal bommen (voor bommen-regen)
+    ;; Volgende code maakt het gegeven aantal bommen
     (define (maak-bommen!)
       (define (maak-hulp ctr)
         (if (not (= ctr *bommen-regen-aantal-bommen*))
@@ -90,7 +90,7 @@
                   (explosie-procedure bom 'bom))
                 bommen))
 
-    ;; Volgende code zal drop status veranderen naar #f eenmaal opgeraapt
+    ;; Volgende code zal drop status veranderen naar #f
     (define (verander-drop-status!)
       (if drop?
           (set! drop? #f)))
@@ -100,7 +100,6 @@
         ((eq? msg 'positie) positie)
         ((eq? msg 'einde?) einde?)
         ((eq? msg 'update!) update!)
-        ((eq? msg 'tijd) tijd)
         ((eq? msg 'bommen) bommen)
         ((eq? msg 'tijd-afgelopen?) tijd-afgelopen?)
         ((eq? msg 'bom-explosie!) bom-explosie!)
