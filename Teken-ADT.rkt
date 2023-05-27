@@ -430,9 +430,7 @@
          ((laag-user-interface 'remove-drawable!) tank-afkoel-tegel)
          ((laag-user-interface 'remove-drawable!) bommen-regen-afkoel-tegel)
          ((laag-user-interface 'add-drawable!) tank-tegel)
-         ((laag-user-interface 'add-drawable!) bommen-regen-tegel))
-        (else
-         "Ongeldige actie")))
+         ((laag-user-interface 'add-drawable!) bommen-regen-tegel))))
 
     ;; Vogende code stelt startscherm en eindeschermen voor (game over, en win)
     (define laag-schermen ((venster 'new-layer!)))
