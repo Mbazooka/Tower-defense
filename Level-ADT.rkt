@@ -20,13 +20,6 @@
     (define (voeg-toren-toe! toren)
       (set! torens (cons toren torens)))
 
-    (define (overblijvende-monsters!)
-      (set! monsters (filter 
-                      (lambda (monster)
-                        (and (not ((monster 'einde?)))
-                             (not ((monster 'gestorven?)))))
-                      monsters))) ;; Overblijvende monsters te vermoorden
-
     ;; Volgende code zijn hulpprocedures voor update-monsters
     ;;(geen blockstructuur gebruikt wegens herdefinieren door interpeter bij elke oproep)
     (define (insert-power-up! pu pu-lijst)
@@ -73,7 +66,7 @@
       (for-each (lambda (projectiel) ;;Vertraagd de monster in de rand van het net-projectiel
                   (for-each (lambda (monster)
                               (if (and ((projectiel 'binnen-rand?) monster) (not ((monster 'net-al-vetraagd?) projectiel)))
-                                    ((monster 'actie-monster-levend!) 'vertraag projectiel))) 
+                                  ((monster 'actie-monster-levend!) 'vertraag projectiel))) 
                             monsters))
                 net-projectielen)
       (set! net-projectielen (filter ;; Nodig anders zal een bepaald net, tot het eind van het spel blijven vertragen
@@ -99,6 +92,14 @@
                       ((eq? monster-type 'groen) (if (not ((monster 'geen-actie-groen-monster?))) (zet-terug-monster-lijst! monster ((monster 'actie-monster-sterven!)) monsters))) ;; Zal rood monster doen spawnen van groen monster
                       ((eq? monster-type 'paars) (verhoog-levens-paars-monster! ((monster 'actie-monster-sterven!)))))))
                 (filter (lambda (monster) ((monster 'gestorven?))) monsters)))
+
+    (define (overblijvende-monsters!)
+      (set! monsters (filter 
+                      (lambda (monster)
+                        (and (not ((monster 'einde?)))
+                             (not ((monster 'gestorven?)))))
+                      monsters))) ;; Overblijvende monsters te vermoorden
+
 
     (define (monsters-voort-bewegen!)
       (for-each (lambda (monster) ((monster 'volgende-positie!))) monsters)) ;; Overblijvende monster verder laten wandelen
