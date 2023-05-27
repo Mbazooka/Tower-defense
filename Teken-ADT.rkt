@@ -217,9 +217,7 @@
         ((eq? type 'level) (update-tekst-hulp! level-tekst-tegel-dynamisch))
         ((eq? type 'ronde) (update-tekst-hulp! ronde-tekst-tegel-dynamisch))
         ((eq? type 'afkoel) (update-tekst-hulp! afkoeling-tegel-dynamisch))
-        ((eq? type 'actief-tijd) (update-tekst-hulp! tijd-actief-tegel-dynamisch))
-        (else
-         "Update-tekst-teken!: Ongeldig object ingegeven")))
+        ((eq? type 'actief-tijd) (update-tekst-hulp! tijd-actief-tegel-dynamisch))))
 
     ;; Procedure die tegel op juiste pixel positie zet (vanaf hiet beginnen de procedures voor de spelelementen)
     ;;met positie gedaan (niet object als formele parameter) want pad geeft meerdere posities, code kan enkel 1 positie per keer doen (zo hebben we maar 1 procedure voor alle px posities te bepalen)
