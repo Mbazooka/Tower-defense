@@ -1,7 +1,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                 Projectiel ADT                             ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; !!!!!!!! Verander de namen van sommige procedures want niet meer enkel voor monsters !!!!!!!!
 (define (maak-projectiel-adt positie type te-raken . afvuur-snelheid) 
   (let* ((monster-of-niet (monster? te-raken)) ;; boolean die vaak herhaald word (#t dan monster, #f dan positie)
          (bestemming (if monster-of-niet (((te-raken 'positie) 'positie-copieer)) te-raken))
