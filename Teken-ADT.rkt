@@ -264,8 +264,8 @@
     (define (neem-positie-lbh bom) (vector-ref bom 2)) ;; Positie linker boven hoek
 
     ;; Volgende code is om bommen-regen-power-ups te tekenen
-    (define (teken-bommen-regen-power-up! bommen-regen-power-up)
-      (let ((bommen-lijst ((neem-power-up bommen-regen-power-up) 'bommen)))
+    (define (teken-bommen-regen-power-up! bommen-regen-power-ups)
+      (let ((bommen-lijst ((neem-power-up bommen-regen-power-ups) 'bommen)))
         (for-each (lambda (bom)
                     (let* ((aan-te-passen-positie (neem-positie-lbh bom))
                            (teken-positie (maak-positie-adt (+ (aan-te-passen-positie 'x) 2) (+ (aan-te-passen-positie 'y) 2)))) ;; Om mooier te tekenen op het scherm
