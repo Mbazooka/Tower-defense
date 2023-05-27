@@ -298,7 +298,6 @@
         ((eq? msg 'ronde-einde?) ronde-einde?)
         ((eq? msg 'ronde-einde!) ronde-einde!)
         ((eq? msg 'zet-monster-lijst!) zet-monster-lijst!)
-        ((eq? msg 'soort) 'level)
         (else
          "maak-level-adt: ongeldig bericht")))
     dispatch))
