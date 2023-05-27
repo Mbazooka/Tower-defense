@@ -70,6 +70,10 @@
 (define *tekst-tank-px-breedte* (+ *start-data-menu* (* 1.2 *px-breedte*)))
 (define *bommen-regen-px-breedte* (+ *start-data-menu* (* 4 *px-breedte*)))
 (define *tekst-bommen-regen-px-breedte* (+ *start-data-menu* (* 5.2 *px-breedte*)))
+(define *tekst-statisch&&dynamisch-afkoeling-px-hoogte* (- *geld&&levens-tegel-px-hoogte* (* *px-hoogte* 3.2)))
+(define *tekst-statisch&&dynamisch-tijd-actief-px-hoogte* (- *geld&&levens-tegel-px-hoogte* (* *px-hoogte* 4.2)))
+(define *teskt-afkoeling&&tijd-actief-dynamisch-px-breedte* (- (* *px-breedte* (+ *menu-breedte* *spel-breedte*))
+                                                               (* 5 *px-breedte*)))
 
 
 ;; Abstracties om bitmap en mask te acesseren

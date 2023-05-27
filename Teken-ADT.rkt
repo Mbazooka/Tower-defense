@@ -164,24 +164,24 @@
     ((bommen-regen-tekst-data-tegel 'set-y!) *tank&&bommen-regen-px-hoogte*) 
     ((laag-geld&&levens&&level 'add-drawable!) bommen-regen-tekst-data-tegel)
 
-    ((afkoeling-tegel-statisch 'draw-text!) "Afkoel" *tekst-font* 0 0 "orange") ;; !!!!!!!!!
+    ((afkoeling-tegel-statisch 'draw-text!) "Afkoel" *tekst-font* 0 0 "orange") 
     ((afkoeling-tegel-statisch 'set-x!) *start-data-menu*)
-    ((afkoeling-tegel-statisch 'set-y!) (- *geld&&levens-tegel-px-hoogte* (* *px-hoogte* 3.2))) 
+    ((afkoeling-tegel-statisch 'set-y!) *tekst-statisch&&dynamisch-afkoeling-px-hoogte*) 
     ((laag-geld&&levens&&level 'add-drawable!) afkoeling-tegel-statisch)
 
     ((afkoeling-tegel-dynamisch 'draw-text!) "0" *tekst-font* 0 0 "orange")
-    ((afkoeling-tegel-dynamisch 'set-x!) (- 1000 100))
-    ((afkoeling-tegel-dynamisch 'set-y!) (- *geld&&levens-tegel-px-hoogte* (* *px-hoogte* 3.2))) 
+    ((afkoeling-tegel-dynamisch 'set-x!) *teskt-afkoeling&&tijd-actief-dynamisch-px-breedte*)
+    ((afkoeling-tegel-dynamisch 'set-y!) *tekst-statisch&&dynamisch-afkoeling-px-hoogte*) 
     ((laag-geld&&levens&&level 'add-drawable!) afkoeling-tegel-dynamisch)
 
     ((tijd-actief-tegel-statisch 'draw-text!) "Tijd" *tekst-font* 0 0 "orange")
     ((tijd-actief-tegel-statisch 'set-x!) *start-data-menu*)
-    ((tijd-actief-tegel-statisch 'set-y!) (- *geld&&levens-tegel-px-hoogte* (* *px-hoogte* 4.2))) 
+    ((tijd-actief-tegel-statisch 'set-y!) *tekst-statisch&&dynamisch-tijd-actief-px-hoogte*) 
     ((laag-geld&&levens&&level 'add-drawable!) tijd-actief-tegel-statisch)
 
     ((tijd-actief-tegel-dynamisch 'draw-text!) "0" *tekst-font* 0 0 "orange")
-    ((tijd-actief-tegel-dynamisch 'set-x!) (- 1000 100))
-    ((tijd-actief-tegel-dynamisch 'set-y!) (- *geld&&levens-tegel-px-hoogte* (* *px-hoogte* 4.2))) 
+    ((tijd-actief-tegel-dynamisch 'set-x!) *teskt-afkoeling&&tijd-actief-dynamisch-px-breedte*)
+    ((tijd-actief-tegel-dynamisch 'set-y!) *tekst-statisch&&dynamisch-tijd-actief-px-hoogte*) 
     ((laag-geld&&levens&&level 'add-drawable!) tijd-actief-tegel-dynamisch)
 
     (define level/ronde-tekst-hoogte (- verticale-pixels *algemeen-tekst-hoogte*)) ;; Hoogte voor level-tekst (kan niet globaal)
