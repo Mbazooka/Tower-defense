@@ -59,7 +59,7 @@
                          obj)))
         (set! projectielen (cons projectiel projectielen))))
 
-    ;; Volgende code zijn hulpprocedures foor projectiel-update!
+    ;; Volgende code zijn hulpprocedures voor projectiel-update!
     (define (acties-bestemming-bereikt! level dt)
       (for-each
        (lambda (projectiel)
