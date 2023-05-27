@@ -7,7 +7,7 @@
          (ronde-teller 1)
          (pad-teller 1)
          (geld (maak-geld-adt *geld-begin-bedrag*))
-         (levens (maak-leven-adt *levens-hoeveelheid*))
+         (levens (maak-levens-adt *levens-hoeveelheid*))
          (level (maak-level-adt pad-teller (monster-vector-verkrijg level-teller ronde-teller) geld levens))                 
          (pad (level 'pad))
          (teken-adt (maak-teken-adt (+ *menu-breedte-px* *spel-breedte-px*) *spel/menu-hoogte-px*));; maak de fundamenten van het spel
