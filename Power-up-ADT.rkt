@@ -10,7 +10,7 @@
          (beweging-richting-x #t)
          (beweging-zin +)
          (bommen '())
-         (tijd 0)
+         (tijd 0) ;; Bommenregen tijd verloop
          (drop? (pair? drop-positie))
          (drop-positie (if drop? (neem-power-up-drop-positie drop-positie) #f)) ;; Positie waar gedropt        
          (drop-rand #f))
