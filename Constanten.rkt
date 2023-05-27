@@ -52,6 +52,7 @@
 (define *bommen-regen-knop-hoogte-start* (* 7.3 *px-hoogte*))
 (define *bommen-regen-knop-hoogte-einde* (* 10 *px-hoogte*))
 
+
 ;; Tekst constanten voor op menu
 (define *tekst-toren-breedte* (+ *px-breedte* 10)) ;; + 5 want oranje rand centreert de tekst niet
 (define *tekst-toren-hoogte* *px-hoogte*)
@@ -59,11 +60,17 @@
 (define *algemeen-tekst-breedte* (* 2 *px-breedte*))
 (define *toren-benaming/prijs-tekst-breedte* (* 5 *px-breedte*))
 (define *algemeen-tekst-hoogte* *px-hoogte*)
+(define *geld&&levens-tegel-px-hoogte* (- *spel/menu-hoogte-px* 25)) 
 (define *tekst-geld-px-breedte* (+ *start-data-menu* *px-breedte*))
 (define *tekst-levens-px-breedte* (+ *start-data-menu* (* 5 *px-breedte*)))
 (define *tekst-geld&&levens-px-hoogte* (- *spel/menu-hoogte-px* 23)) ;; 23 Zo gekozen voor stijlvolle manier
 (define *dynamisch-tekst-level-begin* (* 2 *px-breedte*))
 (define *dynamisch-tekst-ronde-begin* (* 3 *px-breedte*))
+(define *tank&&bommen-regen-px-hoogte* (- *geld&&levens-tegel-px-hoogte* (* *px-hoogte* 2)))
+(define *tekst-tank-px-breedte* (+ *start-data-menu* (* 1.2 *px-breedte*)))
+(define *bommen-regen-px-breedte* (+ *start-data-menu* (* 4 *px-breedte*)))
+(define *tekst-bommen-regen-px-breedte* (+ *start-data-menu* (* 5.2 *px-breedte*)))
+
 
 ;; Abstracties om bitmap en mask te acesseren
 (define bitmap car)
@@ -93,9 +100,6 @@
 ;; Constanten voor bitmap van drop power-ups
 (define *drop-tank-bitmap&&mask* (cons "Images/Tank-drop.png" "Images/tank-drop-mask.png"))
 (define *drop-bommen-regen-bitmap&&mask* (cons "Images/Bommen-regen-drop.png" "Images/Bommen-regen-drop-mask.png"))
-
-;; Constanten voor tegel-positie van bitmap van geld en levens
-(define *geld&&levens-tegel-px-hoogte* (- *spel/menu-hoogte-px* 25)) ;; 23 Zo gekozen voor stijlvolle manier
 
 ;; Toren constanten (tijd en geen tijd constanten)
 (define *toren-rand-afstand* 1.6) ;; Hier werd speling gebruikt om te zorgen bitmap niet op pad komt (zorgt voor meer afstand tussen torens en pad)

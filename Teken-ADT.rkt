@@ -133,7 +133,7 @@
     ((laag-geld&&levens&&level 'add-drawable!) geld-tegel)
     
     ((geld-tekst-tegel 'draw-text!) (number->string *geld-begin-bedrag*) *tekst-font* 0 0 "orange") ;; Tekst naast bitmap
-    ((geld-tekst-tegel 'set-x!) (+ *start-data-menu* *px-breedte*)) 
+    ((geld-tekst-tegel 'set-x!) *tekst-geld-px-breedte*) 
     ((geld-tekst-tegel 'set-y!) *tekst-geld&&levens-px-hoogte*) 
     ((laag-geld&&levens&&level 'add-drawable!) geld-tekst-tegel)
 
@@ -147,24 +147,24 @@
     ((laag-geld&&levens&&level 'add-drawable!) levens-tekst-tegel)
 
     ((tank-tegel-data 'set-x!) *start-data-menu*)
-    ((tank-tegel-data 'set-y!) (- *geld&&levens-tegel-px-hoogte* (* *px-hoogte* 2)))
+    ((tank-tegel-data 'set-y!) *tank&&bommen-regen-px-hoogte*)
     ((laag-geld&&levens&&level 'add-drawable!) tank-tegel-data)
 
     ((tank-tekst-data-tegel 'draw-text!) "0" *tekst-font* 0 0 "orange") ;; Tekst naast bitmap
-    ((tank-tekst-data-tegel 'set-x!) (+ *start-data-menu* (* 1.2 *px-breedte*)))
-    ((tank-tekst-data-tegel 'set-y!) (- *geld&&levens-tegel-px-hoogte* (* *px-hoogte* 2))) 
+    ((tank-tekst-data-tegel 'set-x!) *tekst-tank-px-breedte*)
+    ((tank-tekst-data-tegel 'set-y!) *tank&&bommen-regen-px-hoogte*) 
     ((laag-geld&&levens&&level 'add-drawable!) tank-tekst-data-tegel)    
 
-    ((bommen-regen-tegel-data 'set-x!) (+ *start-data-menu* (* 4 *px-breedte*)))
-    ((bommen-regen-tegel-data 'set-y!) (- *geld&&levens-tegel-px-hoogte* (* *px-hoogte* 2)))
+    ((bommen-regen-tegel-data 'set-x!) *bommen-regen-px-breedte*) 
+    ((bommen-regen-tegel-data 'set-y!) *tank&&bommen-regen-px-hoogte*)
     ((laag-geld&&levens&&level 'add-drawable!) bommen-regen-tegel-data)
 
     ((bommen-regen-tekst-data-tegel 'draw-text!) "0" *tekst-font* 0 0 "orange") ;; Tekst naast bitmap
-    ((bommen-regen-tekst-data-tegel 'set-x!) (+ *start-data-menu* (* 5.2 *px-breedte*)))
-    ((bommen-regen-tekst-data-tegel 'set-y!) (- *geld&&levens-tegel-px-hoogte* (* *px-hoogte* 2))) 
+    ((bommen-regen-tekst-data-tegel 'set-x!) *tekst-bommen-regen-px-breedte*)
+    ((bommen-regen-tekst-data-tegel 'set-y!) *tank&&bommen-regen-px-hoogte*) 
     ((laag-geld&&levens&&level 'add-drawable!) bommen-regen-tekst-data-tegel)
 
-    ((afkoeling-tegel-statisch 'draw-text!) "Afkoel" *tekst-font* 0 0 "orange")
+    ((afkoeling-tegel-statisch 'draw-text!) "Afkoel" *tekst-font* 0 0 "orange") ;; !!!!!!!!!
     ((afkoeling-tegel-statisch 'set-x!) *start-data-menu*)
     ((afkoeling-tegel-statisch 'set-y!) (- *geld&&levens-tegel-px-hoogte* (* *px-hoogte* 3.2))) 
     ((laag-geld&&levens&&level 'add-drawable!) afkoeling-tegel-statisch)
