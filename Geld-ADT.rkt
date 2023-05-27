@@ -3,7 +3,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (maak-geld-adt begin-bedrag)
 
-  ;; Volgende code heeft het bedrag terug naargelang het type-object (zijn disjunct)
+  ;; Volgende code geeft het bedrag terug naargelang het type-object (zijn disjunct)
   (define (bedrag type extra?)
     (let ((kost-winst #f))
       (cond

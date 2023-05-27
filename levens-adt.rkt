@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                 Levens ADT                                 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (maak-leven-adt aantal)
+(define (maak-levens-adt aantal)
 
   ;; Volgende code bepaalt afhankelijk van monster hoeveel levens afgetrokken worden
   (define (bepaal-hoeveel type)
@@ -30,7 +30,6 @@
       ((eq? msg 'levens-verminder!) levens-verminder!)
       ((eq? msg 'dood?) dood?)
       ((eq? msg 'status) aantal)
-      ((eq? msg 'soort) 'levens)
       ((eq? msg 'reset!) reset!)
       (else "maak-leven-adt: ongeldig bericht")))
   dispatch)
