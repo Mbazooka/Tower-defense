@@ -204,7 +204,7 @@
     (define laag-pad ((venster 'new-layer!)))
 
     ;; Volgende code is om de tekst delen van het spel up te daten
-    (define (update-tekst-teken! type getal) ;; Dit werd gedaan omdat het level object zijn level niet bijhoud
+    (define (update-tekst-teken! type getal) 
       (define (update-tekst-hulp! tegel)
         ((tegel 'clear!))
         ((tegel 'draw-text!) (number->string getal) *tekst-font* 0 0 "orange"))
@@ -254,7 +254,7 @@
       (for-each (lambda (tegel)
                   ((laag-pad 'remove-drawable!) tegel))
                 pad-tegels)
-      (set! toren-tegels '()))
+      (set! pad-tegels '()))
 
     ;; Volgende code is een venster om bommen-regen-power-ups te plaatsen
     (define laag-bommen-regen-pu ((venster 'new-layer!)))
