@@ -172,11 +172,10 @@
       (tanken-verminder-monster-levens! activeerde-tank)
       (set! activeerde-tank (filter (lambda (tank) (not ((tank 'einde?)))) activeerde-tank)) ;; Haalt alle voorbijgegaande tanken weg
       (for-each (lambda (tank) ((tank 'update!) dt)) activeerde-tank)
-      (for-each (lambda (bom-regen) ((bom-regen 'update!) dt)) activeerde-bommen-regen)
       (for-each (lambda (bom-regen)
+                  ((bom-regen 'update!) dt)
                   (if ((bom-regen 'tijd-afgelopen?))
-                      ((bom-regen 'bom-explosie!) explodeer-monsters-in-buurt!)))
-                activeerde-bommen-regen)
+                      ((bom-regen 'bom-explosie!) explodeer-monsters-in-buurt!))) activeerde-bommen-regen)
       (set! activeerde-bommen-regen (filter (lambda (bom-regen)
                                               (not ((bom-regen 'tijd-afgelopen?)))) ;; Haalt alle afgehandelte bom-regens
                                             activeerde-bommen-regen)))
