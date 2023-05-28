@@ -56,7 +56,7 @@
 ;; Tekst constanten voor op menu
 (define *tekst-toren-breedte* (+ *px-breedte* 10)) ;; + 5 want oranje rand centreert de tekst niet
 (define *tekst-toren-hoogte* *px-hoogte*)
-(define *tekst-font* 9)
+(define *tekst-font* 13)
 (define *algemeen-tekst-breedte* (* 2 *px-breedte*))
 (define *toren-benaming/prijs-tekst-breedte* (* 5 *px-breedte*))
 (define *algemeen-tekst-hoogte* *px-hoogte*)
