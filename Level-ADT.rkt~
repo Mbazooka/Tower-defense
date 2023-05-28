@@ -65,7 +65,7 @@
     (define (afhandeling-net-projectielen!)
       (for-each (lambda (projectiel) ;;Vertraagd de monster in de rand van het net-projectiel
                   (for-each (lambda (monster)
-                              (if (and ((projectiel 'binnen-rand?) monster) (not ((monster 'net-al-vertraagd) projectiel)))
+                              (if (and ((projectiel 'binnen-rand?) monster) (not ((monster 'net-al-vetraagd?) projectiel)))
                                   ((monster 'actie-monster-levend!) 'vertraag projectiel))) 
                             monsters))
                 net-projectielen)

@@ -143,7 +143,7 @@
       (insert! net-projectiel 0 net-projectielen)) 
 
     ;; Volgende code zal na gaan als een net-projectiel een monster al vertraagd heeft
-    (define (net-al-vertraagd net-projectiel)
+    (define (net-al-vetraagd? net-projectiel)
       (assq net-projectiel (rest-dict net-projectielen)))
 
     ;; Volgende code zijn hulpprocedures om de net-projectiel vertragings tijd te bekomen
@@ -179,7 +179,7 @@
         ((eq? msg 'verhoog-levens!) verhoog-levens!)
         ((eq? msg 'voeg-net-projectiel-toe!) voeg-net-projectiel-toe!)
         ((eq? msg 'update-tijd-net-projectielen!) update-tijd-net-projectielen!)
-        ((eq? msg 'net-al-vertraagd) net-al-vertraagd)
+        ((eq? msg 'net-al-vetraagd?) net-al-vetraagd?)
         ((eq? msg 'haal-weg-verlopen-net-projectielen!) haal-weg-verlopen-net-projectielen!) 
         ((eq? msg 'soort) 'monster)
         (else "maak-monster-adt: ongeldig bericht")))
